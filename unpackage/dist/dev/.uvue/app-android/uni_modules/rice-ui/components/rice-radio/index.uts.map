@@ -1,0 +1,1 @@
+{"version":3,"file":"index.uts","sourceRoot":"","sources":["uni_modules/rice-ui/components/rice-radio/index.uts"],"names":[],"mappings":"AACA,cAAc,YAAY,CAAA","sourcesContent":["\r\nexport * from \"./type.uts\"\r\n"]}

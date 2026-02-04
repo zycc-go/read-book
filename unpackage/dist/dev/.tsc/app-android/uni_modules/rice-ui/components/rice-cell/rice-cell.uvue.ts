@@ -1,0 +1,170 @@
+import _easycom_rice_icon from '@/uni_modules/rice-ui/components/rice-icon/rice-icon.uvue'
+import { useNamespace } from "../../libs/use"
+	import { hasStrValue, splitCssProperty, addUnit, debugWarn } from "../../libs/utils"
+	import { CellProps } from "./type.uts"
+
+	
+const __sfc__ = defineComponent({
+  __name: 'rice-cell',
+
+		name: 'rice-cell'
+	,
+  props: {
+    title: { type: [String, Number], required: false },
+    value: { type: [String, Number], required: false },
+    label: { type: [String, Number], required: false },
+    size: { type: String, required: false },
+    icon: { type: String, required: false },
+    url: { type: String, required: false },
+    border: { type: Boolean, required: false, default: true },
+    clickable: { type: Boolean, required: false, default: true },
+    arrow: { type: Boolean, required: false, default: null },
+    arrowDirection: { type: String, required: false, default: 'right' },
+    center: { type: Boolean, required: false, default: false },
+    titleStyle: { type: UTSJSONObject, required: false, default: () : UTSJSONObject => ({}) },
+    valueStyle: { type: UTSJSONObject, required: false, default: () : UTSJSONObject => ({}) },
+    labelStyle: { type: UTSJSONObject, required: false, default: () : UTSJSONObject => ({}) },
+    customStyle: { type: UTSJSONObject, required: false, default: () : UTSJSONObject => ({}) }
+  },
+  emits: ["click"],
+  setup(__props) {
+const __ins = getCurrentInstance()!;
+const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
+const _cache = __ins.renderCache;
+
+	/**
+	 * @description rice-cell
+	 * @property {String|Number} title 左侧标题
+	 * @property {String|Number} value 右侧内容
+	 * @property {String|Number} label 标题下方的描述信息
+	 * @property {String} size 单元格大小，可选 `large` `medium`
+	 * @value large 大尺寸
+	 * @value medium 中等尺寸
+	 * @property {String} icon 左侧图标的名称或图片链接
+	 * @property {String} url 点击跳转的页面地址
+	 * @property {Boolean} border 是否显示下边框
+	 * @property {Boolean} clickable 是否开启点击反馈
+	 * @property {Boolean} arrow 是否显示右侧箭头
+	 * @property {String} arrowDirection 右侧箭头方向
+	 * @value up 上箭头
+	 * @value down 下箭头
+	 * @value left 左箭头
+	 * @value right 右箭头
+	 * @property {Boolean} center 内容是否垂直居中
+	 * @property {Object} titleStyle 自定义标题样式
+	 * @property {Object} valueStyle 自定义value样式
+	 * @property {Object} labelStyle 自定义label样式
+	 * @property {Object} customStyle 自定义样式
+	 */
+	
+
+	const ns = useNamespace('cell')
+	const slots = useSlots()
+	function emit(event: string, ...do_not_transform_spread: Array<any | null>) {
+__ins.emit(event, ...do_not_transform_spread)
+}
+
+	const props = __props
+
+	//传了 arrow就用arrow的值，没传arrow的情况下 url有值就显示右箭头
+	const showArrow = computed(() => props.arrow ?? hasStrValue(props.url))
+	const hasLeftIcon = computed(() => slots['leftIcon'] != null || hasStrValue(props.icon))
+	const hasValue = computed(() => slots['value'] != null || hasStrValue(props.value))
+	const hasLabel = computed(() => slots['label'] != null || hasStrValue(props.label))
+
+	const iconSize = computed(() => props.size == 'large' ? '17px' : '16px')
+
+	const handleClick = (e : UniPointerEvent) => {
+		if (hasStrValue(props.url)) {
+			uni.navigateTo({
+				url: props.url!,
+				fail: err => {
+					debugWarn('Cell', err.errMsg)
+				}
+			})
+		}
+		emit('click')
+	}
+
+
+	const cellClass = computed(() => {
+		return [
+			ns.b(""),
+			ns.theme(),
+			ns.m(props.size),
+			ns.is('center', props.center),
+			ns.is('border', props.border),
+		]
+	})
+
+	const hoverClass = computed(() => props.clickable ? 'rice-cell--hover' : 'none')
+
+return (): any | null => {
+
+const _component_rice_icon = resolveEasyComponent("rice-icon",_easycom_rice_icon)
+
+  return _cE("view", _uM({
+    class: _nC(unref(cellClass)),
+    style: _nS(_ctx.customStyle),
+    "hover-stay-time": 100,
+    "hover-class": unref(hoverClass),
+    onClick: handleClick
+  }), [
+    isTrue(unref(hasLeftIcon))
+      ? renderSlot(_ctx.$slots, "leftIcon", _uM({ key: 0 }), (): any[] => [
+          _cV(_component_rice_icon, _uM({
+            name: _ctx.icon,
+            "custom-style": {marginRight:'2px',lineHeight:1.6},
+            size: unref(iconSize)
+          }), null, 8 /* PROPS */, ["name", "size"])
+        ])
+      : _cC("v-if", true),
+    _cE("view", _uM({
+      class: _nC(unref(ns).e('title')),
+      style: _nS(unref(splitCssProperty)(_ctx.titleStyle).rectCssProperty)
+    }), [
+      renderSlot(_ctx.$slots, "title", {}, (): any[] => [
+        _cE("text", _uM({
+          class: "rice-cell__title__text",
+          style: _nS(unref(splitCssProperty)(_ctx.titleStyle).textCssProperty)
+        }), _tD(_ctx.title), 5 /* TEXT, STYLE */)
+      ]),
+      isTrue(unref(hasLabel))
+        ? renderSlot(_ctx.$slots, "label", _uM({ key: 0 }), (): any[] => [
+            _cE("text", _uM({
+              class: _nC(unref(ns).e('label')),
+              style: _nS(_ctx.labelStyle)
+            }), _tD(_ctx.label), 7 /* TEXT, CLASS, STYLE */)
+          ])
+        : _cC("v-if", true)
+    ], 6 /* CLASS, STYLE */),
+    isTrue(unref(hasValue))
+      ? _cE("view", _uM({
+          key: 1,
+          class: _nC(unref(ns).e('value')),
+          style: _nS(unref(splitCssProperty)(_ctx.valueStyle).rectCssProperty)
+        }), [
+          renderSlot(_ctx.$slots, "value", {}, (): any[] => [
+            _cE("text", _uM({
+              class: "rice-cell__value__text",
+              style: _nS(unref(splitCssProperty)(_ctx.valueStyle).textCssProperty)
+            }), _tD(_ctx.value), 5 /* TEXT, STYLE */)
+          ])
+        ], 6 /* CLASS, STYLE */)
+      : _cC("v-if", true),
+    isTrue(_ctx.$slots['rightIcon']!=null||unref(showArrow))
+      ? renderSlot(_ctx.$slots, "rightIcon", _uM({ key: 2 }), (): any[] => [
+          _cV(_component_rice_icon, _uM({
+            name: `arrow-${_ctx.arrowDirection}`,
+            size: unref(iconSize)
+          }), null, 8 /* PROPS */, ["name", "size"])
+        ])
+      : _cC("v-if", true)
+  ], 14 /* CLASS, STYLE, PROPS */, ["hover-class"])
+}
+}
+
+})
+export default __sfc__
+export type RiceCellComponentPublicInstance = InstanceType<typeof __sfc__>;
+const GenUniModulesRiceUiComponentsRiceCellRiceCellStyles = [_uM([["rice-cell", _pS(_uM([["--rice-cell-title-size", "15px"], ["--rice-cell-value-size", "15px"], ["--rice-cell-label-size", "13px"], ["flexDirection", "row"], ["paddingTop", 14], ["paddingRight", "var(--rice-padding-md)"], ["paddingBottom", 14], ["paddingLeft", "var(--rice-padding-md)"], ["backgroundColor", "var(--rice-cell-background)"], ["width", "100%"]]))], ["rice-cell--medium", _pS(_uM([["--rice-cell-title-size", "16px"], ["--rice-cell-value-size", "16px"], ["--rice-cell-label-size", "14px"]]))], ["rice-cell--large", _pS(_uM([["--rice-cell-title-size", "17px"], ["--rice-cell-value-size", "17px"], ["--rice-cell-label-size", "15px"], ["paddingTop", "var(--rice-font-size-lg)"], ["paddingRight", "var(--rice-font-size-lg)"], ["paddingBottom", "var(--rice-font-size-lg)"], ["paddingLeft", "var(--rice-font-size-lg)"]]))], ["rice-cell__title", _pS(_uM([["flexGrow", 1], ["flexShrink", 1], ["flexBasis", "0%"], ["paddingRight", 2]]))], ["rice-cell__title__text", _pS(_uM([["lineHeight", 1.6], ["color", "var(--rice-text-color)"], ["fontSize", "var(--rice-cell-title-size)"]]))], ["rice-cell__value", _pS(_uM([["flexGrow", 1], ["flexShrink", 1], ["flexBasis", "0%"], ["paddingRight", 2]]))], ["rice-cell__value__text", _pS(_uM([["lineHeight", 1.6], ["color", "var(--rice-text-color-2)"], ["fontSize", "var(--rice-cell-value-size)"], ["textAlign", "right"]]))], ["rice-cell__label", _pS(_uM([["color", "var(--rice-text-color-2)"], ["fontSize", "var(--rice-cell-label-size)"], ["marginTop", 5]]))], ["rice-cell--center", _pS(_uM([["alignItems", "center"]]))], ["rice-cell--border", _pS(_uM([["borderBottomWidth", "1rpx"], ["borderBottomStyle", "solid"], ["borderBottomColor", "var(--rice-border-color)"]]))], ["rice-cell--hover", _pS(_uM([["backgroundColor", "var(--rice-hover-color)"]]))]])]

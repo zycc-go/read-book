@@ -1,0 +1,119 @@
+<template>
+	<view>
+		<rice-navbar :left-arrow="false" bg-color="#f8f8f8">
+			<template #right>
+				<view class="nav-right">
+					<rice-icon name="sun" class="nac-icon" v-if="theme==='light'" @click="onSetTheme('dark')" />
+					<rice-icon name="sleep" class="nac-icon" v-else @click="onSetTheme('light')" />
+					<rice-icon name="remind" class="nac-icon" />
+				</view>
+			</template>
+		</rice-navbar>
+
+		<view class="header">
+			<rice-avatar src="/static/images/avatar-square.png" size="large" />
+			<view class="h-right">
+				<text class="h-text1">昵称</text>
+				<text class="h-text2">等级</text>
+			</view>
+		</view>
+		<view class="card">
+			<rice-cell-group border>
+				<rice-cell title="时长" arrow />
+				<rice-cell title="设置" arrow />
+				<rice-cell title="关于" arrow @click="onAbout" />
+				<rice-cell title="版本" arrow />
+			</rice-cell-group>
+		</view>
+	</view>
+
+	<rice-dialog v-model:show="showMoreMessage" title="关于" :show-cancel-button="false" :message="message"
+		confirm-button-text="知道了">
+	</rice-dialog>
+
+</template>
+
+<script setup lang="uts">
+	import { setTheme } from "@/uni_modules/rice-ui"
+
+	const message = `本应用 / 网站 / 内容仅供学习、交流及个人参考使用，不构成任何形式的投资建议、法律意见、专业指导或商业承诺。
+	内容准确性：我们力求内容准确、完整、及时，但不保证所有信息绝对无误，不对因内容疏漏、错误或过时导致的任何损失承担责任。
+	使用风险：用户基于本应用 / 内容进行的任何操作、决策或行为，均由用户自行承担风险，我们不承担任何直接、间接、附带或衍生的损失赔偿责任。
+	第三方链接：本应用 / 内容可能包含第三方链接，第三方网站的内容、隐私政策及服务由其自行负责，我们不对其合法性、安全性及准确性负责。
+	版权与合规：本应用 / 内容所使用的素材、代码、数据等，均尽可能遵循版权规范；若涉及侵权，请联系我们及时处理，我们不承担因用户违规使用素材导致的法律责任。
+	变更与终止：我们有权随时更新、修改或终止本应用 / 内容，无需提前通知，且不承担因此产生的任何责任。
+	适用范围：本声明适用于所有使用本应用 / 内容的用户，使用即视为已阅读、理解并同意本声明全部条款。
+	如需适配特定场景（如小说阅读类、工具类、社区类、付费服务类），告诉我用途，我可以帮你定制更精准的版本。`
+
+	const showMoreMessage = ref(false)
+
+	const theme = ref<string | null>('light')
+
+	const getTheme = () => {
+		const res = uni.getAppBaseInfo()
+		theme.value = res.appTheme
+	}
+
+	const onAbout = () => {
+		showMoreMessage.value = true
+	}
+
+	const onSetTheme = (val : string) => {
+		theme.value = val
+		setTheme(val as "light" | "dark")
+		uni.setAppTheme({
+			theme: val as "light" | "dark" | "auto",
+			success: function () {
+				console.log("设置appTheme为 auto 成功")
+			},
+			fail: function (e : IAppThemeFail) {
+				console.log("设置appTheme为 auto 失败,原因:", e.errMsg)
+			}
+		})
+	}
+
+	const onShow = () => {
+		console.log(688767868)
+	}
+
+	onMounted(() => {
+		getTheme()
+	})
+</script>
+
+<style lang="scss" scoped>
+	.nav-right {
+		display: flex;
+		flex-direction: row;
+		margin-right: $uni-spacing-row-lg;
+		gap: $uni-spacing-row-lg;
+
+		.nac-icon {
+			font-size: $uni-img-size-base;
+			margin-left: $uni-spacing-row-sm;
+		}
+	}
+
+	.header {
+		margin: $uni-spacing-col-lg $uni-spacing-row-lg;
+		display: flex;
+		flex-direction: row;
+
+		.h-right {
+			margin-left: $uni-spacing-row-base;
+			font-size: 10px;
+			display: flex;
+			justify-content: center;
+		}
+
+		.h-text2 {
+			margin-top: $uni-spacing-col-sm;
+			font-size: $uni-font-size-base;
+		}
+	}
+
+	.card {
+		padding: $uni-spacing-col-lg $uni-spacing-row-lg;
+		margin-top: $uni-spacing-col-base;
+	}
+</style>

@@ -1,0 +1,119 @@
+import { addUnit, hasStrValue, isThemeColor } from '../../libs/utils';
+	import { useNamespace } from "../../libs/use";
+	import { IconProps, fontData } from './index.uts';
+
+	
+const __sfc__ = defineComponent({
+  __name: 'rice-icon',
+
+		name: 'rice-icon'
+	,
+  props: {
+    name: { type: String, required: false, default: "" },
+    size: { type: [String, Number], required: false },
+    color: { type: String, required: false },
+    bold: { type: Boolean, required: false },
+    fontFamily: { type: String, required: false },
+    stop: { type: Boolean, required: false, default: false },
+    customStyle: { type: UTSJSONObject, required: false, default: () : UTSJSONObject => ({}) },
+    customClass: { type: String, required: false }
+  },
+  emits: ["click"],
+  setup(__props) {
+const __ins = getCurrentInstance()!;
+const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
+const _cache = __ins.renderCache;
+
+	/**
+	 * rice-icon 基于字体的图标集
+	 * @property {String} name 图标的名称
+	 * @property {String|Number} size 图标大小，默认16px
+	 * @property {String} color 图标的颜色
+	 * @property {Boolean} bold 是否加粗
+	 * @property {Boolean} stop 是否阻止事件冒泡
+	 * @property {String} fontFamily 自定义图标的字体
+	 * @property {Object} customStyle 自定义style样式
+	 * @property {String} customClass 自定义class样式
+	 */
+
+	
+
+	const ns = useNamespace('icon')
+
+	function emit(event: string, ...do_not_transform_spread: Array<any | null>) {
+__ins.emit(event, ...do_not_transform_spread)
+}
+
+	const props = __props
+
+	const isBase64 = () => {
+		return props.name.indexOf('data:') > -1 && props.name.indexOf('base64') > -1;
+	}
+
+	const isImage = computed<boolean>(() => props.name.includes('/') || isBase64())
+
+	const iconCode = computed(() => {
+		if (props.fontFamily != null) return String.fromCharCode(parseInt(props.name, 16))
+		return fontData.find(v => v.name == props.name)?.code ?? ""
+	})
+
+	const iconClick = (e : UniPointerEvent) => {
+		if (props.stop == true) {
+			e.stopPropagation()
+		}
+		emit('click', e)
+	}
+
+	const iconStyle = computed(() => {
+		const css = new Map<string, string>()
+		if (props.size != null) css.set('font-size', addUnit(props.size!))
+		if (hasStrValue(props.color)) css.set('color', props.color!)
+		if (props.fontFamily != null) css.set('font-family', props.fontFamily)
+		return css
+	})
+
+	const imageStyle = computed(() => {
+		const css = new Map<string, string>()
+		if (hasStrValue(props.size)) {
+			const size = addUnit(props.size!)
+			css.set('height', addUnit(size))
+			css.set('width', addUnit(size))
+		}
+		return css
+	})
+
+	const iconClass = computed(() => {
+		const basic = [
+			ns.theme(),
+			ns.is('bold', props.bold ?? false),
+			props.customClass ?? "",
+		]
+
+		return basic
+	})
+
+return (): any | null => {
+
+  return isTrue(!unref(isImage))
+    ? _cE("text", _uM({
+        key: 0,
+        class: _nC(["rice-icon", unref(iconClass)]),
+        style: _nS([unref(iconStyle),_ctx.customStyle]),
+        onClick: iconClick
+      }), [
+        renderSlot(_ctx.$slots, "default", {}, (): any[] => [_tD(unref(iconCode))])
+      ], 6 /* CLASS, STYLE */)
+    : _cE("image", _uM({
+        key: 1,
+        src: _ctx.name,
+        class: "rice-icon__image",
+        style: _nS([unref(imageStyle),_ctx.customStyle]),
+        onClick: iconClick
+      }), null, 12 /* STYLE, PROPS */, ["src"])
+}
+}
+
+})
+export default __sfc__
+export type RiceIconComponentPublicInstance = InstanceType<typeof __sfc__>;
+const GenUniModulesRiceUiComponentsRiceIconRiceIconStyles = [_uM([["rice-icon", _pS(_uM([["color", "var(--rice-text-color-2)"], ["fontFamily", "riceIcon"]]))], ["rice-icon--bold", _pS(_uM([["fontWeight", "bold"]]))], ["rice-icon__image", _pS(_uM([["height", 16], ["width", 16]]))], ["@FONT-FACE", _uM([["0", _uM([["fontFamily", "riceIcon"], ["src", "url(\"/uni_modules/rice-ui/static/font/riceIcons.ttf\")"]])]])]])]

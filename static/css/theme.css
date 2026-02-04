@@ -1,0 +1,36 @@
+/* 自定义主题色示例 */
+
+/* 明亮模式下的主题 */
+.rice-theme-light {
+	--rice-primary-color: #845ec2;
+	--rice-primary-color-1: #b7abc2;
+	--rice-primary-color-7: #782ec2;
+	--rice-success-color: #4d8076;
+	--rice-success-color-1: #4d8076;
+	--rice-success-color-7: #4d8076;
+	--rice-warning-color: #e6a23c;
+	--rice-warning-color-1: #fffbe8;
+	--rice-warning-color-7: #bf7e28;
+	--rice-error-color: #f56c6c;
+	--rice-error-color-1: #fff2f0;
+	--rice-error-color-7: #cf5155;
+	/* ....其他你自己要修改的颜色值 */
+}
+
+/* 暗黑模式下的主题 */
+.rice-theme-dark {
+	--rice-primary-color: #6235c2;
+	--rice-primary-color-1: #a391c2;
+	--rice-primary-color-7: #aa97c2;
+	--rice-success-color: #0d8063;
+	--rice-success-color-1: #e6ffee;
+	--rice-success-color-7: #009c50;
+	--rice-warning-color: #e6a23c;
+	--rice-warning-color-1: #fffbe8;
+	--rice-warning-color-7: #bf7e28;
+	--rice-error-color: #f56c6c;
+	--rice-error-color-1: #fff2f0;
+	--rice-error-color-7: #cf5155;
+	/* ....其他你自己要修改的颜色值 */
+
+}
