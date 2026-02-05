@@ -1,5 +1,5 @@
 @file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
-package uni.UNIuniappx
+package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
 import io.dcloud.uniapp.framework.*
@@ -17,7 +17,9 @@ import io.dcloud.uniapp.extapi.`$off` as uni__off
 import io.dcloud.uniapp.extapi.`$on` as uni__on
 import io.dcloud.uniapp.extapi.connectSocket as uni_connectSocket
 import io.dcloud.uniapp.extapi.exit as uni_exit
+import io.dcloud.uniapp.extapi.getSystemInfo as uni_getSystemInfo
 import io.dcloud.uniapp.extapi.getWindowInfo as uni_getWindowInfo
+import io.dcloud.uniapp.extapi.onAppThemeChange as uni_onAppThemeChange
 import io.dcloud.uniapp.extapi.openDialogPage as uni_openDialogPage
 import io.dcloud.uniapp.extapi.rpx2px as uni_rpx2px
 import io.dcloud.uniapp.extapi.showToast as uni_showToast
@@ -74,7 +76,7 @@ fun tryConnectSocket(host: String, port: String, id: String): UTSPromise<SocketT
 fun initRuntimeSocketService(): UTSPromise<Boolean> {
     val hosts: String = "169.254.3.126,169.254.166.164,10.192.138.58,127.0.0.1"
     val port: String = "8090"
-    val id: String = "app-android_YGadqN"
+    val id: String = "app-android_Ndx58Y"
     if (hosts == "" || port == "" || id == "") {
         return UTSPromise.resolve(false)
     }
@@ -103,65 +105,6 @@ fun initRuntimeSocketService(): UTSPromise<Boolean> {
 }
 val runBlock2 = run {
     initRuntimeSocketService()
-}
-var firstBackTime: Number = 0
-open class GenApp : BaseApp {
-    constructor(__ins: ComponentInternalInstance) : super(__ins) {
-        onLaunch(fun(_: OnLaunchOptions) {
-            console.log("App Launch", " at App.uvue:7")
-        }
-        , __ins)
-        onAppShow(fun(_: OnShowOptions) {
-            console.log("App Show", " at App.uvue:10")
-        }
-        , __ins)
-        onAppHide(fun() {
-            console.log("App Hide", " at App.uvue:13")
-        }
-        , __ins)
-        onLastPageBackPress(fun() {
-            console.log("App LastPageBackPress", " at App.uvue:17")
-            if (firstBackTime == 0) {
-                uni_showToast(ShowToastOptions(title = "再按一次退出应用", position = "bottom"))
-                firstBackTime = Date.now()
-                setTimeout(fun(){
-                    firstBackTime = 0
-                }, 2000)
-            } else if (Date.now() - firstBackTime < 2000) {
-                firstBackTime = Date.now()
-                uni_exit(null)
-            }
-        }
-        , __ins)
-        onExit(fun() {
-            console.log("App Exit", " at App.uvue:34")
-        }
-        , __ins)
-    }
-    companion object {
-        val styles: Map<String, Map<String, Map<String, Any>>> by lazy {
-            _nCS(_uA(
-                styles0
-            ))
-        }
-        val styles0: Map<String, Map<String, Map<String, Any>>>
-            get() {
-                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#845ec2", "--rice-primary-color-1" to "#b7abc2", "--rice-primary-color-7" to "#782ec2", "--rice-success-color" to "#4d8076", "--rice-success-color-1" to "#4d8076", "--rice-success-color-7" to "#4d8076", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "#fff", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#fff", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#6235c2", "--rice-primary-color-1" to "#a391c2", "--rice-primary-color-7" to "#aa97c2", "--rice-success-color" to "#0d8063", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "#242424", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "uni-row" to _pS(_uM("flexDirection" to "row")), "uni-column" to _pS(_uM("flexDirection" to "column")))
-            }
-    }
-}
-val GenAppClass = CreateVueAppComponent(GenApp::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "app", name = "", inheritAttrs = true, inject = Map(), props = Map(), propsNeedCastKeys = _uA(), emits = Map(), components = Map(), styles = GenApp.styles)
-}
-, fun(instance): GenApp {
-    return GenApp(instance)
-}
-)
-fun debugWarn(scope: String, mess: String) {
-    if ("development" != "production") {
-        val err = "[RiceUI] " + scope + ":" + mess
-        console.warn(err, " at uni_modules/rice-ui/libs/utils/debug.uts:4")
-    }
 }
 open class Config (
     @JsonNotNull
@@ -222,6 +165,33 @@ val isDark = computed(fun(): Boolean {
 )
 val setTheme = fun(theme: String){
     config.theme = theme
+}
+fun useCssVar(prop: String, target: Ref<UniElement?>): Ref<String> {
+    val variable = ref("")
+    val updateCssVar = fun(){
+        if (target.value != null && prop != "") {
+            variable.value = target.value!!.style.getPropertyValue(prop)
+        }
+    }
+    watch(_uA(
+        target,
+        isDark
+    ), fun(): UTSPromise<Unit> {
+        return wrapUTSPromise(suspend {
+                await(nextTick())
+                if (target.value != null) {
+                    updateCssVar()
+                }
+        })
+    }
+    , WatchOptions(immediate = true))
+    return variable
+}
+fun debugWarn(scope: String, mess: String) {
+    if ("development" != "production") {
+        val err = "[RiceUI] " + scope + ":" + mess
+        console.warn(err, " at uni_modules/rice-ui/libs/utils/debug.uts:4")
+    }
 }
 open class SplitCssPropertyResult (
     @JsonNotNull
@@ -407,27 +377,6 @@ fun callInterceptor(interceptor: BeforeChangeInterceptor, interceptorOption: Int
 }
 val getUID = fun(): String {
     return Date.now() + "" + Math.floor(Math.random() * 1e7)
-}
-fun useCssVar(prop: String, target: Ref<UniElement?>): Ref<String> {
-    val variable = ref("")
-    val updateCssVar = fun(){
-        if (target.value != null && prop != "") {
-            variable.value = target.value!!.style.getPropertyValue(prop)
-        }
-    }
-    watch(_uA(
-        target,
-        isDark
-    ), fun(): UTSPromise<Unit> {
-        return wrapUTSPromise(suspend {
-                await(nextTick())
-                if (target.value != null) {
-                    updateCssVar()
-                }
-        })
-    }
-    , WatchOptions(immediate = true))
-    return variable
 }
 open class UseNamespace (
     open var b: (blockSuffix: String) -> String,
@@ -636,150 +585,6 @@ fun useTouch(): UseTouch {
     }
     return UseTouch(startX = startX, startY = startY, deltaX = deltaX, deltaY = deltaY, offsetX = offsetX, offsetY = offsetY, direction = direction, isTap = isTap, dragging = dragging, skipMove = skipMove, start = start, move = move, end = end, changeDragging = changeDragging)
 }
-open class FontData (
-    @JsonNotNull
-    open var name: String,
-    @JsonNotNull
-    open var code: String,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("FontData", "uni_modules/rice-ui/components/rice-icon/font.uts", 1, 13)
-    }
-}
-val fontData = _uA(
-    FontData(name = "arrow-up", code = "\ueaa4"),
-    FontData(name = "arrow-down", code = "\ueaa1"),
-    FontData(name = "arrow-left", code = "\ueaa2"),
-    FontData(name = "arrow-right", code = "\ueaa3"),
-    FontData(name = "up", code = "\ueab1"),
-    FontData(name = "down", code = "\ueaa5"),
-    FontData(name = "left", code = "\ueaa9"),
-    FontData(name = "right", code = "\ueaab"),
-    FontData(name = "back-top", code = "\ueaae"),
-    FontData(name = "back-bottom", code = "\ueaad"),
-    FontData(name = "double-right", code = "\ueaa0"),
-    FontData(name = "double-left", code = "\ueaa7"),
-    FontData(name = "minus", code = "\uea7e"),
-    FontData(name = "plus", code = "\uea7d"),
-    FontData(name = "search", code = "\uea8c"),
-    FontData(name = "search-fill", code = "\uea89"),
-    FontData(name = "scan", code = "\uea67"),
-    FontData(name = "qr", code = "\ue6d8"),
-    FontData(name = "sort", code = "\ue6e2"),
-    FontData(name = "sort-menu", code = "\ueaac"),
-    FontData(name = "bars", code = "\ue69f"),
-    FontData(name = "remind-disabled", code = "\uea95"),
-    FontData(name = "remind", code = "\uea96"),
-    FontData(name = "volume", code = "\uea7c"),
-    FontData(name = "volume-fill", code = "\uea6f"),
-    FontData(name = "volume-up", code = "\uea78"),
-    FontData(name = "volume-up-fill", code = "\uea70"),
-    FontData(name = "volume-down", code = "\uea79"),
-    FontData(name = "volume-down-fill", code = "\uea73"),
-    FontData(name = "volume-mute", code = "\uea7a"),
-    FontData(name = "volume-mute-fill", code = "\uea72"),
-    FontData(name = "voice", code = "\uea77"),
-    FontData(name = "voice-off", code = "\uea7b"),
-    FontData(name = "play", code = "\uea76"),
-    FontData(name = "play-fill", code = "\uea71"),
-    FontData(name = "pause", code = "\uea75"),
-    FontData(name = "pause-fill", code = "\uea6e"),
-    FontData(name = "headset", code = "\uea74"),
-    FontData(name = "headset-fill", code = "\uea6d"),
-    FontData(name = "user", code = "\ueb30"),
-    FontData(name = "peoples", code = "\ueb2f"),
-    FontData(name = "peoples-fill", code = "\ueb2c"),
-    FontData(name = "trophy", code = "\ueb35"),
-    FontData(name = "trophy-fill", code = "\ueb33"),
-    FontData(name = "add", code = "\uea84"),
-    FontData(name = "add-fill", code = "\uea7f"),
-    FontData(name = "reduce", code = "\uea87"),
-    FontData(name = "reduce-fill", code = "\uea81"),
-    FontData(name = "checked-circle", code = "\uea86"),
-    FontData(name = "checked-circle-fill", code = "\uea80"),
-    FontData(name = "help", code = "\uea8a"),
-    FontData(name = "help-fill", code = "\uea82"),
-    FontData(name = "info", code = "\uea88"),
-    FontData(name = "info-fill", code = "\uea83"),
-    FontData(name = "cross", code = "\uea85"),
-    FontData(name = "checked", code = "\ue659"),
-    FontData(name = "camera", code = "\uea8f"),
-    FontData(name = "camera-fill", code = "\uea8b"),
-    FontData(name = "app", code = "\uea91"),
-    FontData(name = "app-fill", code = "\uea8d"),
-    FontData(name = "like", code = "\uea90"),
-    FontData(name = "like-fill", code = "\uea8e"),
-    FontData(name = "eyes", code = "\uea92"),
-    FontData(name = "eyes-close", code = "\uea94"),
-    FontData(name = "sleep", code = "\uea93"),
-    FontData(name = "sun", code = "\ueafe"),
-    FontData(name = "menu-fold", code = "\uea9e"),
-    FontData(name = "menu-unfold", code = "\uea9f"),
-    FontData(name = "upload", code = "\ueab2"),
-    FontData(name = "download", code = "\ueaa6"),
-    FontData(name = "full-screen", code = "\ueaa8"),
-    FontData(name = "off-screen", code = "\ueaaa"),
-    FontData(name = "switch", code = "\ueaaf"),
-    FontData(name = "revoke", code = "\ueab0"),
-    FontData(name = "comments", code = "\ueac3"),
-    FontData(name = "comments-fill", code = "\ueac2"),
-    FontData(name = "phone-call", code = "\ueaba"),
-    FontData(name = "phone-call-fill", code = "\ueab4"),
-    FontData(name = "phone-in", code = "\ueabc"),
-    FontData(name = "phone-in-fill", code = "\ueab5"),
-    FontData(name = "phone-out", code = "\ueabb"),
-    FontData(name = "phone-out-fill", code = "\ueab6"),
-    FontData(name = "phone", code = "\ueabd"),
-    FontData(name = "phone-fill", code = "\ueab7"),
-    FontData(name = "phone-missed", code = "\ueabe"),
-    FontData(name = "phone-missed-fill", code = "\ueab8"),
-    FontData(name = "location", code = "\ueac0"),
-    FontData(name = "location-fill", code = "\ueabf"),
-    FontData(name = "bluetooth", code = "\ueacb"),
-    FontData(name = "calendar", code = "\uead4"),
-    FontData(name = "calendar-fill", code = "\uead2"),
-    FontData(name = "clear", code = "\ueb34"),
-    FontData(name = "clear-fill", code = "\ueb32"),
-    FontData(name = "share", code = "\uea4e"),
-    FontData(name = "share-fill", code = "\uea3d"),
-    FontData(name = "edit", code = "\uea48"),
-    FontData(name = "delete", code = "\uea45"),
-    FontData(name = "delete-fill", code = "\uea37"),
-    FontData(name = "shopping", code = "\uea68"),
-    FontData(name = "shopping-fill", code = "\uea62"),
-    FontData(name = "wallet", code = "\uea69"),
-    FontData(name = "bag", code = "\uea6a"),
-    FontData(name = "set", code = "\ue6dc"),
-    FontData(name = "set-fill", code = "\ue6db"),
-    FontData(name = "replay", code = "\ue6dd"),
-    FontData(name = "home", code = "\ue6e9"),
-    FontData(name = "home-fill", code = "\ue6e8"),
-    FontData(name = "chat", code = "\ue6aa"),
-    FontData(name = "chat-fill", code = "\ue6a3"),
-    FontData(name = "good", code = "\ue6c3"),
-    FontData(name = "good-fill", code = "\ue6c2"),
-    FontData(name = "gift", code = "\ue6d4"),
-    FontData(name = "gift-fill", code = "\ue6d3"),
-    FontData(name = "loading", code = "\ue670"),
-    FontData(name = "photo", code = "\ue6cf"),
-    FontData(name = "photo-fail", code = "\ue6cd"),
-    FontData(name = "star", code = "\ue6ec"),
-    FontData(name = "star-fill", code = "\ue6ed"),
-    FontData(name = "trend", code = "\uea6b"),
-    FontData(name = "trend-fill", code = "\uea63"),
-    FontData(name = "file-success-fill", code = "\uea25"),
-    FontData(name = "file-success", code = "\uea2d")
-) as UTSArray<FontData>
-val GenUniModulesRiceUiComponentsRiceIconRiceIconClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceIconRiceIcon::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceIconRiceIcon.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceIconRiceIcon.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceIconRiceIcon.inject, props = GenUniModulesRiceUiComponentsRiceIconRiceIcon.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceIconRiceIcon.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceIconRiceIcon.emits, components = GenUniModulesRiceUiComponentsRiceIconRiceIcon.components, styles = GenUniModulesRiceUiComponentsRiceIconRiceIcon.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceIconRiceIcon.setup(props as GenUniModulesRiceUiComponentsRiceIconRiceIcon)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceIconRiceIcon {
-    return GenUniModulesRiceUiComponentsRiceIconRiceIcon(instance)
-}
-)
 val presetColors: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("presetColors", "uni_modules/rice-ui/libs/plugin/coloruts/constant.uts", 44, 14)) {
     var aliceblue = "9ehhb"
     var antiquewhite = "9sgk7"
@@ -2197,666 +2002,6 @@ open class DateObject (
     }
 }
 typealias DateUnits = String
-typealias LoadingMode = String
-typealias LoadingTimingFunction = String
-open class UseLoadingOptions (
-    @JsonNotNull
-    open var loadingRef: Ref<UniElement?>,
-    @JsonNotNull
-    open var coreRef: Ref<UniElement?>,
-    @JsonNotNull
-    open var circularRef: Ref<UniElement?>,
-    @JsonNotNull
-    open var mode: LoadingMode,
-    @JsonNotNull
-    open var timingFunction: LoadingTimingFunction,
-    @JsonNotNull
-    open var color: ComputedRef<String>,
-    @JsonNotNull
-    open var size: Ref<Any>,
-    @JsonNotNull
-    open var duration: Number,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("UseLoadingOptions", "uni_modules/rice-ui/components/rice-loading/use-loading.uts", 3, 13)
-    }
-}
-val easeInOutCubic = fun(t: Number): Number {
-    return if (t < 0.5) {
-        4 * t * t * t
-    } else {
-        (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
-    }
-}
-fun useLoading(options: UseLoadingOptions) {
-    var timer: Number? = null
-    var drawContext: DrawableContext? = null
-    val startAmination = fun(): UTSPromise<Unit> {
-        return wrapUTSPromise(suspend w1@{
-                val coreRef = options.coreRef
-                val timingFunction = options.timingFunction
-                await(nextTick())
-                if (coreRef.value == null) {
-                    return@w1
-                }
-                coreRef.value!!.animate(_uA(
-                    UniAnimationKeyframe(transform = "rotate(0deg)"),
-                    UniAnimationKeyframe(transform = "rotate(360deg)")
-                ), UniAnimationOption(duration = options.duration, easing = timingFunction, iterations = Infinity))
-        })
-    }
-    val drawCircular = fun(ctx: DrawableContext){
-        var rotate: Number = 0
-        val size = getPxNum(options.size.value)
-        val ARC_LENGTH: Number = 359
-        val center = size / 2
-        val lineWidth = size / 10
-        val duration = options.duration
-        val ARC_MAX: Number = 352
-        var startTime: Number = 0
-        var foreward_end: Number = 0
-        var reversal_end = ARC_MAX
-        fun pogressTime(): Number {
-            val currentTime = Date.now()
-            val elapsedTime = currentTime - startTime
-            val progress = elapsedTime / duration
-            val easedProgress = easeInOutCubic(progress)
-            return easedProgress
-        }
-        val draw = fun(){
-            ctx.reset()
-            ctx.beginPath()
-            if (reversal_end == ARC_MAX) {
-                foreward_end = Math.min(pogressTime() * ARC_LENGTH, ARC_LENGTH)
-                if (foreward_end >= ARC_MAX) {
-                    reversal_end = 0
-                    foreward_end = ARC_MAX
-                    startTime = Date.now()
-                }
-            }
-            if (foreward_end == ARC_MAX) {
-                reversal_end = Math.min(pogressTime() * ARC_LENGTH, ARC_LENGTH)
-                if (reversal_end >= ARC_MAX) {
-                    reversal_end = ARC_MAX
-                    foreward_end = 0
-                    startTime = Date.now()
-                }
-            }
-            ctx.arc(center, center, center - lineWidth, rotate + (reversal_end * Math.PI / 180), rotate + (foreward_end * Math.PI / 180))
-            ctx.lineWidth = lineWidth
-            ctx.strokeStyle = options.color.value
-            ctx.stroke()
-            ctx.update()
-            rotate += 0.05
-        }
-        timer = setInterval(fun(){
-            return draw()
-        }
-        , 16)
-    }
-    val removeInterval = fun(){
-        if (timer != null) {
-            clearInterval(timer!!)
-            timer = null
-        }
-    }
-    val initCircular = fun(){
-        val circularRef = options.circularRef
-        if (circularRef.value == null) {
-            return
-        }
-        removeInterval()
-        drawContext = circularRef.value!!.getDrawableContext()!!
-        drawContext!!.reset()
-        drawCircular(drawContext!!)
-    }
-    val init = fun(): UTSPromise<Unit> {
-        return wrapUTSPromise(suspend {
-                await(nextTick())
-                initCircular()
-                startAmination()
-        })
-    }
-    watch(_uA(
-        fun(): String {
-            return options.color.value
-        }
-        ,
-        fun(): Any {
-            return options.size.value
-        }
-    ), fun(){
-        initCircular()
-    }
-    )
-    onMounted(fun(){
-        init()
-    }
-    )
-    onUnmounted(fun(){
-        removeInterval()
-    }
-    )
-    var hasHide = false
-    onPageShow(fun(){
-        if (hasHide && drawContext != null) {
-            drawCircular(drawContext!!)
-        }
-    }
-    )
-    onPageHide(fun(){
-        hasHide = true
-        removeInterval()
-    }
-    )
-}
-val GenUniModulesRiceUiComponentsRiceLoadingRiceLoadingClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceLoadingRiceLoading::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.inject, props = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.emits, components = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.components, styles = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.setup(props as GenUniModulesRiceUiComponentsRiceLoadingRiceLoading)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceLoadingRiceLoading {
-    return GenUniModulesRiceUiComponentsRiceLoadingRiceLoading(instance)
-}
-)
-val iconSizeTypes: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("iconSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 1, 14)) {
-    var large = "18px"
-    var `default` = "16px"
-    var small = "14px"
-    var mini = "12px"
-}
-val loadingSizeTypes: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("loadingSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 7, 14)) {
-    var large = "20px"
-    var `default` = "18px"
-    var small = "16px"
-    var mini = "14px"
-}
-val GenUniModulesRiceUiComponentsRiceButtonRiceButtonClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceButtonRiceButton::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceButtonRiceButton.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inject, props = GenUniModulesRiceUiComponentsRiceButtonRiceButton.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceButtonRiceButton.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceButtonRiceButton.emits, components = GenUniModulesRiceUiComponentsRiceButtonRiceButton.components, styles = GenUniModulesRiceUiComponentsRiceButtonRiceButton.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceButtonRiceButton.setup(props as GenUniModulesRiceUiComponentsRiceButtonRiceButton)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceButtonRiceButton {
-    return GenUniModulesRiceUiComponentsRiceButtonRiceButton(instance)
-}
-)
-val GenPagesBookcaseIndexClass = CreateVueComponent(GenPagesBookcaseIndex::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesBookcaseIndex.inheritAttrs, inject = GenPagesBookcaseIndex.inject, props = GenPagesBookcaseIndex.props, propsNeedCastKeys = GenPagesBookcaseIndex.propsNeedCastKeys, emits = GenPagesBookcaseIndex.emits, components = GenPagesBookcaseIndex.components, styles = GenPagesBookcaseIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenPagesBookcaseIndex.setup(props as GenPagesBookcaseIndex)
-    }
-    )
-}
-, fun(instance, renderer): GenPagesBookcaseIndex {
-    return GenPagesBookcaseIndex(instance, renderer)
-}
-)
-val GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.inject, props = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.emits, components = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.components, styles = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.setup(props as GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar {
-    return GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar(instance)
-}
-)
-val GenPagesLibraryIndexClass = CreateVueComponent(GenPagesLibraryIndex::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesLibraryIndex.inheritAttrs, inject = GenPagesLibraryIndex.inject, props = GenPagesLibraryIndex.props, propsNeedCastKeys = GenPagesLibraryIndex.propsNeedCastKeys, emits = GenPagesLibraryIndex.emits, components = GenPagesLibraryIndex.components, styles = GenPagesLibraryIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenPagesLibraryIndex.setup(props as GenPagesLibraryIndex)
-    }
-    )
-}
-, fun(instance, renderer): GenPagesLibraryIndex {
-    return GenPagesLibraryIndex(instance, renderer)
-}
-)
-val GenPagesDiscussIndexClass = CreateVueComponent(GenPagesDiscussIndex::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesDiscussIndex.inheritAttrs, inject = GenPagesDiscussIndex.inject, props = GenPagesDiscussIndex.props, propsNeedCastKeys = GenPagesDiscussIndex.propsNeedCastKeys, emits = GenPagesDiscussIndex.emits, components = GenPagesDiscussIndex.components, styles = GenPagesDiscussIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenPagesDiscussIndex.setup(props as GenPagesDiscussIndex)
-    }
-    )
-}
-, fun(instance, renderer): GenPagesDiscussIndex {
-    return GenPagesDiscussIndex(instance, renderer)
-}
-)
-val GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inject, props = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.emits, components = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.components, styles = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.setup(props as GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar {
-    return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar(instance)
-}
-)
-val GenUniModulesRiceUiComponentsRiceCellRiceCellClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceCellRiceCell::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceCellRiceCell.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceCellRiceCell.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceCellRiceCell.inject, props = GenUniModulesRiceUiComponentsRiceCellRiceCell.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceCellRiceCell.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceCellRiceCell.emits, components = GenUniModulesRiceUiComponentsRiceCellRiceCell.components, styles = GenUniModulesRiceUiComponentsRiceCellRiceCell.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceCellRiceCell.setup(props as GenUniModulesRiceUiComponentsRiceCellRiceCell)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceCellRiceCell {
-    return GenUniModulesRiceUiComponentsRiceCellRiceCell(instance)
-}
-)
-val GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroupClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.inject, props = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.emits, components = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.components, styles = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.setup(props as GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup {
-    return GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup(instance)
-}
-)
-val GenUniModulesRiceUiComponentsRiceOverlayRiceOverlayClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inject, props = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.emits, components = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.components, styles = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.setup(props as GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay {
-    return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay(instance)
-}
-)
-open class DialogProps (
-    open var title: String? = null,
-    open var width: Any? = null,
-    open var message: String? = null,
-    open var messageAlign: String? = null,
-    open var buttonTheme: String? = null,
-    open var buttonLayout: String? = null,
-    open var showConfirmButton: Boolean? = null,
-    open var confirmButtonText: String? = null,
-    open var confirmButtonColor: String? = null,
-    open var confirmButtonDisabled: Boolean? = null,
-    open var showCancelButton: Boolean? = null,
-    open var cancelButtonText: String? = null,
-    open var cancelButtonColor: String? = null,
-    open var cancelButtonDisabled: Boolean? = null,
-    open var duration: Number? = null,
-    open var overlay: Boolean? = null,
-    open var overlayBgColor: String? = null,
-    open var closeOnClickOverlay: Boolean? = null,
-    open var beforeClose: BeforeChangeInterceptor? = null,
-    open var zIndex: Number? = null,
-    open var bgColor: String? = null,
-    open var marginTop: Any? = null,
-    open var useDialogPage: Boolean? = null,
-    open var customStyle: UTSJSONObject? = null,
-    open var confirm: (() -> Unit)? = null,
-    open var cancel: (() -> Unit)? = null,
-    open var clickOverlay: (() -> Unit)? = null,
-    open var open: (() -> Unit)? = null,
-    open var close: (() -> Unit)? = null,
-    open var opened: (() -> Unit)? = null,
-    open var closed: (() -> Unit)? = null,
-    open var ready: ((pageIns: UniPage) -> Unit)? = null,
-    open var fail: ((errMsg: String) -> Unit)? = null,
-) : UTSReactiveObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("DialogProps", "uni_modules/rice-ui/components/rice-dialog/type.uts", 2, 13)
-    }
-    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
-        return DialogPropsReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-}
-class DialogPropsReactiveObject : DialogProps, IUTSReactive<DialogProps> {
-    override var __v_raw: DialogProps
-    override var __v_isReadonly: Boolean
-    override var __v_isShallow: Boolean
-    override var __v_skip: Boolean
-    constructor(__v_raw: DialogProps, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(title = __v_raw.title, width = __v_raw.width, message = __v_raw.message, messageAlign = __v_raw.messageAlign, buttonTheme = __v_raw.buttonTheme, buttonLayout = __v_raw.buttonLayout, showConfirmButton = __v_raw.showConfirmButton, confirmButtonText = __v_raw.confirmButtonText, confirmButtonColor = __v_raw.confirmButtonColor, confirmButtonDisabled = __v_raw.confirmButtonDisabled, showCancelButton = __v_raw.showCancelButton, cancelButtonText = __v_raw.cancelButtonText, cancelButtonColor = __v_raw.cancelButtonColor, cancelButtonDisabled = __v_raw.cancelButtonDisabled, duration = __v_raw.duration, overlay = __v_raw.overlay, overlayBgColor = __v_raw.overlayBgColor, closeOnClickOverlay = __v_raw.closeOnClickOverlay, beforeClose = __v_raw.beforeClose, zIndex = __v_raw.zIndex, bgColor = __v_raw.bgColor, marginTop = __v_raw.marginTop, useDialogPage = __v_raw.useDialogPage, customStyle = __v_raw.customStyle, confirm = __v_raw.confirm, cancel = __v_raw.cancel, clickOverlay = __v_raw.clickOverlay, open = __v_raw.open, close = __v_raw.close, opened = __v_raw.opened, closed = __v_raw.closed, ready = __v_raw.ready, fail = __v_raw.fail) {
-        this.__v_raw = __v_raw
-        this.__v_isReadonly = __v_isReadonly
-        this.__v_isShallow = __v_isShallow
-        this.__v_skip = __v_skip
-    }
-    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): DialogPropsReactiveObject {
-        return DialogPropsReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-    override var title: String?
-        get() {
-            return _tRG(__v_raw, "title", __v_raw.title, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("title")) {
-                return
-            }
-            val oldValue = __v_raw.title
-            __v_raw.title = value
-            _tRS(__v_raw, "title", oldValue, value)
-        }
-    override var width: Any?
-        get() {
-            return _tRG(__v_raw, "width", __v_raw.width, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("width")) {
-                return
-            }
-            val oldValue = __v_raw.width
-            __v_raw.width = value
-            _tRS(__v_raw, "width", oldValue, value)
-        }
-    override var message: String?
-        get() {
-            return _tRG(__v_raw, "message", __v_raw.message, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("message")) {
-                return
-            }
-            val oldValue = __v_raw.message
-            __v_raw.message = value
-            _tRS(__v_raw, "message", oldValue, value)
-        }
-    override var messageAlign: String?
-        get() {
-            return _tRG(__v_raw, "messageAlign", __v_raw.messageAlign, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("messageAlign")) {
-                return
-            }
-            val oldValue = __v_raw.messageAlign
-            __v_raw.messageAlign = value
-            _tRS(__v_raw, "messageAlign", oldValue, value)
-        }
-    override var buttonTheme: String?
-        get() {
-            return _tRG(__v_raw, "buttonTheme", __v_raw.buttonTheme, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("buttonTheme")) {
-                return
-            }
-            val oldValue = __v_raw.buttonTheme
-            __v_raw.buttonTheme = value
-            _tRS(__v_raw, "buttonTheme", oldValue, value)
-        }
-    override var buttonLayout: String?
-        get() {
-            return _tRG(__v_raw, "buttonLayout", __v_raw.buttonLayout, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("buttonLayout")) {
-                return
-            }
-            val oldValue = __v_raw.buttonLayout
-            __v_raw.buttonLayout = value
-            _tRS(__v_raw, "buttonLayout", oldValue, value)
-        }
-    override var showConfirmButton: Boolean?
-        get() {
-            return _tRG(__v_raw, "showConfirmButton", __v_raw.showConfirmButton, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("showConfirmButton")) {
-                return
-            }
-            val oldValue = __v_raw.showConfirmButton
-            __v_raw.showConfirmButton = value
-            _tRS(__v_raw, "showConfirmButton", oldValue, value)
-        }
-    override var confirmButtonText: String?
-        get() {
-            return _tRG(__v_raw, "confirmButtonText", __v_raw.confirmButtonText, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("confirmButtonText")) {
-                return
-            }
-            val oldValue = __v_raw.confirmButtonText
-            __v_raw.confirmButtonText = value
-            _tRS(__v_raw, "confirmButtonText", oldValue, value)
-        }
-    override var confirmButtonColor: String?
-        get() {
-            return _tRG(__v_raw, "confirmButtonColor", __v_raw.confirmButtonColor, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("confirmButtonColor")) {
-                return
-            }
-            val oldValue = __v_raw.confirmButtonColor
-            __v_raw.confirmButtonColor = value
-            _tRS(__v_raw, "confirmButtonColor", oldValue, value)
-        }
-    override var confirmButtonDisabled: Boolean?
-        get() {
-            return _tRG(__v_raw, "confirmButtonDisabled", __v_raw.confirmButtonDisabled, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("confirmButtonDisabled")) {
-                return
-            }
-            val oldValue = __v_raw.confirmButtonDisabled
-            __v_raw.confirmButtonDisabled = value
-            _tRS(__v_raw, "confirmButtonDisabled", oldValue, value)
-        }
-    override var showCancelButton: Boolean?
-        get() {
-            return _tRG(__v_raw, "showCancelButton", __v_raw.showCancelButton, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("showCancelButton")) {
-                return
-            }
-            val oldValue = __v_raw.showCancelButton
-            __v_raw.showCancelButton = value
-            _tRS(__v_raw, "showCancelButton", oldValue, value)
-        }
-    override var cancelButtonText: String?
-        get() {
-            return _tRG(__v_raw, "cancelButtonText", __v_raw.cancelButtonText, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("cancelButtonText")) {
-                return
-            }
-            val oldValue = __v_raw.cancelButtonText
-            __v_raw.cancelButtonText = value
-            _tRS(__v_raw, "cancelButtonText", oldValue, value)
-        }
-    override var cancelButtonColor: String?
-        get() {
-            return _tRG(__v_raw, "cancelButtonColor", __v_raw.cancelButtonColor, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("cancelButtonColor")) {
-                return
-            }
-            val oldValue = __v_raw.cancelButtonColor
-            __v_raw.cancelButtonColor = value
-            _tRS(__v_raw, "cancelButtonColor", oldValue, value)
-        }
-    override var cancelButtonDisabled: Boolean?
-        get() {
-            return _tRG(__v_raw, "cancelButtonDisabled", __v_raw.cancelButtonDisabled, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("cancelButtonDisabled")) {
-                return
-            }
-            val oldValue = __v_raw.cancelButtonDisabled
-            __v_raw.cancelButtonDisabled = value
-            _tRS(__v_raw, "cancelButtonDisabled", oldValue, value)
-        }
-    override var duration: Number?
-        get() {
-            return _tRG(__v_raw, "duration", __v_raw.duration, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("duration")) {
-                return
-            }
-            val oldValue = __v_raw.duration
-            __v_raw.duration = value
-            _tRS(__v_raw, "duration", oldValue, value)
-        }
-    override var overlay: Boolean?
-        get() {
-            return _tRG(__v_raw, "overlay", __v_raw.overlay, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("overlay")) {
-                return
-            }
-            val oldValue = __v_raw.overlay
-            __v_raw.overlay = value
-            _tRS(__v_raw, "overlay", oldValue, value)
-        }
-    override var overlayBgColor: String?
-        get() {
-            return _tRG(__v_raw, "overlayBgColor", __v_raw.overlayBgColor, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("overlayBgColor")) {
-                return
-            }
-            val oldValue = __v_raw.overlayBgColor
-            __v_raw.overlayBgColor = value
-            _tRS(__v_raw, "overlayBgColor", oldValue, value)
-        }
-    override var closeOnClickOverlay: Boolean?
-        get() {
-            return _tRG(__v_raw, "closeOnClickOverlay", __v_raw.closeOnClickOverlay, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("closeOnClickOverlay")) {
-                return
-            }
-            val oldValue = __v_raw.closeOnClickOverlay
-            __v_raw.closeOnClickOverlay = value
-            _tRS(__v_raw, "closeOnClickOverlay", oldValue, value)
-        }
-    override var zIndex: Number?
-        get() {
-            return _tRG(__v_raw, "zIndex", __v_raw.zIndex, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("zIndex")) {
-                return
-            }
-            val oldValue = __v_raw.zIndex
-            __v_raw.zIndex = value
-            _tRS(__v_raw, "zIndex", oldValue, value)
-        }
-    override var bgColor: String?
-        get() {
-            return _tRG(__v_raw, "bgColor", __v_raw.bgColor, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("bgColor")) {
-                return
-            }
-            val oldValue = __v_raw.bgColor
-            __v_raw.bgColor = value
-            _tRS(__v_raw, "bgColor", oldValue, value)
-        }
-    override var marginTop: Any?
-        get() {
-            return _tRG(__v_raw, "marginTop", __v_raw.marginTop, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("marginTop")) {
-                return
-            }
-            val oldValue = __v_raw.marginTop
-            __v_raw.marginTop = value
-            _tRS(__v_raw, "marginTop", oldValue, value)
-        }
-    override var useDialogPage: Boolean?
-        get() {
-            return _tRG(__v_raw, "useDialogPage", __v_raw.useDialogPage, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("useDialogPage")) {
-                return
-            }
-            val oldValue = __v_raw.useDialogPage
-            __v_raw.useDialogPage = value
-            _tRS(__v_raw, "useDialogPage", oldValue, value)
-        }
-    override var customStyle: UTSJSONObject?
-        get() {
-            return _tRG(__v_raw, "customStyle", __v_raw.customStyle, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("customStyle")) {
-                return
-            }
-            val oldValue = __v_raw.customStyle
-            __v_raw.customStyle = value
-            _tRS(__v_raw, "customStyle", oldValue, value)
-        }
-}
-open class DialogBusEvent (
-    @JsonNotNull
-    open var type: String,
-    open var errMsg: String? = null,
-    open var pageIns: UniPage? = null,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("DialogBusEvent", "uni_modules/rice-ui/components/rice-dialog/api.uts", 3, 13)
-    }
-}
-val url = "uni_modules/rice-ui/pages/dialog/dialog"
-val showDialog = fun(options: DialogProps){
-    val uid = getUID()
-    val baseEventName = "rice_dialog_" + uid
-    val readyEventName = baseEventName + "_ready"
-    val optionsEventName = baseEventName + "_options"
-    val busEventName = baseEventName + "_bus"
-    uni__on(readyEventName, fun(){
-        uni__emit(optionsEventName, options)
-    }
-    )
-    uni__on(busEventName, fun(event: DialogBusEvent){
-        val type = event.type
-        if (type == "confirm") {
-            options.confirm?.invoke()
-        } else if (type == "cancel") {
-            options.cancel?.invoke()
-        } else if (type == "open") {
-            options.open?.invoke()
-        } else if (type == "close") {
-            options.close?.invoke()
-        } else if (type == "opened") {
-            options.opened?.invoke()
-        } else if (type == "closed") {
-            options.closed?.invoke()
-        } else if (type == "ready") {
-            options.ready?.invoke(event.pageIns!!)
-        } else if (type == "clickOverlay") {
-            options.clickOverlay?.invoke()
-        } else if (type == "fail") {
-            options.fail?.invoke(event.errMsg ?: "")
-        }
-    }
-    )
-    uni_openDialogPage(OpenDialogPageOptions(url = "/" + url + "?readyEventName=" + readyEventName + "&optionsEventName=" + optionsEventName + "&busEventName=" + busEventName, fail = fun(err){
-        options.fail?.invoke(err.errMsg)
-        uni__off(readyEventName, null)
-        uni__off(busEventName, null)
-        debugWarn("action-sheet", "请在pages.json 中注册" + url + "页面！errMsg:" + err.errMsg)
-    }
-    ))
-}
-val GenUniModulesRiceUiComponentsRiceDialogRiceDialogClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceDialogRiceDialog::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inject, props = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.emits, components = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.components, styles = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceDialogRiceDialog.setup(props as GenUniModulesRiceUiComponentsRiceDialogRiceDialog)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceDialogRiceDialog {
-    return GenUniModulesRiceUiComponentsRiceDialogRiceDialog(instance)
-}
-)
 open class ActionSheetAction (
     @JsonNotNull
     open var name: String,
@@ -3200,7 +2345,7 @@ open class ActionSheetBusEvent (
         return UTSSourceMapPosition("ActionSheetBusEvent", "uni_modules/rice-ui/components/rice-action-sheet/api.uts", 3, 13)
     }
 }
-val url__1 = "uni_modules/rice-ui/pages/action-sheet/action-sheet"
+val url = "uni_modules/rice-ui/pages/action-sheet/action-sheet"
 val showActionSheet = fun(options: ActionSheetProps){
     val uid = getUID()
     val baseEventName = "rice_action_sheet_" + uid
@@ -3234,14 +2379,16 @@ val showActionSheet = fun(options: ActionSheetProps){
         }
     }
     )
-    uni_openDialogPage(OpenDialogPageOptions(url = "/" + url__1 + "?readyEventName=" + readyEventName + "&optionsEventName=" + optionsEventName + "&busEventName=" + busEventName, fail = fun(err){
+    uni_openDialogPage(OpenDialogPageOptions(url = "/" + url + "?readyEventName=" + readyEventName + "&optionsEventName=" + optionsEventName + "&busEventName=" + busEventName, fail = fun(err){
         options.fail?.invoke(err.errMsg)
         uni__off(readyEventName, null)
         uni__off(busEventName, null)
-        debugWarn("action-sheet", "请在pages.json 中注册" + url__1 + "页面！errMsg:" + err.errMsg)
+        debugWarn("action-sheet", "请在pages.json 中注册" + url + "页面！errMsg:" + err.errMsg)
     }
     ))
 }
+typealias LoadingMode = String
+typealias LoadingTimingFunction = String
 val lunarYears: UTSArray<Number> = _uA(
     0x04bd8,
     0x04ae0,
@@ -3708,6 +2855,525 @@ open class PickerOption (
         return UTSSourceMapPosition("PickerOption", "uni_modules/rice-ui/components/rice-picker/type.uts", 1, 13)
     }
 }
+open class DialogProps (
+    open var title: String? = null,
+    open var width: Any? = null,
+    open var message: String? = null,
+    open var messageAlign: String? = null,
+    open var buttonTheme: String? = null,
+    open var buttonLayout: String? = null,
+    open var showConfirmButton: Boolean? = null,
+    open var confirmButtonText: String? = null,
+    open var confirmButtonColor: String? = null,
+    open var confirmButtonDisabled: Boolean? = null,
+    open var showCancelButton: Boolean? = null,
+    open var cancelButtonText: String? = null,
+    open var cancelButtonColor: String? = null,
+    open var cancelButtonDisabled: Boolean? = null,
+    open var duration: Number? = null,
+    open var overlay: Boolean? = null,
+    open var overlayBgColor: String? = null,
+    open var closeOnClickOverlay: Boolean? = null,
+    open var beforeClose: BeforeChangeInterceptor? = null,
+    open var zIndex: Number? = null,
+    open var bgColor: String? = null,
+    open var marginTop: Any? = null,
+    open var useDialogPage: Boolean? = null,
+    open var customStyle: UTSJSONObject? = null,
+    open var confirm: (() -> Unit)? = null,
+    open var cancel: (() -> Unit)? = null,
+    open var clickOverlay: (() -> Unit)? = null,
+    open var open: (() -> Unit)? = null,
+    open var close: (() -> Unit)? = null,
+    open var opened: (() -> Unit)? = null,
+    open var closed: (() -> Unit)? = null,
+    open var ready: ((pageIns: UniPage) -> Unit)? = null,
+    open var fail: ((errMsg: String) -> Unit)? = null,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("DialogProps", "uni_modules/rice-ui/components/rice-dialog/type.uts", 2, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return DialogPropsReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class DialogPropsReactiveObject : DialogProps, IUTSReactive<DialogProps> {
+    override var __v_raw: DialogProps
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: DialogProps, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(title = __v_raw.title, width = __v_raw.width, message = __v_raw.message, messageAlign = __v_raw.messageAlign, buttonTheme = __v_raw.buttonTheme, buttonLayout = __v_raw.buttonLayout, showConfirmButton = __v_raw.showConfirmButton, confirmButtonText = __v_raw.confirmButtonText, confirmButtonColor = __v_raw.confirmButtonColor, confirmButtonDisabled = __v_raw.confirmButtonDisabled, showCancelButton = __v_raw.showCancelButton, cancelButtonText = __v_raw.cancelButtonText, cancelButtonColor = __v_raw.cancelButtonColor, cancelButtonDisabled = __v_raw.cancelButtonDisabled, duration = __v_raw.duration, overlay = __v_raw.overlay, overlayBgColor = __v_raw.overlayBgColor, closeOnClickOverlay = __v_raw.closeOnClickOverlay, beforeClose = __v_raw.beforeClose, zIndex = __v_raw.zIndex, bgColor = __v_raw.bgColor, marginTop = __v_raw.marginTop, useDialogPage = __v_raw.useDialogPage, customStyle = __v_raw.customStyle, confirm = __v_raw.confirm, cancel = __v_raw.cancel, clickOverlay = __v_raw.clickOverlay, open = __v_raw.open, close = __v_raw.close, opened = __v_raw.opened, closed = __v_raw.closed, ready = __v_raw.ready, fail = __v_raw.fail) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): DialogPropsReactiveObject {
+        return DialogPropsReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var title: String?
+        get() {
+            return _tRG(__v_raw, "title", __v_raw.title, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("title")) {
+                return
+            }
+            val oldValue = __v_raw.title
+            __v_raw.title = value
+            _tRS(__v_raw, "title", oldValue, value)
+        }
+    override var width: Any?
+        get() {
+            return _tRG(__v_raw, "width", __v_raw.width, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("width")) {
+                return
+            }
+            val oldValue = __v_raw.width
+            __v_raw.width = value
+            _tRS(__v_raw, "width", oldValue, value)
+        }
+    override var message: String?
+        get() {
+            return _tRG(__v_raw, "message", __v_raw.message, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("message")) {
+                return
+            }
+            val oldValue = __v_raw.message
+            __v_raw.message = value
+            _tRS(__v_raw, "message", oldValue, value)
+        }
+    override var messageAlign: String?
+        get() {
+            return _tRG(__v_raw, "messageAlign", __v_raw.messageAlign, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("messageAlign")) {
+                return
+            }
+            val oldValue = __v_raw.messageAlign
+            __v_raw.messageAlign = value
+            _tRS(__v_raw, "messageAlign", oldValue, value)
+        }
+    override var buttonTheme: String?
+        get() {
+            return _tRG(__v_raw, "buttonTheme", __v_raw.buttonTheme, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("buttonTheme")) {
+                return
+            }
+            val oldValue = __v_raw.buttonTheme
+            __v_raw.buttonTheme = value
+            _tRS(__v_raw, "buttonTheme", oldValue, value)
+        }
+    override var buttonLayout: String?
+        get() {
+            return _tRG(__v_raw, "buttonLayout", __v_raw.buttonLayout, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("buttonLayout")) {
+                return
+            }
+            val oldValue = __v_raw.buttonLayout
+            __v_raw.buttonLayout = value
+            _tRS(__v_raw, "buttonLayout", oldValue, value)
+        }
+    override var showConfirmButton: Boolean?
+        get() {
+            return _tRG(__v_raw, "showConfirmButton", __v_raw.showConfirmButton, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("showConfirmButton")) {
+                return
+            }
+            val oldValue = __v_raw.showConfirmButton
+            __v_raw.showConfirmButton = value
+            _tRS(__v_raw, "showConfirmButton", oldValue, value)
+        }
+    override var confirmButtonText: String?
+        get() {
+            return _tRG(__v_raw, "confirmButtonText", __v_raw.confirmButtonText, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("confirmButtonText")) {
+                return
+            }
+            val oldValue = __v_raw.confirmButtonText
+            __v_raw.confirmButtonText = value
+            _tRS(__v_raw, "confirmButtonText", oldValue, value)
+        }
+    override var confirmButtonColor: String?
+        get() {
+            return _tRG(__v_raw, "confirmButtonColor", __v_raw.confirmButtonColor, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("confirmButtonColor")) {
+                return
+            }
+            val oldValue = __v_raw.confirmButtonColor
+            __v_raw.confirmButtonColor = value
+            _tRS(__v_raw, "confirmButtonColor", oldValue, value)
+        }
+    override var confirmButtonDisabled: Boolean?
+        get() {
+            return _tRG(__v_raw, "confirmButtonDisabled", __v_raw.confirmButtonDisabled, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("confirmButtonDisabled")) {
+                return
+            }
+            val oldValue = __v_raw.confirmButtonDisabled
+            __v_raw.confirmButtonDisabled = value
+            _tRS(__v_raw, "confirmButtonDisabled", oldValue, value)
+        }
+    override var showCancelButton: Boolean?
+        get() {
+            return _tRG(__v_raw, "showCancelButton", __v_raw.showCancelButton, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("showCancelButton")) {
+                return
+            }
+            val oldValue = __v_raw.showCancelButton
+            __v_raw.showCancelButton = value
+            _tRS(__v_raw, "showCancelButton", oldValue, value)
+        }
+    override var cancelButtonText: String?
+        get() {
+            return _tRG(__v_raw, "cancelButtonText", __v_raw.cancelButtonText, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("cancelButtonText")) {
+                return
+            }
+            val oldValue = __v_raw.cancelButtonText
+            __v_raw.cancelButtonText = value
+            _tRS(__v_raw, "cancelButtonText", oldValue, value)
+        }
+    override var cancelButtonColor: String?
+        get() {
+            return _tRG(__v_raw, "cancelButtonColor", __v_raw.cancelButtonColor, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("cancelButtonColor")) {
+                return
+            }
+            val oldValue = __v_raw.cancelButtonColor
+            __v_raw.cancelButtonColor = value
+            _tRS(__v_raw, "cancelButtonColor", oldValue, value)
+        }
+    override var cancelButtonDisabled: Boolean?
+        get() {
+            return _tRG(__v_raw, "cancelButtonDisabled", __v_raw.cancelButtonDisabled, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("cancelButtonDisabled")) {
+                return
+            }
+            val oldValue = __v_raw.cancelButtonDisabled
+            __v_raw.cancelButtonDisabled = value
+            _tRS(__v_raw, "cancelButtonDisabled", oldValue, value)
+        }
+    override var duration: Number?
+        get() {
+            return _tRG(__v_raw, "duration", __v_raw.duration, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("duration")) {
+                return
+            }
+            val oldValue = __v_raw.duration
+            __v_raw.duration = value
+            _tRS(__v_raw, "duration", oldValue, value)
+        }
+    override var overlay: Boolean?
+        get() {
+            return _tRG(__v_raw, "overlay", __v_raw.overlay, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("overlay")) {
+                return
+            }
+            val oldValue = __v_raw.overlay
+            __v_raw.overlay = value
+            _tRS(__v_raw, "overlay", oldValue, value)
+        }
+    override var overlayBgColor: String?
+        get() {
+            return _tRG(__v_raw, "overlayBgColor", __v_raw.overlayBgColor, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("overlayBgColor")) {
+                return
+            }
+            val oldValue = __v_raw.overlayBgColor
+            __v_raw.overlayBgColor = value
+            _tRS(__v_raw, "overlayBgColor", oldValue, value)
+        }
+    override var closeOnClickOverlay: Boolean?
+        get() {
+            return _tRG(__v_raw, "closeOnClickOverlay", __v_raw.closeOnClickOverlay, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("closeOnClickOverlay")) {
+                return
+            }
+            val oldValue = __v_raw.closeOnClickOverlay
+            __v_raw.closeOnClickOverlay = value
+            _tRS(__v_raw, "closeOnClickOverlay", oldValue, value)
+        }
+    override var zIndex: Number?
+        get() {
+            return _tRG(__v_raw, "zIndex", __v_raw.zIndex, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("zIndex")) {
+                return
+            }
+            val oldValue = __v_raw.zIndex
+            __v_raw.zIndex = value
+            _tRS(__v_raw, "zIndex", oldValue, value)
+        }
+    override var bgColor: String?
+        get() {
+            return _tRG(__v_raw, "bgColor", __v_raw.bgColor, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("bgColor")) {
+                return
+            }
+            val oldValue = __v_raw.bgColor
+            __v_raw.bgColor = value
+            _tRS(__v_raw, "bgColor", oldValue, value)
+        }
+    override var marginTop: Any?
+        get() {
+            return _tRG(__v_raw, "marginTop", __v_raw.marginTop, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("marginTop")) {
+                return
+            }
+            val oldValue = __v_raw.marginTop
+            __v_raw.marginTop = value
+            _tRS(__v_raw, "marginTop", oldValue, value)
+        }
+    override var useDialogPage: Boolean?
+        get() {
+            return _tRG(__v_raw, "useDialogPage", __v_raw.useDialogPage, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("useDialogPage")) {
+                return
+            }
+            val oldValue = __v_raw.useDialogPage
+            __v_raw.useDialogPage = value
+            _tRS(__v_raw, "useDialogPage", oldValue, value)
+        }
+    override var customStyle: UTSJSONObject?
+        get() {
+            return _tRG(__v_raw, "customStyle", __v_raw.customStyle, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("customStyle")) {
+                return
+            }
+            val oldValue = __v_raw.customStyle
+            __v_raw.customStyle = value
+            _tRS(__v_raw, "customStyle", oldValue, value)
+        }
+}
+open class DialogBusEvent (
+    @JsonNotNull
+    open var type: String,
+    open var errMsg: String? = null,
+    open var pageIns: UniPage? = null,
+) : UTSObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("DialogBusEvent", "uni_modules/rice-ui/components/rice-dialog/api.uts", 3, 13)
+    }
+}
+val url__1 = "uni_modules/rice-ui/pages/dialog/dialog"
+val showDialog = fun(options: DialogProps){
+    val uid = getUID()
+    val baseEventName = "rice_dialog_" + uid
+    val readyEventName = baseEventName + "_ready"
+    val optionsEventName = baseEventName + "_options"
+    val busEventName = baseEventName + "_bus"
+    uni__on(readyEventName, fun(){
+        uni__emit(optionsEventName, options)
+    }
+    )
+    uni__on(busEventName, fun(event: DialogBusEvent){
+        val type = event.type
+        if (type == "confirm") {
+            options.confirm?.invoke()
+        } else if (type == "cancel") {
+            options.cancel?.invoke()
+        } else if (type == "open") {
+            options.open?.invoke()
+        } else if (type == "close") {
+            options.close?.invoke()
+        } else if (type == "opened") {
+            options.opened?.invoke()
+        } else if (type == "closed") {
+            options.closed?.invoke()
+        } else if (type == "ready") {
+            options.ready?.invoke(event.pageIns!!)
+        } else if (type == "clickOverlay") {
+            options.clickOverlay?.invoke()
+        } else if (type == "fail") {
+            options.fail?.invoke(event.errMsg ?: "")
+        }
+    }
+    )
+    uni_openDialogPage(OpenDialogPageOptions(url = "/" + url__1 + "?readyEventName=" + readyEventName + "&optionsEventName=" + optionsEventName + "&busEventName=" + busEventName, fail = fun(err){
+        options.fail?.invoke(err.errMsg)
+        uni__off(readyEventName, null)
+        uni__off(busEventName, null)
+        debugWarn("action-sheet", "请在pages.json 中注册" + url__1 + "页面！errMsg:" + err.errMsg)
+    }
+    ))
+}
+open class FontData (
+    @JsonNotNull
+    open var name: String,
+    @JsonNotNull
+    open var code: String,
+) : UTSObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("FontData", "uni_modules/rice-ui/components/rice-icon/font.uts", 1, 13)
+    }
+}
+val fontData = _uA(
+    FontData(name = "arrow-up", code = "\ueaa4"),
+    FontData(name = "arrow-down", code = "\ueaa1"),
+    FontData(name = "arrow-left", code = "\ueaa2"),
+    FontData(name = "arrow-right", code = "\ueaa3"),
+    FontData(name = "up", code = "\ueab1"),
+    FontData(name = "down", code = "\ueaa5"),
+    FontData(name = "left", code = "\ueaa9"),
+    FontData(name = "right", code = "\ueaab"),
+    FontData(name = "back-top", code = "\ueaae"),
+    FontData(name = "back-bottom", code = "\ueaad"),
+    FontData(name = "double-right", code = "\ueaa0"),
+    FontData(name = "double-left", code = "\ueaa7"),
+    FontData(name = "minus", code = "\uea7e"),
+    FontData(name = "plus", code = "\uea7d"),
+    FontData(name = "search", code = "\uea8c"),
+    FontData(name = "search-fill", code = "\uea89"),
+    FontData(name = "scan", code = "\uea67"),
+    FontData(name = "qr", code = "\ue6d8"),
+    FontData(name = "sort", code = "\ue6e2"),
+    FontData(name = "sort-menu", code = "\ueaac"),
+    FontData(name = "bars", code = "\ue69f"),
+    FontData(name = "remind-disabled", code = "\uea95"),
+    FontData(name = "remind", code = "\uea96"),
+    FontData(name = "volume", code = "\uea7c"),
+    FontData(name = "volume-fill", code = "\uea6f"),
+    FontData(name = "volume-up", code = "\uea78"),
+    FontData(name = "volume-up-fill", code = "\uea70"),
+    FontData(name = "volume-down", code = "\uea79"),
+    FontData(name = "volume-down-fill", code = "\uea73"),
+    FontData(name = "volume-mute", code = "\uea7a"),
+    FontData(name = "volume-mute-fill", code = "\uea72"),
+    FontData(name = "voice", code = "\uea77"),
+    FontData(name = "voice-off", code = "\uea7b"),
+    FontData(name = "play", code = "\uea76"),
+    FontData(name = "play-fill", code = "\uea71"),
+    FontData(name = "pause", code = "\uea75"),
+    FontData(name = "pause-fill", code = "\uea6e"),
+    FontData(name = "headset", code = "\uea74"),
+    FontData(name = "headset-fill", code = "\uea6d"),
+    FontData(name = "user", code = "\ueb30"),
+    FontData(name = "peoples", code = "\ueb2f"),
+    FontData(name = "peoples-fill", code = "\ueb2c"),
+    FontData(name = "trophy", code = "\ueb35"),
+    FontData(name = "trophy-fill", code = "\ueb33"),
+    FontData(name = "add", code = "\uea84"),
+    FontData(name = "add-fill", code = "\uea7f"),
+    FontData(name = "reduce", code = "\uea87"),
+    FontData(name = "reduce-fill", code = "\uea81"),
+    FontData(name = "checked-circle", code = "\uea86"),
+    FontData(name = "checked-circle-fill", code = "\uea80"),
+    FontData(name = "help", code = "\uea8a"),
+    FontData(name = "help-fill", code = "\uea82"),
+    FontData(name = "info", code = "\uea88"),
+    FontData(name = "info-fill", code = "\uea83"),
+    FontData(name = "cross", code = "\uea85"),
+    FontData(name = "checked", code = "\ue659"),
+    FontData(name = "camera", code = "\uea8f"),
+    FontData(name = "camera-fill", code = "\uea8b"),
+    FontData(name = "app", code = "\uea91"),
+    FontData(name = "app-fill", code = "\uea8d"),
+    FontData(name = "like", code = "\uea90"),
+    FontData(name = "like-fill", code = "\uea8e"),
+    FontData(name = "eyes", code = "\uea92"),
+    FontData(name = "eyes-close", code = "\uea94"),
+    FontData(name = "sleep", code = "\uea93"),
+    FontData(name = "sun", code = "\ueafe"),
+    FontData(name = "menu-fold", code = "\uea9e"),
+    FontData(name = "menu-unfold", code = "\uea9f"),
+    FontData(name = "upload", code = "\ueab2"),
+    FontData(name = "download", code = "\ueaa6"),
+    FontData(name = "full-screen", code = "\ueaa8"),
+    FontData(name = "off-screen", code = "\ueaaa"),
+    FontData(name = "switch", code = "\ueaaf"),
+    FontData(name = "revoke", code = "\ueab0"),
+    FontData(name = "comments", code = "\ueac3"),
+    FontData(name = "comments-fill", code = "\ueac2"),
+    FontData(name = "phone-call", code = "\ueaba"),
+    FontData(name = "phone-call-fill", code = "\ueab4"),
+    FontData(name = "phone-in", code = "\ueabc"),
+    FontData(name = "phone-in-fill", code = "\ueab5"),
+    FontData(name = "phone-out", code = "\ueabb"),
+    FontData(name = "phone-out-fill", code = "\ueab6"),
+    FontData(name = "phone", code = "\ueabd"),
+    FontData(name = "phone-fill", code = "\ueab7"),
+    FontData(name = "phone-missed", code = "\ueabe"),
+    FontData(name = "phone-missed-fill", code = "\ueab8"),
+    FontData(name = "location", code = "\ueac0"),
+    FontData(name = "location-fill", code = "\ueabf"),
+    FontData(name = "bluetooth", code = "\ueacb"),
+    FontData(name = "calendar", code = "\uead4"),
+    FontData(name = "calendar-fill", code = "\uead2"),
+    FontData(name = "clear", code = "\ueb34"),
+    FontData(name = "clear-fill", code = "\ueb32"),
+    FontData(name = "share", code = "\uea4e"),
+    FontData(name = "share-fill", code = "\uea3d"),
+    FontData(name = "edit", code = "\uea48"),
+    FontData(name = "delete", code = "\uea45"),
+    FontData(name = "delete-fill", code = "\uea37"),
+    FontData(name = "shopping", code = "\uea68"),
+    FontData(name = "shopping-fill", code = "\uea62"),
+    FontData(name = "wallet", code = "\uea69"),
+    FontData(name = "bag", code = "\uea6a"),
+    FontData(name = "set", code = "\ue6dc"),
+    FontData(name = "set-fill", code = "\ue6db"),
+    FontData(name = "replay", code = "\ue6dd"),
+    FontData(name = "home", code = "\ue6e9"),
+    FontData(name = "home-fill", code = "\ue6e8"),
+    FontData(name = "chat", code = "\ue6aa"),
+    FontData(name = "chat-fill", code = "\ue6a3"),
+    FontData(name = "good", code = "\ue6c3"),
+    FontData(name = "good-fill", code = "\ue6c2"),
+    FontData(name = "gift", code = "\ue6d4"),
+    FontData(name = "gift-fill", code = "\ue6d3"),
+    FontData(name = "loading", code = "\ue670"),
+    FontData(name = "photo", code = "\ue6cf"),
+    FontData(name = "photo-fail", code = "\ue6cd"),
+    FontData(name = "star", code = "\ue6ec"),
+    FontData(name = "star-fill", code = "\ue6ed"),
+    FontData(name = "trend", code = "\uea6b"),
+    FontData(name = "trend-fill", code = "\uea63"),
+    FontData(name = "file-success-fill", code = "\uea25"),
+    FontData(name = "file-success", code = "\uea2d")
+) as UTSArray<FontData>
 val formInjectKey = "FormKey-" + getRandomStr()
 val formDataInjectKey = "FormDataKey-" + getRandomStr()
 val formDisabledInjectKey = "FormDisabledContextKey-" + getRandomStr()
@@ -3717,6 +3383,548 @@ val formItemBlurInjectKey = "FormItemBlurKey-" + getRandomStr()
 val radioGroupInjectKey = "RdioGroupKey-" + getRandomStr()
 val swipeActionsName = "SwipeActions"
 val swipeActionsInjectKey = "SwipeActionsKey-" + getRandomStr()
+open class UserInfo (
+    @JsonNotNull
+    open var nickName: String,
+    open var avatarUrl: String? = null,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("UserInfo", "store/index.uts", 2, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return UserInfoReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class UserInfoReactiveObject : UserInfo, IUTSReactive<UserInfo> {
+    override var __v_raw: UserInfo
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: UserInfo, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(nickName = __v_raw.nickName, avatarUrl = __v_raw.avatarUrl) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UserInfoReactiveObject {
+        return UserInfoReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var nickName: String
+        get() {
+            return _tRG(__v_raw, "nickName", __v_raw.nickName, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("nickName")) {
+                return
+            }
+            val oldValue = __v_raw.nickName
+            __v_raw.nickName = value
+            _tRS(__v_raw, "nickName", oldValue, value)
+        }
+    override var avatarUrl: String?
+        get() {
+            return _tRG(__v_raw, "avatarUrl", __v_raw.avatarUrl, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("avatarUrl")) {
+                return
+            }
+            val oldValue = __v_raw.avatarUrl
+            __v_raw.avatarUrl = value
+            _tRS(__v_raw, "avatarUrl", oldValue, value)
+        }
+}
+open class State (
+    @JsonNotNull
+    open var statusBarHeight: Number,
+    @JsonNotNull
+    open var devicePixelRatio: Number,
+    @JsonNotNull
+    open var active: String,
+    @JsonNotNull
+    open var leftWinActive: String,
+    open var agreeToPrivacy: Boolean? = null,
+    @JsonNotNull
+    open var appTheme: String,
+    @JsonNotNull
+    open var netless: Boolean = false,
+    open var userInfo: UserInfo? = null,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("State", "store/index.uts", 6, 6)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return StateReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class StateReactiveObject : State, IUTSReactive<State> {
+    override var __v_raw: State
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: State, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(statusBarHeight = __v_raw.statusBarHeight, devicePixelRatio = __v_raw.devicePixelRatio, active = __v_raw.active, leftWinActive = __v_raw.leftWinActive, agreeToPrivacy = __v_raw.agreeToPrivacy, appTheme = __v_raw.appTheme, netless = __v_raw.netless, userInfo = __v_raw.userInfo) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): StateReactiveObject {
+        return StateReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var statusBarHeight: Number
+        get() {
+            return _tRG(__v_raw, "statusBarHeight", __v_raw.statusBarHeight, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("statusBarHeight")) {
+                return
+            }
+            val oldValue = __v_raw.statusBarHeight
+            __v_raw.statusBarHeight = value
+            _tRS(__v_raw, "statusBarHeight", oldValue, value)
+        }
+    override var devicePixelRatio: Number
+        get() {
+            return _tRG(__v_raw, "devicePixelRatio", __v_raw.devicePixelRatio, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("devicePixelRatio")) {
+                return
+            }
+            val oldValue = __v_raw.devicePixelRatio
+            __v_raw.devicePixelRatio = value
+            _tRS(__v_raw, "devicePixelRatio", oldValue, value)
+        }
+    override var active: String
+        get() {
+            return _tRG(__v_raw, "active", __v_raw.active, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("active")) {
+                return
+            }
+            val oldValue = __v_raw.active
+            __v_raw.active = value
+            _tRS(__v_raw, "active", oldValue, value)
+        }
+    override var leftWinActive: String
+        get() {
+            return _tRG(__v_raw, "leftWinActive", __v_raw.leftWinActive, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("leftWinActive")) {
+                return
+            }
+            val oldValue = __v_raw.leftWinActive
+            __v_raw.leftWinActive = value
+            _tRS(__v_raw, "leftWinActive", oldValue, value)
+        }
+    override var agreeToPrivacy: Boolean?
+        get() {
+            return _tRG(__v_raw, "agreeToPrivacy", __v_raw.agreeToPrivacy, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("agreeToPrivacy")) {
+                return
+            }
+            val oldValue = __v_raw.agreeToPrivacy
+            __v_raw.agreeToPrivacy = value
+            _tRS(__v_raw, "agreeToPrivacy", oldValue, value)
+        }
+    override var appTheme: String
+        get() {
+            return _tRG(__v_raw, "appTheme", __v_raw.appTheme, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("appTheme")) {
+                return
+            }
+            val oldValue = __v_raw.appTheme
+            __v_raw.appTheme = value
+            _tRS(__v_raw, "appTheme", oldValue, value)
+        }
+    override var netless: Boolean
+        get() {
+            return _tRG(__v_raw, "netless", __v_raw.netless, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("netless")) {
+                return
+            }
+            val oldValue = __v_raw.netless
+            __v_raw.netless = value
+            _tRS(__v_raw, "netless", oldValue, value)
+        }
+    override var userInfo: UserInfo?
+        get() {
+            return _tRG(__v_raw, "userInfo", __v_raw.userInfo, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("userInfo")) {
+                return
+            }
+            val oldValue = __v_raw.userInfo
+            __v_raw.userInfo = value
+            _tRS(__v_raw, "userInfo", oldValue, value)
+        }
+}
+val state = reactive(State(statusBarHeight = 56, devicePixelRatio = 1, active = "componentPage", leftWinActive = "/pages/component/view/view", appTheme = "light", netless = false, userInfo = null))
+val setAppTheme = fun(appTheme: String){
+    state.appTheme = appTheme as String
+}
+val checkSystemTheme = fun(){
+    uni_getSystemInfo(GetSystemInfoOptions(success = fun(res: GetSystemInfoResult){
+        val appTheme = if (res.appTheme == "auto") {
+            res.osTheme!!
+        } else {
+            res.appTheme!!
+        }
+        state.appTheme = appTheme.trim() ?: "light"
+    }
+    ))
+    uni_onAppThemeChange(fun(res: AppThemeChangeResult){
+        state.appTheme = res.appTheme.trim() ?: "light"
+    }
+    )
+    setTheme(state.appTheme)
+}
+var firstBackTime: Number = 0
+open class GenApp : BaseApp {
+    constructor(__ins: ComponentInternalInstance) : super(__ins) {
+        onLaunch(fun(_: OnLaunchOptions) {
+            console.log("App Launch", " at App.uvue:8")
+            checkSystemTheme()
+        }
+        , __ins)
+        onAppShow(fun(_: OnShowOptions) {
+            console.log("App Show", " at App.uvue:12")
+        }
+        , __ins)
+        onAppHide(fun() {
+            console.log("App Hide", " at App.uvue:15")
+        }
+        , __ins)
+        onLastPageBackPress(fun() {
+            console.log("App LastPageBackPress", " at App.uvue:19")
+            if (firstBackTime == 0) {
+                uni_showToast(ShowToastOptions(title = "再按一次退出应用", position = "bottom"))
+                firstBackTime = Date.now()
+                setTimeout(fun(){
+                    firstBackTime = 0
+                }, 2000)
+            } else if (Date.now() - firstBackTime < 2000) {
+                firstBackTime = Date.now()
+                uni_exit(null)
+            }
+        }
+        , __ins)
+        onExit(fun() {
+            console.log("App Exit", " at App.uvue:36")
+        }
+        , __ins)
+    }
+    companion object {
+        val styles: Map<String, Map<String, Map<String, Any>>> by lazy {
+            _nCS(_uA(
+                styles0
+            ))
+        }
+        val styles0: Map<String, Map<String, Map<String, Any>>>
+            get() {
+                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#e6f7ff", "--rice-primary-color-7" to "#0b68d4", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "#fff", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#f5f5f5", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#111c2b", "--rice-primary-color-7" to "#3d98e8", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#11231b", "--rice-success-color-7" to "#27bc6a", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#281f15", "--rice-warning-color-7" to "#dcae5e", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#2a1a1b", "--rice-error-color-7" to "#e88e8c", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "#242424", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "uni-row" to _pS(_uM("flexDirection" to "row")), "uni-column" to _pS(_uM("flexDirection" to "column")))
+            }
+    }
+}
+val GenAppClass = CreateVueAppComponent(GenApp::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "app", name = "", inheritAttrs = true, inject = Map(), props = Map(), propsNeedCastKeys = _uA(), emits = Map(), components = Map(), styles = GenApp.styles)
+}
+, fun(instance): GenApp {
+    return GenApp(instance)
+}
+)
+val GenUniModulesRiceUiComponentsRiceIconRiceIconClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceIconRiceIcon::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceIconRiceIcon.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceIconRiceIcon.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceIconRiceIcon.inject, props = GenUniModulesRiceUiComponentsRiceIconRiceIcon.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceIconRiceIcon.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceIconRiceIcon.emits, components = GenUniModulesRiceUiComponentsRiceIconRiceIcon.components, styles = GenUniModulesRiceUiComponentsRiceIconRiceIcon.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceIconRiceIcon.setup(props as GenUniModulesRiceUiComponentsRiceIconRiceIcon)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceIconRiceIcon {
+    return GenUniModulesRiceUiComponentsRiceIconRiceIcon(instance)
+}
+)
+val GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.inject, props = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.emits, components = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.components, styles = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.setup(props as GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar {
+    return GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar(instance)
+}
+)
+val GenPagesBookcaseIndexClass = CreateVueComponent(GenPagesBookcaseIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesBookcaseIndex.inheritAttrs, inject = GenPagesBookcaseIndex.inject, props = GenPagesBookcaseIndex.props, propsNeedCastKeys = GenPagesBookcaseIndex.propsNeedCastKeys, emits = GenPagesBookcaseIndex.emits, components = GenPagesBookcaseIndex.components, styles = GenPagesBookcaseIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesBookcaseIndex.setup(props as GenPagesBookcaseIndex)
+    }
+    )
+}
+, fun(instance, renderer): GenPagesBookcaseIndex {
+    return GenPagesBookcaseIndex(instance, renderer)
+}
+)
+val GenPagesLibraryIndexClass = CreateVueComponent(GenPagesLibraryIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesLibraryIndex.inheritAttrs, inject = GenPagesLibraryIndex.inject, props = GenPagesLibraryIndex.props, propsNeedCastKeys = GenPagesLibraryIndex.propsNeedCastKeys, emits = GenPagesLibraryIndex.emits, components = GenPagesLibraryIndex.components, styles = GenPagesLibraryIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesLibraryIndex.setup(props as GenPagesLibraryIndex)
+    }
+    )
+}
+, fun(instance, renderer): GenPagesLibraryIndex {
+    return GenPagesLibraryIndex(instance, renderer)
+}
+)
+val GenPagesDiscussIndexClass = CreateVueComponent(GenPagesDiscussIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesDiscussIndex.inheritAttrs, inject = GenPagesDiscussIndex.inject, props = GenPagesDiscussIndex.props, propsNeedCastKeys = GenPagesDiscussIndex.propsNeedCastKeys, emits = GenPagesDiscussIndex.emits, components = GenPagesDiscussIndex.components, styles = GenPagesDiscussIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesDiscussIndex.setup(props as GenPagesDiscussIndex)
+    }
+    )
+}
+, fun(instance, renderer): GenPagesDiscussIndex {
+    return GenPagesDiscussIndex(instance, renderer)
+}
+)
+val GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inject, props = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.emits, components = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.components, styles = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.setup(props as GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar {
+    return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar(instance)
+}
+)
+val GenUniModulesRiceUiComponentsRiceCellRiceCellClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceCellRiceCell::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceCellRiceCell.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceCellRiceCell.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceCellRiceCell.inject, props = GenUniModulesRiceUiComponentsRiceCellRiceCell.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceCellRiceCell.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceCellRiceCell.emits, components = GenUniModulesRiceUiComponentsRiceCellRiceCell.components, styles = GenUniModulesRiceUiComponentsRiceCellRiceCell.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceCellRiceCell.setup(props as GenUniModulesRiceUiComponentsRiceCellRiceCell)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceCellRiceCell {
+    return GenUniModulesRiceUiComponentsRiceCellRiceCell(instance)
+}
+)
+val GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroupClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.inject, props = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.emits, components = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.components, styles = GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup.setup(props as GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup {
+    return GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup(instance)
+}
+)
+val GenUniModulesRiceUiComponentsRiceOverlayRiceOverlayClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inject, props = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.emits, components = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.components, styles = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.setup(props as GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay {
+    return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay(instance)
+}
+)
+open class UseLoadingOptions (
+    @JsonNotNull
+    open var loadingRef: Ref<UniElement?>,
+    @JsonNotNull
+    open var coreRef: Ref<UniElement?>,
+    @JsonNotNull
+    open var circularRef: Ref<UniElement?>,
+    @JsonNotNull
+    open var mode: LoadingMode,
+    @JsonNotNull
+    open var timingFunction: LoadingTimingFunction,
+    @JsonNotNull
+    open var color: ComputedRef<String>,
+    @JsonNotNull
+    open var size: Ref<Any>,
+    @JsonNotNull
+    open var duration: Number,
+) : UTSObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("UseLoadingOptions", "uni_modules/rice-ui/components/rice-loading/use-loading.uts", 3, 13)
+    }
+}
+val easeInOutCubic = fun(t: Number): Number {
+    return if (t < 0.5) {
+        4 * t * t * t
+    } else {
+        (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
+    }
+}
+fun useLoading(options: UseLoadingOptions) {
+    var timer: Number? = null
+    var drawContext: DrawableContext? = null
+    val startAmination = fun(): UTSPromise<Unit> {
+        return wrapUTSPromise(suspend w1@{
+                val coreRef = options.coreRef
+                val timingFunction = options.timingFunction
+                await(nextTick())
+                if (coreRef.value == null) {
+                    return@w1
+                }
+                coreRef.value!!.animate(_uA(
+                    UniAnimationKeyframe(transform = "rotate(0deg)"),
+                    UniAnimationKeyframe(transform = "rotate(360deg)")
+                ), UniAnimationOption(duration = options.duration, easing = timingFunction, iterations = Infinity))
+        })
+    }
+    val drawCircular = fun(ctx: DrawableContext){
+        var rotate: Number = 0
+        val size = getPxNum(options.size.value)
+        val ARC_LENGTH: Number = 359
+        val center = size / 2
+        val lineWidth = size / 10
+        val duration = options.duration
+        val ARC_MAX: Number = 352
+        var startTime: Number = 0
+        var foreward_end: Number = 0
+        var reversal_end = ARC_MAX
+        fun pogressTime(): Number {
+            val currentTime = Date.now()
+            val elapsedTime = currentTime - startTime
+            val progress = elapsedTime / duration
+            val easedProgress = easeInOutCubic(progress)
+            return easedProgress
+        }
+        val draw = fun(){
+            ctx.reset()
+            ctx.beginPath()
+            if (reversal_end == ARC_MAX) {
+                foreward_end = Math.min(pogressTime() * ARC_LENGTH, ARC_LENGTH)
+                if (foreward_end >= ARC_MAX) {
+                    reversal_end = 0
+                    foreward_end = ARC_MAX
+                    startTime = Date.now()
+                }
+            }
+            if (foreward_end == ARC_MAX) {
+                reversal_end = Math.min(pogressTime() * ARC_LENGTH, ARC_LENGTH)
+                if (reversal_end >= ARC_MAX) {
+                    reversal_end = ARC_MAX
+                    foreward_end = 0
+                    startTime = Date.now()
+                }
+            }
+            ctx.arc(center, center, center - lineWidth, rotate + (reversal_end * Math.PI / 180), rotate + (foreward_end * Math.PI / 180))
+            ctx.lineWidth = lineWidth
+            ctx.strokeStyle = options.color.value
+            ctx.stroke()
+            ctx.update()
+            rotate += 0.05
+        }
+        timer = setInterval(fun(){
+            return draw()
+        }
+        , 16)
+    }
+    val removeInterval = fun(){
+        if (timer != null) {
+            clearInterval(timer!!)
+            timer = null
+        }
+    }
+    val initCircular = fun(){
+        val circularRef = options.circularRef
+        if (circularRef.value == null) {
+            return
+        }
+        removeInterval()
+        drawContext = circularRef.value!!.getDrawableContext()!!
+        drawContext!!.reset()
+        drawCircular(drawContext!!)
+    }
+    val init = fun(): UTSPromise<Unit> {
+        return wrapUTSPromise(suspend {
+                await(nextTick())
+                initCircular()
+                startAmination()
+        })
+    }
+    watch(_uA(
+        fun(): String {
+            return options.color.value
+        }
+        ,
+        fun(): Any {
+            return options.size.value
+        }
+    ), fun(){
+        initCircular()
+    }
+    )
+    onMounted(fun(){
+        init()
+    }
+    )
+    onUnmounted(fun(){
+        removeInterval()
+    }
+    )
+    var hasHide = false
+    onPageShow(fun(){
+        if (hasHide && drawContext != null) {
+            drawCircular(drawContext!!)
+        }
+    }
+    )
+    onPageHide(fun(){
+        hasHide = true
+        removeInterval()
+    }
+    )
+}
+val GenUniModulesRiceUiComponentsRiceLoadingRiceLoadingClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceLoadingRiceLoading::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.inject, props = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.emits, components = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.components, styles = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.setup(props as GenUniModulesRiceUiComponentsRiceLoadingRiceLoading)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceLoadingRiceLoading {
+    return GenUniModulesRiceUiComponentsRiceLoadingRiceLoading(instance)
+}
+)
+val iconSizeTypes: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("iconSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 1, 14)) {
+    var large = "18px"
+    var `default` = "16px"
+    var small = "14px"
+    var mini = "12px"
+}
+val loadingSizeTypes: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("loadingSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 7, 14)) {
+    var large = "20px"
+    var `default` = "18px"
+    var small = "16px"
+    var mini = "14px"
+}
+val GenUniModulesRiceUiComponentsRiceButtonRiceButtonClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceButtonRiceButton::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceButtonRiceButton.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inject, props = GenUniModulesRiceUiComponentsRiceButtonRiceButton.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceButtonRiceButton.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceButtonRiceButton.emits, components = GenUniModulesRiceUiComponentsRiceButtonRiceButton.components, styles = GenUniModulesRiceUiComponentsRiceButtonRiceButton.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceButtonRiceButton.setup(props as GenUniModulesRiceUiComponentsRiceButtonRiceButton)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceButtonRiceButton {
+    return GenUniModulesRiceUiComponentsRiceButtonRiceButton(instance)
+}
+)
+val GenUniModulesRiceUiComponentsRiceDialogRiceDialogClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceDialogRiceDialog::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inject, props = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.emits, components = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.components, styles = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceDialogRiceDialog.setup(props as GenUniModulesRiceUiComponentsRiceDialogRiceDialog)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceDialogRiceDialog {
+    return GenUniModulesRiceUiComponentsRiceDialogRiceDialog(instance)
+}
+)
 val GenPagesMineIndexClass = CreateVueComponent(GenPagesMineIndex::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesMineIndex.inheritAttrs, inject = GenPagesMineIndex.inject, props = GenPagesMineIndex.props, propsNeedCastKeys = GenPagesMineIndex.propsNeedCastKeys, emits = GenPagesMineIndex.emits, components = GenPagesMineIndex.components, styles = GenPagesMineIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenPagesMineIndex.setup(props as GenPagesMineIndex)
@@ -3725,6 +3933,26 @@ val GenPagesMineIndexClass = CreateVueComponent(GenPagesMineIndex::class.java, f
 }
 , fun(instance, renderer): GenPagesMineIndex {
     return GenPagesMineIndex(instance, renderer)
+}
+)
+val GenUniModulesRiceUiComponentsRiceSearchRiceSearchClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceSearchRiceSearch::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.inject, props = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.emits, components = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.components, styles = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceSearchRiceSearch.setup(props as GenUniModulesRiceUiComponentsRiceSearchRiceSearch)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceSearchRiceSearch {
+    return GenUniModulesRiceUiComponentsRiceSearchRiceSearch(instance)
+}
+)
+val GenPagesSearchIndexClass = CreateVueComponent(GenPagesSearchIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesSearchIndex.inheritAttrs, inject = GenPagesSearchIndex.inject, props = GenPagesSearchIndex.props, propsNeedCastKeys = GenPagesSearchIndex.propsNeedCastKeys, emits = GenPagesSearchIndex.emits, components = GenPagesSearchIndex.components, styles = GenPagesSearchIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesSearchIndex.setup(props as GenPagesSearchIndex)
+    }
+    )
+}
+, fun(instance, renderer): GenPagesSearchIndex {
+    return GenPagesSearchIndex(instance, renderer)
 }
 )
 val GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheetClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet::class.java, fun(): VueComponentOptions {
@@ -3767,8 +3995,8 @@ fun main(app: IApp) {
     (createApp()["app"] as VueApp).mount(app, GenUniApp())
 }
 open class UniAppConfig : io.dcloud.uniapp.appframe.AppConfig {
-    override var name: String = "uniapp-readbook"
-    override var appid: String = ""
+    override var name: String = "看小说"
+    override var appid: String = "__UNI__4CF4B90"
     override var versionName: String = "1.0.0"
     override var versionCode: String = "100"
     override var uniCompilerVersion: String = "4.87"
@@ -3779,14 +4007,15 @@ fun definePageRoutes() {
     __uniRoutes.push(UniPageRoute(path = "pages/library/index", component = GenPagesLibraryIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/discuss/index", component = GenPagesDiscussIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/mine/index", component = GenPagesMineIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
+    __uniRoutes.push(UniPageRoute(path = "pages/search/index", component = GenPagesSearchIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "uni_modules/rice-ui/pages/action-sheet/action-sheet", component = GenUniModulesRiceUiPagesActionSheetActionSheetClass, meta = UniPageMeta(isQuit = false), style = _uM()))
     __uniRoutes.push(UniPageRoute(path = "uni_modules/rice-ui/pages/dialog/dialog", component = GenUniModulesRiceUiPagesDialogDialogClass, meta = UniPageMeta(isQuit = false), style = _uM()))
 }
 val __uniTabBar: Map<String, Any?>? = _uM("color" to "@tabBarColor", "selectedColor" to "@tabBarSelectedColor", "borderStyle" to "@tabBarBorderStyle", "backgroundColor" to "@tabBarBackgroundColor", "list" to _uA(
-    _uM("pagePath" to "pages/bookcase/index", "iconPath" to "static/image/wap-home-o.png", "selectedIconPath" to "static/image/wap-home.png", "text" to "书架"),
-    _uM("pagePath" to "pages/library/index", "iconPath" to "static/image/browsing-history-o.png", "selectedIconPath" to "static/image/browsing-history.png", "text" to "书库"),
-    _uM("pagePath" to "pages/discuss/index", "iconPath" to "static/image/comment-o.png", "selectedIconPath" to "static/image/comment.png", "text" to "讨论"),
-    _uM("pagePath" to "pages/mine/index", "iconPath" to "static/image/manager-o.png", "selectedIconPath" to "static/image/manager.png", "text" to "我的")
+    _uM("pagePath" to "pages/bookcase/index", "iconPath" to "@tabBarIconPath1", "selectedIconPath" to "@tabBarSelectedIconPath1", "text" to "书架"),
+    _uM("pagePath" to "pages/library/index", "iconPath" to "@tabBarIconPath2", "selectedIconPath" to "@tabBarSelectedIconPath2", "text" to "书库"),
+    _uM("pagePath" to "pages/discuss/index", "iconPath" to "@tabBarIconPath3", "selectedIconPath" to "@tabBarSelectedIconPath3", "text" to "讨论"),
+    _uM("pagePath" to "pages/mine/index", "iconPath" to "@tabBarIconPath4", "selectedIconPath" to "@tabBarSelectedIconPath4", "text" to "我的")
 ))
 val __uniLaunchPage: Map<String, Any?> = _uM("url" to "pages/bookcase/index", "style" to _uM("navigationBarTitleText" to ""))
 fun defineAppConfig() {
@@ -3794,16 +4023,16 @@ fun defineAppConfig() {
     __uniConfig.globalStyle = _uM("backgroundColorContent" to "@globalStyleBackgroundColor", "navigationStyle" to "custom")
     __uniConfig.getTabBarConfig = fun(): Map<String, Any>? {
         return _uM("color" to "@tabBarColor", "selectedColor" to "@tabBarSelectedColor", "borderStyle" to "@tabBarBorderStyle", "backgroundColor" to "@tabBarBackgroundColor", "list" to _uA(
-            _uM("pagePath" to "pages/bookcase/index", "iconPath" to "static/image/wap-home-o.png", "selectedIconPath" to "static/image/wap-home.png", "text" to "书架"),
-            _uM("pagePath" to "pages/library/index", "iconPath" to "static/image/browsing-history-o.png", "selectedIconPath" to "static/image/browsing-history.png", "text" to "书库"),
-            _uM("pagePath" to "pages/discuss/index", "iconPath" to "static/image/comment-o.png", "selectedIconPath" to "static/image/comment.png", "text" to "讨论"),
-            _uM("pagePath" to "pages/mine/index", "iconPath" to "static/image/manager-o.png", "selectedIconPath" to "static/image/manager.png", "text" to "我的")
+            _uM("pagePath" to "pages/bookcase/index", "iconPath" to "@tabBarIconPath1", "selectedIconPath" to "@tabBarSelectedIconPath1", "text" to "书架"),
+            _uM("pagePath" to "pages/library/index", "iconPath" to "@tabBarIconPath2", "selectedIconPath" to "@tabBarSelectedIconPath2", "text" to "书库"),
+            _uM("pagePath" to "pages/discuss/index", "iconPath" to "@tabBarIconPath3", "selectedIconPath" to "@tabBarSelectedIconPath3", "text" to "讨论"),
+            _uM("pagePath" to "pages/mine/index", "iconPath" to "@tabBarIconPath4", "selectedIconPath" to "@tabBarSelectedIconPath4", "text" to "我的")
         ))
     }
     __uniConfig.tabBar = __uniConfig.getTabBarConfig()
     __uniConfig.conditionUrl = ""
     __uniConfig.uniIdRouter = _uM()
-    __uniConfig.themeConfig = _uM("light" to _uM("navBgColor" to "#f8f8f8", "navTxtStyle" to "black", "tabBarColor" to "#707070", "tabBarSelectedColor" to "#d81e06", "tabBarBorderStyle" to "black", "tabBarBackgroundColor" to "#f8f8f8", "globalStyleBackgroundColor" to "#F7F7F7"), "dark" to _uM("navBgColor" to "#292929", "navTxtStyle" to "white", "tabBarColor" to "#000", "tabBarSelectedColor" to "#d81e06", "tabBarBorderStyle" to "white", "tabBarBackgroundColor" to "#f8f8f8", "globalStyleBackgroundColor" to "#000"))
+    __uniConfig.themeConfig = _uM("light" to _uM("tabBarColor" to "#2c2c2c", "tabBarSelectedColor" to "#d81e06", "tabBarBorderStyle" to "black", "tabBarBackgroundColor" to "#f5f5f5", "tabBarIconPath1" to "static/image/wap-home-o.png", "tabBarSelectedIconPath1" to "static/image/wap-home.png", "tabBarIconPath2" to "static/image/browsing-history-o.png", "tabBarSelectedIconPath2" to "static/image/browsing-history.png", "tabBarIconPath3" to "static/image/comment-o.png", "tabBarSelectedIconPath3" to "static/image/comment.png", "tabBarIconPath4" to "static/image/manager-o.png", "tabBarSelectedIconPath4" to "static/image/manager.png", "globalStyleBackgroundColor" to "#f5f5f5"), "dark" to _uM("tabBarColor" to "#e6e6e6", "tabBarSelectedColor" to "#d81e06", "tabBarBorderStyle" to "white", "tabBarBackgroundColor" to "#181818", "tabBarIconPath1" to "static/image/wap-home-w.png", "tabBarSelectedIconPath1" to "static/image/wap-home.png", "tabBarIconPath2" to "static/image/browsing-history-w.png", "tabBarSelectedIconPath2" to "static/image/browsing-history.png", "tabBarIconPath3" to "static/image/comment-w.png", "tabBarSelectedIconPath3" to "static/image/comment.png", "tabBarIconPath4" to "static/image/manager-w.png", "tabBarSelectedIconPath4" to "static/image/manager.png", "globalStyleBackgroundColor" to "#181818"))
     __uniConfig.ready = true
 }
 open class GenUniApp : UniAppImpl() {

@@ -1,24 +1,73 @@
 <template>
-	<view>
-		<text class="title">{{title}}</text>
-		<rice-button type="primary" text="确定"></rice-button>
+	<view :class="`rice-theme-${state.appTheme}`">
+		<rice-navbar :left-arrow="false" :height="state.statusBarHeight">
+			<template #right>
+				<view class="nav-right">
+					<rice-icon name="search" class="nac-icon" @click="onSearch" />
+					<rice-icon name="switch" class="nac-icon" @click="onSearch" />
+				</view>
+			</template>
+		</rice-navbar>
+		
+		<view class="list">
+			书架
+		</view>
 	</view>
+
 </template>
 
 <script setup lang="uts">
-	const title = ref('bookcase')
-</script>
+	import { setTheme } from "@/uni_modules/rice-ui"
+	import { state } from '@/store/index.uts'
 
-<style>
-	.logo {
-		height: 100px;
-		width: 100px;
-		margin: 100px auto 25px auto;
+	const onShow = () => {
+		console.log(688767868)
 	}
 
-	.title {
-		font-size: 18px;
-		color: #8f8f94;
-		text-align: center;
+	const onSearch = () => {
+		uni.navigateTo({
+			url: '/pages/search/index'
+		})
+	}
+</script>
+
+<style lang="scss" scoped>
+	.nav-right {
+		display: flex;
+		flex-direction: row;
+		margin-right: $uni-spacing-row-lg;
+
+		.nac-icon {
+			font-size: $uni-img-size-base;
+			margin-left: $uni-spacing-row-base;
+		}
+	}
+
+	.header {
+		margin: $uni-spacing-col-lg $uni-spacing-row-lg;
+		display: flex;
+		flex-direction: row;
+
+		.h-right {
+			margin-left: $uni-spacing-row-base;
+			font-size: $uni-font-size-sm;
+			display: flex;
+			justify-content: center;
+		}
+
+		.h-text1 {
+			color: var(--rice-text-color);
+		}
+
+		.h-text2 {
+			margin-top: $uni-spacing-col-sm;
+			font-size: $uni-font-size-base;
+			color: var(--rice-text-color-2);
+		}
+	}
+
+	.card {
+		padding: $uni-spacing-col-lg $uni-spacing-row-lg;
+		margin-top: $uni-spacing-col-base;
 	}
 </style>

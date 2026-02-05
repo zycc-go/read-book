@@ -1,23 +1,52 @@
-import _easycom_rice_button from '@/uni_modules/rice-ui/components/rice-button/rice-button.uvue';
+import _easycom_rice_icon from '@/uni_modules/rice-ui/components/rice-icon/rice-icon.uvue';
+import _easycom_rice_navbar from '@/uni_modules/rice-ui/components/rice-navbar/rice-navbar.uvue';
+import { setTheme } from "@/uni_modules/rice-ui";
+import { state } from '@/store/index.uts';
 const __sfc__ = defineComponent({
     __name: 'index',
     setup(__props) {
         const __ins = getCurrentInstance()!;
         const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
         const _cache = __ins.renderCache;
-        const title = ref('bookcase');
+        const onShow = () => {
+            console.log(688767868, " at pages/bookcase/index.uvue:24");
+        };
+        const onSearch = () => {
+            uni.navigateTo({
+                url: '/pages/search/index'
+            });
+        };
         return (): any | null => {
-            const _component_rice_button = resolveEasyComponent("rice-button", _easycom_rice_button);
-            return _cE("view", null, [
-                _cE("text", _uM({ class: "title" }), _tD(unref(title)), 1 /* TEXT */),
-                _cV(_component_rice_button, _uM({
-                    type: "primary",
-                    text: "确定"
-                }))
-            ]);
+            const _component_rice_icon = resolveEasyComponent("rice-icon", _easycom_rice_icon);
+            const _component_rice_navbar = resolveEasyComponent("rice-navbar", _easycom_rice_navbar);
+            return _cE("view", _uM({
+                class: _nC(`rice-theme-${unref(state).appTheme}`)
+            }), [
+                _cV(_component_rice_navbar, _uM({
+                    "left-arrow": false,
+                    height: unref(state).statusBarHeight
+                }), _uM({
+                    right: withSlotCtx((): any[] => [
+                        _cE("view", _uM({ class: "nav-right" }), [
+                            _cV(_component_rice_icon, _uM({
+                                name: "search",
+                                class: "nac-icon",
+                                onClick: onSearch
+                            })),
+                            _cV(_component_rice_icon, _uM({
+                                name: "switch",
+                                class: "nac-icon",
+                                onClick: onSearch
+                            }))
+                        ])
+                    ]),
+                    _: 1 /* STABLE */
+                }), 8 /* PROPS */, ["height"]),
+                _cE("view", _uM({ class: "list" }), " 书架 ")
+            ], 2 /* CLASS */);
         };
     }
 });
 export default __sfc__;
-const GenPagesBookcaseIndexStyles = [_uM([["logo", _pS(_uM([["height", 100], ["width", 100], ["marginTop", 100], ["marginRight", "auto"], ["marginBottom", 25], ["marginLeft", "auto"]]))], ["title", _pS(_uM([["fontSize", 18], ["color", "#8f8f94"], ["textAlign", "center"]]))]])];
+const GenPagesBookcaseIndexStyles = [_uM([["nav-right", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["marginRight", 15]]))], ["nac-icon", _uM([[".nav-right ", _uM([["fontSize", 26], ["marginLeft", 10]])]])], ["header", _pS(_uM([["marginTop", 12], ["marginRight", 15], ["marginBottom", 12], ["marginLeft", 15], ["display", "flex"], ["flexDirection", "row"]]))], ["h-right", _uM([[".header ", _uM([["marginLeft", 10], ["fontSize", 12], ["display", "flex"], ["justifyContent", "center"]])]])], ["h-text1", _uM([[".header ", _uM([["color", "var(--rice-text-color)"]])]])], ["h-text2", _uM([[".header ", _uM([["marginTop", 4], ["fontSize", 14], ["color", "var(--rice-text-color-2)"]])]])], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 15], ["paddingBottom", 12], ["paddingLeft", 15], ["marginTop", 8]]))]])];
 //# sourceMappingURL=index.uvue.map

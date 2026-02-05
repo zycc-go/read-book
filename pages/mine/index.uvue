@@ -1,10 +1,11 @@
 <template>
-	<view>
-		<rice-navbar :left-arrow="false" bg-color="#f8f8f8">
+	<view :class="`rice-theme-${state.appTheme}`">
+		<rice-navbar :left-arrow="false" :height="state.statusBarHeight">
 			<template #right>
 				<view class="nav-right">
-					<rice-icon name="sun" class="nac-icon" v-if="theme==='light'" @click="onSetTheme('dark')" />
-					<rice-icon name="sleep" class="nac-icon" v-else @click="onSetTheme('light')" />
+					<rice-icon name="sun" class="nac-icon" v-if="state.appTheme==='dark'"
+						@click="onSetTheme('light')" />
+					<rice-icon name="sleep" class="nac-icon" v-else @click="onSetTheme('dark')" />
 					<rice-icon name="remind" class="nac-icon" />
 				</view>
 			</template>
@@ -17,6 +18,7 @@
 				<text class="h-text2">等级</text>
 			</view>
 		</view>
+
 		<view class="card">
 			<rice-cell-group border>
 				<rice-cell title="时长" arrow />
@@ -35,6 +37,7 @@
 
 <script setup lang="uts">
 	import { setTheme } from "@/uni_modules/rice-ui"
+	import { state, setAppTheme } from '@/store/index.uts'
 
 	const message = `本应用 / 网站 / 内容仅供学习、交流及个人参考使用，不构成任何形式的投资建议、法律意见、专业指导或商业承诺。
 	内容准确性：我们力求内容准确、完整、及时，但不保证所有信息绝对无误，不对因内容疏漏、错误或过时导致的任何损失承担责任。
@@ -47,38 +50,29 @@
 
 	const showMoreMessage = ref(false)
 
-	const theme = ref<string | null>('light')
-
-	const getTheme = () => {
-		const res = uni.getAppBaseInfo()
-		theme.value = res.appTheme
-	}
-
 	const onAbout = () => {
 		showMoreMessage.value = true
 	}
 
 	const onSetTheme = (val : string) => {
-		theme.value = val
-		setTheme(val as "light" | "dark")
-		uni.setAppTheme({
-			theme: val as "light" | "dark" | "auto",
-			success: function () {
-				console.log("设置appTheme为 auto 成功")
-			},
-			fail: function (e : IAppThemeFail) {
-				console.log("设置appTheme为 auto 失败,原因:", e.errMsg)
-			}
-		})
+		setTheme(val as 'light' | 'dark')
+		setAppTheme(val)
+		if (uni.setAppTheme != null) {
+			uni.setAppTheme({
+				theme: val as "light" | "dark" | "auto",
+				success: function () {
+					console.log(`设置appTheme为 ${val} 成功`)
+				},
+				fail: function (e : IAppThemeFail) {
+					console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg)
+				}
+			})
+		}
 	}
 
 	const onShow = () => {
 		console.log(688767868)
 	}
-
-	onMounted(() => {
-		getTheme()
-	})
 </script>
 
 <style lang="scss" scoped>
@@ -86,11 +80,10 @@
 		display: flex;
 		flex-direction: row;
 		margin-right: $uni-spacing-row-lg;
-		gap: $uni-spacing-row-lg;
 
 		.nac-icon {
 			font-size: $uni-img-size-base;
-			margin-left: $uni-spacing-row-sm;
+			margin-left: $uni-spacing-row-base;
 		}
 	}
 
@@ -101,14 +94,19 @@
 
 		.h-right {
 			margin-left: $uni-spacing-row-base;
-			font-size: 10px;
+			font-size: $uni-font-size-sm;
 			display: flex;
 			justify-content: center;
+		}
+
+		.h-text1 {
+			color: var(--rice-text-color);
 		}
 
 		.h-text2 {
 			margin-top: $uni-spacing-col-sm;
 			font-size: $uni-font-size-base;
+			color: var(--rice-text-color-2);
 		}
 	}
 

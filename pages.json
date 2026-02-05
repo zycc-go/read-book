@@ -22,6 +22,12 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
+		},
+		{
+			"path": "pages/search/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
 		}
 	,{
     "path": "uni_modules/rice-ui/pages/action-sheet/action-sheet"
@@ -37,26 +43,26 @@
 		"backgroundColor": "@tabBarBackgroundColor",
 		"list": [{
 				"pagePath": "pages/bookcase/index",
-				"iconPath": "static/image/wap-home-o.png",
-				"selectedIconPath": "static/image/wap-home.png",
+				"iconPath": "@tabBarIconPath1",
+				"selectedIconPath": "@tabBarSelectedIconPath1",
 				"text": "书架"
 			},
 			{
 				"pagePath": "pages/library/index",
-				"iconPath": "static/image/browsing-history-o.png",
-				"selectedIconPath": "static/image/browsing-history.png",
+				"iconPath": "@tabBarIconPath2",
+				"selectedIconPath": "@tabBarSelectedIconPath2",
 				"text": "书库"
 			},
 			{
 				"pagePath": "pages/discuss/index",
-				"iconPath": "static/image/comment-o.png",
-				"selectedIconPath": "static/image/comment.png",
+				"iconPath": "@tabBarIconPath3",
+				"selectedIconPath": "@tabBarSelectedIconPath3",
 				"text": "讨论"
 			},
 			{
 				"pagePath": "pages/mine/index",
-				"iconPath": "static/image/manager-o.png",
-				"selectedIconPath": "static/image/manager.png",
+				"iconPath": "@tabBarIconPath4",
+				"selectedIconPath": "@tabBarSelectedIconPath4",
 				"text": "我的"
 			}
 		]

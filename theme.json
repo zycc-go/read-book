@@ -1,20 +1,32 @@
 {
 	"light": {
-		"navBgColor": "#f8f8f8",
-		"navTxtStyle": "black",
-		"tabBarColor": "#707070",
+		"tabBarColor": "#2c2c2c",
 		"tabBarSelectedColor": "#d81e06",
 		"tabBarBorderStyle": "black",
-		"tabBarBackgroundColor": "#f8f8f8",
-		"globalStyleBackgroundColor": "#F7F7F7"
+		"tabBarBackgroundColor": "#f5f5f5",
+		"tabBarIconPath1": "static/image/wap-home-o.png",
+		"tabBarSelectedIconPath1": "static/image/wap-home.png",
+		"tabBarIconPath2": "static/image/browsing-history-o.png",
+		"tabBarSelectedIconPath2": "static/image/browsing-history.png",
+		"tabBarIconPath3": "static/image/comment-o.png",
+		"tabBarSelectedIconPath3": "static/image/comment.png",
+		"tabBarIconPath4": "static/image/manager-o.png",
+		"tabBarSelectedIconPath4": "static/image/manager.png",
+		"globalStyleBackgroundColor": "#f5f5f5"
 	},
 	"dark": {
-		"navBgColor": "#292929",
-		"navTxtStyle": "white",
-		"tabBarColor": "#000",
+		"tabBarColor": "#e6e6e6",
 		"tabBarSelectedColor": "#d81e06",
 		"tabBarBorderStyle": "white",
-		"tabBarBackgroundColor": "#f8f8f8",
-		"globalStyleBackgroundColor": "#000"
+		"tabBarBackgroundColor": "#181818",
+		"tabBarIconPath1": "static/image/wap-home-w.png",
+		"tabBarSelectedIconPath1": "static/image/wap-home.png",
+		"tabBarIconPath2": "static/image/browsing-history-w.png",
+		"tabBarSelectedIconPath2": "static/image/browsing-history.png",
+		"tabBarIconPath3": "static/image/comment-w.png",
+		"tabBarSelectedIconPath3": "static/image/comment.png",
+		"tabBarIconPath4": "static/image/manager-w.png",
+		"tabBarSelectedIconPath4": "static/image/manager.png",
+		"globalStyleBackgroundColor": "#181818"
 	}
 }

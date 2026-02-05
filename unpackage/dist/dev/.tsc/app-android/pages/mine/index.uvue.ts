@@ -5,6 +5,7 @@ import _easycom_rice_cell from '@/uni_modules/rice-ui/components/rice-cell/rice-
 import _easycom_rice_cell_group from '@/uni_modules/rice-ui/components/rice-cell-group/rice-cell-group.uvue'
 import _easycom_rice_dialog from '@/uni_modules/rice-ui/components/rice-dialog/rice-dialog.uvue'
 import { setTheme } from "@/uni_modules/rice-ui"
+	import { state, setAppTheme } from '@/store/index.uts'
 
 	
 const __sfc__ = defineComponent({
@@ -25,38 +26,29 @@ const _cache = __ins.renderCache;
 
 	const showMoreMessage = ref(false)
 
-	const theme = ref<string | null>('light')
-
-	const getTheme = () => {
-		const res = uni.getAppBaseInfo()
-		theme.value = res.appTheme
-	}
-
 	const onAbout = () => {
 		showMoreMessage.value = true
 	}
 
 	const onSetTheme = (val : string) => {
-		theme.value = val
-		setTheme(val as "light" | "dark")
-		uni.setAppTheme({
-			theme: val as "light" | "dark" | "auto",
-			success: function () {
-				console.log("设置appTheme为 auto 成功", " at pages/mine/index.uvue:67")
-			},
-			fail: function (e : IAppThemeFail) {
-				console.log("设置appTheme为 auto 失败,原因:", e.errMsg, " at pages/mine/index.uvue:70")
-			}
-		})
+		setTheme(val as 'light' | 'dark')
+		setAppTheme(val)
+		if (uni.setAppTheme != null) {
+			uni.setAppTheme({
+				theme: val as "light" | "dark" | "auto",
+				success: function () {
+					console.log(`设置appTheme为 ${val} 成功`, " at pages/mine/index.uvue:64")
+				},
+				fail: function (e : IAppThemeFail) {
+					console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg, " at pages/mine/index.uvue:67")
+				}
+			})
+		}
 	}
 
 	const onShow = () => {
-		console.log(688767868, " at pages/mine/index.uvue:76")
+		console.log(688767868, " at pages/mine/index.uvue:74")
 	}
-
-	onMounted(() => {
-		getTheme()
-	})
 
 return (): any | null => {
 
@@ -68,25 +60,27 @@ const _component_rice_cell_group = resolveEasyComponent("rice-cell-group",_easyc
 const _component_rice_dialog = resolveEasyComponent("rice-dialog",_easycom_rice_dialog)
 
   return _cE(Fragment, null, [
-    _cE("view", null, [
+    _cE("view", _uM({
+      class: _nC(`rice-theme-${unref(state).appTheme}`)
+    }), [
       _cV(_component_rice_navbar, _uM({
         "left-arrow": false,
-        "bg-color": "#f8f8f8"
+        height: unref(state).statusBarHeight
       }), _uM({
         right: withSlotCtx((): any[] => [
           _cE("view", _uM({ class: "nav-right" }), [
-            unref(theme)==='light'
+            unref(state).appTheme==='dark'
               ? _cV(_component_rice_icon, _uM({
                   key: 0,
                   name: "sun",
                   class: "nac-icon",
-                  onClick: () => {onSetTheme('dark')}
+                  onClick: () => {onSetTheme('light')}
                 }), null, 8 /* PROPS */, ["onClick"])
               : _cV(_component_rice_icon, _uM({
                   key: 1,
                   name: "sleep",
                   class: "nac-icon",
-                  onClick: () => {onSetTheme('light')}
+                  onClick: () => {onSetTheme('dark')}
                 }), null, 8 /* PROPS */, ["onClick"]),
             _cV(_component_rice_icon, _uM({
               name: "remind",
@@ -95,7 +89,7 @@ const _component_rice_dialog = resolveEasyComponent("rice-dialog",_easycom_rice_
           ])
         ]),
         _: 1 /* STABLE */
-      })),
+      }), 8 /* PROPS */, ["height"]),
       _cE("view", _uM({ class: "header" }), [
         _cV(_component_rice_avatar, _uM({
           src: "/static/images/avatar-square.png",
@@ -130,7 +124,7 @@ const _component_rice_dialog = resolveEasyComponent("rice-dialog",_easycom_rice_
           _: 1 /* STABLE */
         }))
       ])
-    ]),
+    ], 2 /* CLASS */),
     _cV(_component_rice_dialog, _uM({
       show: unref(showMoreMessage),
       "onUpdate:show": $event => {trySetRefValue(showMoreMessage, $event)},
@@ -145,4 +139,4 @@ const _component_rice_dialog = resolveEasyComponent("rice-dialog",_easycom_rice_
 
 })
 export default __sfc__
-const GenPagesMineIndexStyles = [_uM([["nav-right", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["marginRight", 15], ["gap", "15px"]]))], ["nac-icon", _uM([[".nav-right ", _uM([["fontSize", 26], ["marginLeft", 5]])]])], ["header", _pS(_uM([["marginTop", 12], ["marginRight", 15], ["marginBottom", 12], ["marginLeft", 15], ["display", "flex"], ["flexDirection", "row"]]))], ["h-right", _uM([[".header ", _uM([["marginLeft", 10], ["fontSize", 10], ["display", "flex"], ["justifyContent", "center"]])]])], ["h-text2", _uM([[".header ", _uM([["marginTop", 4], ["fontSize", 14]])]])], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 15], ["paddingBottom", 12], ["paddingLeft", 15], ["marginTop", 8]]))]])]
+const GenPagesMineIndexStyles = [_uM([["nav-right", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["marginRight", 15]]))], ["nac-icon", _uM([[".nav-right ", _uM([["fontSize", 26], ["marginLeft", 10]])]])], ["header", _pS(_uM([["marginTop", 12], ["marginRight", 15], ["marginBottom", 12], ["marginLeft", 15], ["display", "flex"], ["flexDirection", "row"]]))], ["h-right", _uM([[".header ", _uM([["marginLeft", 10], ["fontSize", 12], ["display", "flex"], ["justifyContent", "center"]])]])], ["h-text1", _uM([[".header ", _uM([["color", "var(--rice-text-color)"]])]])], ["h-text2", _uM([[".header ", _uM([["marginTop", 4], ["fontSize", 14], ["color", "var(--rice-text-color-2)"]])]])], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 15], ["paddingBottom", 12], ["paddingLeft", 15], ["marginTop", 8]]))]])]

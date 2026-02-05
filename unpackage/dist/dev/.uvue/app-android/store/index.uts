@@ -1,0 +1,66 @@
+import { setTheme } from "@/uni_modules/rice-ui";
+export type UserInfo = {
+    nickName: string;
+    avatarUrl?: string;
+};
+type State = {
+    // 状态栏高度
+    statusBarHeight: number;
+    // 设备像素比
+    devicePixelRatio: number;
+    // 当前激活的tab页
+    active: string;
+    leftWinActive: string;
+    // 是否同意隐私政策
+    agreeToPrivacy: boolean | null;
+    // 主题
+    appTheme: 'light' | 'dark';
+    // 是否无网环境
+    netless: boolean;
+    // 登录用户信息
+    userInfo: UserInfo | null;
+};
+export const state = reactive({
+    statusBarHeight: 56,
+    devicePixelRatio: 1,
+    active: 'componentPage',
+    leftWinActive: '/pages/component/view/view',
+    appTheme: 'light',
+    netless: false,
+    userInfo: null
+} as State);
+export const setAppTheme = (appTheme: string) => {
+    state.appTheme = appTheme as 'light' | 'dark';
+};
+export const setUserInfo = (userInfo: UserInfo | null) => {
+    state.userInfo = userInfo;
+};
+export const setStatusBarHeight = (height: number) => {
+    state.statusBarHeight = height;
+};
+export const setDevicePixelRatio = (devicePixelRatio: number) => {
+    state.devicePixelRatio = devicePixelRatio;
+};
+export const setActive = (tabPage: string) => {
+    state.active = tabPage;
+};
+export const setLeftWinActive = (leftWinActive: string) => {
+    state.leftWinActive = leftWinActive;
+};
+// 检查系统主题
+export const checkSystemTheme = () => {
+    uni.getSystemInfo({
+        success: (res: GetSystemInfoResult) => {
+            const appTheme = res.appTheme == "auto" ? res.osTheme! : res.appTheme!;
+            state.appTheme = appTheme.trim() ?? 'light';
+        }
+    });
+    uni.onAppThemeChange((res: AppThemeChangeResult) => {
+        state.appTheme = res.appTheme.trim() ?? 'light';
+    });
+    setTheme(state.appTheme);
+};
+export const setNetless = (netless: boolean) => {
+    state.netless = netless;
+};
+//# sourceMappingURL=index.uts.map
