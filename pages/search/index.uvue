@@ -1,13 +1,15 @@
 <template>
-	<view :class="`rice-theme-${state.appTheme}`">
-		<rice-navbar :height="state.statusBarHeight">
+	<view :class="[`rice-theme-${state.appTheme}`, 'page-search']">
+		<rice-navbar :height="state.statusBarHeight" title-width="calc(100% - 100px)" @search="onClickAction"
+			@clickAction="onClickAction">
 			<template #title>
-				<view class="nav-right">
-					<rice-search v-model="value" placeholder="请输入搜索关键词" />
-				</view>
+				<rice-search v-model="value" placeholder="请输入搜索关键词" />
+			</template>
+			<template #right>
+				<text>搜索</text>
 			</template>
 		</rice-navbar>
-		
+
 		<view class="card">
 			历史记录
 		</view>
@@ -18,49 +20,22 @@
 <script setup lang="uts">
 	import { setTheme } from "@/uni_modules/rice-ui"
 	import { state } from '@/store/index.uts'
-	
+
 	const value = ref('')
-	
+
 	const onClickAction = () => { }
 </script>
 
 <style lang="scss" scoped>
-	.nav-right {
-		display: flex;
-		flex-direction: row;
-		margin-right: $uni-spacing-row-lg;
-
-		.nac-icon {
-			font-size: $uni-img-size-base;
-			margin-left: $uni-spacing-row-base;
-		}
-	}
-
-	.header {
-		margin: $uni-spacing-col-lg $uni-spacing-row-lg;
-		display: flex;
-		flex-direction: row;
-
-		.h-right {
-			margin-left: $uni-spacing-row-base;
-			font-size: $uni-font-size-sm;
-			display: flex;
-			justify-content: center;
+	:deep(.rice-navbar) {
+		.rice-search {
+			width: 100%;
+			padding: 10px 0;
 		}
 
-		.h-text1 {
-			color: var(--rice-text-color);
+		.rice-navbar__center {
+			padding: 0;
+			margin-left: -10px;
 		}
-
-		.h-text2 {
-			margin-top: $uni-spacing-col-sm;
-			font-size: $uni-font-size-base;
-			color: var(--rice-text-color-2);
-		}
-	}
-
-	.card {
-		padding: $uni-spacing-col-lg $uni-spacing-row-lg;
-		margin-top: $uni-spacing-col-base;
 	}
 </style>

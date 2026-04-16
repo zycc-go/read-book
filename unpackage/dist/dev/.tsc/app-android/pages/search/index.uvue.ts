@@ -2,7 +2,7 @@ import _easycom_rice_search from '@/uni_modules/rice-ui/components/rice-search/r
 import _easycom_rice_navbar from '@/uni_modules/rice-ui/components/rice-navbar/rice-navbar.uvue'
 import { setTheme } from "@/uni_modules/rice-ui"
 	import { state } from '@/store/index.uts'
-	
+
 	
 const __sfc__ = defineComponent({
   __name: 'index',
@@ -11,8 +11,10 @@ const __ins = getCurrentInstance()!;
 const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
 const _cache = __ins.renderCache;
 
+	const customStyle = {__$originalPosition: new UTSSourceMapPosition("customStyle", "pages/search/index.uvue", 20, 8),}
+
 	const value = ref('')
-	
+
 	const onClickAction = () => { }
 
 return (): any | null => {
@@ -24,16 +26,16 @@ const _component_rice_navbar = resolveEasyComponent("rice-navbar",_easycom_rice_
     class: _nC(`rice-theme-${unref(state).appTheme}`)
   }), [
     _cV(_component_rice_navbar, _uM({
-      height: unref(state).statusBarHeight
+      height: unref(state).statusBarHeight,
+      "title-width": "calc(100% - 80px)",
+      "custom-style": customStyle
     }), _uM({
       title: withSlotCtx((): any[] => [
-        _cE("view", _uM({ class: "nav-right" }), [
-          _cV(_component_rice_search, _uM({
-            modelValue: unref(value),
-            "onUpdate:modelValue": $event => {trySetRefValue(value, $event)},
-            placeholder: "请输入搜索关键词"
-          }), null, 8 /* PROPS */, ["modelValue"])
-        ])
+        _cV(_component_rice_search, _uM({
+          modelValue: unref(value),
+          "onUpdate:modelValue": $event => {trySetRefValue(value, $event)},
+          placeholder: "请输入搜索关键词"
+        }), null, 8 /* PROPS */, ["modelValue"])
       ]),
       _: 1 /* STABLE */
     }), 8 /* PROPS */, ["height"]),

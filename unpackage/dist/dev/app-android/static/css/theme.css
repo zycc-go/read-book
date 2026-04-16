@@ -1,9 +1,11 @@
 /* 明亮模式下的主题 */
 .rice-theme-light {
 	--rice-navbar-background: #f5f5f5;
+	--rice-search-background: transparent;
 }
 
 /* 暗黑模式下的主题 */
 .rice-theme-dark {
 	--rice-navbar-background: #181818;
+	--rice-search-background: transparent;
 }

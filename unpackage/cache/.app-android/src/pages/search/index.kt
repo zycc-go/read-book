@@ -20,20 +20,20 @@ open class GenPagesSearchIndex : BasePage {
             val __ins = getCurrentInstance()!!
             val _ctx = __ins.proxy as GenPagesSearchIndex
             val _cache = __ins.renderCache
+            val customStyle: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("customStyle", "pages/search/index.uvue", 20, 8)) {
+            }
             val value = ref("")
             return fun(): Any? {
                 val _component_rice_search = resolveEasyComponent("rice-search", GenUniModulesRiceUiComponentsRiceSearchRiceSearchClass)
                 val _component_rice_navbar = resolveEasyComponent("rice-navbar", GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass)
                 return _cE("view", _uM("class" to _nC("rice-theme-" + unref(state).appTheme)), _uA(
-                    _cV(_component_rice_navbar, _uM("height" to unref(state).statusBarHeight), _uM("title" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cV(_component_rice_navbar, _uM("height" to unref(state).statusBarHeight, "title-width" to "calc(100% - 80px)", "custom-style" to customStyle), _uM("title" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
-                            _cE("view", _uM("class" to "nav-right"), _uA(
-                                _cV(_component_rice_search, _uM("modelValue" to unref(value), "onUpdate:modelValue" to fun(`$event`: String){
-                                    trySetRefValue(value, `$event`)
-                                }
-                                , "placeholder" to "请输入搜索关键词"), null, 8, _uA(
-                                    "modelValue"
-                                ))
+                            _cV(_component_rice_search, _uM("modelValue" to unref(value), "onUpdate:modelValue" to fun(`$event`: String){
+                                trySetRefValue(value, `$event`)
+                            }
+                            , "placeholder" to "请输入搜索关键词"), null, 8, _uA(
+                                "modelValue"
                             ))
                         )
                     }

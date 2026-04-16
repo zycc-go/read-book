@@ -8,6 +8,7 @@ const __sfc__ = defineComponent({
         const __ins = getCurrentInstance()!;
         const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
         const _cache = __ins.renderCache;
+        const customStyle = { __$originalPosition: new UTSSourceMapPosition("customStyle", "pages/search/index.uvue", 20, 8), } as UTSJSONObject;
         const value = ref('');
         const onClickAction = () => { };
         return (): any | null => {
@@ -17,16 +18,16 @@ const __sfc__ = defineComponent({
                 class: _nC(`rice-theme-${unref(state).appTheme}`)
             }), [
                 _cV(_component_rice_navbar, _uM({
-                    height: unref(state).statusBarHeight
+                    height: unref(state).statusBarHeight,
+                    "title-width": "calc(100% - 80px)",
+                    "custom-style": customStyle
                 }), _uM({
                     title: withSlotCtx((): any[] => [
-                        _cE("view", _uM({ class: "nav-right" }), [
-                            _cV(_component_rice_search, _uM({
-                                modelValue: unref(value),
-                                "onUpdate:modelValue": ($event: string) => { trySetRefValue(value, $event); },
-                                placeholder: "请输入搜索关键词"
-                            }), null, 8 /* PROPS */, ["modelValue"])
-                        ])
+                        _cV(_component_rice_search, _uM({
+                            modelValue: unref(value),
+                            "onUpdate:modelValue": ($event: string) => { trySetRefValue(value, $event); },
+                            placeholder: "请输入搜索关键词"
+                        }), null, 8 /* PROPS */, ["modelValue"])
                     ]),
                     _: 1 /* STABLE */
                 }), 8 /* PROPS */, ["height"]),
