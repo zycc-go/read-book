@@ -41,10 +41,6 @@ export const setUserInfo = (userInfo : UserInfo | null) => {
 	state.userInfo = userInfo
 }
 
-export const setStatusBarHeight = (height : number) => {
-	state.statusBarHeight = height
-}
-
 export const setDevicePixelRatio = (devicePixelRatio : number) => {
 	state.devicePixelRatio = devicePixelRatio
 }
