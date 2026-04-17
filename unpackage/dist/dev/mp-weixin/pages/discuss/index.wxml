@@ -1,0 +1,1 @@
+<view style="{{'--status-bar-height:' + d + ';' + (virtualHostStyle || '')}}" id="{{c}}" change:eS="{{uV.sS}}" eS="{{$eS[c]}}" change:eA="{{uV.sA}}" eA="{{$eA[c]}}" class="{{[e]}}" hidden="{{virtualHostHidden || false}}"><image class="logo" src="{{a}}"></image><text class="title">{{b}}</text></view><wxs src="/common/uniView.wxs" module="uV"/>

@@ -1,0 +1,1 @@
+<view style="{{'--status-bar-height:' + c + ';' + (virtualHostStyle || '')}}" id="{{b}}" change:eS="{{uV.sS}}" eS="{{$eS[b]}}" change:eA="{{uV.sA}}" eA="{{$eA[b]}}" class="{{[d]}}" hidden="{{virtualHostHidden || false}}"><rice-navbar u-i="6d1df216-0" bind:__l="__l" u-p="{{a||''}}"></rice-navbar></view><wxs src="/common/uniView.wxs" module="uV"/>

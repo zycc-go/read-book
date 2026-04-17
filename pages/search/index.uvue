@@ -1,6 +1,6 @@
 <template>
 	<view :class="[`rice-theme-${state.appTheme}`, 'page-search']">
-		<rice-navbar :height="state.statusBarHeight" title-width="calc(100% - 100px)" @search="onClickAction"
+		<rice-navbar :height="state.navbarHeight" title-width="calc(100% - 100px)" @search="onClickAction"
 			@clickAction="onClickAction">
 			<template #title>
 				<rice-search v-model="value" placeholder="请输入搜索关键词" />

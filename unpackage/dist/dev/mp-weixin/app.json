@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/bookcase/index",
+    "pages/library/index",
+    "pages/discuss/index",
+    "pages/mine/index",
+    "pages/search/index",
+    "pages/setting/index",
+    "pages/feedback/index",
+    "uni_modules/rice-ui/pages/action-sheet/action-sheet",
+    "uni_modules/rice-ui/pages/dialog/dialog"
+  ],
+  "window": {
+    "backgroundColorContent": "@globalStyleBackgroundColor",
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "color": "@tabBarColor",
+    "selectedColor": "@tabBarSelectedColor",
+    "borderStyle": "@tabBarBorderStyle",
+    "backgroundColor": "@tabBarBackgroundColor",
+    "list": [
+      {
+        "pagePath": "pages/bookcase/index",
+        "iconPath": "@tabBarIconPath1",
+        "selectedIconPath": "@tabBarSelectedIconPath1",
+        "text": "书架"
+      },
+      {
+        "pagePath": "pages/library/index",
+        "iconPath": "@tabBarIconPath2",
+        "selectedIconPath": "@tabBarSelectedIconPath2",
+        "text": "书库"
+      },
+      {
+        "pagePath": "pages/discuss/index",
+        "iconPath": "@tabBarIconPath3",
+        "selectedIconPath": "@tabBarSelectedIconPath3",
+        "text": "讨论"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "iconPath": "@tabBarIconPath4",
+        "selectedIconPath": "@tabBarSelectedIconPath4",
+        "text": "我的"
+      }
+    ]
+  },
+  "themeLocation": "theme.json",
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {}
+}

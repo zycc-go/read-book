@@ -1,0 +1,84 @@
+<template>
+	<view :class="`rice-theme-${state.appTheme}`" class="page">
+		<rice-navbar :height="state.navbarHeight" title="设置" @clickLeft="onClickLeft" />
+
+		<view class="card">
+			<rice-cell-group radius="8px">
+				<rice-cell title="深色模式">
+					<template #rightIcon>
+						<rice-switch v-model="isDark" @change="onChangeIsDark"></rice-switch>
+					</template>
+				</rice-cell>
+				<rice-cell title="跟随系统设置" label="开启后，自动跟随系统外观模式设置">
+					<template #rightIcon>
+						<rice-switch v-model="isFollowSystem" @change="onChangeIsFollowSystem"
+							:disabled="state.uniPlatform !== 'app'" @click="onClickSwitch"></rice-switch>
+					</template>
+				</rice-cell>
+			</rice-cell-group>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { setTheme } from "@/uni_modules/rice-ui"
+	import { state, setAppTheme } from '@/store/index.uts'
+
+	const isDark = ref<boolean>(state.appTheme === 'dark')
+	const isFollowSystem = ref<boolean>(state.isFollowSystem)
+
+	const onChangeIsDark = (value : boolean) => {
+		isDark.value = value
+		let themeReal : "light" | "dark" = 'light'
+		if (value) {
+			isFollowSystem.value = false
+			themeReal = 'dark';
+		}
+		state.appTheme = themeReal;
+		setTheme(themeReal)
+		uni.setStorageSync('appTheme', themeReal)
+	}
+
+	const onChangeIsFollowSystem = (value : boolean) => {
+		isFollowSystem.value = value
+		let themeReal : "light" | "dark" = 'light'
+		if (value) {
+			isDark.value = false
+			themeReal = state.osTheme
+		}
+		state.appTheme = themeReal;
+		setTheme(themeReal)
+		uni.setStorageSync('appTheme', themeReal)
+	}
+
+	const onClickLeft = () => {
+		if (state.uniPlatform === 'app') {
+			uni.switchTab({ url: '/pages/mine/index' })
+		} else {
+			uni.redirectTo({ url: '/pages/mine/index' })
+		}
+	}
+
+	const onClickSwitch = () => {
+		if (state.uniPlatform !== 'app') {
+			uni.showToast({ title: '只有app才能用', icon: 'error' })
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		background-color: var(--rice-navbar-background);
+		height: 100%;
+		width: 100%;
+	}
+
+	.card {
+		padding: $uni-spacing-col-lg $uni-spacing-row-lg;
+
+		:deep(.rice-icon) {
+			display: flex;
+			align-items: center;
+		}
+	}
+</style>

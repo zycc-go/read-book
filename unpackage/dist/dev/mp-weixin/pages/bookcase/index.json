@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "rice-icon": "../../uni_modules/rice-ui/components/rice-icon/rice-icon",
+    "rice-navbar": "../../uni_modules/rice-ui/components/rice-navbar/rice-navbar",
+    "rice-empty": "../../uni_modules/rice-ui/components/rice-empty/rice-empty",
+    "rice-grid-item": "../../uni_modules/rice-ui/components/rice-grid-item/rice-grid-item",
+    "rice-grid": "../../uni_modules/rice-ui/components/rice-grid/rice-grid",
+    "popup-menu": "./popup-menu"
+  }
+}

@@ -28,14 +28,29 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
+		},
+		{
+			"path": "pages/setting/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"mp-weixin": {
+					"bounces": "none"
+				}
+			}
+		},
+		{
+			"path": "pages/feedback/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "uni_modules/rice-ui/pages/action-sheet/action-sheet"
+		},
+		{
+			"path": "uni_modules/rice-ui/pages/dialog/dialog"
 		}
-	,{
-    "path": "uni_modules/rice-ui/pages/action-sheet/action-sheet"
-}
-,{
-    "path": "uni_modules/rice-ui/pages/dialog/dialog"
-}
-],
+	],
 	"tabBar": {
 		"color": "@tabBarColor",
 		"selectedColor": "@tabBarSelectedColor",
@@ -69,7 +84,7 @@
 	},
 	"globalStyle": {
 		"backgroundColorContent": "@globalStyleBackgroundColor",
-		"navigationStyle":"custom"
+		"navigationStyle": "custom"
 	},
 	"uniIdRouter": {}
 }

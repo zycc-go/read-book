@@ -1,12 +1,14 @@
 <template>
-	<view :class="`rice-theme-${state.appTheme}`">
-		<rice-navbar :left-arrow="false" :height="state.statusBarHeight">
+	<view :class="`rice-theme-${state.appTheme}`" class="page">
+		<rice-navbar :left-arrow="false" :height="state.navbarHeight">
 			<template #right>
 				<view class="nav-right">
 					<rice-icon name="sun" class="nac-icon" v-if="state.appTheme==='dark'"
 						@click="onSetTheme('light')" />
 					<rice-icon name="sleep" class="nac-icon" v-else @click="onSetTheme('dark')" />
-					<rice-icon name="remind" class="nac-icon" />
+					<rice-badge :value="5">
+						<rice-icon name="remind" class="nac-icon" />
+					</rice-badge>
 				</view>
 			</template>
 		</rice-navbar>
@@ -21,18 +23,19 @@
 
 		<view class="card">
 			<rice-cell-group border>
-				<rice-cell title="时长" arrow />
-				<rice-cell title="设置" arrow />
-				<rice-cell title="关于" arrow @click="onAbout" />
-				<rice-cell title="版本" arrow />
+				<rice-cell title="活动" arrow />
+				<rice-cell title="设置" arrow @click="()=> uni.navigateTo({ url:'/pages/setting/index' })" />
+				<rice-cell title="反馈" arrow @click="()=> uni.navigateTo({ url:'/pages/feedback/index' })" />
+				<rice-cell title="关于" value="0.0.1" arrow @click="onAbout" />
 			</rice-cell-group>
 		</view>
 	</view>
 
-	<rice-dialog v-model:show="showMoreMessage" title="关于" :show-cancel-button="false" :message="message"
-		confirm-button-text="知道了">
-	</rice-dialog>
+	<!-- <custom-tab-bar direction="horizontal" :show-icon="false"/> -->
 
+	<rice-dialog v-model:show="showMoreMessage" title="关于" :show-cancel-button="false" :message="message"
+		confirm-button-text="知道了" message-align="left">
+	</rice-dialog>
 </template>
 
 <script setup lang="uts">
@@ -54,10 +57,10 @@
 		showMoreMessage.value = true
 	}
 
-	const onSetTheme = (val : string) => {
-		setTheme(val as 'light' | 'dark')
+	const onSetTheme = (val : "light" | "dark") => {
+		setTheme(val)
 		setAppTheme(val)
-		if (uni.setAppTheme != null) {
+		if (uni.setAppTheme) {
 			uni.setAppTheme({
 				theme: val as "light" | "dark" | "auto",
 				success: function () {
@@ -76,9 +79,16 @@
 </script>
 
 <style lang="scss" scoped>
+	.page {
+		background-color: var(--rice-navbar-background);
+		height: 100%;
+		width: 100%;
+	}
+
 	.nav-right {
 		display: flex;
 		flex-direction: row;
+		overflow: initial;
 		margin-right: $uni-spacing-row-lg;
 
 		.nac-icon {
@@ -113,5 +123,10 @@
 	.card {
 		padding: $uni-spacing-col-lg $uni-spacing-row-lg;
 		margin-top: $uni-spacing-col-base;
+
+		:deep(.rice-icon) {
+			display: flex;
+			align-items: center;
+		}
 	}
 </style>

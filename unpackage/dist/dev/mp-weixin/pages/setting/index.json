@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "",
+  "bounces": "none",
+  "usingComponents": {
+    "rice-navbar": "../../uni_modules/rice-ui/components/rice-navbar/rice-navbar",
+    "rice-switch": "../../uni_modules/rice-ui/components/rice-switch/rice-switch",
+    "rice-cell": "../../uni_modules/rice-ui/components/rice-cell/rice-cell",
+    "rice-cell-group": "../../uni_modules/rice-ui/components/rice-cell-group/rice-cell-group"
+  }
+}

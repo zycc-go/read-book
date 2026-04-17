@@ -1,5 +1,5 @@
 {
-	"name": "看小说",
+	"name": "测试",
 	"appid": "__UNI__4CF4B90",
 	"description": "看小说的app",
 	"versionName": "1.0.0",
@@ -16,7 +16,8 @@
 			"postcss": true,
 			"minified": true
 		},
-		"usingComponents": true
+		"usingComponents": true,
+		"lazyCodeLoading": "requiredComponents"
 	},
 	"mp-alipay": {
 		"usingComponents": true

@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "usingComponents": {
+    "rice-radio": "../../uni_modules/rice-ui/components/rice-radio/rice-radio",
+    "rice-radio-group": "../../uni_modules/rice-ui/components/rice-radio-group/rice-radio-group",
+    "rice-collapse-item": "../../uni_modules/rice-ui/components/rice-collapse-item/rice-collapse-item",
+    "rice-collapse": "../../uni_modules/rice-ui/components/rice-collapse/rice-collapse",
+    "rice-popup": "../../uni_modules/rice-ui/components/rice-popup/rice-popup"
+  }
+}
