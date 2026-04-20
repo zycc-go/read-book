@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -22,22 +22,23 @@ open class GenPagesDiscussIndex : BasePage {
             val _cache = __ins.renderCache
             val title = ref("discuss")
             return fun(): Any? {
-                return _cE("view", null, _uA(
-                    _cE("image", _uM("class" to "logo", "src" to "/static/logo.png")),
-                    _cE("text", _uM("class" to "title"), _tD(unref(title)), 1)
-                ))
+                val _component_rice_notice_bar = resolveEasyComponent("rice-notice-bar", GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBarClass)
+                return _cE("view", _uM("class" to _nC(_uA(
+                    "rice-theme-" + unref(state).appTheme,
+                    "page"
+                )), "style" to _nS(_uM("paddingTop" to ("" + unref(state).statusBarHeight + "px")))), _uA(
+                    _cV(_component_rice_notice_bar, _uM("message" to "无语，秋风和老去的誓言，灰色的日子慢慢过去，骄阳无忌，人如黄花。夕阳西下几时回。", "left-icon" to "volume"))
+                ), 6)
             }
         }
         val styles: Map<String, Map<String, Map<String, Any>>> by lazy {
             _nCS(_uA(
                 styles0
-            ), _uA(
-                GenApp.styles
             ))
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("logo" to _pS(_uM("height" to 100, "width" to 100, "marginTop" to 100, "marginRight" to "auto", "marginBottom" to 25, "marginLeft" to "auto")), "title" to _pS(_uM("fontSize" to 18, "color" to "#8f8f94", "textAlign" to "center")))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

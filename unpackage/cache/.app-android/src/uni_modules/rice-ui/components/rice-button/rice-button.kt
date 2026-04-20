@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -305,7 +305,7 @@ open class GenUniModulesRiceUiComponentsRiceButtonRiceButton : VueComponent {
                         _cC("v-if", true)
                     }
                     ,
-                    renderSlot(_ctx.`$slots`, "default", UTSJSONObject(), fun(): UTSArray<Any> {
+                    renderSlot(_ctx.`$slots`, "default", _uO(), fun(): UTSArray<Any> {
                         return _uA(
                             if (isTrue(unref(hasStrValue)(_ctx.text))) {
                                 _cE("text", _uM("key" to 0, "class" to _nC(unref(textClass)), "style" to _nS(unref(textStyle))), _tD(unref(btnText)), 7)
@@ -358,7 +358,7 @@ open class GenUniModulesRiceUiComponentsRiceButtonRiceButton : VueComponent {
             "String",
             "Number"
         ), "required" to false), "openType" to _uM("type" to "String", "required" to false), "formType" to _uM("type" to "String", "required" to false), "lang" to _uM("type" to "String", "required" to false), "sessionFrom" to _uM("type" to "String", "required" to false), "sendMessageTitle" to _uM("type" to "String", "required" to false), "sendMessageImg" to _uM("type" to "String", "required" to false), "sendMessagePath" to _uM("type" to "String", "required" to false), "showMessageCard" to _uM("type" to "String", "required" to false), "appParameter" to _uM("type" to "String", "required" to false), "to" to _uM("type" to "String", "required" to false), "customStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         )))
         var propsNeedCastKeys = _uA(

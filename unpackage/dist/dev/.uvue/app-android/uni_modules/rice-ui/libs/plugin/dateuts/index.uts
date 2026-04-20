@@ -353,7 +353,7 @@ export class Dateuts {
     subtract(num: number, unit: DateUnits): Dateuts {
         return this.add(num * -1, unit);
     }
-    diff(input: string | number | number[] | Date | Dateuts, unit: DateUnits = 'millisecond', float: boolean = false): number {
+    diff(input: string | number | Date | number[] | Dateuts, unit: DateUnits = 'millisecond', float: boolean = false): number {
         const that = dateuts(input);
         const zoneDelta = (that.utcOffset() - this.utcOffset()) * MILLISECONDS_A_MINUTE;
         const diff = this.valueOf() - that.valueOf();
@@ -413,23 +413,23 @@ export class Dateuts {
             milliseconds: this.$ms,
         } as DateObject;
     }
-    isBefore(date: string | number | number[] | Date | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
+    isBefore(date: string | number | Date | number[] | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
         return this.endOf(unit).valueOf() < dateuts(date).valueOf();
     }
-    isSame(date: string | number | number[] | Date | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
+    isSame(date: string | number | Date | number[] | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
         const other = dateuts(date).valueOf();
         return this.startOf(unit).valueOf() <= other && other <= this.endOf(unit).valueOf();
     }
-    isAfter(date: string | number | number[] | Date | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
+    isAfter(date: string | number | Date | number[] | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
         return dateuts(date).valueOf() < this.startOf(unit).valueOf();
     }
-    isSameOrBefore(date: string | number | number[] | Date | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
+    isSameOrBefore(date: string | number | Date | number[] | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
         return this.isSame(date, unit) || this.isBefore(date, unit);
     }
-    isSameOrAfter(date: string | number | number[] | Date | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
+    isSameOrAfter(date: string | number | Date | number[] | Dateuts = "", unit: DateUnits = "millisecond"): boolean {
         return this.isSame(date, unit) || this.isAfter(date, unit);
     }
-    isBetween(date1: string | number | number[] | Date | Dateuts = "", date2: string | number | number[] | Date | Dateuts = "", unit: DateUnits = "millisecond", i = "()"): boolean {
+    isBetween(date1: string | number | Date | number[] | Dateuts = "", date2: string | number | Date | number[] | Dateuts = "", unit: DateUnits = "millisecond", i = "()"): boolean {
         const dA = dateuts(date1);
         const dB = dateuts(date2);
         let str = i.length == 2 ? i : '()';
@@ -448,7 +448,7 @@ export class Dateuts {
         return ((this.$y % 4 == 0) && (this.$y % 100 != 0)) || (this.$y % 400 == 0);
     }
 }
-export function dateuts(date: string | number | number[] | Date | Dateuts = "", customFormat = ""): Dateuts {
+export function dateuts(date: string | number | Date | number[] | Dateuts = "", customFormat = ""): Dateuts {
     if (isDateuts(date)) {
         // @ts-ignore
         return (date as Dateuts).clone();

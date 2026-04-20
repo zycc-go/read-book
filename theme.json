@@ -12,7 +12,8 @@
 		"tabBarSelectedIconPath3": "static/image/comment.png",
 		"tabBarIconPath4": "static/image/manager-o.png",
 		"tabBarSelectedIconPath4": "static/image/manager.png",
-		"globalStyleBackgroundColor": "#f5f5f5"
+		"globalStyleBackgroundColor": "#f5f5f5",
+		"globalStyleNavigationBarTextStyle": "black"
 	},
 	"dark": {
 		"tabBarColor": "#e6e6e6",
@@ -27,6 +28,7 @@
 		"tabBarSelectedIconPath3": "static/image/comment.png",
 		"tabBarIconPath4": "static/image/manager-w.png",
 		"tabBarSelectedIconPath4": "static/image/manager.png",
-		"globalStyleBackgroundColor": "#181818"
+		"globalStyleBackgroundColor": "#181818",
+		"globalStyleNavigationBarTextStyle": "white"
 	}
 }

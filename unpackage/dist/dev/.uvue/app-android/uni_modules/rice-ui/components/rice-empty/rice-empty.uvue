@@ -1,0 +1,104 @@
+import { addUnit, hasStrValue } from '../../libs/utils';
+import { useNamespace } from '../../libs/use';
+import { EmptyProps } from './type.uts';
+const __sfc__ = defineComponent({
+    __name: 'rice-empty',
+    name: 'rice-empty',
+    props: {
+        image: { type: String, required: false, default: 'empty' },
+        width: { type: [String, Number], required: false },
+        height: { type: [String, Number], required: false },
+        text: { type: String, required: false },
+        textColor: { type: String, required: false },
+        textSize: { type: [String, Number], required: false },
+        marginTop: { type: [String, Number], required: false },
+        customStyle: { type: UTSJSONObject, required: false, default: (): UTSJSONObject => ({}) }
+    },
+    setup(__props) {
+        const __ins = getCurrentInstance()!;
+        const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
+        const _cache = __ins.renderCache;
+        /**
+         * @description Empty 空状态
+         * @property {String} image 图片类型或URL，可选值为 `empty` `error` `network` `search`，或者图片URL
+         * @value empty 空内容
+         * @value error 错误
+         * @value network 网络错误
+         * @value search 搜索为空
+         * @property {String|Number} width 图片的宽度
+         * @property {String|Number} height 图片的高度
+         * @property {String} text 图片下方的描述文字
+         * @property {String} textColor 描述文字的颜色
+         * @property {String|Number} textSize 描述文字的大小
+         * @property {String|Number} marginTop 组件到上一个元素的间距
+         * @property {Object} customStyle 自定义样式
+         */
+        const ns = useNamespace('empty');
+        const props = __props;
+        const imageSrc = computed((): string => {
+            if (props.image == 'empty') {
+                return '';
+            }
+            else if (props.image == 'error') {
+                return '';
+            }
+            else if (props.image == 'network') {
+                return '';
+            }
+            else if (props.image == 'search') {
+                return '';
+            }
+            return props.image;
+        });
+        const emptyStyle = computed((): Map<string, string> => {
+            const css = new Map<string, string>();
+            if (props.marginTop != null)
+                css.set('marginTop', addUnit(props.marginTop!));
+            return css;
+        });
+        const imageStyle = computed((): Map<string, string> => {
+            const css = new Map<string, string>();
+            if (props.width != null)
+                css.set('width', addUnit(props.width!));
+            if (props.height != null)
+                css.set('height', addUnit(props.height!));
+            return css;
+        });
+        const textStyle = computed((): Map<string, string> => {
+            const css = new Map<string, string>();
+            if (props.textSize != null)
+                css.set('text-size', addUnit(props.textSize!));
+            if (props.textColor != null)
+                css.set('color', props.textColor!);
+            return css;
+        });
+        return (): any | null => {
+            return _cE("view", _uM({
+                class: _nC([unref(ns).b(''), unref(ns).theme()]),
+                style: _nS([unref(emptyStyle), _ctx.customStyle])
+            }), [
+                renderSlot(_ctx.$slots, "image", {}, (): any[] => [
+                    _cE("image", _uM({
+                        class: "rice-empty__image",
+                        src: unref(imageSrc),
+                        style: _nS(unref(imageStyle))
+                    }), null, 12 /* STYLE, PROPS */, ["src"])
+                ]),
+                renderSlot(_ctx.$slots, "text", {}, (): any[] => [
+                    isTrue(unref(hasStrValue)(_ctx.text))
+                        ? _cE("text", _uM({
+                            key: 0,
+                            class: "rice-empty__text",
+                            style: _nS(unref(textStyle))
+                        }), _tD(_ctx.text), 5 /* TEXT, STYLE */)
+                        : _cC("v-if", true)
+                ]),
+                renderSlot(_ctx.$slots, "default")
+            ], 6 /* CLASS, STYLE */);
+        };
+    }
+});
+export default __sfc__;
+export type RiceEmptyComponentPublicInstance = InstanceType<typeof __sfc__>;
+const GenUniModulesRiceUiComponentsRiceEmptyRiceEmptyStyles = [_uM([["rice-empty", _pS(_uM([["flexDirection", "column"], ["alignItems", "center"], ["justifyContent", "center"], ["boxSizing", "border-box"], ["paddingTop", "var(--rice-padding-md)"], ["paddingRight", 0], ["paddingBottom", "var(--rice-padding-md)"], ["paddingLeft", 0]]))], ["rice-empty__image", _pS(_uM([["height", 160], ["width", 160]]))], ["rice-empty__text", _pS(_uM([["fontSize", "var(--rice-font-size-sm)"], ["color", "var(--rice-text-color-2)"], ["marginTop", "var(--rice-padding-md)"], ["paddingTop", 0], ["paddingRight", "var(--rice-padding-md)"], ["paddingBottom", 0], ["paddingLeft", "var(--rice-padding-md)"]]))]])];
+//# sourceMappingURL=rice-empty.uvue.map

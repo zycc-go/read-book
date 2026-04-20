@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -307,9 +307,7 @@ open class GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet : VueComp
                                         handleSelect(item, index)
                                     }), _uA(
                                         if (isTrue(unref(hasStrValue)(item.icon))) {
-                                            _cV(_component_rice_icon, _uM("key" to 0, "color" to getIconColor(item), "name" to item.icon, "size" to item.iconSize, "custom-style" to object : UTSJSONObject() {
-                                                var marginRight = "6px"
-                                            }), null, 8, _uA(
+                                            _cV(_component_rice_icon, _uM("key" to 0, "color" to getIconColor(item), "name" to item.icon, "size" to item.iconSize, "custom-style" to _uO("marginRight" to "6px")), null, 8, _uA(
                                                 "color",
                                                 "name",
                                                 "size"
@@ -365,7 +363,7 @@ open class GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet : VueComp
             "Number",
             "String"
         ), "required" to false, "default" to "12px"), "safeAreaInsetBottom" to _uM("type" to "Boolean", "required" to false, "default" to true), "useDialogPage" to _uM("type" to "Boolean", "required" to false, "default" to true), "customStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         ), "select" to _uM("type" to "Function", "required" to false), "cancel" to _uM("type" to "Function", "required" to false), "clickOverlay" to _uM("type" to "Function", "required" to false), "open" to _uM("type" to "Function", "required" to false), "close" to _uM("type" to "Function", "required" to false), "opened" to _uM("type" to "Function", "required" to false), "closed" to _uM("type" to "Function", "required" to false), "ready" to _uM("type" to "Function", "required" to false), "fail" to _uM("type" to "Function", "required" to false), "show" to _uM("type" to "Boolean", "default" to false)))
         var propsNeedCastKeys = _uA(

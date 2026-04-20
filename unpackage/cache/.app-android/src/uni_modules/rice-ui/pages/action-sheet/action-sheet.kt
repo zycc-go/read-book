@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -102,7 +102,7 @@ open class GenUniModulesRiceUiPagesActionSheetActionSheet : BasePage {
                         params.value = data
                     }
                     )
-                    uni__emit(readyEventName!!, UTSJSONObject())
+                    uni__emit(readyEventName!!, _uO())
                 }
             }
             )
@@ -159,9 +159,7 @@ open class GenUniModulesRiceUiPagesActionSheetActionSheet : BasePage {
         }
         var name = "rice-action-sheet-page"
         val styles: Map<String, Map<String, Map<String, Any>>> by lazy {
-            _nCS(_uA(), _uA(
-                GenApp.styles
-            ))
+            _nCS(_uA())
         }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

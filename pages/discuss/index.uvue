@@ -1,24 +1,19 @@
 <template>
-	<view>
-		<image class="logo" src="/static/logo.png"></image>
-		<text class="title">{{title}}</text>
+	<view :class="`rice-theme-${state.appTheme}`" class="page" :style="{ paddingTop:`${state.statusBarHeight}px`}">
+		<rice-notice-bar message="无语，秋风和老去的誓言，灰色的日子慢慢过去，骄阳无忌，人如黄花。夕阳西下几时回。" left-icon="volume"></rice-notice-bar>
 	</view>
 </template>
 
 <script setup lang="uts">
+	import { state, setAppTheme } from '@/store/index.uts'
+
 	const title = ref('discuss')
 </script>
 
 <style>
-	.logo {
-		height: 100px;
-		width: 100px;
-		margin: 100px auto 25px auto;
-	}
-
-	.title {
-		font-size: 18px;
-		color: #8f8f94;
-		text-align: center;
+	.page {
+		background-color: var(--rice-navbar-background);
+		height: 100%;
+		width: 100%;
 	}
 </style>

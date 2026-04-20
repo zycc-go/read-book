@@ -1,5 +1,6 @@
 <script lang="uts">
-	import { checkSystemInfo } from '@/store/index.uts'
+	import { checkSystemInfo, state } from '@/store/index.uts'
+	import { setTheme } from "@/uni_modules/rice-ui"
 	// #ifdef APP-ANDROID || APP-HARMONY
 	let firstBackTime = 0
 	// #endif
@@ -10,6 +11,13 @@
 		},
 		onShow() {
 			console.log('App Show')
+			uni.onAppThemeChange((res : AppThemeChangeResult) => {
+				// state.appTheme = osTheme;
+				// setTheme(osTheme)
+				// uni.setAppTheme({ theme: osTheme })
+				// uni.setStorageSync('appTheme', osTheme)
+				// state.appTheme = res.appTheme.trim() ?? 'light';
+			})
 		},
 		onHide() {
 			console.log('App Hide')
@@ -41,4 +49,5 @@
 <style>
 	@import "@/uni_modules/rice-ui/libs/style/index.css";
 	@import "@/static/css/theme.css";
+	@import "@/static/css/reset.css";
 </style>

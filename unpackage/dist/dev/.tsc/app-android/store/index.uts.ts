@@ -5,9 +5,27 @@ export type UserInfo = {
 	avatarUrl ?: string
 }
 
+export interface Book {
+	id : string
+	title : string
+	author ?: string
+	cover ?: string
+	category ?: string
+	progress ?: number
+	hasUnread ?: boolean
+	lastChapter ?: string
+	lastReadTime ?: number
+}
+
 type State = {
 	// 状态栏高度
 	statusBarHeight : number,
+	// 导航栏高度
+	navbarHeight : number,
+	// 全面屏操作条高度
+	safeAreaInsetsHeight : number,
+	// 平台
+	uniPlatform : string,
 	// 设备像素比
 	devicePixelRatio : number
 	// 当前激活的tab页
@@ -15,8 +33,12 @@ type State = {
 	leftWinActive : string
 	// 是否同意隐私政策
 	agreeToPrivacy : boolean | null
-	// 主题
-	appTheme : 'light' | 'dark'
+	// 是否跟随系统主题
+	isFollowSystem : boolean
+	// app主题
+	appTheme : "light" | "dark"
+	// 系统主题
+	osTheme : "light" | "dark"
 	// 是否无网环境
 	netless : boolean,
 	// 登录用户信息
@@ -24,25 +46,23 @@ type State = {
 }
 
 export const state = reactive({
-	statusBarHeight: 56,
+	statusBarHeight: 0,
+	navbarHeight: 56,
+	safeAreaInsetsHeight: 0,
+	uniPlatform: '',
 	devicePixelRatio: 1,
 	active: 'componentPage',
-	leftWinActive: '/pages/component/view/view',
+	leftWinActive: '/pages/bookcase/index',
 	appTheme: 'light',
+	osTheme: 'light',
+	isFollowSystem: false,
 	netless: false,
-	userInfo: null
+	userInfo: null,
+	agreeToPrivacy: null
 } as State)
-
-export const setAppTheme = (appTheme : string) => {
-	state.appTheme = appTheme as 'light' | 'dark'
-}
 
 export const setUserInfo = (userInfo : UserInfo | null) => {
 	state.userInfo = userInfo
-}
-
-export const setStatusBarHeight = (height : number) => {
-	state.statusBarHeight = height
 }
 
 export const setDevicePixelRatio = (devicePixelRatio : number) => {
@@ -57,29 +77,47 @@ export const setLeftWinActive = (leftWinActive : string) => {
 	state.leftWinActive = leftWinActive
 }
 
-// 检查系统主题
-export const checkSystemTheme = () => {
-
-
-
-
-
-
-
-
-	uni.getSystemInfo({
-		success: (res : GetSystemInfoResult) => {
-			const appTheme = res.appTheme == "auto" ? res.osTheme! : res.appTheme!
-			state.appTheme = appTheme.trim() ?? 'light';
-		}
-	})
-	uni.onAppThemeChange((res : AppThemeChangeResult) => {
-		state.appTheme = res.appTheme.trim() ?? 'light';
-	})
-	setTheme(state.appTheme)
-
-}
-
 export const setNetless = (netless : boolean) => {
 	state.netless = netless
+}
+
+export const setAppTheme = (value : "light" | "dark") => {
+	state.appTheme = value
+	uni.setStorageSync('appTheme', value)
+}
+
+export const setIsFollowSystem = (value : boolean) => {
+	state.isFollowSystem = value
+	uni.setStorageSync('isFollowSystem', value)
+}
+
+// 检查系统
+export const checkSystemInfo = () => {
+	const appBaseInfo : GetAppBaseInfoResult = uni.getAppBaseInfo()
+	const deviceInfo : GetDeviceInfoResult = uni.getDeviceInfo()
+	const windowInfo = uni.getWindowInfo()
+	state.uniPlatform = appBaseInfo.uniPlatform ?? ''
+	state.statusBarHeight = windowInfo.statusBarHeight
+	state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom
+	if (appBaseInfo.uniPlatform === 'app') {
+		try {
+			const isFollowSystem = uni.getStorageSync('isFollowSystem') === '' ? false : uni.getStorageSync('isFollowSystem') as boolean
+			const osTheme = deviceInfo.osTheme ?? 'dark';
+			state.osTheme = osTheme;
+			state.isFollowSystem = isFollowSystem;
+			uni.setStorageSync('osTheme', osTheme)
+			if (isFollowSystem) {
+				uni.setAppTheme({ theme: osTheme })
+				setTheme(osTheme)
+				setAppTheme(osTheme)
+			} else {
+				const appTheme = uni.getStorageSync('appTheme') as 'dark' | 'light' ?? 'light'
+				uni.setAppTheme({ theme: appTheme })
+				setTheme(appTheme)
+				state.appTheme = appTheme;
+			}
+		} catch (e) {
+			__f__('log','at store/index.uts:120',`${e} 失败`)
+		}
+	}
 }

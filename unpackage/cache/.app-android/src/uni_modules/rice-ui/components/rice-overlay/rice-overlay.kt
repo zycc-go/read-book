@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -141,7 +141,7 @@ open class GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay : VueComponent {
         var inject: Map<String, Map<String, Any?>> = _uM()
         var emits: Map<String, Any?> = _uM("click" to null, "opened" to null, "closed" to null, "update:show" to null)
         var props = _nP(_uM("zIndex" to _uM("type" to "Number", "required" to false, "default" to 998), "closeOnClickOverlay" to _uM("type" to "Boolean", "required" to false, "default" to true), "duration" to _uM("type" to "Number", "required" to false, "default" to 300), "bgColor" to _uM("type" to "String", "required" to false), "customStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         ), "show" to _uM("type" to "Boolean", "default" to false)))
         var propsNeedCastKeys = _uA(

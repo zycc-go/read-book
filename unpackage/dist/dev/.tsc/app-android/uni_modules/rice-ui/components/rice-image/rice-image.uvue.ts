@@ -1,0 +1,210 @@
+import _easycom_rice_icon from '@/uni_modules/rice-ui/components/rice-icon/rice-icon.uvue'
+import { addUnit, clamp, hasStrValue } from "../../libs/utils"
+	import { useNamespace } from '../../libs/use';
+	import { isDark } from "../../libs/store";
+	import { ImageProps } from "./type.uts"
+	
+const __sfc__ = defineComponent({
+  __name: 'rice-image',
+
+		name: 'rice-image'
+	,
+  props: {
+    src: { type: String, required: false, default: "" },
+    mode: { type: String, required: false, default: 'scaleToFill' },
+    width: { type: [String, Number], required: false },
+    height: { type: [String, Number], required: false },
+    round: { type: Boolean, required: false },
+    radius: { type: [String, Number], required: false },
+    showError: { type: Boolean, required: false, default: true },
+    showLoading: { type: Boolean, required: false, default: true },
+    errorIcon: { type: String, required: false, default: 'photo-fail' },
+    loadingIcon: { type: String, required: false, default: "photo" },
+    iconSize: { type: String, required: false, default: "30px" },
+    iconColor: { type: String, required: false },
+    bgColor: { type: String, required: false },
+    preview: { type: Boolean, required: false, default: false },
+    previewSrcList: { type: Array as PropType<string[]>, required: false },
+    previewIndex: { type: Number, required: false },
+    lazyLoad: { type: Boolean, required: false, default: false },
+    fadeShow: { type: Boolean, required: false, default: false },
+    webp: { type: Boolean, required: false, default: true },
+    showMenuByLongpress: { type: Boolean, required: false, default: false },
+    draggable: { type: Boolean, required: false, default: false },
+    customStyle: { type: UTSJSONObject, required: false, default: () : UTSJSONObject => ({}) }
+  },
+  emits: ["click", "load", "error"],
+  setup(__props) {
+const __ins = getCurrentInstance()!;
+const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
+const _cache = __ins.renderCache;
+
+	/**
+	 * @description Image 图片
+	 * @property {String} src 图片地址
+	 * @property {String} mode 图片裁剪、缩放的模式，等同于官方`image`组件的`mode`，默认 `scaleToFill`
+	 * @property {String|Number} width 宽度 
+	 * @property {String|Number} height 高度 
+	 * @property {Boolean} round 是否圆形
+	 * @property {String|Number} radius 圆角
+	 * @property {Boolean} showError 是否展示图片加载失败的提示，默认 true
+	 * @property {Boolean} showLoading 是否展示图片加载中的提示，默认 true
+	 * @property {String} errorIcon 失败时提示的图标名称图片链接
+	 * @property {String|Number} iconSize 加载图片和失败图片的大小，默认32px
+	 * @property {String} iconColor 加载图片和失败图片的颜色
+	 * @property {String} bgColor 背景颜色
+	 * @property {Boolean} preview 是否开启图片预览功能，默认false
+	 * @property {Array} previewSrcList 要进行预览图片的合集
+	 * @property {Number} previewIndex 初始预览图像索引，要小于previewSrcList的长度
+	 * @property {Boolean} lazyLoad 图片懒加载。只针对page与scroll-view下的image有效。 安卓默认懒加载不支持修改，等同于官方`image`组件的`lazyLoad`
+	 * @property {Boolean} fadeShow 图片显示动画效果，等同于官方`image`组件的`fadeShow`
+	 * @property {Boolean} webp 是否支持 webP 格式，等同于官方`image`组件的`webp`
+	 * @property {Boolean} showMenuByLongpress 开启长按图片显示识别小程序码菜单，等同于官方`image`组件的`showMenuByLongpress`
+	 * @property {Boolean} draggable 鼠标长按是否能拖动图片(仅H5平台)，等同于官方`image`组件的`draggable`
+	 * @property {Object} customStyle 自定义样式
+	 */
+	
+	const ns = useNamespace('image')
+	function emit(event: string, ...do_not_transform_spread: Array<any | null>) {
+__ins.emit(event, ...do_not_transform_spread)
+}
+
+	const props = __props
+
+	const _iconColor = computed<string>(() => props.iconColor ?? (isDark.value ? '#8d9095' : '#dcdee0'))
+
+	const error = ref(false)
+	const loading = ref(true)
+
+
+	watch(() : string | null => props.src, () => {
+		error.value = false;
+		loading.value = true
+	})
+
+	const handleLoad = (event : UniImageLoadEvent) => {
+		error.value = false
+		if (loading.value) {
+			loading.value = false
+			emit('load', event)
+		}
+	}
+
+	const handleError = (event : UniImageErrorEvent) => {
+		error.value = true
+		loading.value = false
+		emit('error', event)
+	}
+
+	const handleClick = () => {
+		if (loading.value || error.value) return
+		const hasPreviewList = Array.isArray(props.previewSrcList) && props.previewSrcList.length > 0
+		if (props.preview || hasPreviewList) {
+			const urls = hasPreviewList ? props.previewSrcList! : [props.src]
+			let current = props.previewIndex ?? urls.findIndex(v => v == props.src)
+			current = clamp(current, 0, urls.length - 1)
+			console.log('current', current, " at uni_modules/rice-ui/components/rice-image/rice-image.uvue:109")
+			uni.previewImage({
+				urls,
+				current
+			})
+			return
+		}
+		emit('click')
+	}
+
+
+	const imageStyle = computed(() => {
+		const css = new Map<string, string>()
+		if (props.height != null) css.set('height', addUnit(props.height!))
+		if (props.width != null) css.set('width', addUnit(props.width!))
+		if (props.radius != null) css.set('border-radius', addUnit(props.radius!))
+		if (props.bgColor != null) css.set('background-color', props.bgColor)
+		return css
+	})
+
+	const imgStyle = computed(() => {
+		const css = new Map<string, string>()
+		if (props.radius != null) css.set('border-radius', addUnit(props.radius!))
+		return css
+	})
+
+	const imageClass = computed(() => {
+		return [
+			ns.b(""),
+			ns.theme(),
+			ns.is("round", props.round == true),
+		]
+	})
+
+	const imgClass = computed(() => {
+		return [
+			ns.e("img"),
+			ns.is("round", props.round == true),
+		]
+	})
+
+return (): any | null => {
+
+const _component_rice_icon = resolveEasyComponent("rice-icon",_easycom_rice_icon)
+
+  return _cE("view", _uM({
+    class: _nC(unref(imageClass)),
+    style: _nS([unref(imageStyle),_ctx.customStyle]),
+    onClick: handleClick
+  }), [
+    isTrue(unref(error))
+      ? _cE("view", _uM({
+          key: 0,
+          class: _nC(unref(ns).e('error'))
+        }), [
+          renderSlot(_ctx.$slots, "error", {}, (): any[] => [
+            isTrue(_ctx.showError)
+              ? _cV(_component_rice_icon, _uM({
+                  key: 0,
+                  name: _ctx.errorIcon,
+                  size: _ctx.iconSize,
+                  color: unref(_iconColor)
+                }), null, 8 /* PROPS */, ["name", "size", "color"])
+              : _cC("v-if", true)
+          ])
+        ], 2 /* CLASS */)
+      : _cE("image", _uM({
+          key: 1,
+          class: _nC(unref(imgClass)),
+          src: _ctx.src,
+          mode: _ctx.mode,
+          lazyLoad: _ctx.lazyLoad,
+          fadeShow: _ctx.fadeShow,
+          webp: _ctx.webp,
+          showMenuByLongpress: _ctx.showMenuByLongpress,
+          draggable: _ctx.draggable,
+          style: _nS(unref(imgStyle)),
+          onLoad: handleLoad,
+          onError: handleError
+        }), null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, ["src", "mode", "lazyLoad", "fadeShow", "webp", "showMenuByLongpress", "draggable"]),
+    isTrue(unref(loading))
+      ? _cE("view", _uM({
+          key: 2,
+          class: _nC(unref(ns).e('loading'))
+        }), [
+          renderSlot(_ctx.$slots, "loading", {}, (): any[] => [
+            isTrue(_ctx.showLoading)
+              ? _cV(_component_rice_icon, _uM({
+                  key: 0,
+                  name: _ctx.loadingIcon,
+                  size: _ctx.iconSize,
+                  color: unref(_iconColor)
+                }), null, 8 /* PROPS */, ["name", "size", "color"])
+              : _cC("v-if", true)
+          ])
+        ], 2 /* CLASS */)
+      : _cC("v-if", true)
+  ], 6 /* CLASS, STYLE */)
+}
+}
+
+})
+export default __sfc__
+export type RiceImageComponentPublicInstance = InstanceType<typeof __sfc__>;
+const GenUniModulesRiceUiComponentsRiceImageRiceImageStyles = [_uM([["rice-image", _pS(_uM([["position", "relative"]]))], ["rice-image__img", _pS(_uM([["height", "100%"], ["width", "100%"]]))], ["rice-image--round", _pS(_uM([["borderTopLeftRadius", 999], ["borderTopRightRadius", 999], ["borderBottomRightRadius", 999], ["borderBottomLeftRadius", 999]]))], ["rice-image__loading", _pS(_uM([["position", "absolute"], ["top", 0], ["left", 0], ["width", "100%"], ["height", "100%"], ["alignItems", "center"], ["justifyContent", "center"], ["backgroundImage", "none"], ["backgroundColor", "var(--rice-image-placeholder-background)"]]))], ["rice-image__error", _pS(_uM([["position", "absolute"], ["top", 0], ["left", 0], ["width", "100%"], ["height", "100%"], ["alignItems", "center"], ["justifyContent", "center"], ["backgroundImage", "none"], ["backgroundColor", "var(--rice-image-placeholder-background)"]]))]])]

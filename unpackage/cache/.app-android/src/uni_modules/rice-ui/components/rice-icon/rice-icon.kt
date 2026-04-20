@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -98,7 +98,7 @@ open class GenUniModulesRiceUiComponentsRiceIconRiceIcon : VueComponent {
                         unref(iconStyle),
                         _ctx.customStyle
                     )), "onClick" to iconClick), _uA(
-                        renderSlot(_ctx.`$slots`, "default", UTSJSONObject(), fun(): UTSArray<Any> {
+                        renderSlot(_ctx.`$slots`, "default", _uO(), fun(): UTSArray<Any> {
                             return _uA(
                                 _tD(unref(iconCode))
                             )
@@ -131,7 +131,7 @@ open class GenUniModulesRiceUiComponentsRiceIconRiceIcon : VueComponent {
             "String",
             "Number"
         ), "required" to false), "color" to _uM("type" to "String", "required" to false), "bold" to _uM("type" to "Boolean", "required" to false), "fontFamily" to _uM("type" to "String", "required" to false), "stop" to _uM("type" to "Boolean", "required" to false, "default" to false), "customStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         ), "customClass" to _uM("type" to "String", "required" to false)))
         var propsNeedCastKeys = _uA(

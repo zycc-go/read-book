@@ -1,6 +1,9 @@
 <template>
 	<view :class="`rice-theme-${state.appTheme}`" class="page">
 		<rice-navbar :left-arrow="false" :height="state.navbarHeight">
+			<template #left>
+				<text class="read-time">今天阅读了30分钟</text>
+			</template>
 			<template #right>
 				<view class="nav-right">
 					<rice-icon name="search" class="nav-icon" @click="onSearch" />
@@ -34,20 +37,28 @@
 					</rice-grid-item>
 				</rice-grid> -->
 				<view class="book-list">
-					<view class="book-li" v-for="item in bookList" :key="item.id" @click="onBookClick(item)">
+					<view v-for="(item, index) in bookList" :key="item.id"
+						:class="index > 0 ? 'book-li book-li-top' : 'book-li'" @click="onBookClick(item)">
 						<view class="book-li-avatar">
-							<rice-image width="100%" height="100%" src="/static/logo.png" mode="aspectFill" radius="8px"/>
+							<rice-image width="100%" height="100%" src="/static/logo.png" mode="aspectFill"
+								radius="8px" />
 						</view>
 						<view class="book-li-content">
-							<text>{{ item.title }}</text>
-							<view class="flex">
-								<text>{{ item.author }}</text>
-								<text>{{ item.lastUpdateTime }}</text>
+							<text class="book-title">{{ item?.title }}</text>
+							<view class="book-li-row">
+								<text class="book-sub">{{ item?.author }}</text>
+								<text class="book-sub">·{{ item?.lastUpdateTime }}</text>
 							</view>
-							<text>{{ item.readChapter }}</text>
-							<text>{{ item.lastChapter }}</text>
+							<view class="book-li-row">
+								<text class="book-sub-dot">最新</text>
+								<text class="book-sub">&nbsp;{{ item?.lastChapter }}</text>
+							</view>
+							<view class="book-li-row">
+								<text class="book-sub-dot">当前</text>
+								<text class="book-sub">&nbsp;{{ item?.readChapter }}</text>
+							</view>
 						</view>
-						<rice-icon name="edit" class="book-li-more" size="24"/>
+						<rice-icon name="info" class="book-li-more" size="24" />
 					</view>
 				</view>
 			</view>
@@ -58,7 +69,7 @@
 <script setup lang="uts">
 	import { setTheme, showActionSheet, ActionSheetAction } from "@/uni_modules/rice-ui"
 	import { state, setAppTheme } from '@/store/index.uts'
-	import { bookList } from '@/data/book'
+	import { bookList, type BookItem } from '@/data/book'
 
 
 	const onShowMenu = () => {
@@ -71,7 +82,7 @@
 		})
 	}
 
-	const onBookClick = (book : any) => {
+	const onBookClick = (book : BookItem) => {
 		uni.navigateTo({
 			url: `/pages/library/index?bookId=${book.id}`
 		})
@@ -83,6 +94,11 @@
 		background-color: var(--rice-navbar-background);
 		height: 100%;
 		width: 100%;
+	}
+
+	.read-time {
+		font-size: $uni-font-size-sm;
+		color: var(--rice-text-color);
 	}
 
 	.nav-right {
@@ -100,13 +116,14 @@
 	.book-list {
 		padding: 0 $uni-spacing-row-base $uni-spacing-col-base;
 
+		.book-li-top {
+			margin-top: $uni-spacing-row-lg;
+		}
+
 		.book-li {
 			display: flex;
 			flex-direction: row;
 
-			&:not(:first-child) {
-				margin-top: $uni-spacing-row-lg;
-			}
 
 			.book-li-avatar {
 				width: 60px;
@@ -118,6 +135,32 @@
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
+
+				.book-li-row {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					height: 18px;
+				}
+
+				.book-title {
+					font-size: $uni-font-size-lg;
+					color: var(--rice-text-color);
+				}
+
+				.book-sub {
+					font-size: $uni-font-size-sm;
+					color: var(--rice-text-color);
+				}
+
+				.book-sub-dot {
+					padding: 2px 4px;
+					font-size: 8px;
+					line-height: 8px;
+					background-color: yellowgreen;
+					color: var(--rice-text-color);
+					border-radius: $uni-border-radius-base;
+				}
 			}
 
 			.book-li-more {

@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -17,16 +17,40 @@ import io.dcloud.uniapp.extapi.`$off` as uni__off
 import io.dcloud.uniapp.extapi.`$on` as uni__on
 import io.dcloud.uniapp.extapi.connectSocket as uni_connectSocket
 import io.dcloud.uniapp.extapi.exit as uni_exit
-import io.dcloud.uniapp.extapi.getSystemInfo as uni_getSystemInfo
+import io.dcloud.uniapp.extapi.getAppBaseInfo as uni_getAppBaseInfo
+import io.dcloud.uniapp.extapi.getDeviceInfo as uni_getDeviceInfo
+import io.dcloud.uniapp.extapi.getFileSystemManager as uni_getFileSystemManager
+import io.dcloud.uniapp.extapi.getStorageSync as uni_getStorageSync
 import io.dcloud.uniapp.extapi.getWindowInfo as uni_getWindowInfo
 import io.dcloud.uniapp.extapi.onAppThemeChange as uni_onAppThemeChange
 import io.dcloud.uniapp.extapi.openDialogPage as uni_openDialogPage
 import io.dcloud.uniapp.extapi.rpx2px as uni_rpx2px
+import io.dcloud.uniapp.extapi.setAppTheme as uni_setAppTheme
+import io.dcloud.uniapp.extapi.setStorageSync as uni_setStorageSync
 import io.dcloud.uniapp.extapi.showToast as uni_showToast
 val runBlock1 = run {
     __uniConfig.getAppStyles = fun(): Map<String, Map<String, Map<String, Any>>> {
         return GenApp.styles
     }
+}
+typealias currentPageCaptureScreenshotCallBack = (base64: String, error: String) -> Unit
+fun currentPageCaptureScreenshot(fullPage: Boolean, callback: currentPageCaptureScreenshotCallBack) {
+    val pages = getCurrentPages() as UTSArray<UniPage>
+    val currentPage = pages[pages.length - 1]
+    currentPage.vm?.`$viewToTempFilePath`(ViewToTempFilePathOptions(wholeContent = fullPage, overwrite = true, success = fun(res){
+        val fileManager = uni_getFileSystemManager()
+        fileManager.readFile(ReadFileOptions(encoding = "base64", filePath = res.tempFilePath, success = fun(readFileRes) {
+            callback(readFileRes.data as String, "")
+        }
+        , fail = fun(err) {
+            callback("", "captureScreenshot fail: " + JSON.stringify(err))
+        }
+        ))
+    }
+    , fail = fun(err){
+        callback("", "captureScreenshot fail: " + JSON.stringify(err))
+    }
+    ))
 }
 fun initRuntimeSocket(hosts: String, port: String, id: String): UTSPromise<SocketTask?> {
     if (hosts == "" || port == "" || id == "") {
@@ -70,30 +94,36 @@ fun tryConnectSocket(host: String, port: String, id: String): UTSPromise<SocketT
             resolve(null)
         }
         )
+        socket.onMessage(fun(result){
+            if (UTSAndroid.`typeof`(result["data"]) == "string") {
+                val message = UTSAndroid.consoleDebugError(JSON.parse<UTSJSONObject>(result["data"] as String), " at ../../../../../../../../Install/HBuilderX/plugins/uniapp-cli-vite/node_modules/@dcloudio/uni-console/src/runtime/app/socket.ts:67")!!
+                if ((message["type"] as String) == "screencap") {
+                    val id = message["id"] as String
+                    currentPageCaptureScreenshot(message["fullPage"] as Boolean, fun(base64: String, error: String){
+                        socket.send(SendSocketMessageOptions(data = JSON.stringify(_uO("id" to id, "base64" to base64, "error" to error))))
+                    }
+                    )
+                }
+            }
+            resolve(null)
+        }
+        )
     }
     )
 }
 fun initRuntimeSocketService(): UTSPromise<Boolean> {
-    val hosts: String = "169.254.3.126,169.254.166.164,10.192.138.58,127.0.0.1"
+    val hosts: String = "169.254.3.126,169.254.166.164,10.191.92.87,127.0.0.1"
     val port: String = "8090"
-    val id: String = "app-android_RQCNNB"
+    val id: String = "app-android_thdgMI"
     if (hosts == "" || port == "" || id == "") {
         return UTSPromise.resolve(false)
     }
-    var socketTask: SocketTask? = null
-    __registerWebViewUniConsole(fun(): String {
-        return "!function(){\"use strict\";\"function\"==typeof SuppressedError&&SuppressedError;var e=[\"log\",\"warn\",\"error\",\"info\",\"debug\"],n=e.reduce((function(e,n){return e[n]=console[n].bind(console),e}),{}),t=null,r=new Set,o={};function i(e){if(null!=t){var n=e.map((function(e){if(\"string\"==typeof e)return e;var n=e&&\"promise\"in e&&\"reason\"in e,t=n?\"UnhandledPromiseRejection: \":\"\";if(n&&(e=e.reason),e instanceof Error&&e.stack)return e.message&&!e.stack.includes(e.message)?\"\".concat(t).concat(e.message,\"\\n\").concat(e.stack):\"\".concat(t).concat(e.stack);if(\"object\"==typeof e&&null!==e)try{return t+JSON.stringify(e)}catch(e){return t+String(e)}return t+String(e)})).filter(Boolean);n.length>0&&t(JSON.stringify(Object.assign({type:\"error\",data:n},o)))}else e.forEach((function(e){r.add(e)}))}function a(e,n){try{return{type:e,args:u(n)}}catch(e){}return{type:e,args:[]}}function u(e){return e.map((function(e){return c(e)}))}function c(e,n){if(void 0===n&&(n=0),n>=7)return{type:\"object\",value:\"[Maximum depth reached]\"};switch(typeof e){case\"string\":return{type:\"string\",value:e};case\"number\":return function(e){return{type:\"number\",value:String(e)}}(e);case\"boolean\":return function(e){return{type:\"boolean\",value:String(e)}}(e);case\"object\":try{return function(e,n){if(null===e)return{type:\"null\"};if(function(e){return e.\$&&s(e.\$)}(e))return function(e,n){return{type:\"object\",className:\"ComponentPublicInstance\",value:{properties:Object.entries(e.\$.type).map((function(e){return f(e[0],e[1],n+1)}))}}}(e,n);if(s(e))return function(e,n){return{type:\"object\",className:\"ComponentInternalInstance\",value:{properties:Object.entries(e.type).map((function(e){return f(e[0],e[1],n+1)}))}}}(e,n);if(function(e){return e.style&&null!=e.tagName&&null!=e.nodeName}(e))return function(e,n){return{type:\"object\",value:{properties:Object.entries(e).filter((function(e){var n=e[0];return[\"id\",\"tagName\",\"nodeName\",\"dataset\",\"offsetTop\",\"offsetLeft\",\"style\"].includes(n)})).map((function(e){return f(e[0],e[1],n+1)}))}}}(e,n);if(function(e){return\"function\"==typeof e.getPropertyValue&&\"function\"==typeof e.setProperty&&e.\$styles}(e))return function(e,n){return{type:\"object\",value:{properties:Object.entries(e.\$styles).map((function(e){return f(e[0],e[1],n+1)}))}}}(e,n);if(Array.isArray(e))return{type:\"object\",subType:\"array\",value:{properties:e.map((function(e,t){return function(e,n,t){var r=c(e,t);return r.name=\"\".concat(n),r}(e,t,n+1)}))}};if(e instanceof Set)return{type:\"object\",subType:\"set\",className:\"Set\",description:\"Set(\".concat(e.size,\")\"),value:{entries:Array.from(e).map((function(e){return function(e,n){return{value:c(e,n)}}(e,n+1)}))}};if(e instanceof Map)return{type:\"object\",subType:\"map\",className:\"Map\",description:\"Map(\".concat(e.size,\")\"),value:{entries:Array.from(e.entries()).map((function(e){return function(e,n){return{key:c(e[0],n),value:c(e[1],n)}}(e,n+1)}))}};if(e instanceof Promise)return{type:\"object\",subType:\"promise\",value:{properties:[]}};if(e instanceof RegExp)return{type:\"object\",subType:\"regexp\",value:String(e),className:\"Regexp\"};if(e instanceof Date)return{type:\"object\",subType:\"date\",value:String(e),className:\"Date\"};if(e instanceof Error)return{type:\"object\",subType:\"error\",value:e.message||String(e),className:e.name||\"Error\"};var t=void 0,r=e.constructor;r&&r.get\$UTSMetadata\$&&(t=r.get\$UTSMetadata\$().name);var o=Object.entries(e);(function(e){return e.modifier&&e.modifier._attribute&&e.nodeContent})(e)&&(o=o.filter((function(e){var n=e[0];return\"modifier\"!==n&&\"nodeContent\"!==n})));return{type:\"object\",className:t,value:{properties:o.map((function(e){return f(e[0],e[1],n+1)}))}}}(e,n)}catch(e){return{type:\"object\",value:{properties:[]}}}case\"undefined\":return{type:\"undefined\"};case\"function\":return function(e){return{type:\"function\",value:\"function \".concat(e.name,\"() {}\")}}(e);case\"symbol\":return function(e){return{type:\"symbol\",value:e.description}}(e);case\"bigint\":return function(e){return{type:\"bigint\",value:String(e)}}(e)}}function s(e){return e.type&&null!=e.uid&&e.appContext}function f(e,n,t){var r=c(n,t);return r.name=e,r}var l=null,p=[],y={},g=\"---BEGIN:EXCEPTION---\",d=\"---END:EXCEPTION---\";function v(e){null!=l?l(JSON.stringify(Object.assign({type:\"console\",data:e},y))):p.push.apply(p,e)}var m=/^\\s*at\\s+[\\w/./-]+:\\d+\$/;function b(){function t(e){return function(){for(var t=[],r=0;r<arguments.length;r++)t[r]=arguments[r];var o=function(e,n,t){if(t||2===arguments.length)for(var r,o=0,i=n.length;o<i;o++)!r&&o in n||(r||(r=Array.prototype.slice.call(n,0,o)),r[o]=n[o]);return e.concat(r||Array.prototype.slice.call(n))}([],t,!0);if(o.length){var u=o[o.length-1];\"string\"==typeof u&&m.test(u)&&o.pop()}if(n[e].apply(n,o),\"error\"===e&&1===t.length){var c=t[0];if(\"string\"==typeof c&&c.startsWith(g)){var s=g.length,f=c.length-d.length;return void i([c.slice(s,f)])}if(c instanceof Error)return void i([c])}v([a(e,t)])}}return function(){var e=console.log,n=Symbol();try{console.log=n}catch(e){return!1}var t=console.log===n;return console.log=e,t}()?(e.forEach((function(e){console[e]=t(e)})),function(){e.forEach((function(e){console[e]=n[e]}))}):function(){}}function _(e){var n={type:\"WEB_INVOKE_APPSERVICE\",args:{data:{name:\"console\",arg:e}}};return window.__uniapp_x_postMessageToService?window.__uniapp_x_postMessageToService(n):window.__uniapp_x_.postMessageToService(JSON.stringify(n))}!function(){if(!window.__UNI_CONSOLE_WEBVIEW__){window.__UNI_CONSOLE_WEBVIEW__=!0;var e=\"[web-view]\".concat(window.__UNI_PAGE_ROUTE__?\"[\".concat(window.__UNI_PAGE_ROUTE__,\"]\"):\"\");b(),function(e,n){if(void 0===n&&(n={}),l=e,Object.assign(y,n),null!=e&&p.length>0){var t=p.slice();p.length=0,v(t)}}((function(e){_(e)}),{channel:e}),function(e,n){if(void 0===n&&(n={}),t=e,Object.assign(o,n),null!=e&&r.size>0){var a=Array.from(r);r.clear(),i(a)}}((function(e){_(e)}),{channel:e}),window.addEventListener(\"error\",(function(e){i([e.error])})),window.addEventListener(\"unhandledrejection\",(function(e){i([e])}))}}()}();"
-    }
-    , fun(data: String){
-        socketTask?.send(SendSocketMessageOptions(data = data))
-    }
-    )
     return UTSPromise.resolve().then(fun(): UTSPromise<Boolean> {
         return initRuntimeSocket(hosts, port, id).then(fun(socket): Boolean {
             if (socket == null) {
                 return false
             }
-            socketTask = socket
+            socket
             return true
         }
         )
@@ -212,10 +242,8 @@ val addUnit = fun(value: Any): String {
     }
 }
 val splitCssProperty = fun(css: UTSJSONObject?): SplitCssPropertyResult {
-    val textCssProperty: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("textCssProperty", "uni_modules/rice-ui/libs/utils/format.uts", 18, 11)) {
-    }
-    val rectCssProperty: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("rectCssProperty", "uni_modules/rice-ui/libs/utils/format.uts", 19, 11)) {
-    }
+    val textCssProperty: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("textCssProperty", "uni_modules/rice-ui/libs/utils/format.uts", 18, 11))
+    val rectCssProperty: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("rectCssProperty", "uni_modules/rice-ui/libs/utils/format.uts", 19, 11))
     if (css != null) {
         val textProperties = _uA(
             "color",
@@ -291,6 +319,9 @@ fun getPxNum(reassignedValue: Any, totalWidth: Number = 0): Number {
     }
     return parseFloat(value as String)
 }
+val clamp = fun(num: Number, min: Number, max: Number): Number {
+    return Math.min(Math.max(num, min), max)
+}
 val isGradientColor = fun(color: String?): Boolean {
     if (color == null || color == "") {
         return false
@@ -308,6 +339,15 @@ val isThemeColor = fun(type: String?): Boolean {
         "warning",
         "error"
     ).includes(type)
+}
+val isSameValue = fun(value1: Any?, value2: Any?): Boolean {
+    if (value1 == null || value2 == null) {
+        return false
+    }
+    if (UTSAndroid.`typeof`(value1) == "object" && UTSAndroid.`typeof`(value2) == "object") {
+        return JSON.stringify(value1) == JSON.stringify(value2)
+    }
+    return value1 == value2
 }
 val isPromise = fun(kVal: Any): Boolean {
     return UTSAndroid.`typeof`(kVal) == "object" && kVal is UTSPromise<*>
@@ -585,156 +625,7 @@ fun useTouch(): UseTouch {
     }
     return UseTouch(startX = startX, startY = startY, deltaX = deltaX, deltaY = deltaY, offsetX = offsetX, offsetY = offsetY, direction = direction, isTap = isTap, dragging = dragging, skipMove = skipMove, start = start, move = move, end = end, changeDragging = changeDragging)
 }
-val presetColors: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("presetColors", "uni_modules/rice-ui/libs/plugin/coloruts/constant.uts", 44, 14)) {
-    var aliceblue = "9ehhb"
-    var antiquewhite = "9sgk7"
-    var aqua = "1ekf"
-    var aquamarine = "4zsno"
-    var azure = "9eiv3"
-    var beige = "9lhp8"
-    var bisque = "9zg04"
-    var black = "0"
-    var blanchedalmond = "9zhe5"
-    var blue = "73"
-    var blueviolet = "5e31e"
-    var brown = "6g016"
-    var burlywood = "8ouiv"
-    var cadetblue = "3qba8"
-    var chartreuse = "4zshs"
-    var chocolate = "87k0u"
-    var coral = "9yvyo"
-    var cornflowerblue = "3xael"
-    var cornsilk = "9zjz0"
-    var crimson = "8l4xo"
-    var cyan = "1ekf"
-    var darkblue = "3v"
-    var darkcyan = "rkb"
-    var darkgoldenrod = "776yz"
-    var darkgray = "6mbhl"
-    var darkgreen = "jr4"
-    var darkgrey = "6mbhl"
-    var darkkhaki = "7ehkb"
-    var darkmagenta = "5f91n"
-    var darkolivegreen = "3bzfz"
-    var darkorange = "9yygw"
-    var darkorchid = "5z6x8"
-    var darkred = "5f8xs"
-    var darksalmon = "9441m"
-    var darkseagreen = "5lwgf"
-    var darkslateblue = "2th1n"
-    var darkslategray = "1ugcv"
-    var darkslategrey = "1ugcv"
-    var darkturquoise = "14up"
-    var darkviolet = "5rw7n"
-    var deeppink = "9yavn"
-    var deepskyblue = "11xb"
-    var dimgray = "442g9"
-    var dimgrey = "442g9"
-    var dodgerblue = "16xof"
-    var firebrick = "6y7tu"
-    var floralwhite = "9zkds"
-    var forestgreen = "1cisi"
-    var fuchsia = "9y70f"
-    var gainsboro = "8m8kc"
-    var ghostwhite = "9pq0v"
-    var goldenrod = "8j4f4"
-    var gold = "9zda8"
-    var gray = "50i2o"
-    var green = "pa8"
-    var greenyellow = "6senj"
-    var grey = "50i2o"
-    var honeydew = "9eiuo"
-    var hotpink = "9yrp0"
-    var indianred = "80gnw"
-    var indigo = "2xcoy"
-    var ivory = "9zldc"
-    var khaki = "9edu4"
-    var lavenderblush = "9ziet"
-    var lavender = "90c8q"
-    var lawngreen = "4vk74"
-    var lemonchiffon = "9zkct"
-    var lightblue = "6s73a"
-    var lightcoral = "9dtog"
-    var lightcyan = "8s1rz"
-    var lightgoldenrodyellow = "9sjiq"
-    var lightgray = "89jo3"
-    var lightgreen = "5nkwg"
-    var lightgrey = "89jo3"
-    var lightpink = "9z6wx"
-    var lightsalmon = "9z2ii"
-    var lightseagreen = "19xgq"
-    var lightskyblue = "5arju"
-    var lightslategray = "4nwk9"
-    var lightslategrey = "4nwk9"
-    var lightsteelblue = "6wau6"
-    var lightyellow = "9zlcw"
-    var lime = "1edc"
-    var limegreen = "1zcxe"
-    var linen = "9shk6"
-    var magenta = "9y70f"
-    var maroon = "4zsow"
-    var mediumaquamarine = "40eju"
-    var mediumblue = "5p"
-    var mediumorchid = "79qkz"
-    var mediumpurple = "5r3rv"
-    var mediumseagreen = "2d9ip"
-    var mediumslateblue = "4tcku"
-    var mediumspringgreen = "1di2"
-    var mediumturquoise = "2uabw"
-    var mediumvioletred = "7rn9h"
-    var midnightblue = "z980"
-    var mintcream = "9ljp6"
-    var mistyrose = "9zg0x"
-    var moccasin = "9zfzp"
-    var navajowhite = "9zest"
-    var navy = "3k"
-    var oldlace = "9wq92"
-    var olive = "50hz4"
-    var olivedrab = "472ub"
-    var orange = "9z3eo"
-    var orangered = "9ykg0"
-    var orchid = "8iu3a"
-    var palegoldenrod = "9bl4a"
-    var palegreen = "5yw0o"
-    var paleturquoise = "6v4ku"
-    var palevioletred = "8k8lv"
-    var papayawhip = "9zi6t"
-    var peachpuff = "9ze0p"
-    var peru = "80oqn"
-    var pink = "9z8wb"
-    var plum = "8nba5"
-    var powderblue = "6wgdi"
-    var purple = "4zssg"
-    var rebeccapurple = "3zk49"
-    var red = "9y6tc"
-    var rosybrown = "7cv4f"
-    var royalblue = "2jvtt"
-    var saddlebrown = "5fmkz"
-    var salmon = "9rvci"
-    var sandybrown = "9jn1c"
-    var seagreen = "1tdnb"
-    var seashell = "9zje6"
-    var sienna = "6973h"
-    var silver = "7ir40"
-    var skyblue = "5arjf"
-    var slateblue = "45e4t"
-    var slategray = "4e100"
-    var slategrey = "4e100"
-    var snow = "9zke2"
-    var springgreen = "1egv"
-    var steelblue = "2r1kk"
-    var tan = "87yx8"
-    var teal = "pds"
-    var thistle = "8ggk8"
-    var tomato = "9yqfb"
-    var turquoise = "2j4r4"
-    var violet = "9b10u"
-    var wheat = "9ld4j"
-    var white = "9zldr"
-    var whitesmoke = "9lhpx"
-    var yellow = "9zl6o"
-    var yellowgreen = "61fzm"
-}
+val presetColors: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("presetColors", "uni_modules/rice-ui/libs/plugin/coloruts/constant.uts", 44, 14), "aliceblue" to "9ehhb", "antiquewhite" to "9sgk7", "aqua" to "1ekf", "aquamarine" to "4zsno", "azure" to "9eiv3", "beige" to "9lhp8", "bisque" to "9zg04", "black" to "0", "blanchedalmond" to "9zhe5", "blue" to "73", "blueviolet" to "5e31e", "brown" to "6g016", "burlywood" to "8ouiv", "cadetblue" to "3qba8", "chartreuse" to "4zshs", "chocolate" to "87k0u", "coral" to "9yvyo", "cornflowerblue" to "3xael", "cornsilk" to "9zjz0", "crimson" to "8l4xo", "cyan" to "1ekf", "darkblue" to "3v", "darkcyan" to "rkb", "darkgoldenrod" to "776yz", "darkgray" to "6mbhl", "darkgreen" to "jr4", "darkgrey" to "6mbhl", "darkkhaki" to "7ehkb", "darkmagenta" to "5f91n", "darkolivegreen" to "3bzfz", "darkorange" to "9yygw", "darkorchid" to "5z6x8", "darkred" to "5f8xs", "darksalmon" to "9441m", "darkseagreen" to "5lwgf", "darkslateblue" to "2th1n", "darkslategray" to "1ugcv", "darkslategrey" to "1ugcv", "darkturquoise" to "14up", "darkviolet" to "5rw7n", "deeppink" to "9yavn", "deepskyblue" to "11xb", "dimgray" to "442g9", "dimgrey" to "442g9", "dodgerblue" to "16xof", "firebrick" to "6y7tu", "floralwhite" to "9zkds", "forestgreen" to "1cisi", "fuchsia" to "9y70f", "gainsboro" to "8m8kc", "ghostwhite" to "9pq0v", "goldenrod" to "8j4f4", "gold" to "9zda8", "gray" to "50i2o", "green" to "pa8", "greenyellow" to "6senj", "grey" to "50i2o", "honeydew" to "9eiuo", "hotpink" to "9yrp0", "indianred" to "80gnw", "indigo" to "2xcoy", "ivory" to "9zldc", "khaki" to "9edu4", "lavenderblush" to "9ziet", "lavender" to "90c8q", "lawngreen" to "4vk74", "lemonchiffon" to "9zkct", "lightblue" to "6s73a", "lightcoral" to "9dtog", "lightcyan" to "8s1rz", "lightgoldenrodyellow" to "9sjiq", "lightgray" to "89jo3", "lightgreen" to "5nkwg", "lightgrey" to "89jo3", "lightpink" to "9z6wx", "lightsalmon" to "9z2ii", "lightseagreen" to "19xgq", "lightskyblue" to "5arju", "lightslategray" to "4nwk9", "lightslategrey" to "4nwk9", "lightsteelblue" to "6wau6", "lightyellow" to "9zlcw", "lime" to "1edc", "limegreen" to "1zcxe", "linen" to "9shk6", "magenta" to "9y70f", "maroon" to "4zsow", "mediumaquamarine" to "40eju", "mediumblue" to "5p", "mediumorchid" to "79qkz", "mediumpurple" to "5r3rv", "mediumseagreen" to "2d9ip", "mediumslateblue" to "4tcku", "mediumspringgreen" to "1di2", "mediumturquoise" to "2uabw", "mediumvioletred" to "7rn9h", "midnightblue" to "z980", "mintcream" to "9ljp6", "mistyrose" to "9zg0x", "moccasin" to "9zfzp", "navajowhite" to "9zest", "navy" to "3k", "oldlace" to "9wq92", "olive" to "50hz4", "olivedrab" to "472ub", "orange" to "9z3eo", "orangered" to "9ykg0", "orchid" to "8iu3a", "palegoldenrod" to "9bl4a", "palegreen" to "5yw0o", "paleturquoise" to "6v4ku", "palevioletred" to "8k8lv", "papayawhip" to "9zi6t", "peachpuff" to "9ze0p", "peru" to "80oqn", "pink" to "9z8wb", "plum" to "8nba5", "powderblue" to "6wgdi", "purple" to "4zssg", "rebeccapurple" to "3zk49", "red" to "9y6tc", "rosybrown" to "7cv4f", "royalblue" to "2jvtt", "saddlebrown" to "5fmkz", "salmon" to "9rvci", "sandybrown" to "9jn1c", "seagreen" to "1tdnb", "seashell" to "9zje6", "sienna" to "6973h", "silver" to "7ir40", "skyblue" to "5arjf", "slateblue" to "45e4t", "slategray" to "4e100", "slategrey" to "4e100", "snow" to "9zke2", "springgreen" to "1egv", "steelblue" to "2r1kk", "tan" to "87yx8", "teal" to "pds", "thistle" to "8ggk8", "tomato" to "9yqfb", "turquoise" to "2j4r4", "violet" to "9b10u", "wheat" to "9ld4j", "white" to "9zldr", "whitesmoke" to "9lhpx", "yellow" to "9zl6o", "yellowgreen" to "61fzm")
 fun fillArr(arr: UTSArray<String>): UTSArray<String> {
     while(arr.length < 4){
         arr.push("")
@@ -1009,21 +900,11 @@ open class Coloruts : IUTSSourceMap {
     }
     private fun fromHslString(trimStr: String) {
         val cells = splitColorStr(trimStr, parseHSVorHSL)
-        this.fromHsl(object : UTSJSONObject() {
-            var h = cells[0]
-            var s = cells[1]
-            var l = cells[2]
-            var a = cells[3]
-        })
+        this.fromHsl(_uO("h" to cells[0], "s" to cells[1], "l" to cells[2], "a" to cells[3]))
     }
     private fun fromHsvString(trimStr: String) {
         val cells = splitColorStr(trimStr, parseHSVorHSL)
-        this.fromHsv(object : UTSJSONObject() {
-            var h = cells[0]
-            var s = cells[1]
-            var v = cells[2]
-            var a = cells[3]
-        })
+        this.fromHsv(_uO("h" to cells[0], "s" to cells[1], "v" to cells[2], "a" to cells[3]))
     }
     private fun fromRgbString(trimStr: String) {
         val cells = splitColorStr(trimStr, fun(num, txt, _index): Number {
@@ -1168,29 +1049,14 @@ open class Coloruts : IUTSSourceMap {
             }
             return 0
         }
-        val rgba: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("rgba", "uni_modules/rice-ui/libs/plugin/coloruts/conversion.uts", 347, 15)) {
-            var r = Math.round(calc("r"))
-            var g = Math.round(calc("g"))
-            var b = Math.round(calc("b"))
-            var a = Math.round(calc("a") * 100) / 100
-        }
+        val rgba: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("rgba", "uni_modules/rice-ui/libs/plugin/coloruts/conversion.uts", 347, 15), "r" to Math.round(calc("r")), "g" to Math.round(calc("g")), "b" to Math.round(calc("b")), "a" to (Math.round(calc("a") * 100) / 100))
         return this._c(rgba)
     }
     open fun tint(amount: Number = 10): Coloruts {
-        return this.mix(object : UTSJSONObject() {
-            var r: Number = 255
-            var g: Number = 255
-            var b: Number = 255
-            var a: Number = 1
-        }, amount)
+        return this.mix(_uO("r" to 255, "g" to 255, "b" to 255, "a" to 1), amount)
     }
     open fun shade(amount: Number = 10): Coloruts {
-        return this.mix(object : UTSJSONObject() {
-            var r: Number = 0
-            var g: Number = 0
-            var b: Number = 0
-            var a: Number = 1
-        }, amount)
+        return this.mix(_uO("r" to 0, "g" to 0, "b" to 0, "a" to 1), amount)
     }
     open fun darken(amount: Number = 10): Coloruts {
         val h = this.getHue()
@@ -3438,6 +3304,12 @@ open class State (
     @JsonNotNull
     open var statusBarHeight: Number,
     @JsonNotNull
+    open var navbarHeight: Number,
+    @JsonNotNull
+    open var safeAreaInsetsHeight: Number,
+    @JsonNotNull
+    open var uniPlatform: String,
+    @JsonNotNull
     open var devicePixelRatio: Number,
     @JsonNotNull
     open var active: String,
@@ -3445,13 +3317,17 @@ open class State (
     open var leftWinActive: String,
     open var agreeToPrivacy: Boolean? = null,
     @JsonNotNull
+    open var isFollowSystem: Boolean = false,
+    @JsonNotNull
     open var appTheme: String,
+    @JsonNotNull
+    open var osTheme: String,
     @JsonNotNull
     open var netless: Boolean = false,
     open var userInfo: UserInfo? = null,
 ) : UTSReactiveObject(), IUTSSourceMap {
     override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("State", "store/index.uts", 6, 6)
+        return UTSSourceMapPosition("State", "store/index.uts", 17, 6)
     }
     override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
         return StateReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
@@ -3462,7 +3338,7 @@ class StateReactiveObject : State, IUTSReactive<State> {
     override var __v_isReadonly: Boolean
     override var __v_isShallow: Boolean
     override var __v_skip: Boolean
-    constructor(__v_raw: State, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(statusBarHeight = __v_raw.statusBarHeight, devicePixelRatio = __v_raw.devicePixelRatio, active = __v_raw.active, leftWinActive = __v_raw.leftWinActive, agreeToPrivacy = __v_raw.agreeToPrivacy, appTheme = __v_raw.appTheme, netless = __v_raw.netless, userInfo = __v_raw.userInfo) {
+    constructor(__v_raw: State, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(statusBarHeight = __v_raw.statusBarHeight, navbarHeight = __v_raw.navbarHeight, safeAreaInsetsHeight = __v_raw.safeAreaInsetsHeight, uniPlatform = __v_raw.uniPlatform, devicePixelRatio = __v_raw.devicePixelRatio, active = __v_raw.active, leftWinActive = __v_raw.leftWinActive, agreeToPrivacy = __v_raw.agreeToPrivacy, isFollowSystem = __v_raw.isFollowSystem, appTheme = __v_raw.appTheme, osTheme = __v_raw.osTheme, netless = __v_raw.netless, userInfo = __v_raw.userInfo) {
         this.__v_raw = __v_raw
         this.__v_isReadonly = __v_isReadonly
         this.__v_isShallow = __v_isShallow
@@ -3482,6 +3358,42 @@ class StateReactiveObject : State, IUTSReactive<State> {
             val oldValue = __v_raw.statusBarHeight
             __v_raw.statusBarHeight = value
             _tRS(__v_raw, "statusBarHeight", oldValue, value)
+        }
+    override var navbarHeight: Number
+        get() {
+            return _tRG(__v_raw, "navbarHeight", __v_raw.navbarHeight, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("navbarHeight")) {
+                return
+            }
+            val oldValue = __v_raw.navbarHeight
+            __v_raw.navbarHeight = value
+            _tRS(__v_raw, "navbarHeight", oldValue, value)
+        }
+    override var safeAreaInsetsHeight: Number
+        get() {
+            return _tRG(__v_raw, "safeAreaInsetsHeight", __v_raw.safeAreaInsetsHeight, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("safeAreaInsetsHeight")) {
+                return
+            }
+            val oldValue = __v_raw.safeAreaInsetsHeight
+            __v_raw.safeAreaInsetsHeight = value
+            _tRS(__v_raw, "safeAreaInsetsHeight", oldValue, value)
+        }
+    override var uniPlatform: String
+        get() {
+            return _tRG(__v_raw, "uniPlatform", __v_raw.uniPlatform, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("uniPlatform")) {
+                return
+            }
+            val oldValue = __v_raw.uniPlatform
+            __v_raw.uniPlatform = value
+            _tRS(__v_raw, "uniPlatform", oldValue, value)
         }
     override var devicePixelRatio: Number
         get() {
@@ -3531,6 +3443,18 @@ class StateReactiveObject : State, IUTSReactive<State> {
             __v_raw.agreeToPrivacy = value
             _tRS(__v_raw, "agreeToPrivacy", oldValue, value)
         }
+    override var isFollowSystem: Boolean
+        get() {
+            return _tRG(__v_raw, "isFollowSystem", __v_raw.isFollowSystem, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("isFollowSystem")) {
+                return
+            }
+            val oldValue = __v_raw.isFollowSystem
+            __v_raw.isFollowSystem = value
+            _tRS(__v_raw, "isFollowSystem", oldValue, value)
+        }
     override var appTheme: String
         get() {
             return _tRG(__v_raw, "appTheme", __v_raw.appTheme, __v_isReadonly, __v_isShallow)
@@ -3542,6 +3466,18 @@ class StateReactiveObject : State, IUTSReactive<State> {
             val oldValue = __v_raw.appTheme
             __v_raw.appTheme = value
             _tRS(__v_raw, "appTheme", oldValue, value)
+        }
+    override var osTheme: String
+        get() {
+            return _tRG(__v_raw, "osTheme", __v_raw.osTheme, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("osTheme")) {
+                return
+            }
+            val oldValue = __v_raw.osTheme
+            __v_raw.osTheme = value
+            _tRS(__v_raw, "osTheme", oldValue, value)
         }
     override var netless: Boolean
         get() {
@@ -3568,44 +3504,68 @@ class StateReactiveObject : State, IUTSReactive<State> {
             _tRS(__v_raw, "userInfo", oldValue, value)
         }
 }
-val state = reactive(State(statusBarHeight = 56, devicePixelRatio = 1, active = "componentPage", leftWinActive = "/pages/component/view/view", appTheme = "light", netless = false, userInfo = null))
-val setAppTheme = fun(appTheme: String){
-    state.appTheme = appTheme as String
+val state = reactive(State(statusBarHeight = 0, navbarHeight = 56, safeAreaInsetsHeight = 0, uniPlatform = "", devicePixelRatio = 1, active = "componentPage", leftWinActive = "/pages/bookcase/index", appTheme = "light", osTheme = "light", isFollowSystem = false, netless = false, userInfo = null, agreeToPrivacy = null))
+val setAppTheme = fun(value: String){
+    state.appTheme = value
+    uni_setStorageSync("appTheme", value)
 }
-val checkSystemTheme = fun(){
-    uni_getSystemInfo(GetSystemInfoOptions(success = fun(res: GetSystemInfoResult){
-        val appTheme = if (res.appTheme == "auto") {
-            res.osTheme!!
-        } else {
-            res.appTheme!!
+val setIsFollowSystem = fun(value: Boolean){
+    state.isFollowSystem = value
+    uni_setStorageSync("isFollowSystem", value)
+}
+val checkSystemInfo = fun(){
+    val appBaseInfo: GetAppBaseInfoResult = uni_getAppBaseInfo(null)
+    val deviceInfo: GetDeviceInfoResult = uni_getDeviceInfo(null)
+    val windowInfo = uni_getWindowInfo()
+    state.uniPlatform = appBaseInfo.uniPlatform ?: ""
+    state.statusBarHeight = windowInfo.statusBarHeight
+    state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom
+    if (appBaseInfo.uniPlatform === "app") {
+        try {
+            val isFollowSystem = if (uni_getStorageSync("isFollowSystem") === "") {
+                false
+            } else {
+                uni_getStorageSync("isFollowSystem") as Boolean
+            }
+            val osTheme = deviceInfo.osTheme ?: "dark"
+            state.osTheme = osTheme
+            state.isFollowSystem = isFollowSystem
+            uni_setStorageSync("osTheme", osTheme)
+            if (isFollowSystem) {
+                uni_setAppTheme(SetAppThemeOptions(theme = osTheme))
+                setTheme(osTheme)
+                setAppTheme(osTheme)
+            } else {
+                val appTheme = uni_getStorageSync("appTheme") as String ?: "light"
+                uni_setAppTheme(SetAppThemeOptions(theme = appTheme))
+                setTheme(appTheme)
+                state.appTheme = appTheme
+            }
         }
-        state.appTheme = appTheme.trim() ?: "light"
+         catch (e: Throwable) {
+            console.log("" + e + " 失败", " at store/index.uts:120")
+        }
     }
-    ))
-    uni_onAppThemeChange(fun(res: AppThemeChangeResult){
-        state.appTheme = res.appTheme.trim() ?: "light"
-    }
-    )
-    setTheme(state.appTheme)
 }
 var firstBackTime: Number = 0
 open class GenApp : BaseApp {
     constructor(__ins: ComponentInternalInstance) : super(__ins) {
         onLaunch(fun(_: OnLaunchOptions) {
-            console.log("App Launch", " at App.uvue:8")
-            checkSystemTheme()
+            console.log("App Launch", " at App.uvue:9")
+            checkSystemInfo()
         }
         , __ins)
         onAppShow(fun(_: OnShowOptions) {
-            console.log("App Show", " at App.uvue:12")
+            console.log("App Show", " at App.uvue:13")
+            uni_onAppThemeChange(fun(res: AppThemeChangeResult){})
         }
         , __ins)
         onAppHide(fun() {
-            console.log("App Hide", " at App.uvue:15")
+            console.log("App Hide", " at App.uvue:23")
         }
         , __ins)
         onLastPageBackPress(fun() {
-            console.log("App LastPageBackPress", " at App.uvue:19")
+            console.log("App LastPageBackPress", " at App.uvue:27")
             if (firstBackTime == 0) {
                 uni_showToast(ShowToastOptions(title = "再按一次退出应用", position = "bottom"))
                 firstBackTime = Date.now()
@@ -3619,7 +3579,7 @@ open class GenApp : BaseApp {
         }
         , __ins)
         onExit(fun() {
-            console.log("App Exit", " at App.uvue:36")
+            console.log("App Exit", " at App.uvue:44")
         }
         , __ins)
     }
@@ -3631,7 +3591,7 @@ open class GenApp : BaseApp {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#e6f7ff", "--rice-primary-color-7" to "#0b68d4", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "transparent", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#f5f5f5", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#111c2b", "--rice-primary-color-7" to "#3d98e8", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#11231b", "--rice-success-color-7" to "#27bc6a", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#281f15", "--rice-warning-color-7" to "#dcae5e", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#2a1a1b", "--rice-error-color-7" to "#e88e8c", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "transparent", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "uni-row" to _pS(_uM("flexDirection" to "row")), "uni-column" to _pS(_uM("flexDirection" to "column")))
+                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#845ec2", "--rice-primary-color-1" to "#b7abc2", "--rice-primary-color-7" to "#782ec2", "--rice-success-color" to "#4d8076", "--rice-success-color-1" to "#4d8076", "--rice-success-color-7" to "#4d8076", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "transparent", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#f5f5f5", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa", "--text-color1" to "#666", "--text-BgColor1" to "#fff")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#6235c2", "--rice-primary-color-1" to "#a391c2", "--rice-primary-color-7" to "#aa97c2", "--rice-success-color" to "#0d8063", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "transparent", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727", "--text-color1" to "#CCC", "--text-BgColor1" to "#FFFFFF12")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")))
             }
     }
 }
@@ -3662,6 +3622,102 @@ val GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass = CreateVueComponent(
     return GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar(instance)
 }
 )
+val GenUniModulesRiceUiComponentsRiceEmptyRiceEmptyClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty.inject, props = GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty.emits, components = GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty.components, styles = GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty.setup(props as GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty {
+    return GenUniModulesRiceUiComponentsRiceEmptyRiceEmpty(instance)
+}
+)
+val GenUniModulesRiceUiComponentsRiceImageRiceImageClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceImageRiceImage::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceImageRiceImage.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceImageRiceImage.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceImageRiceImage.inject, props = GenUniModulesRiceUiComponentsRiceImageRiceImage.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceImageRiceImage.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceImageRiceImage.emits, components = GenUniModulesRiceUiComponentsRiceImageRiceImage.components, styles = GenUniModulesRiceUiComponentsRiceImageRiceImage.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceImageRiceImage.setup(props as GenUniModulesRiceUiComponentsRiceImageRiceImage)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceImageRiceImage {
+    return GenUniModulesRiceUiComponentsRiceImageRiceImage(instance)
+}
+)
+open class BookItem (
+    @JsonNotNull
+    open var id: String,
+    @JsonNotNull
+    open var title: String,
+    @JsonNotNull
+    open var author: String,
+    open var hasUnread: Boolean? = null,
+    @JsonNotNull
+    open var lastChapter: String,
+    @JsonNotNull
+    open var lastUpdateTime: String,
+    @JsonNotNull
+    open var readChapter: String,
+) : UTSObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("BookItem", "data/book.uts", 1, 13)
+    }
+}
+open class SearchHistoryItem (
+    @JsonNotNull
+    open var id: String,
+    @JsonNotNull
+    open var text: String,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("SearchHistoryItem", "data/book.uts", 10, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return SearchHistoryItemReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class SearchHistoryItemReactiveObject : SearchHistoryItem, IUTSReactive<SearchHistoryItem> {
+    override var __v_raw: SearchHistoryItem
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: SearchHistoryItem, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(id = __v_raw.id, text = __v_raw.text) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): SearchHistoryItemReactiveObject {
+        return SearchHistoryItemReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var id: String
+        get() {
+            return _tRG(__v_raw, "id", __v_raw.id, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("id")) {
+                return
+            }
+            val oldValue = __v_raw.id
+            __v_raw.id = value
+            _tRS(__v_raw, "id", oldValue, value)
+        }
+    override var text: String
+        get() {
+            return _tRG(__v_raw, "text", __v_raw.text, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("text")) {
+                return
+            }
+            val oldValue = __v_raw.text
+            __v_raw.text = value
+            _tRS(__v_raw, "text", oldValue, value)
+        }
+}
+val bookList = _uA(
+    BookItem(id = "1", title = "三体", author = "刘慈欣", hasUnread = true, lastChapter = "第三部 死神永生 第27章", lastUpdateTime = "5小时前", readChapter = "第二部 死神诞生 第2章"),
+    BookItem(id = "2", title = "活着", author = "余华", lastChapter = "全文完", lastUpdateTime = "3小时前", readChapter = "第20章"),
+    BookItem(id = "3", title = "百年孤独", author = "加西亚·马尔克斯", hasUnread = true, lastChapter = "第二章", lastUpdateTime = "1天前", readChapter = "第一章")
+) as UTSArray<BookItem>
 val GenPagesBookcaseIndexClass = CreateVueComponent(GenPagesBookcaseIndex::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesBookcaseIndex.inheritAttrs, inject = GenPagesBookcaseIndex.inject, props = GenPagesBookcaseIndex.props, propsNeedCastKeys = GenPagesBookcaseIndex.propsNeedCastKeys, emits = GenPagesBookcaseIndex.emits, components = GenPagesBookcaseIndex.components, styles = GenPagesBookcaseIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenPagesBookcaseIndex.setup(props as GenPagesBookcaseIndex)
@@ -3682,6 +3738,110 @@ val GenPagesLibraryIndexClass = CreateVueComponent(GenPagesLibraryIndex::class.j
     return GenPagesLibraryIndex(instance, renderer)
 }
 )
+open class NoticeBarState (
+    @JsonNotNull
+    open var show: Boolean = false,
+    @JsonNotNull
+    open var offset: Number,
+    @JsonNotNull
+    open var duration: Number,
+    @JsonNotNull
+    open var wrapWidth: Number,
+    @JsonNotNull
+    open var contentWidth: Number,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("NoticeBarState", "uni_modules/rice-ui/components/rice-notice-bar/type.uts", 1, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return NoticeBarStateReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class NoticeBarStateReactiveObject : NoticeBarState, IUTSReactive<NoticeBarState> {
+    override var __v_raw: NoticeBarState
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: NoticeBarState, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(show = __v_raw.show, offset = __v_raw.offset, duration = __v_raw.duration, wrapWidth = __v_raw.wrapWidth, contentWidth = __v_raw.contentWidth) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): NoticeBarStateReactiveObject {
+        return NoticeBarStateReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var show: Boolean
+        get() {
+            return _tRG(__v_raw, "show", __v_raw.show, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("show")) {
+                return
+            }
+            val oldValue = __v_raw.show
+            __v_raw.show = value
+            _tRS(__v_raw, "show", oldValue, value)
+        }
+    override var offset: Number
+        get() {
+            return _tRG(__v_raw, "offset", __v_raw.offset, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("offset")) {
+                return
+            }
+            val oldValue = __v_raw.offset
+            __v_raw.offset = value
+            _tRS(__v_raw, "offset", oldValue, value)
+        }
+    override var duration: Number
+        get() {
+            return _tRG(__v_raw, "duration", __v_raw.duration, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("duration")) {
+                return
+            }
+            val oldValue = __v_raw.duration
+            __v_raw.duration = value
+            _tRS(__v_raw, "duration", oldValue, value)
+        }
+    override var wrapWidth: Number
+        get() {
+            return _tRG(__v_raw, "wrapWidth", __v_raw.wrapWidth, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("wrapWidth")) {
+                return
+            }
+            val oldValue = __v_raw.wrapWidth
+            __v_raw.wrapWidth = value
+            _tRS(__v_raw, "wrapWidth", oldValue, value)
+        }
+    override var contentWidth: Number
+        get() {
+            return _tRG(__v_raw, "contentWidth", __v_raw.contentWidth, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("contentWidth")) {
+                return
+            }
+            val oldValue = __v_raw.contentWidth
+            __v_raw.contentWidth = value
+            _tRS(__v_raw, "contentWidth", oldValue, value)
+        }
+}
+val GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.inject, props = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.emits, components = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.components, styles = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.styles, setup = fun(props: ComponentPublicInstance, ctx: SetupContext): Any? {
+        return GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.setup(props as GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar, ctx)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar {
+    return GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar(instance)
+}
+)
 val GenPagesDiscussIndexClass = CreateVueComponent(GenPagesDiscussIndex::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesDiscussIndex.inheritAttrs, inject = GenPagesDiscussIndex.inject, props = GenPagesDiscussIndex.props, propsNeedCastKeys = GenPagesDiscussIndex.propsNeedCastKeys, emits = GenPagesDiscussIndex.emits, components = GenPagesDiscussIndex.components, styles = GenPagesDiscussIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenPagesDiscussIndex.setup(props as GenPagesDiscussIndex)
@@ -3690,6 +3850,16 @@ val GenPagesDiscussIndexClass = CreateVueComponent(GenPagesDiscussIndex::class.j
 }
 , fun(instance, renderer): GenPagesDiscussIndex {
     return GenPagesDiscussIndex(instance, renderer)
+}
+)
+val GenUniModulesRiceUiComponentsRiceBadgeRiceBadgeClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceBadgeRiceBadge::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceBadgeRiceBadge.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceBadgeRiceBadge.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceBadgeRiceBadge.inject, props = GenUniModulesRiceUiComponentsRiceBadgeRiceBadge.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceBadgeRiceBadge.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceBadgeRiceBadge.emits, components = GenUniModulesRiceUiComponentsRiceBadgeRiceBadge.components, styles = GenUniModulesRiceUiComponentsRiceBadgeRiceBadge.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceBadgeRiceBadge.setup(props as GenUniModulesRiceUiComponentsRiceBadgeRiceBadge)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceBadgeRiceBadge {
+    return GenUniModulesRiceUiComponentsRiceBadgeRiceBadge(instance)
 }
 )
 val GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar::class.java, fun(): VueComponentOptions {
@@ -3893,18 +4063,8 @@ val GenUniModulesRiceUiComponentsRiceLoadingRiceLoadingClass = CreateVueComponen
     return GenUniModulesRiceUiComponentsRiceLoadingRiceLoading(instance)
 }
 )
-val iconSizeTypes: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("iconSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 1, 14)) {
-    var large = "18px"
-    var `default` = "16px"
-    var small = "14px"
-    var mini = "12px"
-}
-val loadingSizeTypes: UTSJSONObject = object : UTSJSONObject(UTSSourceMapPosition("loadingSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 7, 14)) {
-    var large = "20px"
-    var `default` = "18px"
-    var small = "16px"
-    var mini = "14px"
-}
+val iconSizeTypes: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("iconSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 1, 14), "large" to "18px", "default" to "16px", "small" to "14px", "mini" to "12px")
+val loadingSizeTypes: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("loadingSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 7, 14), "large" to "20px", "default" to "18px", "small" to "16px", "mini" to "14px")
 val GenUniModulesRiceUiComponentsRiceButtonRiceButtonClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceButtonRiceButton::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceButtonRiceButton.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inject, props = GenUniModulesRiceUiComponentsRiceButtonRiceButton.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceButtonRiceButton.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceButtonRiceButton.emits, components = GenUniModulesRiceUiComponentsRiceButtonRiceButton.components, styles = GenUniModulesRiceUiComponentsRiceButtonRiceButton.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenUniModulesRiceUiComponentsRiceButtonRiceButton.setup(props as GenUniModulesRiceUiComponentsRiceButtonRiceButton)
@@ -3955,6 +4115,47 @@ val GenPagesSearchIndexClass = CreateVueComponent(GenPagesSearchIndex::class.jav
     return GenPagesSearchIndex(instance, renderer)
 }
 )
+typealias SwitchValueType = Any
+val GenUniModulesRiceUiComponentsRiceSwitchRiceSwitchClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.inject, props = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.emits, components = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.components, styles = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.setup(props as GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch {
+    return GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch(instance)
+}
+)
+val GenPagesSettingIndexClass = CreateVueComponent(GenPagesSettingIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesSettingIndex.inheritAttrs, inject = GenPagesSettingIndex.inject, props = GenPagesSettingIndex.props, propsNeedCastKeys = GenPagesSettingIndex.propsNeedCastKeys, emits = GenPagesSettingIndex.emits, components = GenPagesSettingIndex.components, styles = GenPagesSettingIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesSettingIndex.setup(props as GenPagesSettingIndex)
+    }
+    )
+}
+, fun(instance, renderer): GenPagesSettingIndex {
+    return GenPagesSettingIndex(instance, renderer)
+}
+)
+val GenUniModulesRiceUiComponentsRiceTextareaRiceTextareaClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.inject, props = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.emits, components = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.components, styles = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.setup(props as GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea {
+    return GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea(instance)
+}
+)
+val GenPagesFeedbackIndexClass = CreateVueComponent(GenPagesFeedbackIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesFeedbackIndex.inheritAttrs, inject = GenPagesFeedbackIndex.inject, props = GenPagesFeedbackIndex.props, propsNeedCastKeys = GenPagesFeedbackIndex.propsNeedCastKeys, emits = GenPagesFeedbackIndex.emits, components = GenPagesFeedbackIndex.components, styles = GenPagesFeedbackIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesFeedbackIndex.setup(props as GenPagesFeedbackIndex)
+    }
+    )
+}
+, fun(instance, renderer): GenPagesFeedbackIndex {
+    return GenPagesFeedbackIndex(instance, renderer)
+}
+)
 val GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheetClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.inject, props = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.emits, components = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.components, styles = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.setup(props as GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet)
@@ -3995,11 +4196,11 @@ fun main(app: IApp) {
     (createApp()["app"] as VueApp).mount(app, GenUniApp())
 }
 open class UniAppConfig : io.dcloud.uniapp.appframe.AppConfig {
-    override var name: String = "看小说"
+    override var name: String = "测试"
     override var appid: String = "__UNI__4CF4B90"
     override var versionName: String = "1.0.0"
     override var versionCode: String = "100"
-    override var uniCompilerVersion: String = "4.87"
+    override var uniCompilerVersion: String = "5.07"
     constructor() : super() {}
 }
 fun definePageRoutes() {
@@ -4008,6 +4209,8 @@ fun definePageRoutes() {
     __uniRoutes.push(UniPageRoute(path = "pages/discuss/index", component = GenPagesDiscussIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/mine/index", component = GenPagesMineIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/search/index", component = GenPagesSearchIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
+    __uniRoutes.push(UniPageRoute(path = "pages/setting/index", component = GenPagesSettingIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
+    __uniRoutes.push(UniPageRoute(path = "pages/feedback/index", component = GenPagesFeedbackIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "uni_modules/rice-ui/pages/action-sheet/action-sheet", component = GenUniModulesRiceUiPagesActionSheetActionSheetClass, meta = UniPageMeta(isQuit = false), style = _uM()))
     __uniRoutes.push(UniPageRoute(path = "uni_modules/rice-ui/pages/dialog/dialog", component = GenUniModulesRiceUiPagesDialogDialogClass, meta = UniPageMeta(isQuit = false), style = _uM()))
 }
@@ -4020,7 +4223,7 @@ val __uniTabBar: Map<String, Any?>? = _uM("color" to "@tabBarColor", "selectedCo
 val __uniLaunchPage: Map<String, Any?> = _uM("url" to "pages/bookcase/index", "style" to _uM("navigationBarTitleText" to ""))
 fun defineAppConfig() {
     __uniConfig.entryPagePath = "/pages/bookcase/index"
-    __uniConfig.globalStyle = _uM("backgroundColorContent" to "@globalStyleBackgroundColor", "navigationStyle" to "custom")
+    __uniConfig.globalStyle = _uM("backgroundColorContent" to "@globalStyleBackgroundColor", "navigationBarTextStyle" to "@globalStyleNavigationBarTextStyle", "navigationStyle" to "custom")
     __uniConfig.getTabBarConfig = fun(): Map<String, Any>? {
         return _uM("color" to "@tabBarColor", "selectedColor" to "@tabBarSelectedColor", "borderStyle" to "@tabBarBorderStyle", "backgroundColor" to "@tabBarBackgroundColor", "list" to _uA(
             _uM("pagePath" to "pages/bookcase/index", "iconPath" to "@tabBarIconPath1", "selectedIconPath" to "@tabBarSelectedIconPath1", "text" to "书架"),
@@ -4032,7 +4235,7 @@ fun defineAppConfig() {
     __uniConfig.tabBar = __uniConfig.getTabBarConfig()
     __uniConfig.conditionUrl = ""
     __uniConfig.uniIdRouter = _uM()
-    __uniConfig.themeConfig = _uM("light" to _uM("tabBarColor" to "#2c2c2c", "tabBarSelectedColor" to "#d81e06", "tabBarBorderStyle" to "black", "tabBarBackgroundColor" to "#f5f5f5", "tabBarIconPath1" to "static/image/wap-home-o.png", "tabBarSelectedIconPath1" to "static/image/wap-home.png", "tabBarIconPath2" to "static/image/browsing-history-o.png", "tabBarSelectedIconPath2" to "static/image/browsing-history.png", "tabBarIconPath3" to "static/image/comment-o.png", "tabBarSelectedIconPath3" to "static/image/comment.png", "tabBarIconPath4" to "static/image/manager-o.png", "tabBarSelectedIconPath4" to "static/image/manager.png", "globalStyleBackgroundColor" to "#f5f5f5"), "dark" to _uM("tabBarColor" to "#e6e6e6", "tabBarSelectedColor" to "#d81e06", "tabBarBorderStyle" to "white", "tabBarBackgroundColor" to "#181818", "tabBarIconPath1" to "static/image/wap-home-w.png", "tabBarSelectedIconPath1" to "static/image/wap-home.png", "tabBarIconPath2" to "static/image/browsing-history-w.png", "tabBarSelectedIconPath2" to "static/image/browsing-history.png", "tabBarIconPath3" to "static/image/comment-w.png", "tabBarSelectedIconPath3" to "static/image/comment.png", "tabBarIconPath4" to "static/image/manager-w.png", "tabBarSelectedIconPath4" to "static/image/manager.png", "globalStyleBackgroundColor" to "#181818"))
+    __uniConfig.themeConfig = _uM("light" to _uM("tabBarColor" to "#2c2c2c", "tabBarSelectedColor" to "#d81e06", "tabBarBorderStyle" to "black", "tabBarBackgroundColor" to "#f5f5f5", "tabBarIconPath1" to "static/image/wap-home-o.png", "tabBarSelectedIconPath1" to "static/image/wap-home.png", "tabBarIconPath2" to "static/image/browsing-history-o.png", "tabBarSelectedIconPath2" to "static/image/browsing-history.png", "tabBarIconPath3" to "static/image/comment-o.png", "tabBarSelectedIconPath3" to "static/image/comment.png", "tabBarIconPath4" to "static/image/manager-o.png", "tabBarSelectedIconPath4" to "static/image/manager.png", "globalStyleBackgroundColor" to "#f5f5f5", "globalStyleNavigationBarTextStyle" to "black"), "dark" to _uM("tabBarColor" to "#e6e6e6", "tabBarSelectedColor" to "#d81e06", "tabBarBorderStyle" to "white", "tabBarBackgroundColor" to "#181818", "tabBarIconPath1" to "static/image/wap-home-w.png", "tabBarSelectedIconPath1" to "static/image/wap-home.png", "tabBarIconPath2" to "static/image/browsing-history-w.png", "tabBarSelectedIconPath2" to "static/image/browsing-history.png", "tabBarIconPath3" to "static/image/comment-w.png", "tabBarSelectedIconPath3" to "static/image/comment.png", "tabBarIconPath4" to "static/image/manager-w.png", "tabBarSelectedIconPath4" to "static/image/manager.png", "globalStyleBackgroundColor" to "#181818", "globalStyleNavigationBarTextStyle" to "white"))
     __uniConfig.ready = true
 }
 open class GenUniApp : UniAppImpl() {

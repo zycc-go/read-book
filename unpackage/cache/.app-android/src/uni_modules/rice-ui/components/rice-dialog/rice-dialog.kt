@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -329,33 +329,31 @@ open class GenUniModulesRiceUiComponentsRiceDialogRiceDialog : VueComponent {
             }
             val cancelButtonStyle = computed(fun(): UTSJSONObject {
                 val isVertical = props.buttonLayout == "col"
-                return object : UTSJSONObject() {
-                    var flex = if (props.buttonLayout == "row") {
-                        1
-                    } else {
-                        "none"
-                    }
-                    var marginRight = if (props.showConfirmButton && !isVertical) {
-                        "12px"
-                    } else {
-                        "0px"
-                    }
-                    var marginTop = if (props.showConfirmButton && isVertical) {
-                        "12px"
-                    } else {
-                        "0px"
-                    }
+                return _uO("flex" to if (props.buttonLayout == "row") {
+                    1
+                } else {
+                    "none"
                 }
+                , "marginRight" to if (props.showConfirmButton && !isVertical) {
+                    "12px"
+                } else {
+                    "0px"
+                }
+                , "marginTop" to if (props.showConfirmButton && isVertical) {
+                    "12px"
+                } else {
+                    "0px"
+                }
+                )
             }
             )
             val confirmButtonStyle = computed(fun(): UTSJSONObject {
-                return object : UTSJSONObject() {
-                    var flex = if (props.buttonLayout == "row") {
-                        1
-                    } else {
-                        "none"
-                    }
+                return _uO("flex" to if (props.buttonLayout == "row") {
+                    1
+                } else {
+                    "none"
                 }
+                )
             }
             )
             onUnmounted(fun(){
@@ -386,7 +384,7 @@ open class GenUniModulesRiceUiComponentsRiceDialogRiceDialog : VueComponent {
                         )), "ref_key" to "dialogRef", "ref" to dialogRef), _uA(
                             if (isTrue(unref(hasTitle))) {
                                 _cE("view", _uM("key" to 0, "class" to "rice-dialog__title"), _uA(
-                                    renderSlot(_ctx.`$slots`, "title", UTSJSONObject(), fun(): UTSArray<Any> {
+                                    renderSlot(_ctx.`$slots`, "title", _uO(), fun(): UTSArray<Any> {
                                         return _uA(
                                             _cE("text", _uM("class" to "rice-dialog__title__text"), _tD(_ctx.title), 1)
                                         )
@@ -396,7 +394,7 @@ open class GenUniModulesRiceUiComponentsRiceDialogRiceDialog : VueComponent {
                                 _cC("v-if", true)
                             },
                             _cE("view", _uM("class" to _nC(unref(contentClass))), _uA(
-                                renderSlot(_ctx.`$slots`, "default", UTSJSONObject(), fun(): UTSArray<Any> {
+                                renderSlot(_ctx.`$slots`, "default", _uO(), fun(): UTSArray<Any> {
                                     return _uA(
                                         if (isTrue(unref(hasStrValue)(_ctx.message))) {
                                             _cE("scroll-view", _uM("key" to 0, "class" to "rice-dialog__message", "show-scrollbar" to false), _uA(
@@ -409,7 +407,7 @@ open class GenUniModulesRiceUiComponentsRiceDialogRiceDialog : VueComponent {
                                 })
                             ), 2),
                             _cE("view", _uM("class" to _nC(unref(footerClass))), _uA(
-                                renderSlot(_ctx.`$slots`, "footer", UTSJSONObject(), fun(): UTSArray<Any> {
+                                renderSlot(_ctx.`$slots`, "footer", _uO(), fun(): UTSArray<Any> {
                                     return _uA(
                                         if (isTrue(_ctx.showCancelButton)) {
                                             _cE(Fragment, _uM("key" to 0), _uA(
@@ -498,7 +496,7 @@ open class GenUniModulesRiceUiComponentsRiceDialogRiceDialog : VueComponent {
             "String",
             "Number"
         ), "required" to false), "useDialogPage" to _uM("type" to "Boolean", "required" to false, "default" to true), "customStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         ), "confirm" to _uM("type" to "Function", "required" to false), "cancel" to _uM("type" to "Function", "required" to false), "clickOverlay" to _uM("type" to "Function", "required" to false), "open" to _uM("type" to "Function", "required" to false), "close" to _uM("type" to "Function", "required" to false), "opened" to _uM("type" to "Function", "required" to false), "closed" to _uM("type" to "Function", "required" to false), "ready" to _uM("type" to "Function", "required" to false), "fail" to _uM("type" to "Function", "required" to false), "show" to _uM("type" to "Boolean", "default" to false)))
         var propsNeedCastKeys = _uA(

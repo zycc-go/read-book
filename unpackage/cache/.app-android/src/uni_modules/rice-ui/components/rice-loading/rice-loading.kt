@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -117,7 +117,7 @@ open class GenUniModulesRiceUiComponentsRiceLoadingRiceLoading : VueComponent {
                 return _cE("view", _uM("class" to _nC(unref(loadingClass)), "style" to _nS(_ctx.customStyle), "ref_key" to "loadingRef", "ref" to loadingRef), _uA(
                     if (isTrue(_ctx.mode == "snow" || unref(slot)["icon"] != null)) {
                         _cE("view", _uM("key" to 0, "class" to _nC(unref(ns).m("snow")), "ref_key" to "coreRef", "ref" to coreRef), _uA(
-                            renderSlot(_ctx.`$slots`, "icon", UTSJSONObject(), fun(): UTSArray<Any> {
+                            renderSlot(_ctx.`$slots`, "icon", _uO(), fun(): UTSArray<Any> {
                                 return _uA(
                                     _cV(_component_rice_icon, _uM("name" to "loading", "size" to _ctx.size, "color" to unref(color), "type" to "primary"), null, 8, _uA(
                                         "size",
@@ -136,7 +136,7 @@ open class GenUniModulesRiceUiComponentsRiceLoadingRiceLoading : VueComponent {
                     ,
                     if (isTrue(unref(hasText))) {
                         _cE("text", _uM("key" to 3, "class" to _nC(unref(ns).e("text")), "style" to _nS(unref(textStyle))), _uA(
-                            renderSlot(_ctx.`$slots`, "default", UTSJSONObject(), fun(): UTSArray<Any> {
+                            renderSlot(_ctx.`$slots`, "default", _uO(), fun(): UTSArray<Any> {
                                 return _uA(
                                     _tD(_ctx.text)
                                 )
@@ -171,7 +171,7 @@ open class GenUniModulesRiceUiComponentsRiceLoadingRiceLoading : VueComponent {
             "String",
             "Number"
         ), "required" to false), "vertical" to _uM("type" to "Boolean", "required" to false, "default" to false), "timingFunction" to _uM("type" to "String", "required" to false, "default" to "ease-in-out"), "customStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         )))
         var propsNeedCastKeys = _uA(

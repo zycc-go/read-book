@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -99,10 +99,7 @@ open class GenUniModulesRiceUiComponentsRiceCellRiceCell : VueComponent {
                     if (isTrue(unref(hasLeftIcon))) {
                         renderSlot(_ctx.`$slots`, "leftIcon", _uM("key" to 0), fun(): UTSArray<Any> {
                             return _uA(
-                                _cV(_component_rice_icon, _uM("name" to _ctx.icon, "custom-style" to object : UTSJSONObject() {
-                                    var marginRight = "2px"
-                                    var lineHeight: Number = 1.6
-                                }, "size" to unref(iconSize)), null, 8, _uA(
+                                _cV(_component_rice_icon, _uM("name" to _ctx.icon, "custom-style" to _uO("marginRight" to "2px", "lineHeight" to 1.6), "size" to unref(iconSize)), null, 8, _uA(
                                     "name",
                                     "size"
                                 ))
@@ -113,7 +110,7 @@ open class GenUniModulesRiceUiComponentsRiceCellRiceCell : VueComponent {
                     }
                     ,
                     _cE("view", _uM("class" to _nC(unref(ns).e("title")), "style" to _nS(unref(splitCssProperty)(_ctx.titleStyle).rectCssProperty)), _uA(
-                        renderSlot(_ctx.`$slots`, "title", UTSJSONObject(), fun(): UTSArray<Any> {
+                        renderSlot(_ctx.`$slots`, "title", _uO(), fun(): UTSArray<Any> {
                             return _uA(
                                 _cE("text", _uM("class" to "rice-cell__title__text", "style" to _nS(unref(splitCssProperty)(_ctx.titleStyle).textCssProperty)), _tD(_ctx.title), 5)
                             )
@@ -131,7 +128,7 @@ open class GenUniModulesRiceUiComponentsRiceCellRiceCell : VueComponent {
                     ), 6),
                     if (isTrue(unref(hasValue))) {
                         _cE("view", _uM("key" to 1, "class" to _nC(unref(ns).e("value")), "style" to _nS(unref(splitCssProperty)(_ctx.valueStyle).rectCssProperty)), _uA(
-                            renderSlot(_ctx.`$slots`, "value", UTSJSONObject(), fun(): UTSArray<Any> {
+                            renderSlot(_ctx.`$slots`, "value", _uO(), fun(): UTSArray<Any> {
                                 return _uA(
                                     _cE("text", _uM("class" to "rice-cell__value__text", "style" to _nS(unref(splitCssProperty)(_ctx.valueStyle).textCssProperty)), _tD(_ctx.value), 5)
                                 )
@@ -181,16 +178,16 @@ open class GenUniModulesRiceUiComponentsRiceCellRiceCell : VueComponent {
             "String",
             "Number"
         ), "required" to false), "size" to _uM("type" to "String", "required" to false), "icon" to _uM("type" to "String", "required" to false), "url" to _uM("type" to "String", "required" to false), "border" to _uM("type" to "Boolean", "required" to false, "default" to true), "clickable" to _uM("type" to "Boolean", "required" to false, "default" to true), "arrow" to _uM("type" to "Boolean", "required" to false, "default" to null), "arrowDirection" to _uM("type" to "String", "required" to false, "default" to "right"), "center" to _uM("type" to "Boolean", "required" to false, "default" to false), "titleStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         ), "valueStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         ), "labelStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         ), "customStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         )))
         var propsNeedCastKeys = _uA(

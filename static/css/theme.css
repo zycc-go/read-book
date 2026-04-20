@@ -14,6 +14,8 @@
 	--rice-error-color: #f56c6c;
 	--rice-error-color-1: #fff2f0;
 	--rice-error-color-7: #cf5155;
+	--text-color1: #666;
+	--text-BgColor1: #fff;
 }
 
 /* 暗黑模式下的主题 */
@@ -32,4 +34,6 @@
 	--rice-error-color: #f56c6c;
 	--rice-error-color-1: #fff2f0;
 	--rice-error-color-7: #cf5155;
+	--text-color1: #CCC;
+	--text-BgColor1: #FFFFFF12;
 }

@@ -1,17 +1,21 @@
 <template>
-	<view :class="[`rice-theme-${state.appTheme}`, 'page-search']">
-		<rice-navbar :height="state.navbarHeight" title-width="calc(100% - 100px)" @search="onClickAction"
-			@clickAction="onClickAction">
-			<template #title>
-				<rice-search v-model="value" placeholder="请输入搜索关键词" />
-			</template>
-			<template #right>
-				<text>搜索</text>
-			</template>
-		</rice-navbar>
+	<view :class="[`rice-theme-${state.appTheme}`, 'page']" :style="{ paddingTop:`${state.statusBarHeight}px`}">
+		<view class="page-navbar" :style="{ height:`${state.navbarHeight}px`, top:`${state.statusBarHeight}px`}">
+			<view class="page-navbar-left" @click="onBack">
+				<rice-icon name="arrow-left" size="20" color="rgb(50, 50, 51)" />
+			</view>
+			<rice-search v-model="keywords" placeholder="请输入搜索关键词" show-action @search="onClickAction"
+				@clickAction="onClickAction" />
+		</view>
 
-		<view class="card">
-			历史记录
+		<view class="card"
+			:style="{ marginTop:`${state.navbarHeight}px`, paddingBottom:`${state.navbarHeight + state.safeAreaInsetsHeight}px`}">
+			<text class="card-title">历史记录</text>
+			<scroll-view direction="vertical" style="flex: 1">
+				<view class="tag-list">
+					<text class="tag" v-for="item in searchHistoryLists" @click="onSearchItem(item)">{{ item.text }}</text>
+				</view>
+			</scroll-view>
 		</view>
 	</view>
 
@@ -20,22 +24,95 @@
 <script setup lang="uts">
 	import { setTheme } from "@/uni_modules/rice-ui"
 	import { state } from '@/store/index.uts'
+	import { searchHistoryList, SearchHistoryItem } from '@/data/book'
 
-	const value = ref('')
+	const keywords = ref('')
 
-	const onClickAction = () => { }
+	const searchHistoryLists = ref<SearchHistoryItem[]>([])
+
+	const onBack = () => {
+		uni.navigateBack()
+	}
+
+	const onClickAction = () => {
+		uni.showToast({
+			title: '搜索' + keywords.value
+		})
+	}
+
+	const onSearchItem = (item : SearchHistoryItem) => {
+		keywords.value = item.text
+		onClickAction()
+	}
+
+	const initData = () => {
+		const list : SearchHistoryItem[] = []
+		const books = ['三体', '活着', '百年孤独', '红楼梦', '西游记', '斗破苍穹', '盗墓笔记', '解忧杂货店']
+		for (let i = 1; i <= 200; i++) {
+			const text = books[i % books.length] as string
+			list.push({ id: `${i}`, text })
+		}
+		searchHistoryLists.value = list
+	}
+
+	initData()
 </script>
 
 <style lang="scss" scoped>
-	:deep(.rice-navbar) {
-		.rice-search {
-			width: 100%;
-			padding: 10px 0;
+	.page {
+		background-color: var(--rice-navbar-background);
+		width: 100%;
+		height: 100%;
+		padding-bottom: 20px;
+	}
+
+	.page-navbar {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		position: fixed;
+		width: 100%;
+		z-index: 9;
+		background-color: var(--rice-navbar-background);
+
+		.page-navbar-left {
+			padding: 0 $uni-spacing-row-base;
 		}
 
-		.rice-navbar__center {
-			padding: 0;
-			margin-left: -10px;
+		:deep(.rice-search) {
+			flex: 1;
+		}
+	}
+
+	.card {
+		padding: 0 $uni-spacing-row-lg;
+		z-index: 0;
+		height: 100%;
+
+		.card-title {
+			margin-bottom: $uni-spacing-col-base;
+			color: var(--rice-text-color);
+		}
+
+		.scroll-view-box {
+			flex: 1;
+		}
+
+		.tag-list {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			margin: 0 -4px;
+
+			.tag {
+				margin: $uni-spacing-col-sm;
+				padding: 4px 8px;
+				font-size: $uni-font-size-base;
+				border-radius: $uni-border-radius-base;
+				color: var(--text-color1);
+				background-color: var(--text-BgColor1);
+			}
 		}
 	}
 </style>

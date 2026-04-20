@@ -84,6 +84,7 @@
 	},
 	"globalStyle": {
 		"backgroundColorContent": "@globalStyleBackgroundColor",
+		"navigationBarTextStyle": "@globalStyleNavigationBarTextStyle",
 		"navigationStyle": "custom"
 	},
 	"uniIdRouter": {}

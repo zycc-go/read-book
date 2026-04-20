@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -12,6 +12,7 @@ import io.dcloud.uts.Map
 import io.dcloud.uts.Set
 import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
+import io.dcloud.uniapp.extapi.navigateTo as uni_navigateTo
 import io.dcloud.uniapp.extapi.setAppTheme as uni_setAppTheme
 open class GenPagesMineIndex : BasePage {
     constructor(__ins: ComponentInternalInstance, __renderer: String?) : super(__ins, __renderer) {}
@@ -27,31 +28,42 @@ open class GenPagesMineIndex : BasePage {
                 showMoreMessage.value = true
             }
             val onSetTheme = fun(kVal: String){
-                setTheme(kVal as String)
+                setTheme(kVal)
                 setAppTheme(kVal)
-                if (uni_setAppTheme != null) {
+                setIsFollowSystem(false)
+                if (state.uniPlatform === "app") {
                     uni_setAppTheme(SetAppThemeOptions(theme = kVal as String, success = fun(_) {
-                        console.log("设置appTheme为 " + kVal + " 成功", " at pages/mine/index.uvue:64")
+                        console.log("设置appTheme为 " + kVal + " 成功", " at pages/mine/index.uvue:67")
                     }
                     , fail = fun(e: IAppThemeFail) {
-                        console.log("设置appTheme为 " + kVal + " 失败,原因:", e.errMsg, " at pages/mine/index.uvue:67")
+                        console.log("设置appTheme为 " + kVal + " 失败,原因:", e.errMsg, " at pages/mine/index.uvue:70")
                     }
                     ))
                 }
             }
+            val onToSetting = fun(): UTSPromise<AsyncApiSuccessResult>? {
+                return uni_navigateTo(NavigateToOptions(url = "/pages/setting/index"))
+            }
+            val onToFeedback = fun(): UTSPromise<AsyncApiSuccessResult>? {
+                return uni_navigateTo(NavigateToOptions(url = "/pages/feedback/index"))
+            }
             return fun(): Any? {
                 val _component_rice_icon = resolveEasyComponent("rice-icon", GenUniModulesRiceUiComponentsRiceIconRiceIconClass)
+                val _component_rice_badge = resolveEasyComponent("rice-badge", GenUniModulesRiceUiComponentsRiceBadgeRiceBadgeClass)
                 val _component_rice_navbar = resolveEasyComponent("rice-navbar", GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass)
                 val _component_rice_avatar = resolveEasyComponent("rice-avatar", GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass)
                 val _component_rice_cell = resolveEasyComponent("rice-cell", GenUniModulesRiceUiComponentsRiceCellRiceCellClass)
                 val _component_rice_cell_group = resolveEasyComponent("rice-cell-group", GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroupClass)
                 val _component_rice_dialog = resolveEasyComponent("rice-dialog", GenUniModulesRiceUiComponentsRiceDialogRiceDialogClass)
                 return _cE(Fragment, null, _uA(
-                    _cE("view", _uM("class" to _nC("rice-theme-" + unref(state).appTheme)), _uA(
-                        _cV(_component_rice_navbar, _uM("left-arrow" to false, "height" to unref(state).statusBarHeight), _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cE("view", _uM("class" to _nC(_uA(
+                        "rice-theme-" + unref(state).appTheme,
+                        "page"
+                    ))), _uA(
+                        _cV(_component_rice_navbar, _uM("left-arrow" to false, "height" to unref(state).navbarHeight), _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
                             return _uA(
                                 _cE("view", _uM("class" to "nav-right"), _uA(
-                                    if (unref(state).appTheme === "dark") {
+                                    if (unref(state).appTheme == "dark") {
                                         _cV(_component_rice_icon, _uM("key" to 0, "name" to "sun", "class" to "nac-icon", "onClick" to fun(){
                                             onSetTheme("light")
                                         }), null, 8, _uA(
@@ -66,7 +78,12 @@ open class GenPagesMineIndex : BasePage {
                                         ))
                                     }
                                     ,
-                                    _cV(_component_rice_icon, _uM("name" to "remind", "class" to "nac-icon"))
+                                    _cV(_component_rice_badge, _uM("value" to 5), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
+                                        return _uA(
+                                            _cV(_component_rice_icon, _uM("name" to "remind", "class" to "nac-icon"))
+                                        )
+                                    }
+                                    ), "_" to 1))
                                 ))
                             )
                         }
@@ -83,10 +100,10 @@ open class GenPagesMineIndex : BasePage {
                         _cE("view", _uM("class" to "card"), _uA(
                             _cV(_component_rice_cell_group, _uM("border" to ""), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
                                 return _uA(
-                                    _cV(_component_rice_cell, _uM("title" to "时长", "arrow" to "")),
-                                    _cV(_component_rice_cell, _uM("title" to "设置", "arrow" to "")),
-                                    _cV(_component_rice_cell, _uM("title" to "关于", "arrow" to "", "onClick" to onAbout)),
-                                    _cV(_component_rice_cell, _uM("title" to "版本", "arrow" to ""))
+                                    _cV(_component_rice_cell, _uM("title" to "活动", "arrow" to "")),
+                                    _cV(_component_rice_cell, _uM("title" to "设置", "arrow" to "", "onClick" to onToSetting)),
+                                    _cV(_component_rice_cell, _uM("title" to "反馈", "arrow" to "", "onClick" to onToFeedback)),
+                                    _cV(_component_rice_cell, _uM("title" to "关于", "value" to "0.0.1", "arrow" to "", "onClick" to onAbout))
                                 )
                             }
                             ), "_" to 1))
@@ -95,7 +112,7 @@ open class GenPagesMineIndex : BasePage {
                     _cV(_component_rice_dialog, _uM("show" to unref(showMoreMessage), "onUpdate:show" to fun(`$event`: Boolean){
                         trySetRefValue(showMoreMessage, `$event`)
                     }
-                    , "title" to "关于", "show-cancel-button" to false, "message" to message, "confirm-button-text" to "知道了"), null, 8, _uA(
+                    , "title" to "关于", "show-cancel-button" to false, "message" to message, "confirm-button-text" to "知道了", "message-align" to "left"), null, 8, _uA(
                         "show"
                     ))
                 ), 64)
@@ -104,13 +121,11 @@ open class GenPagesMineIndex : BasePage {
         val styles: Map<String, Map<String, Map<String, Any>>> by lazy {
             _nCS(_uA(
                 styles0
-            ), _uA(
-                GenApp.styles
             ))
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "marginRight" to 15)), "nac-icon" to _uM(".nav-right " to _uM("fontSize" to 26, "marginLeft" to 10)), "header" to _pS(_uM("marginTop" to 12, "marginRight" to 15, "marginBottom" to 12, "marginLeft" to 15, "display" to "flex", "flexDirection" to "row")), "h-right" to _uM(".header " to _uM("marginLeft" to 10, "fontSize" to 12, "display" to "flex", "justifyContent" to "center")), "h-text1" to _uM(".header " to _uM("color" to "var(--rice-text-color)")), "h-text2" to _uM(".header " to _uM("marginTop" to 4, "fontSize" to 14, "color" to "var(--rice-text-color-2)")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 15, "paddingBottom" to 12, "paddingLeft" to 15, "marginTop" to 8)))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "overflow" to "visible", "marginRight" to 15)), "nac-icon" to _uM(".nav-right " to _uM("fontSize" to 26, "marginLeft" to 10)), "header" to _pS(_uM("marginTop" to 12, "marginRight" to 15, "marginBottom" to 12, "marginLeft" to 15, "display" to "flex", "flexDirection" to "row")), "h-right" to _uM(".header " to _uM("marginLeft" to 10, "fontSize" to 12, "display" to "flex", "justifyContent" to "center")), "h-text1" to _uM(".header " to _uM("color" to "var(--rice-text-color)")), "h-text2" to _uM(".header " to _uM("marginTop" to 4, "fontSize" to 14, "color" to "var(--rice-text-color-2)")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 15, "paddingBottom" to 12, "paddingLeft" to 15, "marginTop" to 8)), "rice-icon" to _uM(".card " to _uM("display" to "flex", "alignItems" to "center")))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -173,7 +173,7 @@ open class GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar : VueComponent {
                             )), "onClick" to withModifiers(clickLeft, _uA(
                                 "stop"
                             ))), _uA(
-                                renderSlot(_ctx.`$slots`, "left", UTSJSONObject(), fun(): UTSArray<Any> {
+                                renderSlot(_ctx.`$slots`, "left", _uO(), fun(): UTSArray<Any> {
                                     return _uA(
                                         if (isTrue(_ctx.leftArrow)) {
                                             _cV(_component_rice_icon, _uM("key" to 0, "name" to _ctx.leftIcon, "size" to _ctx.leftIconSize, "color" to unref(arrowColor)), null, 8, _uA(
@@ -200,7 +200,7 @@ open class GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar : VueComponent {
                             "rice-navbar__center",
                             _uM("rice-navbar__center--has-right" to (unref(hasRight) && _ctx.safeAreaInsetTop))
                         )), "style" to _nS(unref(centerStyle))), _uA(
-                            renderSlot(_ctx.`$slots`, "title", UTSJSONObject(), fun(): UTSArray<Any> {
+                            renderSlot(_ctx.`$slots`, "title", _uO(), fun(): UTSArray<Any> {
                                 return _uA(
                                     _cE("text", _uM("class" to "rice-navbar__title", "style" to _nS(unref(titleTextStyle))), _tD(_ctx.title), 5)
                                 )
@@ -214,7 +214,7 @@ open class GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar : VueComponent {
                             )), "onClick" to withModifiers(clickRight, _uA(
                                 "stop"
                             ))), _uA(
-                                renderSlot(_ctx.`$slots`, "right", UTSJSONObject(), fun(): UTSArray<Any> {
+                                renderSlot(_ctx.`$slots`, "right", _uO(), fun(): UTSArray<Any> {
                                     return _uA(
                                         if (isTrue(unref(hasStrValue)(_ctx.rightText))) {
                                             _cE("text", _uM("key" to 0, "class" to "rice-navbar__aside__text", "style" to _nS(unref(rightTextStyle))), _tD(_ctx.rightText), 5)
@@ -257,7 +257,7 @@ open class GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar : VueComponent {
             "String",
             "Number"
         ), "required" to false, "default" to "44px"), "autoBack" to _uM("type" to "Boolean", "required" to false, "default" to true), "customStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         )))
         var propsNeedCastKeys = _uA(

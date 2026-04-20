@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
+@file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
 package uni.UNI4CF4B90
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
@@ -167,9 +167,7 @@ open class GenUniModulesRiceUiComponentsRiceSearchRiceSearch : VueComponent {
             }
             )
             val clearIconStyle = computed(fun(): UTSJSONObject {
-                return object : UTSJSONObject() {
-                    var paddingLeft = "6px"
-                }
+                return _uO("paddingLeft" to "6px")
             }
             )
             val searchClass = computed(fun(): UTSArray<String> {
@@ -301,7 +299,7 @@ open class GenUniModulesRiceUiComponentsRiceSearchRiceSearch : VueComponent {
             "String",
             "Number"
         ), "required" to false, "default" to "16px"), "rightIconColor" to _uM("type" to "String", "required" to false), "customStyle" to _uM("type" to "UTSJSONObject", "required" to false, "default" to fun(): UTSJSONObject {
-            return (UTSJSONObject())
+            return (_uO())
         }
         ), "modelValue" to _uM("type" to "String", "default" to "")))
         var propsNeedCastKeys = _uA(

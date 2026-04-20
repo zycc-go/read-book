@@ -1,4 +1,7 @@
+import _easycom_rice_notice_bar from '@/uni_modules/rice-ui/components/rice-notice-bar/rice-notice-bar.uvue'
+import { state, setAppTheme } from '@/store/index.uts'
 
+	
 const __sfc__ = defineComponent({
   __name: 'index',
   setup(__props) {
@@ -10,16 +13,20 @@ const _cache = __ins.renderCache;
 
 return (): any | null => {
 
-  return _cE("view", null, [
-    _cE("image", _uM({
-      class: "logo",
-      src: "/static/logo.png"
-    })),
-    _cE("text", _uM({ class: "title" }), _tD(unref(title)), 1 /* TEXT */)
-  ])
+const _component_rice_notice_bar = resolveEasyComponent("rice-notice-bar",_easycom_rice_notice_bar)
+
+  return _cE("view", _uM({
+    class: _nC([`rice-theme-${unref(state).appTheme}`, "page"]),
+    style: _nS(_uM({ paddingTop:`${unref(state).statusBarHeight}px`}))
+  }), [
+    _cV(_component_rice_notice_bar, _uM({
+      message: "无语，秋风和老去的誓言，灰色的日子慢慢过去，骄阳无忌，人如黄花。夕阳西下几时回。",
+      "left-icon": "volume"
+    }))
+  ], 6 /* CLASS, STYLE */)
 }
 }
 
 })
 export default __sfc__
-const GenPagesDiscussIndexStyles = [_uM([["logo", _pS(_uM([["height", 100], ["width", 100], ["marginTop", 100], ["marginRight", "auto"], ["marginBottom", 25], ["marginLeft", "auto"]]))], ["title", _pS(_uM([["fontSize", 18], ["color", "#8f8f94"], ["textAlign", "center"]]))]])]
+const GenPagesDiscussIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))]])]

@@ -1,0 +1,189 @@
+import { useNamespace } from '../../libs/use';
+	import { hasStrValue, addUnit } from '../../libs/utils';
+	import { BadgeProps } from "./type.uts"
+	
+const __sfc__ = defineComponent({
+  __name: 'rice-badge',
+
+		name: 'rice-badge'
+	,
+  props: {
+    value: { type: [String, Number], required: false },
+    max: { type: Number, required: false },
+    isDot: { type: Boolean, required: false, default: false },
+    hidden: { type: Boolean, required: false, default: false },
+    type: { type: String, required: false, default: 'error' },
+    showZero: { type: Boolean, required: false, default: true },
+    bgColor: { type: String, required: false },
+    color: { type: String, required: false },
+    fontSize: { type: [String, Number], required: false },
+    position: { type: String, required: false, default: 'top-right' },
+    offset: { type: Array as PropType<Array<number | string>>, required: false, default: () : Array<number | string> => ([]) },
+    absolute: { type: Boolean, required: false },
+    badgeStyle: { type: UTSJSONObject, required: false, default: () : UTSJSONObject => ({}) }
+  },
+  setup(__props) {
+const __ins = getCurrentInstance()!;
+const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
+const _cache = __ins.renderCache;
+
+	/**
+	 * @description Badge 徽标 按钮和图标上的数字或状态标记
+	 * @property {String|Number} value 显示值，`is-dot` 为 false时生效；为`0`时且 `show-zero` 为 `false` 时隐藏
+	 * @property {Number} max 最大值，大于 `max` 时显示为 `${max}+`。只有`value` 为数字类型时才起作用
+	 * @property {Boolean} isDot 是否显示小圆点  默认false
+	 * @property {Boolean} hidden 是否隐藏 `Badge` 默认 false
+	 * @property {String} type 主题类型 默认 error
+	 * @value primary 主要色
+	 * @value success 成功色
+	 * @value warning 警告色
+	 * @value error 错误色
+	 * @property {Boolean} showZero 数值为0时是否显示`Badge`
+	 * @property {String} bgColor 背景颜色，优先级高级 `type`
+	 * @property {String} color 文字颜色
+	 * @property {String|Number} fontSize 文字大小
+	 * @property {String} position `Badge` 的位置，默认 `top-right`
+	 * @value top-right 右上
+	 * @value top-left 左上
+	 * @value bottom-left 左下
+	 * @value bottom-right 右下
+	 * @property {Array} offset 偏移量，数组的两项分别对应水平向右和垂直向下的偏移量
+	 * @property {Boolean} absolute 是否绝对定位
+	 * @property {Object} badgeStyle 自定义`Badge`样式
+	 */
+
+	
+
+	const ns = useNamespace('badge')
+	const slots = useSlots()
+
+	const props = __props
+
+	const single = computed(() => slots['default'] == null)
+	const isAbsolute = computed(() => !single.value || props.absolute == true)
+
+	const formatValue = computed(() => {
+		if (props.isDot) return ""
+		if (typeof props.value == 'number' && typeof props.max == 'number') {
+			return props.max < props.value ? `${props.max}+` : props.value
+		}
+		return props.value
+	})
+
+
+
+
+
+
+
+	const isNumZero = computed(() => props.value == 0)
+
+
+	const showBadge = computed(() => !props.hidden && (props.isDot || props.showZero || !isNumZero.value))
+
+	const getOffsetUumString = (val : string) => {
+		return val.startsWith('-') ? addUnit(val.replace('-', '')) : `-${addUnit(val)}`;
+	}
+
+	const contentStyle = computed(() => {
+		const css = new Map<string, string>()
+		if (hasStrValue(props.bgColor)) {
+			css.set('background-color', props.bgColor!)
+		}
+		if (props.offset.length > 0) {
+			const x = props.offset[0]
+			const y = props.offset.length >= 2 ? props.offset[1] : 0
+			if (!isAbsolute.value) {
+				css.set('margin-left', addUnit(x))
+				css.set('margin-top', addUnit(y))
+			} else {
+				const p = props.position.split('-')
+				const offsetY = p[0] //top bottom
+				const offsetX = p[1] // left right
+				if (typeof x == 'number') {
+					css.set(offsetX, addUnit(offsetX == 'left' ? x : -x))
+				} else {
+					css.set(offsetX, offsetX == 'left' ? addUnit(x) : getOffsetUumString(x as string))
+				}
+				if (typeof y == 'number') {
+					css.set(offsetY, addUnit(offsetY == 'top' ? y : -y))
+				} else {
+					css.set(offsetY, offsetY == 'top' ? addUnit(y) : getOffsetUumString(y as string))
+				}
+			}
+		}
+		return css
+	})
+
+	const textStyle = computed(() => {
+		const css = new Map<string, string>()
+		if (hasStrValue(props.color)) {
+			css.set('color', props.color!)
+		}
+		if (hasStrValue(props.fontSize)) {
+			css.set('font-size', addUnit(props.fontSize!))
+		}
+		return css
+	})
+
+
+
+	const contentClass = computed(() => {
+		return [
+			ns.e("content"),
+			ns.m(props.type),
+			ns.is("fixed", isAbsolute.value),
+			ns.is("dot", props.isDot),
+			ns.m(isAbsolute.value ? props.position : ''),
+			ns.theme(),
+		]
+	})
+
+return (): any | null => {
+
+  return isTrue(!unref(single))
+    ? _cE("view", _uM({
+        key: 0,
+        class: _nC(unref(ns).b(''))
+      }), [
+        renderSlot(_ctx.$slots, "default"),
+        isTrue(unref(showBadge))
+          ? _cE("view", _uM({
+              key: 0,
+              class: _nC(unref(contentClass)),
+              style: _nS([unref(contentStyle),_ctx.badgeStyle])
+            }), [
+              renderSlot(_ctx.$slots, "content", {}, (): any[] => [
+                isTrue(unref(hasStrValue)(unref(formatValue)))
+                  ? _cE("text", _uM({
+                      key: 0,
+                      class: "rice-badge__content__text",
+                      style: _nS(unref(textStyle))
+                    }), _tD(unref(formatValue)), 5 /* TEXT, STYLE */)
+                  : _cC("v-if", true)
+              ])
+            ], 6 /* CLASS, STYLE */)
+          : _cC("v-if", true)
+      ], 2 /* CLASS */)
+    : _cE("view", _uM({
+        key: 1,
+        class: _nC([unref(ns).b(''),unref(contentClass)]),
+        style: _nS([unref(contentStyle),_ctx.badgeStyle])
+      }), [
+        renderSlot(_ctx.$slots, "content", {}, (): any[] => [
+          isTrue(unref(hasStrValue)(unref(formatValue)))
+            ? _cE("text", _uM({
+                key: 0,
+                class: "rice-badge__content__text",
+                style: _nS(unref(textStyle))
+              }), _tD(unref(formatValue)), 5 /* TEXT, STYLE */)
+            : _cC("v-if", true)
+        ])
+      ], 6 /* CLASS, STYLE */)
+}
+}
+
+})
+export default __sfc__
+export type RiceBadgeComponentPublicInstance = InstanceType<typeof __sfc__>;
+const GenUniModulesRiceUiComponentsRiceBadgeRiceBadgeStyles = [_uM([["rice-badge", _pS(_uM([["position", "relative"], ["overflow", "visible"]]))], ["rice-badge__content", _pS(_uM([["paddingTop", 0], ["paddingRight", 4], ["paddingBottom", 0], ["paddingLeft", 4], ["minWidth", 16], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "center"], ["borderTopLeftRadius", 100], ["borderTopRightRadius", 100], ["borderBottomRightRadius", 100], ["borderBottomLeftRadius", 100], ["borderTopWidth", 1], ["borderRightWidth", 1], ["borderBottomWidth", 1], ["borderLeftWidth", 1], ["borderTopStyle", "solid"], ["borderRightStyle", "solid"], ["borderBottomStyle", "solid"], ["borderLeftStyle", "solid"], ["borderTopColor", "#ffffff"], ["borderRightColor", "#ffffff"], ["borderBottomColor", "#ffffff"], ["borderLeftColor", "#ffffff"], ["backgroundColor", "var(--rice-error-color)"]]))], ["rice-badge__content__text", _pS(_uM([["fontSize", "var(--rice-font-size-xs)"], ["color", "#ffffff"], ["whiteSpace", "nowrap"]]))], ["rice-badge--fixed", _pS(_uM([["position", "absolute"], ["zIndex", 99]]))], ["rice-badge--dot", _pS(_uM([["height", 12], ["width", 12], ["borderTopLeftRadius", 12], ["borderTopRightRadius", 12], ["borderBottomRightRadius", 12], ["borderBottomLeftRadius", 12], ["paddingTop", 0], ["paddingRight", 0], ["paddingBottom", 0], ["paddingLeft", 0], ["minWidth", 0]]))], ["rice-badge--top-left", _pS(_uM([["top", 0], ["left", 0], ["transform", "translate(-50%, -50%)"]]))], ["rice-badge--top-right", _pS(_uM([["top", 0], ["right", 0], ["transform", "translate(50%, -50%)"]]))], ["rice-badge--bottom-left", _pS(_uM([["bottom", 0], ["left", 0], ["transform", "translate(-50%, 50%)"]]))], ["rice-badge--bottom-right", _pS(_uM([["bottom", 0], ["right", 0], ["transform", "translate(50%, 50%)"]]))], ["rice-badge--primary", _pS(_uM([["backgroundColor", "var(--rice-primary-color)"]]))], ["rice-badge--success", _pS(_uM([["backgroundColor", "var(--rice-success-color)"]]))], ["rice-badge--warning", _pS(_uM([["backgroundColor", "var(--rice-warning-color)"]]))], ["rice-badge--error", _pS(_uM([["backgroundColor", "var(--rice-error-color)"]]))]])]
