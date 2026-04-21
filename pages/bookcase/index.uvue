@@ -6,15 +6,15 @@
 			</template>
 			<template #right>
 				<view class="nav-right">
-					<rice-icon name="search" class="nav-icon" @click="onSearch" />
-					<!-- <rice-icon name="bars" class="nav-icon" @click="onShowMenu" /> -->
+					<rice-icon name="search" size="20" class="nav-icon" @click="onSearch" />
+					<rice-icon name="bars" size="20" class="nav-icon" @click="onShowMenu" />
 				</view>
 			</template>
 		</rice-navbar>
 
 		<!-- 书籍列表 -->
-		<scroll-view class="book-list" scroll-y>
-			<view v-if="bookList.length === 0" class="empty">
+		<scroll-view style="flex: 1">
+			<view v-if="bookList.length == 0" class="empty">
 				<rice-empty description="书架空空如也，快去添加书籍吧" />
 			</view>
 
@@ -58,7 +58,7 @@
 								<text class="book-sub">&nbsp;{{ item?.readChapter }}</text>
 							</view>
 						</view>
-						<rice-icon name="info" class="book-li-more" size="24" />
+						<rice-icon name="double-right" class="book-li-more" size="20" />
 					</view>
 				</view>
 			</view>
@@ -97,27 +97,26 @@
 	}
 
 	.read-time {
-		font-size: $uni-font-size-sm;
-		color: var(--rice-text-color);
+		font-size: $uni-font-size-14;
+		color: var(--text-color2);
 	}
 
 	.nav-right {
 		display: flex;
 		flex-direction: row;
-		margin-right: $uni-spacing-row-lg;
+		margin-right: $uni-spacing-row-16;
 
 		.nav-icon {
-			font-size: $uni-img-size-base;
-			margin-left: $uni-spacing-row-base;
-			// color: var(--rice-text-color);
+			margin-left: $uni-spacing-row-12;
+			// color: var(--text-color2);
 		}
 	}
 
 	.book-list {
-		padding: 0 $uni-spacing-row-base $uni-spacing-col-base;
+		padding: $uni-spacing-col-12 $uni-spacing-row-16;
 
 		.book-li-top {
-			margin-top: $uni-spacing-row-lg;
+			margin-top: $uni-spacing-row-16;
 		}
 
 		.book-li {
@@ -131,7 +130,7 @@
 			}
 
 			.book-li-content {
-				margin-left: $uni-spacing-row-base;
+				margin-left: $uni-spacing-row-12;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
@@ -144,13 +143,13 @@
 				}
 
 				.book-title {
-					font-size: $uni-font-size-lg;
-					color: var(--rice-text-color);
+					font-size: $uni-font-size-16;
+					color: var(--text-color1);
 				}
 
 				.book-sub {
-					font-size: $uni-font-size-sm;
-					color: var(--rice-text-color);
+					font-size: $uni-font-size-12;
+					color: var(--text-color2);
 				}
 
 				.book-sub-dot {
@@ -158,7 +157,7 @@
 					font-size: 8px;
 					line-height: 8px;
 					background-color: yellowgreen;
-					color: var(--rice-text-color);
+					color: #fff;
 					border-radius: $uni-border-radius-base;
 				}
 			}

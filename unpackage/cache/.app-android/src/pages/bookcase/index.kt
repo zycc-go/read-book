@@ -13,6 +13,7 @@ import io.dcloud.uts.Set
 import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
 import io.dcloud.uniapp.extapi.navigateTo as uni_navigateTo
+import io.dcloud.uniapp.extapi.showToast as uni_showToast
 open class GenPagesBookcaseIndex : BasePage {
     constructor(__ins: ComponentInternalInstance, __renderer: String?) : super(__ins, __renderer) {}
     companion object {
@@ -21,6 +22,9 @@ open class GenPagesBookcaseIndex : BasePage {
             val __ins = getCurrentInstance()!!
             val _ctx = __ins.proxy as GenPagesBookcaseIndex
             val _cache = __ins.renderCache
+            val onShowMenu = fun(){
+                uni_showToast(ShowToastOptions(title = "还没有哦", icon = "none"))
+            }
             val onSearch = fun(){
                 uni_navigateTo(NavigateToOptions(url = "/pages/search/index"))
             }
@@ -44,15 +48,16 @@ open class GenPagesBookcaseIndex : BasePage {
                     ), "right" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
                             _cE("view", _uM("class" to "nav-right"), _uA(
-                                _cV(_component_rice_icon, _uM("name" to "search", "class" to "nav-icon", "onClick" to onSearch))
+                                _cV(_component_rice_icon, _uM("name" to "search", "size" to "20", "class" to "nav-icon", "onClick" to onSearch)),
+                                _cV(_component_rice_icon, _uM("name" to "bars", "size" to "20", "class" to "nav-icon", "onClick" to onShowMenu))
                             ))
                         )
                     }
                     ), "_" to 1), 8, _uA(
                         "height"
                     )),
-                    _cE("scroll-view", _uM("class" to "book-list", "scroll-y" to ""), _uA(
-                        if (unref(bookList).length === 0) {
+                    _cE("scroll-view", _uM("style" to _nS(_uM("flex" to "1"))), _uA(
+                        if (unref(bookList).length == 0) {
                             _cE("view", _uM("key" to 0, "class" to "empty"), _uA(
                                 _cV(_component_rice_empty, _uM("description" to "书架空空如也，快去添加书籍吧"))
                             ))
@@ -87,7 +92,7 @@ open class GenPagesBookcaseIndex : BasePage {
                                                     _cE("text", _uM("class" to "book-sub"), " " + _tD(item?.readChapter), 1)
                                                 ))
                                             )),
-                                            _cV(_component_rice_icon, _uM("name" to "info", "class" to "book-li-more", "size" to "24"))
+                                            _cV(_component_rice_icon, _uM("name" to "double-right", "class" to "book-li-more", "size" to "20"))
                                         ), 10, _uA(
                                             "onClick"
                                         ))
@@ -96,7 +101,7 @@ open class GenPagesBookcaseIndex : BasePage {
                                 ))
                             ))
                         }
-                    ))
+                    ), 4)
                 ), 2)
             }
         }
@@ -107,7 +112,7 @@ open class GenPagesBookcaseIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "read-time" to _pS(_uM("fontSize" to 12, "color" to "var(--rice-text-color)")), "nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "marginRight" to 15)), "nav-icon" to _uM(".nav-right " to _uM("fontSize" to 26, "marginLeft" to 10)), "book-list" to _pS(_uM("paddingTop" to 0, "paddingRight" to 10, "paddingBottom" to 8, "paddingLeft" to 10)), "book-li-top" to _uM(".book-list " to _uM("marginTop" to 15)), "book-li" to _uM(".book-list " to _uM("display" to "flex", "flexDirection" to "row")), "book-li-avatar" to _uM(".book-list .book-li " to _uM("width" to 60, "height" to 80)), "book-li-content" to _uM(".book-list .book-li " to _uM("marginLeft" to 10, "display" to "flex", "flexDirection" to "column", "justifyContent" to "center")), "book-li-row" to _uM(".book-list .book-li .book-li-content " to _uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "height" to 18)), "book-title" to _uM(".book-list .book-li .book-li-content " to _uM("fontSize" to 16, "color" to "var(--rice-text-color)")), "book-sub" to _uM(".book-list .book-li .book-li-content " to _uM("fontSize" to 12, "color" to "var(--rice-text-color)")), "book-sub-dot" to _uM(".book-list .book-li .book-li-content " to _uM("paddingTop" to 2, "paddingRight" to 4, "paddingBottom" to 2, "paddingLeft" to 4, "fontSize" to 8, "lineHeight" to "8px", "backgroundColor" to "#9ACD32", "color" to "var(--rice-text-color)", "borderTopLeftRadius" to 3, "borderTopRightRadius" to 3, "borderBottomRightRadius" to 3, "borderBottomLeftRadius" to 3)), "book-li-more" to _uM(".book-list .book-li " to _uM("position" to "absolute", "right" to 0, "top" to 0)))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "read-time" to _pS(_uM("fontSize" to 14, "color" to "var(--text-color2)")), "nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "marginRight" to 16)), "nav-icon" to _uM(".nav-right " to _uM("marginLeft" to 12)), "book-list" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16)), "book-li-top" to _uM(".book-list " to _uM("marginTop" to 16)), "book-li" to _uM(".book-list " to _uM("display" to "flex", "flexDirection" to "row")), "book-li-avatar" to _uM(".book-list .book-li " to _uM("width" to 60, "height" to 80)), "book-li-content" to _uM(".book-list .book-li " to _uM("marginLeft" to 12, "display" to "flex", "flexDirection" to "column", "justifyContent" to "center")), "book-li-row" to _uM(".book-list .book-li .book-li-content " to _uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "height" to 18)), "book-title" to _uM(".book-list .book-li .book-li-content " to _uM("fontSize" to 16, "color" to "var(--text-color1)")), "book-sub" to _uM(".book-list .book-li .book-li-content " to _uM("fontSize" to 12, "color" to "var(--text-color2)")), "book-sub-dot" to _uM(".book-list .book-li .book-li-content " to _uM("paddingTop" to 2, "paddingRight" to 4, "paddingBottom" to 2, "paddingLeft" to 4, "fontSize" to 8, "lineHeight" to "8px", "backgroundColor" to "#9ACD32", "color" to "#ffffff", "borderTopLeftRadius" to 3, "borderTopRightRadius" to 3, "borderBottomRightRadius" to 3, "borderBottomLeftRadius" to 3)), "book-li-more" to _uM(".book-list .book-li " to _uM("position" to "absolute", "right" to 0, "top" to 0)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

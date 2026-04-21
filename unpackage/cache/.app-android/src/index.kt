@@ -22,7 +22,6 @@ import io.dcloud.uniapp.extapi.getDeviceInfo as uni_getDeviceInfo
 import io.dcloud.uniapp.extapi.getFileSystemManager as uni_getFileSystemManager
 import io.dcloud.uniapp.extapi.getStorageSync as uni_getStorageSync
 import io.dcloud.uniapp.extapi.getWindowInfo as uni_getWindowInfo
-import io.dcloud.uniapp.extapi.onAppThemeChange as uni_onAppThemeChange
 import io.dcloud.uniapp.extapi.openDialogPage as uni_openDialogPage
 import io.dcloud.uniapp.extapi.rpx2px as uni_rpx2px
 import io.dcloud.uniapp.extapi.setAppTheme as uni_setAppTheme
@@ -114,7 +113,7 @@ fun tryConnectSocket(host: String, port: String, id: String): UTSPromise<SocketT
 fun initRuntimeSocketService(): UTSPromise<Boolean> {
     val hosts: String = "169.254.3.126,169.254.166.164,10.191.92.87,127.0.0.1"
     val port: String = "8090"
-    val id: String = "app-android_thdgMI"
+    val id: String = "app-android_BqRhAO"
     if (hosts == "" || port == "" || id == "") {
         return UTSPromise.resolve(false)
     }
@@ -3504,7 +3503,7 @@ class StateReactiveObject : State, IUTSReactive<State> {
             _tRS(__v_raw, "userInfo", oldValue, value)
         }
 }
-val state = reactive(State(statusBarHeight = 0, navbarHeight = 56, safeAreaInsetsHeight = 0, uniPlatform = "", devicePixelRatio = 1, active = "componentPage", leftWinActive = "/pages/bookcase/index", appTheme = "light", osTheme = "light", isFollowSystem = false, netless = false, userInfo = null, agreeToPrivacy = null))
+val state = reactive(State(statusBarHeight = 0, navbarHeight = 44, safeAreaInsetsHeight = 0, uniPlatform = "", devicePixelRatio = 1, active = "componentPage", leftWinActive = "/pages/bookcase/index", appTheme = "light", osTheme = "light", isFollowSystem = false, netless = false, userInfo = null, agreeToPrivacy = null))
 val setAppTheme = fun(value: String){
     state.appTheme = value
     uni_setStorageSync("appTheme", value)
@@ -3557,7 +3556,6 @@ open class GenApp : BaseApp {
         , __ins)
         onAppShow(fun(_: OnShowOptions) {
             console.log("App Show", " at App.uvue:13")
-            uni_onAppThemeChange(fun(res: AppThemeChangeResult){})
         }
         , __ins)
         onAppHide(fun() {
@@ -3591,7 +3589,7 @@ open class GenApp : BaseApp {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#845ec2", "--rice-primary-color-1" to "#b7abc2", "--rice-primary-color-7" to "#782ec2", "--rice-success-color" to "#4d8076", "--rice-success-color-1" to "#4d8076", "--rice-success-color-7" to "#4d8076", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "transparent", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#f5f5f5", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa", "--text-color1" to "#666", "--text-BgColor1" to "#fff")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#6235c2", "--rice-primary-color-1" to "#a391c2", "--rice-primary-color-7" to "#aa97c2", "--rice-success-color" to "#0d8063", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "transparent", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727", "--text-color1" to "#CCC", "--text-BgColor1" to "#FFFFFF12")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")))
+                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#845ec2", "--rice-primary-color-1" to "#b7abc2", "--rice-primary-color-7" to "#782ec2", "--rice-success-color" to "#4d8076", "--rice-success-color-1" to "#4d8076", "--rice-success-color-7" to "#4d8076", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "transparent", "--rice-search-input-background" to "rgba(0, 0, 0, 0.04)", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#f5f5f5", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa", "--text-color1" to "#02070F", "--text-color2" to "#666", "--text-color3" to "#999", "--text-color4" to "#111", "--background-color1" to "rgba(0, 0, 0, 0.50)", "--background-color2" to "#F5F5F5", "--background-color3" to "#FFF", "--background-color4" to "rgba(0, 0, 0, 0.04)", "--background-color5" to "#FFF")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#6235c2", "--rice-primary-color-1" to "#a391c2", "--rice-primary-color-7" to "#aa97c2", "--rice-success-color" to "#0d8063", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#333", "--rice-search-background" to "transparent", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727", "--text-color1" to "#F5F5F5", "--text-color2" to "#CCC", "--text-color3" to "#999", "--text-color4" to "#F5F5F5", "--background-color1" to "#111", "--background-color2" to "#222", "--background-color3" to "rgba(255, 255, 255, 0.13)", "--background-color4" to "#333", "--background-color5" to "rgba(255, 255, 255, 0.13)")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")))
             }
     }
 }
@@ -3738,110 +3736,304 @@ val GenPagesLibraryIndexClass = CreateVueComponent(GenPagesLibraryIndex::class.j
     return GenPagesLibraryIndex(instance, renderer)
 }
 )
-open class NoticeBarState (
+val GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inject, props = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.emits, components = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.components, styles = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.setup(props as GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar {
+    return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar(instance)
+}
+)
+val GenUniModulesRiceUiComponentsRiceBackTopRiceBackTopClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop.inject, props = GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop.emits, components = GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop.components, styles = GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop.setup(props as GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop {
+    return GenUniModulesRiceUiComponentsRiceBackTopRiceBackTop(instance)
+}
+)
+open class DiscussItem (
     @JsonNotNull
-    open var show: Boolean = false,
+    open var id: String,
     @JsonNotNull
-    open var offset: Number,
+    open var avatar: String,
     @JsonNotNull
-    open var duration: Number,
+    open var name: String,
     @JsonNotNull
-    open var wrapWidth: Number,
+    open var content: String,
     @JsonNotNull
-    open var contentWidth: Number,
+    open var goodNum: Number,
+    @JsonNotNull
+    open var viewNum: Number,
+    @JsonNotNull
+    open var likeNum: Number,
+    @JsonNotNull
+    open var shareNum: Number,
+    @JsonNotNull
+    open var isGood: Boolean = false,
+    @JsonNotNull
+    open var isView: Boolean = false,
+    @JsonNotNull
+    open var isLike: Boolean = false,
+    @JsonNotNull
+    open var isShare: Boolean = false,
 ) : UTSReactiveObject(), IUTSSourceMap {
     override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("NoticeBarState", "uni_modules/rice-ui/components/rice-notice-bar/type.uts", 1, 13)
+        return UTSSourceMapPosition("DiscussItem", "data/discuss.uts", 1, 13)
     }
     override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
-        return NoticeBarStateReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+        return DiscussItemReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
     }
 }
-class NoticeBarStateReactiveObject : NoticeBarState, IUTSReactive<NoticeBarState> {
-    override var __v_raw: NoticeBarState
+class DiscussItemReactiveObject : DiscussItem, IUTSReactive<DiscussItem> {
+    override var __v_raw: DiscussItem
     override var __v_isReadonly: Boolean
     override var __v_isShallow: Boolean
     override var __v_skip: Boolean
-    constructor(__v_raw: NoticeBarState, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(show = __v_raw.show, offset = __v_raw.offset, duration = __v_raw.duration, wrapWidth = __v_raw.wrapWidth, contentWidth = __v_raw.contentWidth) {
+    constructor(__v_raw: DiscussItem, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(id = __v_raw.id, avatar = __v_raw.avatar, name = __v_raw.name, content = __v_raw.content, goodNum = __v_raw.goodNum, viewNum = __v_raw.viewNum, likeNum = __v_raw.likeNum, shareNum = __v_raw.shareNum, isGood = __v_raw.isGood, isView = __v_raw.isView, isLike = __v_raw.isLike, isShare = __v_raw.isShare) {
         this.__v_raw = __v_raw
         this.__v_isReadonly = __v_isReadonly
         this.__v_isShallow = __v_isShallow
         this.__v_skip = __v_skip
     }
-    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): NoticeBarStateReactiveObject {
-        return NoticeBarStateReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): DiscussItemReactiveObject {
+        return DiscussItemReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
     }
-    override var show: Boolean
+    override var id: String
         get() {
-            return _tRG(__v_raw, "show", __v_raw.show, __v_isReadonly, __v_isShallow)
+            return _tRG(__v_raw, "id", __v_raw.id, __v_isReadonly, __v_isShallow)
         }
         set(value) {
-            if (!__v_canSet("show")) {
+            if (!__v_canSet("id")) {
                 return
             }
-            val oldValue = __v_raw.show
-            __v_raw.show = value
-            _tRS(__v_raw, "show", oldValue, value)
+            val oldValue = __v_raw.id
+            __v_raw.id = value
+            _tRS(__v_raw, "id", oldValue, value)
         }
-    override var offset: Number
+    override var avatar: String
         get() {
-            return _tRG(__v_raw, "offset", __v_raw.offset, __v_isReadonly, __v_isShallow)
+            return _tRG(__v_raw, "avatar", __v_raw.avatar, __v_isReadonly, __v_isShallow)
         }
         set(value) {
-            if (!__v_canSet("offset")) {
+            if (!__v_canSet("avatar")) {
                 return
             }
-            val oldValue = __v_raw.offset
-            __v_raw.offset = value
-            _tRS(__v_raw, "offset", oldValue, value)
+            val oldValue = __v_raw.avatar
+            __v_raw.avatar = value
+            _tRS(__v_raw, "avatar", oldValue, value)
         }
-    override var duration: Number
+    override var name: String
         get() {
-            return _tRG(__v_raw, "duration", __v_raw.duration, __v_isReadonly, __v_isShallow)
+            return _tRG(__v_raw, "name", __v_raw.name, __v_isReadonly, __v_isShallow)
         }
         set(value) {
-            if (!__v_canSet("duration")) {
+            if (!__v_canSet("name")) {
                 return
             }
-            val oldValue = __v_raw.duration
-            __v_raw.duration = value
-            _tRS(__v_raw, "duration", oldValue, value)
+            val oldValue = __v_raw.name
+            __v_raw.name = value
+            _tRS(__v_raw, "name", oldValue, value)
         }
-    override var wrapWidth: Number
+    override var content: String
         get() {
-            return _tRG(__v_raw, "wrapWidth", __v_raw.wrapWidth, __v_isReadonly, __v_isShallow)
+            return _tRG(__v_raw, "content", __v_raw.content, __v_isReadonly, __v_isShallow)
         }
         set(value) {
-            if (!__v_canSet("wrapWidth")) {
+            if (!__v_canSet("content")) {
                 return
             }
-            val oldValue = __v_raw.wrapWidth
-            __v_raw.wrapWidth = value
-            _tRS(__v_raw, "wrapWidth", oldValue, value)
+            val oldValue = __v_raw.content
+            __v_raw.content = value
+            _tRS(__v_raw, "content", oldValue, value)
         }
-    override var contentWidth: Number
+    override var goodNum: Number
         get() {
-            return _tRG(__v_raw, "contentWidth", __v_raw.contentWidth, __v_isReadonly, __v_isShallow)
+            return _tRG(__v_raw, "goodNum", __v_raw.goodNum, __v_isReadonly, __v_isShallow)
         }
         set(value) {
-            if (!__v_canSet("contentWidth")) {
+            if (!__v_canSet("goodNum")) {
                 return
             }
-            val oldValue = __v_raw.contentWidth
-            __v_raw.contentWidth = value
-            _tRS(__v_raw, "contentWidth", oldValue, value)
+            val oldValue = __v_raw.goodNum
+            __v_raw.goodNum = value
+            _tRS(__v_raw, "goodNum", oldValue, value)
+        }
+    override var viewNum: Number
+        get() {
+            return _tRG(__v_raw, "viewNum", __v_raw.viewNum, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("viewNum")) {
+                return
+            }
+            val oldValue = __v_raw.viewNum
+            __v_raw.viewNum = value
+            _tRS(__v_raw, "viewNum", oldValue, value)
+        }
+    override var likeNum: Number
+        get() {
+            return _tRG(__v_raw, "likeNum", __v_raw.likeNum, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("likeNum")) {
+                return
+            }
+            val oldValue = __v_raw.likeNum
+            __v_raw.likeNum = value
+            _tRS(__v_raw, "likeNum", oldValue, value)
+        }
+    override var shareNum: Number
+        get() {
+            return _tRG(__v_raw, "shareNum", __v_raw.shareNum, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("shareNum")) {
+                return
+            }
+            val oldValue = __v_raw.shareNum
+            __v_raw.shareNum = value
+            _tRS(__v_raw, "shareNum", oldValue, value)
+        }
+    override var isGood: Boolean
+        get() {
+            return _tRG(__v_raw, "isGood", __v_raw.isGood, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("isGood")) {
+                return
+            }
+            val oldValue = __v_raw.isGood
+            __v_raw.isGood = value
+            _tRS(__v_raw, "isGood", oldValue, value)
+        }
+    override var isView: Boolean
+        get() {
+            return _tRG(__v_raw, "isView", __v_raw.isView, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("isView")) {
+                return
+            }
+            val oldValue = __v_raw.isView
+            __v_raw.isView = value
+            _tRS(__v_raw, "isView", oldValue, value)
+        }
+    override var isLike: Boolean
+        get() {
+            return _tRG(__v_raw, "isLike", __v_raw.isLike, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("isLike")) {
+                return
+            }
+            val oldValue = __v_raw.isLike
+            __v_raw.isLike = value
+            _tRS(__v_raw, "isLike", oldValue, value)
+        }
+    override var isShare: Boolean
+        get() {
+            return _tRG(__v_raw, "isShare", __v_raw.isShare, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("isShare")) {
+                return
+            }
+            val oldValue = __v_raw.isShare
+            __v_raw.isShare = value
+            _tRS(__v_raw, "isShare", oldValue, value)
         }
 }
-val GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.inject, props = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.emits, components = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.components, styles = GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.styles, setup = fun(props: ComponentPublicInstance, ctx: SetupContext): Any? {
-        return GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar.setup(props as GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar, ctx)
+val getCharLen = fun(len: Number): String {
+    var str = ""
+    run {
+        var i: Number = 0
+        while(i < len){
+            str += String.fromCharCode(Math.floor(Math.random() * 6656) + 0x4e00)
+            i++
+        }
     }
-    )
+    return str
 }
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar {
-    return GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBar(instance)
+val discussListFun = fun(): UTSArray<DiscussItem> {
+    val aa: UTSArray<DiscussItem> = _uA()
+    run {
+        var i: Number = 0
+        while(i < 10){
+            aa.push(DiscussItem(id = "" + i, avatar = "", name = getCharLen(Math.floor(Math.random() * 10)), content = getCharLen(Math.floor(Math.random() * 200)), likeNum = Math.floor(Math.random() * 100), viewNum = Math.floor(Math.random() * 100), goodNum = Math.floor(Math.random() * 100), shareNum = Math.floor(Math.random() * 100), isLike = Math.random() > 0.5, isView = Math.random() > 0.5, isGood = Math.random() > 0.5, isShare = Math.random() > 0.5))
+            i++
+        }
+    }
+    return aa
 }
-)
+open class BadgeItem (
+    @JsonNotNull
+    open var name: String,
+    open var isDot: Boolean? = null,
+    open var dotNum: Number? = null,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("BadgeItem", "pages/discuss/index.uvue", 65, 7)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return BadgeItemReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class BadgeItemReactiveObject : BadgeItem, IUTSReactive<BadgeItem> {
+    override var __v_raw: BadgeItem
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: BadgeItem, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(name = __v_raw.name, isDot = __v_raw.isDot, dotNum = __v_raw.dotNum) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): BadgeItemReactiveObject {
+        return BadgeItemReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var name: String
+        get() {
+            return _tRG(__v_raw, "name", __v_raw.name, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("name")) {
+                return
+            }
+            val oldValue = __v_raw.name
+            __v_raw.name = value
+            _tRS(__v_raw, "name", oldValue, value)
+        }
+    override var isDot: Boolean?
+        get() {
+            return _tRG(__v_raw, "isDot", __v_raw.isDot, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("isDot")) {
+                return
+            }
+            val oldValue = __v_raw.isDot
+            __v_raw.isDot = value
+            _tRS(__v_raw, "isDot", oldValue, value)
+        }
+    override var dotNum: Number?
+        get() {
+            return _tRG(__v_raw, "dotNum", __v_raw.dotNum, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("dotNum")) {
+                return
+            }
+            val oldValue = __v_raw.dotNum
+            __v_raw.dotNum = value
+            _tRS(__v_raw, "dotNum", oldValue, value)
+        }
+}
 val GenPagesDiscussIndexClass = CreateVueComponent(GenPagesDiscussIndex::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesDiscussIndex.inheritAttrs, inject = GenPagesDiscussIndex.inject, props = GenPagesDiscussIndex.props, propsNeedCastKeys = GenPagesDiscussIndex.propsNeedCastKeys, emits = GenPagesDiscussIndex.emits, components = GenPagesDiscussIndex.components, styles = GenPagesDiscussIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenPagesDiscussIndex.setup(props as GenPagesDiscussIndex)
@@ -3860,16 +4052,6 @@ val GenUniModulesRiceUiComponentsRiceBadgeRiceBadgeClass = CreateVueComponent(Ge
 }
 , fun(instance, renderer): GenUniModulesRiceUiComponentsRiceBadgeRiceBadge {
     return GenUniModulesRiceUiComponentsRiceBadgeRiceBadge(instance)
-}
-)
-val GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inject, props = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.emits, components = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.components, styles = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.setup(props as GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar {
-    return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar(instance)
 }
 )
 val GenUniModulesRiceUiComponentsRiceCellRiceCellClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceCellRiceCell::class.java, fun(): VueComponentOptions {
@@ -3892,14 +4074,34 @@ val GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroupClass = CreateVueComp
     return GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup(instance)
 }
 )
-val GenUniModulesRiceUiComponentsRiceOverlayRiceOverlayClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inject, props = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.emits, components = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.components, styles = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.setup(props as GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay)
+val GenPagesMineIndexClass = CreateVueComponent(GenPagesMineIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesMineIndex.inheritAttrs, inject = GenPagesMineIndex.inject, props = GenPagesMineIndex.props, propsNeedCastKeys = GenPagesMineIndex.propsNeedCastKeys, emits = GenPagesMineIndex.emits, components = GenPagesMineIndex.components, styles = GenPagesMineIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesMineIndex.setup(props as GenPagesMineIndex)
     }
     )
 }
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay {
-    return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay(instance)
+, fun(instance, renderer): GenPagesMineIndex {
+    return GenPagesMineIndex(instance, renderer)
+}
+)
+val GenUniModulesRiceUiComponentsRiceSearchRiceSearchClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceSearchRiceSearch::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.inject, props = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.emits, components = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.components, styles = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceSearchRiceSearch.setup(props as GenUniModulesRiceUiComponentsRiceSearchRiceSearch)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceSearchRiceSearch {
+    return GenUniModulesRiceUiComponentsRiceSearchRiceSearch(instance)
+}
+)
+val GenPagesSearchIndexClass = CreateVueComponent(GenPagesSearchIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesSearchIndex.inheritAttrs, inject = GenPagesSearchIndex.inject, props = GenPagesSearchIndex.props, propsNeedCastKeys = GenPagesSearchIndex.propsNeedCastKeys, emits = GenPagesSearchIndex.emits, components = GenPagesSearchIndex.components, styles = GenPagesSearchIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesSearchIndex.setup(props as GenPagesSearchIndex)
+    }
+    )
+}
+, fun(instance, renderer): GenPagesSearchIndex {
+    return GenPagesSearchIndex(instance, renderer)
 }
 )
 open class UseLoadingOptions (
@@ -4063,58 +4265,6 @@ val GenUniModulesRiceUiComponentsRiceLoadingRiceLoadingClass = CreateVueComponen
     return GenUniModulesRiceUiComponentsRiceLoadingRiceLoading(instance)
 }
 )
-val iconSizeTypes: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("iconSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 1, 14), "large" to "18px", "default" to "16px", "small" to "14px", "mini" to "12px")
-val loadingSizeTypes: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("loadingSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 7, 14), "large" to "20px", "default" to "18px", "small" to "16px", "mini" to "14px")
-val GenUniModulesRiceUiComponentsRiceButtonRiceButtonClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceButtonRiceButton::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceButtonRiceButton.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inject, props = GenUniModulesRiceUiComponentsRiceButtonRiceButton.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceButtonRiceButton.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceButtonRiceButton.emits, components = GenUniModulesRiceUiComponentsRiceButtonRiceButton.components, styles = GenUniModulesRiceUiComponentsRiceButtonRiceButton.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceButtonRiceButton.setup(props as GenUniModulesRiceUiComponentsRiceButtonRiceButton)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceButtonRiceButton {
-    return GenUniModulesRiceUiComponentsRiceButtonRiceButton(instance)
-}
-)
-val GenUniModulesRiceUiComponentsRiceDialogRiceDialogClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceDialogRiceDialog::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inject, props = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.emits, components = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.components, styles = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceDialogRiceDialog.setup(props as GenUniModulesRiceUiComponentsRiceDialogRiceDialog)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceDialogRiceDialog {
-    return GenUniModulesRiceUiComponentsRiceDialogRiceDialog(instance)
-}
-)
-val GenPagesMineIndexClass = CreateVueComponent(GenPagesMineIndex::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesMineIndex.inheritAttrs, inject = GenPagesMineIndex.inject, props = GenPagesMineIndex.props, propsNeedCastKeys = GenPagesMineIndex.propsNeedCastKeys, emits = GenPagesMineIndex.emits, components = GenPagesMineIndex.components, styles = GenPagesMineIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenPagesMineIndex.setup(props as GenPagesMineIndex)
-    }
-    )
-}
-, fun(instance, renderer): GenPagesMineIndex {
-    return GenPagesMineIndex(instance, renderer)
-}
-)
-val GenUniModulesRiceUiComponentsRiceSearchRiceSearchClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceSearchRiceSearch::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.inject, props = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.emits, components = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.components, styles = GenUniModulesRiceUiComponentsRiceSearchRiceSearch.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceSearchRiceSearch.setup(props as GenUniModulesRiceUiComponentsRiceSearchRiceSearch)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceSearchRiceSearch {
-    return GenUniModulesRiceUiComponentsRiceSearchRiceSearch(instance)
-}
-)
-val GenPagesSearchIndexClass = CreateVueComponent(GenPagesSearchIndex::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesSearchIndex.inheritAttrs, inject = GenPagesSearchIndex.inject, props = GenPagesSearchIndex.props, propsNeedCastKeys = GenPagesSearchIndex.propsNeedCastKeys, emits = GenPagesSearchIndex.emits, components = GenPagesSearchIndex.components, styles = GenPagesSearchIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenPagesSearchIndex.setup(props as GenPagesSearchIndex)
-    }
-    )
-}
-, fun(instance, renderer): GenPagesSearchIndex {
-    return GenPagesSearchIndex(instance, renderer)
-}
-)
 typealias SwitchValueType = Any
 val GenUniModulesRiceUiComponentsRiceSwitchRiceSwitchClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.inject, props = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.emits, components = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.components, styles = GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch.styles, setup = fun(props: ComponentPublicInstance): Any? {
@@ -4146,6 +4296,18 @@ val GenUniModulesRiceUiComponentsRiceTextareaRiceTextareaClass = CreateVueCompon
     return GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea(instance)
 }
 )
+val iconSizeTypes: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("iconSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 1, 14), "large" to "18px", "default" to "16px", "small" to "14px", "mini" to "12px")
+val loadingSizeTypes: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("loadingSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 7, 14), "large" to "20px", "default" to "18px", "small" to "16px", "mini" to "14px")
+val GenUniModulesRiceUiComponentsRiceButtonRiceButtonClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceButtonRiceButton::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceButtonRiceButton.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inject, props = GenUniModulesRiceUiComponentsRiceButtonRiceButton.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceButtonRiceButton.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceButtonRiceButton.emits, components = GenUniModulesRiceUiComponentsRiceButtonRiceButton.components, styles = GenUniModulesRiceUiComponentsRiceButtonRiceButton.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceButtonRiceButton.setup(props as GenUniModulesRiceUiComponentsRiceButtonRiceButton)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceButtonRiceButton {
+    return GenUniModulesRiceUiComponentsRiceButtonRiceButton(instance)
+}
+)
 val GenPagesFeedbackIndexClass = CreateVueComponent(GenPagesFeedbackIndex::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesFeedbackIndex.inheritAttrs, inject = GenPagesFeedbackIndex.inject, props = GenPagesFeedbackIndex.props, propsNeedCastKeys = GenPagesFeedbackIndex.propsNeedCastKeys, emits = GenPagesFeedbackIndex.emits, components = GenPagesFeedbackIndex.components, styles = GenPagesFeedbackIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenPagesFeedbackIndex.setup(props as GenPagesFeedbackIndex)
@@ -4154,6 +4316,16 @@ val GenPagesFeedbackIndexClass = CreateVueComponent(GenPagesFeedbackIndex::class
 }
 , fun(instance, renderer): GenPagesFeedbackIndex {
     return GenPagesFeedbackIndex(instance, renderer)
+}
+)
+val GenUniModulesRiceUiComponentsRiceOverlayRiceOverlayClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inject, props = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.emits, components = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.components, styles = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.setup(props as GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay {
+    return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay(instance)
 }
 )
 val GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheetClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet::class.java, fun(): VueComponentOptions {
@@ -4174,6 +4346,16 @@ val GenUniModulesRiceUiPagesActionSheetActionSheetClass = CreateVueComponent(Gen
 }
 , fun(instance, renderer): GenUniModulesRiceUiPagesActionSheetActionSheet {
     return GenUniModulesRiceUiPagesActionSheetActionSheet(instance, renderer)
+}
+)
+val GenUniModulesRiceUiComponentsRiceDialogRiceDialogClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceDialogRiceDialog::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inject, props = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.emits, components = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.components, styles = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenUniModulesRiceUiComponentsRiceDialogRiceDialog.setup(props as GenUniModulesRiceUiComponentsRiceDialogRiceDialog)
+    }
+    )
+}
+, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceDialogRiceDialog {
+    return GenUniModulesRiceUiComponentsRiceDialogRiceDialog(instance)
 }
 )
 val GenUniModulesRiceUiPagesDialogDialogClass = CreateVueComponent(GenUniModulesRiceUiPagesDialogDialog::class.java, fun(): VueComponentOptions {

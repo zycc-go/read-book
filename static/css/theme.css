@@ -2,6 +2,7 @@
 .rice-theme-light {
 	--rice-navbar-background: #f5f5f5;
 	--rice-search-background: transparent;
+	--rice-search-input-background: rgba(0, 0, 0, 0.04);
 	--rice-primary-color: #845ec2;
 	--rice-primary-color-1: #b7abc2;
 	--rice-primary-color-7: #782ec2;
@@ -14,14 +15,22 @@
 	--rice-error-color: #f56c6c;
 	--rice-error-color-1: #fff2f0;
 	--rice-error-color-7: #cf5155;
-	--text-color1: #666;
-	--text-BgColor1: #fff;
+	--text-color1: #02070F;
+	--text-color2: #666;
+	--text-color3: #999;
+	--text-color4: #111;
+	--background-color1: rgba(0, 0, 0, 0.50);
+	--background-color2: #F5F5F5;
+	--background-color3: #FFF;
+	--background-color4: rgba(0, 0, 0, 0.04);
+	--background-color5: #FFF;
 }
 
 /* 暗黑模式下的主题 */
 .rice-theme-dark {
 	--rice-navbar-background: #181818;
 	--rice-search-background: transparent;
+	--rice-search-input-background: #333;
 	--rice-primary-color: #6235c2;
 	--rice-primary-color-1: #a391c2;
 	--rice-primary-color-7: #aa97c2;
@@ -34,6 +43,13 @@
 	--rice-error-color: #f56c6c;
 	--rice-error-color-1: #fff2f0;
 	--rice-error-color-7: #cf5155;
-	--text-color1: #CCC;
-	--text-BgColor1: #FFFFFF12;
+	--text-color1: #F5F5F5;
+	--text-color2: #CCC;
+	--text-color3: #999;
+	--text-color4: #F5F5F5;
+	--background-color1: #111;
+	--background-color2: #222;
+	--background-color3: rgba(255, 255, 255, 0.13);
+	--background-color4: #333;
+	--background-color5: rgba(255, 255, 255, 0.13);
 }

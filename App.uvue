@@ -11,13 +11,13 @@
 		},
 		onShow() {
 			console.log('App Show')
-			uni.onAppThemeChange((res : AppThemeChangeResult) => {
+			// uni.onAppThemeChange((res : AppThemeChangeResult) => {
 				// state.appTheme = osTheme;
 				// setTheme(osTheme)
 				// uni.setAppTheme({ theme: osTheme })
 				// uni.setStorageSync('appTheme', osTheme)
 				// state.appTheme = res.appTheme.trim() ?? 'light';
-			})
+			// })
 		},
 		onHide() {
 			console.log('App Hide')

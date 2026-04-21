@@ -32,10 +32,7 @@
 		{
 			"path": "pages/setting/index",
 			"style": {
-				"navigationBarTitleText": "",
-				"mp-weixin": {
-					"bounces": "none"
-				}
+				"navigationBarTitleText": ""
 			}
 		},
 		{

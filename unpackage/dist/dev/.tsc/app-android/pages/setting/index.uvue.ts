@@ -109,4 +109,4 @@ const _component_rice_cell_group = resolveEasyComponent("rice-cell-group",_easyc
 
 })
 export default __sfc__
-const GenPagesSettingIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 15], ["paddingBottom", 12], ["paddingLeft", 15]]))], ["rice-icon", _uM([[".card ", _uM([["display", "flex"], ["alignItems", "center"]])]])]])]
+const GenPagesSettingIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 16], ["paddingBottom", 12], ["paddingLeft", 16]]))], ["rice-icon", _uM([[".card ", _uM([["display", "flex"], ["alignItems", "center"]])]])]])]

@@ -12,6 +12,8 @@ import io.dcloud.uts.Map
 import io.dcloud.uts.Set
 import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
+import io.dcloud.uniapp.extapi.hideToast as uni_hideToast
+import io.dcloud.uniapp.extapi.showToast as uni_showToast
 open class GenPagesDiscussIndex : BasePage {
     constructor(__ins: ComponentInternalInstance, __renderer: String?) : super(__ins, __renderer) {}
     companion object {
@@ -21,13 +23,153 @@ open class GenPagesDiscussIndex : BasePage {
             val _ctx = __ins.proxy as GenPagesDiscussIndex
             val _cache = __ins.renderCache
             val title = ref("discuss")
+            val scrollTop = ref<Number>(0)
+            val refresherTriggered = ref<Boolean>(false)
+            val discussListC = ref<UTSArray<DiscussItem>>(discussListFun())
+            val loadinghandle = ref<Boolean>(false)
+            val activeIndex2 = ref(0)
+            val listBadge = ref(_uA<BadgeItem>(BadgeItem(name = "推荐", isDot = true), BadgeItem(name = "关注", dotNum = 10), BadgeItem(name = "我的收藏", dotNum = 999), BadgeItem(name = "AI")))
+            val activeTab = ref<Number>(0)
+            val onChangeTab = fun(item: BadgeItem, index: String){
+                activeTab.value = index
+            }
+            val onHandle = fun(item: DiscussItem, kVal: String){
+                if (!loadinghandle.value) {
+                    uni_showToast(ShowToastOptions(title = kVal, icon = "none"))
+                    loadinghandle.value = true
+                    setTimeout(fun(){
+                        loadinghandle.value = false
+                        val index = discussListC.value.findIndex(fun(discuss): Boolean {
+                            return discuss.id === item.id
+                        }
+                        )
+                        val keyIs = "is" + (kVal.charAt(0).toUpperCase() + kVal.slice(1))
+                        val keyNum = "" + kVal + "Num"
+                        if (_uA(
+                            "good",
+                            "like"
+                        ).includes(kVal)) {
+                            if (discussListC.value[index][keyIs] as Boolean) {
+                                discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as Number - 1
+                            } else {
+                                discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as Number + 1
+                            }
+                            discussListC.value[index][keyIs] = !(discussListC.value[index][keyIs] as Boolean)
+                        } else {
+                            discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as Number + 1
+                        }
+                        uni_hideToast()
+                    }
+                    , 2000)
+                }
+            }
+            val onRefresherrefresh = fun(){
+                refresherTriggered.value = true
+                setTimeout(fun(){
+                    discussListC.value = discussListFun()
+                    refresherTriggered.value = false
+                }
+                , 2000)
+            }
+            onPageScroll(fun(options: OnPageScrollOptions){
+                scrollTop.value = options.scrollTop
+            }
+            )
             return fun(): Any? {
-                val _component_rice_notice_bar = resolveEasyComponent("rice-notice-bar", GenUniModulesRiceUiComponentsRiceNoticeBarRiceNoticeBarClass)
+                val _component_rice_avatar = resolveEasyComponent("rice-avatar", GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass)
+                val _component_rice_icon = resolveEasyComponent("rice-icon", GenUniModulesRiceUiComponentsRiceIconRiceIconClass)
+                val _component_rice_back_top = resolveEasyComponent("rice-back-top", GenUniModulesRiceUiComponentsRiceBackTopRiceBackTopClass)
                 return _cE("view", _uM("class" to _nC(_uA(
                     "rice-theme-" + unref(state).appTheme,
                     "page"
                 )), "style" to _nS(_uM("paddingTop" to ("" + unref(state).statusBarHeight + "px")))), _uA(
-                    _cV(_component_rice_notice_bar, _uM("message" to "无语，秋风和老去的誓言，灰色的日子慢慢过去，骄阳无忌，人如黄花。夕阳西下几时回。", "left-icon" to "volume"))
+                    _cE("view", _uM("class" to "tabs"), _uA(
+                        _cE(Fragment, null, RenderHelpers.renderList(unref(listBadge), fun(item, index, __index, _cached): Any {
+                            return _cE("view", _uM("class" to "tab", "key" to item.name, "onClick" to fun(){
+                                onChangeTab(item, index)
+                            }
+                            ), _uA(
+                                _cE("text", _uM("class" to "item-text"), _tD(item.name), 1),
+                                if (unref(activeTab) === index) {
+                                    _cE("view", _uM("key" to 0, "class" to "tab-indicator"))
+                                } else {
+                                    _cC("v-if", true)
+                                }
+                            ), 8, _uA(
+                                "onClick"
+                            ))
+                        }
+                        ), 128)
+                    )),
+                    _cE("scroll-view", _uM("id" to "backId", "direction" to "vertical", "style" to _nS(_uM("flex" to "1")), "refresher-enabled" to true, "enable-passive" to true, "refresher-triggered" to unref(refresherTriggered), "onRefresherrefresh" to onRefresherrefresh), _uA(
+                        _cE("view", _uM("class" to "card"), _uA(
+                            _cE(Fragment, null, RenderHelpers.renderList(unref(discussListC), fun(item, index, __index, _cached): Any {
+                                return _cE("view", _uM("key" to item.id, "class" to _nC(_uA(
+                                    "item",
+                                    if (index > 0) {
+                                        "item-index"
+                                    } else {
+                                        ""
+                                    }
+                                ))), _uA(
+                                    _cE("view", _uM("class" to "item-top"), _uA(
+                                        _cV(_component_rice_avatar, _uM("icon" to "star", "size" to "mini")),
+                                        _cE("view", _uM("class" to "item-text"), _uA(
+                                            _cE("text", _uM("class" to "item-tit"), _tD(item.name), 1)
+                                        ))
+                                    )),
+                                    _cE("text", _uM("class" to "item-content"), _tD(item.content), 1),
+                                    _cE("view", _uM("class" to "item-bottom"), _uA(
+                                        _cE("view", _uM("class" to "item-hand", "onClick" to fun(){
+                                            onHandle(item, "good")
+                                        }
+                                        ), _uA(
+                                            if (isTrue(item.isGood)) {
+                                                _cV(_component_rice_icon, _uM("key" to 0, "name" to "good-fill", "color" to "#ff0000"))
+                                            } else {
+                                                _cV(_component_rice_icon, _uM("key" to 1, "name" to "good"))
+                                            }
+                                            ,
+                                            _cE("text", _uM("class" to "item-hand-num"), " " + _tD(item.goodNum), 1)
+                                        ), 8, _uA(
+                                            "onClick"
+                                        )),
+                                        _cE("view", _uM("class" to "item-hand", "onClick" to fun(){
+                                            onHandle(item, "like")
+                                        }
+                                        ), _uA(
+                                            if (isTrue(item.isLike)) {
+                                                _cV(_component_rice_icon, _uM("key" to 0, "name" to "like-fill", "color" to "#ff0000"))
+                                            } else {
+                                                _cV(_component_rice_icon, _uM("key" to 1, "name" to "like"))
+                                            }
+                                            ,
+                                            _cE("text", _uM("class" to "item-hand-num"), " " + _tD(item.likeNum), 1)
+                                        ), 8, _uA(
+                                            "onClick"
+                                        )),
+                                        _cE("view", _uM("class" to "item-hand"), _uA(
+                                            _cV(_component_rice_icon, _uM("name" to "eyes")),
+                                            _cE("text", _uM("class" to "item-hand-num"), " " + _tD(item.viewNum), 1)
+                                        )),
+                                        _cE("view", _uM("class" to "item-hand", "onClick" to fun(){
+                                            onHandle(item, "share")
+                                        }
+                                        ), _uA(
+                                            _cV(_component_rice_icon, _uM("name" to "share")),
+                                            _cE("text", _uM("class" to "item-hand-num"), " " + _tD(item.shareNum), 1)
+                                        ), 8, _uA(
+                                            "onClick"
+                                        ))
+                                    ))
+                                ), 2)
+                            }
+                            ), 128)
+                        )),
+                        _cV(_component_rice_back_top, _uM("parentId" to "backId"))
+                    ), 44, _uA(
+                        "refresher-triggered"
+                    ))
                 ), 6)
             }
         }
@@ -38,7 +180,7 @@ open class GenPagesDiscussIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "tabs" to _pS(_uM("height" to 44, "display" to "flex", "flexDirection" to "row", "alignItems" to "center", "paddingTop" to 0, "paddingRight" to 4, "paddingBottom" to 0, "paddingLeft" to 4)), "tab" to _uM(".tabs " to _uM("paddingTop" to 0, "paddingRight" to 12, "paddingBottom" to 0, "paddingLeft" to 12, "position" to "relative", "display" to "flex", "flexDirection" to "row", "alignItems" to "center", "height" to "100%")), "tab-indicator" to _uM(".tabs " to _uM("width" to 20, "height" to 3, "position" to "absolute", "bottom" to 4, "left" to "50%", "transform" to "translateX(-50%)", "zIndex" to 1, "borderTopLeftRadius" to 100, "borderTopRightRadius" to 100, "borderBottomRightRadius" to 100, "borderBottomLeftRadius" to 100, "backgroundColor" to "var(--rice-primary-color)")), "item-text" to _uM(".tabs " to _uM("color" to "var(--text-color1)"), ".card .item .item-top " to _uM("marginLeft" to 5)), "card" to _pS(_uM("paddingTop" to 0, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16)), "item-index" to _uM(".card " to _uM("marginTop" to 8)), "item" to _uM(".card " to _uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16, "backgroundColor" to "var(--background-color3)", "borderTopLeftRadius" to 6, "borderTopRightRadius" to 6, "borderBottomRightRadius" to 6, "borderBottomLeftRadius" to 6)), "item-top" to _uM(".card .item " to _uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center")), "item-tit" to _uM(".card .item .item-top .item-text " to _uM("color" to "var(--text-color1)")), "item-content" to _uM(".card .item " to _uM("paddingTop" to 12, "paddingRight" to 0, "paddingBottom" to 12, "paddingLeft" to 0, "color" to "var(--text-color2)")), "item-bottom" to _uM(".card .item " to _uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "space-around")), "item-hand" to _uM(".card .item " to _uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "center", "flexGrow" to 1, "flexShrink" to 1, "flexBasis" to "0%")), "item-hand-num" to _uM(".card .item .item-hand " to _uM("color" to "var(--text-color1)", "fontSize" to 12)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

@@ -52,18 +52,24 @@ const _component_rice_image = resolveEasyComponent("rice-image",_easycom_rice_im
         _cE("view", _uM({ class: "nav-right" }), [
           _cV(_component_rice_icon, _uM({
             name: "search",
+            size: "20",
             class: "nav-icon",
             onClick: onSearch
+          })),
+          _cV(_component_rice_icon, _uM({
+            name: "bars",
+            size: "20",
+            class: "nav-icon",
+            onClick: onShowMenu
           }))
         ])
       ]),
       _: 1 /* STABLE */
     }), 8 /* PROPS */, ["height"]),
     _cE("scroll-view", _uM({
-      class: "book-list",
-      "scroll-y": ""
+      style: _nS(_uM({"flex":"1"}))
     }), [
-      unref(bookList).length === 0
+      unref(bookList).length == 0
         ? _cE("view", _uM({
             key: 0,
             class: "empty"
@@ -106,19 +112,19 @@ const _component_rice_image = resolveEasyComponent("rice-image",_easycom_rice_im
                     ])
                   ]),
                   _cV(_component_rice_icon, _uM({
-                    name: "info",
+                    name: "double-right",
                     class: "book-li-more",
-                    size: "24"
+                    size: "20"
                   }))
                 ], 10 /* CLASS, PROPS */, ["onClick"])
               }), 128 /* KEYED_FRAGMENT */)
             ])
           ])
-    ])
+    ], 4 /* STYLE */)
   ], 2 /* CLASS */)
 }
 }
 
 })
 export default __sfc__
-const GenPagesBookcaseIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["read-time", _pS(_uM([["fontSize", 12], ["color", "var(--rice-text-color)"]]))], ["nav-right", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["marginRight", 15]]))], ["nav-icon", _uM([[".nav-right ", _uM([["fontSize", 26], ["marginLeft", 10]])]])], ["book-list", _pS(_uM([["paddingTop", 0], ["paddingRight", 10], ["paddingBottom", 8], ["paddingLeft", 10]]))], ["book-li-top", _uM([[".book-list ", _uM([["marginTop", 15]])]])], ["book-li", _uM([[".book-list ", _uM([["display", "flex"], ["flexDirection", "row"]])]])], ["book-li-avatar", _uM([[".book-list .book-li ", _uM([["width", 60], ["height", 80]])]])], ["book-li-content", _uM([[".book-list .book-li ", _uM([["marginLeft", 10], ["display", "flex"], ["flexDirection", "column"], ["justifyContent", "center"]])]])], ["book-li-row", _uM([[".book-list .book-li .book-li-content ", _uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["height", 18]])]])], ["book-title", _uM([[".book-list .book-li .book-li-content ", _uM([["fontSize", 16], ["color", "var(--rice-text-color)"]])]])], ["book-sub", _uM([[".book-list .book-li .book-li-content ", _uM([["fontSize", 12], ["color", "var(--rice-text-color)"]])]])], ["book-sub-dot", _uM([[".book-list .book-li .book-li-content ", _uM([["paddingTop", 2], ["paddingRight", 4], ["paddingBottom", 2], ["paddingLeft", 4], ["fontSize", 8], ["lineHeight", "8px"], ["backgroundColor", "#9ACD32"], ["color", "var(--rice-text-color)"], ["borderTopLeftRadius", 3], ["borderTopRightRadius", 3], ["borderBottomRightRadius", 3], ["borderBottomLeftRadius", 3]])]])], ["book-li-more", _uM([[".book-list .book-li ", _uM([["position", "absolute"], ["right", 0], ["top", 0]])]])]])]
+const GenPagesBookcaseIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["read-time", _pS(_uM([["fontSize", 14], ["color", "var(--text-color2)"]]))], ["nav-right", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["marginRight", 16]]))], ["nav-icon", _uM([[".nav-right ", _uM([["marginLeft", 12]])]])], ["book-list", _pS(_uM([["paddingTop", 12], ["paddingRight", 16], ["paddingBottom", 12], ["paddingLeft", 16]]))], ["book-li-top", _uM([[".book-list ", _uM([["marginTop", 16]])]])], ["book-li", _uM([[".book-list ", _uM([["display", "flex"], ["flexDirection", "row"]])]])], ["book-li-avatar", _uM([[".book-list .book-li ", _uM([["width", 60], ["height", 80]])]])], ["book-li-content", _uM([[".book-list .book-li ", _uM([["marginLeft", 12], ["display", "flex"], ["flexDirection", "column"], ["justifyContent", "center"]])]])], ["book-li-row", _uM([[".book-list .book-li .book-li-content ", _uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["height", 18]])]])], ["book-title", _uM([[".book-list .book-li .book-li-content ", _uM([["fontSize", 16], ["color", "var(--text-color1)"]])]])], ["book-sub", _uM([[".book-list .book-li .book-li-content ", _uM([["fontSize", 12], ["color", "var(--text-color2)"]])]])], ["book-sub-dot", _uM([[".book-list .book-li .book-li-content ", _uM([["paddingTop", 2], ["paddingRight", 4], ["paddingBottom", 2], ["paddingLeft", 4], ["fontSize", 8], ["lineHeight", "8px"], ["backgroundColor", "#9ACD32"], ["color", "#ffffff"], ["borderTopLeftRadius", 3], ["borderTopRightRadius", 3], ["borderBottomRightRadius", 3], ["borderBottomLeftRadius", 3]])]])], ["book-li-more", _uM([[".book-list .book-li ", _uM([["position", "absolute"], ["right", 0], ["top", 0]])]])]])]

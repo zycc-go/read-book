@@ -114,7 +114,7 @@ open class GenPagesSettingIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 15, "paddingBottom" to 12, "paddingLeft" to 15)), "rice-icon" to _uM(".card " to _uM("display" to "flex", "alignItems" to "center")))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16)), "rice-icon" to _uM(".card " to _uM("display" to "flex", "alignItems" to "center")))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

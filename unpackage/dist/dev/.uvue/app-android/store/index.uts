@@ -43,7 +43,7 @@ type State = {
 };
 export const state = reactive({
     statusBarHeight: 0,
-    navbarHeight: 56,
+    navbarHeight: 44,
     safeAreaInsetsHeight: 0,
     uniPlatform: '',
     devicePixelRatio: 1,

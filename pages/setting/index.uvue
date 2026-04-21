@@ -76,7 +76,7 @@
 	}
 
 	.card {
-		padding: $uni-spacing-col-lg $uni-spacing-row-lg;
+		padding: $uni-spacing-col-12 $uni-spacing-row-16;
 
 		:deep(.rice-icon) {
 			display: flex;
