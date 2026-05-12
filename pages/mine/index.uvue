@@ -3,10 +3,10 @@
 		<rice-navbar :left-arrow="false" :height="state.navbarHeight">
 			<template #right>
 				<view class="nav-right">
-					<rice-icon name="sun" size='20' class="nac-icon" v-if="state.appTheme=='dark'" @click="onSetTheme('light')" />
-					<rice-icon name="sleep" size='20' class="nac-icon" v-else @click="onSetTheme('dark')" />
+					<rice-icon name="sun" size='24' class="nac-icon" v-if="state.appTheme=='dark'" @click="onSetTheme('light')" />
+					<rice-icon name="sleep" size='24' class="nac-icon" v-else @click="onSetTheme('dark')" />
 					<rice-badge :value="5">
-						<rice-icon name="remind" size='20' class="nac-icon" />
+						<rice-icon name="remind" size='24' class="nac-icon" />
 					</rice-badge>
 				</view>
 			</template>

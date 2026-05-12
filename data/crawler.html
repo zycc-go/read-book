@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body></body>
+<script>
+// 你的书源（直接从json复制）
+const config = {
+  "bookSourceName": "顶点小说",
+  "searchUrl": "https://m.terry-haass.com/modules/article/search.php?searchkey={{key}}",
+  "header": {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "Referer": "https://m.terry-haass.com/"
+  }
+};
+
+// 搜索关键词
+const keywords = "斗破苍穹";
+const url = config.searchUrl.replace("{{key}}", keywords);
+
+// 本地发送请求（不跨域！不跨域！）
+fetch(url, {
+  headers: config.header
+})
+.then(res => res.text())
+.then(html => {
+  // 在这里解析搜索结果
+  console.log(html);
+  
+  // 传给 uniApp
+  window.parent.postMessage({
+    type: "search",
+    data: html
+  }, "*");
+});
+</script>
+</html>

@@ -1,0 +1,16 @@
+import * as dingdianData from '@/data/dingdian.json'
+
+export const searchBook = async (keywords : string) => {
+	console.log("keywords: ", dingdianData, keywords);
+	uni.request({
+		url: dingdianData.searchUrl.replace('{{key}}', keywords),
+		header: JSON.parse(dingdianData.header),
+		timeout: dingdianData.respondTime,
+		success: (res) => {
+			console.log("res: ", res);
+		},
+		fail: (e) => {
+			console.log("error: ", e);
+		}
+	})
+}

@@ -72,9 +72,20 @@
 		{ name: '关注', dotNum: 10 },
 		{ name: '我的收藏', dotNum: 999 },
 		{ name: 'AI' }])
+		
 	const activeTab = ref<number>(0)
-	const onChangeTab = (item : BadgeItem, index : string) => {
+	
+	const onRefresherrefresh = () => {
+		refresherTriggered.value = true
+		setTimeout(() => {
+			discussListC.value = discussListFun()
+			refresherTriggered.value = false
+		}, 2000)
+	}
+	
+	const onChangeTab = (item : BadgeItem, index : number) => {
 		activeTab.value = index
+		onRefresherrefresh()
 	}
 
 	const onHandle = (item : DiscussItem, val : string) => {
@@ -99,14 +110,6 @@
 				uni.hideToast()
 			}, 2000)
 		}
-	}
-
-	const onRefresherrefresh = () => {
-		refresherTriggered.value = true
-		setTimeout(() => {
-			discussListC.value = discussListFun()
-			refresherTriggered.value = false
-		}, 2000)
 	}
 
 	onPageScroll((options : OnPageScrollOptions) => {

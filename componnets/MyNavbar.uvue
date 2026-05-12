@@ -1,0 +1,51 @@
+<template>
+	<view class="navbar-status">
+		<view :style="{height: statusBarHeight}"></view>
+
+		<view class="my-navbar" :style="{ height: navbarHeight}">
+			<view class="my-navbar-left">
+				<slot name='left' />
+				<text v-if="leftArrow"></text>
+			</view>
+			<view class="my-navbar-title"> {{ props.title }} </view>
+			<view class="my-navbar-right">
+				<slot name='right' />
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { state, setAppTheme } from '@/store/index.uts'
+
+	type NavbarPropsType = {
+		title ?: string
+		leftArrow ?: Boolean
+		height ?: number
+	}
+
+	const props = defineProps<NavbarPropsType>()
+
+	const leftArrow = computed(() => props.leftArrow === true ? true : false)
+
+	const navbarHeight = computed(() => (typeof (props.height) === 'number' ? props.height : state.navbarHeight) + 'px')
+
+	const statusBarHeight = computed(() => state.statusBarHeight + 'px')
+</script>
+
+<style lang="scss" scoped>
+	.my-navbar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		position: relative;
+
+		.my-navbar-title {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	}
+</style>
