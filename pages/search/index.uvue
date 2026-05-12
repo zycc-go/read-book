@@ -1,0 +1,256 @@
+<template>
+	<view :class="[`rice-theme-${state.appTheme}`, 'page']" :style="{ paddingTop:`${state.statusBarHeight}px`}">
+		<view class="page-navbar" :style="{ height:`${state.navbarHeight}px`, top:`${state.statusBarHeight}px`}">
+			<view class="page-navbar-left" @tap="onBack">
+				<text class="icon">{{ "\ue668" }}</text>
+			</view>
+			<view class="input-wrapper">
+				<input focus :maxlength="20" v-model="keywords" />
+			</view>
+			<text class="page-navbar-right" @click="onClickAction">搜索</text>
+		</view>
+
+		<view class="card-box"
+			:style="{ marginTop:`${state.navbarHeight}px`, paddingBottom:`${state.navbarHeight + state.safeAreaInsetsHeight}px`}">
+			<view v-if="searchType === 'record'" class="card">
+				<view class="card-title-box">
+					<text class="card-title">历史记录</text>
+					<view class="card-clear" @tap="onClearItems">
+						<text class="card-clear-text">清空</text>
+						<text class="icon">{{ "\ue6a6" }}</text>
+					</view>
+				</view>
+				<scroll-view direction="vertical" style="flex: 1">
+					<view class="tag-list" v-if="searchRecord.length > 0">
+						<view class="tag-box" v-for="item in searchRecord" @tap="onSearchItem(item)">
+							<text class="tag">{{ item.text }}</text>
+							<view @tap.stop="onDeleteItem(item)">
+								<text class="icon">{{ "\ue6a7" }}</text>
+							</view>
+						</view>
+					</view>
+				</scroll-view>
+				<!-- <view class="empty">
+					<text>空空如也</text>
+				</view> -->
+			</view>
+			<view v-if="searchType === 'result'" class="card">
+				<view class="card-title-box">
+					<text class="card-title">搜索结果</text>
+				</view>
+				<scroll-view direction="vertical" style="flex: 1">
+					<view class="tag-list" v-if="searchRecord.length > 0">
+						<view class="tag-box" v-for="item in searchRecord" @tap="onSearchItem(item)">
+							<text class="tag">{{ item.text }}</text>
+							<view @tap.stop="onDeleteItem(item)">
+								<text class="icon">{{ "\ue6a7" }}</text>
+							</view>
+						</view>
+					</view>
+				</scroll-view>
+
+				<!-- <view class="empty">
+					<text>空空如也</text>
+				</view> -->
+			</view>
+		</view>
+	</view>
+
+</template>
+
+<script setup lang="uts">
+	import { state } from '@/store/index.uts'
+	import { getRandomDigits } from '@/utils/index.uts'
+
+	type SearchRecordItem = {
+		id : string,
+		text : string
+	}
+
+	const keywords = ref<string>('')
+
+	const searchRecord = ref<SearchRecordItem[]>([])
+
+	const searchType = ref<string>('record')
+
+	const onBack = () => {
+		uni.navigateBack()
+	}
+
+	const onClickAction = () => {
+		if (keywords.value.length > 0) {
+			searchType.value = 'result'
+			uni.showLoading({ title: '加载中...' })
+			searchRecord.value.push({ id: getRandomDigits(12), text: keywords.value } as SearchRecordItem)
+			uni.setStorage({
+				key: 'searchRecord',
+				data: searchRecord.value,
+				complete: () => uni.hideLoading()
+			})
+		} else if (searchType.value === 'result') {
+			searchType.value = 'record'
+		} else {
+			uni.showToast({ title: '请输入内容', icon: 'error' })
+		}
+	}
+
+	const onSearchItem = (item : SearchRecordItem) => {
+		keywords.value = item.text
+		onClickAction()
+	}
+
+	const onDeleteItem = (item : SearchRecordItem) => {
+		searchRecord.value = searchRecord.value.filter(item1 => item1.id !== item.id)
+		uni.setStorage({
+			key: 'searchRecord',
+			data: searchRecord.value,
+			fail: (err : UniError) => {
+				console.log(err)
+			}
+		})
+	}
+
+	const onClearItems = () => {
+		if (searchRecord.value.length > 0) {
+			searchRecord.value = []
+			uni.setStorage({
+				key: 'searchRecord',
+				data: searchRecord.value,
+				fail: (err : UniError) => {
+					console.log(err)
+				}
+			})
+		}
+	}
+
+	const initData = () => {
+		uni.showLoading({ title: '加载中...' })
+		uni.getStorage({
+			key: 'searchRecord',
+			success: (res : GetStorageSuccess) => {
+				const data = JSON.parse<Array<SearchRecordItem>>(JSON.stringify(res.data))
+				searchRecord.value = data ?? []
+			},
+			complete: () => uni.hideLoading()
+		})
+	}
+
+	onMounted(() => {
+		initData()
+	})
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		background-color: var(--rice-navbar-background);
+		width: 100%;
+		height: 100%;
+		padding-bottom: 20px;
+	}
+
+	.page-navbar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		position: fixed;
+		width: 100%;
+		z-index: 9;
+		background-color: var(--rice-navbar-background);
+
+		.page-navbar-left {
+			width: 80rpx;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.icon {
+			font-size: $uni-font-size-24;
+		}
+
+		.input-wrapper {
+			flex: 1;
+			display: flex;
+			padding: 16rpx 32rpx;
+			margin: 4rpx 0;
+			flex-direction: row;
+			background-color: var(--background-color3);
+			border-radius: $uni-border-radius-16;
+		}
+
+		.page-navbar-right {
+			width: 120rpx;
+			text-align: center;
+			color: var(--text-color1);
+			font-size: $uni-font-size-16;
+		}
+	}
+
+
+	.card-box {
+		z-index: 0;
+		height: 100%;
+
+		.card {
+			padding: 0 $uni-spacing-row-lg;
+
+			.card-title-box {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+
+				.card-title {
+					margin: $uni-spacing-col-12 0;
+					color: var(--rice-text-color);
+				}
+
+				.card-clear {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+
+					.card-clear-text {
+						color: var(--text-color2);
+						font-size: $uni-font-size-14;
+						margin-right: 4rpx;
+					}
+				}
+			}
+
+
+			.scroll-view-box {
+				flex: 1;
+			}
+
+			.tag-list {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+
+				.tag-box {
+					padding: $uni-spacing-col-4 $uni-spacing-row-8;
+					border-radius: $uni-border-radius-base;
+					background-color: var(--background-color5);
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					margin: 0 $uni-spacing-col-12 $uni-spacing-col-12 0;
+				}
+
+				.tag {
+					color: var(--text-color2);
+					font-size: $uni-font-size-14;
+					margin-right: $uni-spacing-row-4;
+				}
+			}
+		}
+
+		.empty {
+			min-height: 200rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+</style>

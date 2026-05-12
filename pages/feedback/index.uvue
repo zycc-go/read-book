@@ -1,0 +1,49 @@
+<template>
+	<view :class="`rice-theme-${state.appTheme}`" class="page">
+		<rice-navbar :height="state.navbarHeight" title="反馈" @clickLeft="onClickLeft" />
+
+		<view class="card">
+			<rice-textarea v-model="value" placeholder="请输入内容" show-word-limit :maxlength="500" />
+			<view class="btn">
+				<rice-button type="primary" text="提交" @click="onSubmit"></rice-button>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { state } from '@/store/index.uts'
+
+	const value = ref<string>('')
+
+	const onClickLeft = () => {
+		// #ifdef WEB
+		uni.redirectTo({ url: '/pages/mine/index' })
+		// #endif
+		uni.switchTab({ url: '/pages/mine/index' })
+	}
+
+	const onSubmit = () => {
+		uni.showLoading()
+		setTimeout(() => {
+			// 这里是提交操作
+			uni.hideLoading()
+		}, 1000)
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		background-color: var(--rice-navbar-background);
+		height: 100%;
+		width: 100%;
+	}
+
+	.card {
+		padding: $uni-spacing-col-lg $uni-spacing-row-lg;
+
+		.btn {
+			margin-top: $uni-spacing-col-lg;
+		}
+	}
+</style>

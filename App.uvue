@@ -1,0 +1,60 @@
+<script setup lang="uts">
+	import { checkSystemInfo, state } from '@/store/index.uts'
+	import { setTheme } from "@/uni_modules/rice-ui";
+	// #ifdef APP-ANDROID || APP-HARMONY
+	let firstBackTime = 0
+	// #endif
+
+	onLaunch(() => {
+		console.log('App Launch')
+		checkSystemInfo();
+	})
+
+	onAppShow(() => {
+		console.log('App Show')
+		// uni.onAppThemeChange((res : AppThemeChangeResult) => {
+		// state.appTheme = osTheme;
+		// setTheme(osTheme)
+		// uni.setAppTheme({ theme: osTheme })
+		// uni.setStorageSync('appTheme', osTheme)
+		// state.appTheme = res.appTheme.trim() ?? 'light';
+		// })
+	})
+
+	onAppHide(() => {
+		console.log('App Hide')
+	})
+
+	// #ifdef APP-ANDROID || APP-HARMONY
+	onLastPageBackPress(() => {
+		console.log('App LastPageBackPress')
+		if (firstBackTime == 0) {
+			uni.showToast({
+				title: '再按一次退出应用',
+				position: 'bottom',
+			})
+			firstBackTime = Date.now()
+			setTimeout(() => {
+				firstBackTime = 0
+			}, 2000)
+		} else if (Date.now() - firstBackTime < 2000) {
+			firstBackTime = Date.now()
+			uni.exit()
+		}
+	})
+
+	onExit(() => {
+		console.log('App Exit')
+	})
+	// #endif
+</script>
+
+<style>
+	@import "@/uni_modules/rice-ui/libs/style/index.css";
+	@import "@/static/css/theme.css";
+	@import "@/static/css/reset.css";
+	@font-face {
+	    font-family: vant-icon;
+	    src: url('/static/vant-icon.ttf');
+	}
+</style>

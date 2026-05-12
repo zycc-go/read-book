@@ -1,0 +1,24 @@
+.icon {
+	font-family: vant-icon;
+}
+
+.flex {
+	display: flex;
+	flex-direction: row;
+}
+
+.items-center {
+	align-items: center;
+}
+
+.justify-left {
+	justify-content: flex-start;
+}
+
+.justify-center {
+	justify-content: center;
+}
+
+.justify-right {
+	justify-content: flex-end;
+}
