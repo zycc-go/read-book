@@ -1,0 +1,11 @@
+export const getRandomDigits = (n : number) : string => {
+	let result = '';
+	// 1. 先确定第一位 (1-9)，防止出现 0 开头导致位数不够
+	result += Math.floor(Math.random() * 9) + 1;
+
+	// 2. 剩下的直接循环拼接，避开浮点数乘法
+	for (let i = 1; i < n; i++) {
+		result += Math.floor(Math.random() * 10);
+	}
+	return result;
+}
