@@ -1,10 +1,9 @@
 import _easycom_rice_icon from '@/uni_modules/rice-ui/components/rice-icon/rice-icon.uvue';
 import _easycom_rice_badge from '@/uni_modules/rice-ui/components/rice-badge/rice-badge.uvue';
-import _easycom_rice_navbar from '@/uni_modules/rice-ui/components/rice-navbar/rice-navbar.uvue';
 import _easycom_rice_avatar from '@/uni_modules/rice-ui/components/rice-avatar/rice-avatar.uvue';
 import _easycom_rice_cell from '@/uni_modules/rice-ui/components/rice-cell/rice-cell.uvue';
 import _easycom_rice_cell_group from '@/uni_modules/rice-ui/components/rice-cell-group/rice-cell-group.uvue';
-import { setTheme } from "@/uni_modules/rice-ui";
+import MyAvatar from '@/componnets/MyAvatar.uvue';
 import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts';
 const __sfc__ = defineComponent({
     __name: 'index',
@@ -28,37 +27,35 @@ const __sfc__ = defineComponent({
             });
         };
         const onSetTheme = (val: "light" | "dark") => {
-            setTheme(val);
             setAppTheme(val);
             setIsFollowSystem(false);
             if (state.uniPlatform === 'app') {
                 uni.setAppTheme({
                     theme: val as "light" | "dark" | "auto",
                     success: function () {
-                        console.log(`设置appTheme为 ${val} 成功`, " at pages/mine/index.uvue:62");
+                        console.log(`设置appTheme为 ${val} 成功`, " at pages/mine/index.uvue:61");
                     },
                     fail: function (e: IAppThemeFail) {
-                        console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg, " at pages/mine/index.uvue:65");
+                        console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg, " at pages/mine/index.uvue:64");
                     }
                 });
             }
         };
         const onShow = () => {
-            console.log(688767868, " at pages/mine/index.uvue:72");
+            console.log(688767868, " at pages/mine/index.uvue:71");
         };
         const onToSetting = (): Promise<AsyncApiSuccessResult> | null => uni.navigateTo({ url: '/pages/setting/index' });
         const onToFeedback = (): Promise<AsyncApiSuccessResult> | null => uni.navigateTo({ url: '/pages/feedback/index' });
         return (): any | null => {
             const _component_rice_icon = resolveEasyComponent("rice-icon", _easycom_rice_icon);
             const _component_rice_badge = resolveEasyComponent("rice-badge", _easycom_rice_badge);
-            const _component_rice_navbar = resolveEasyComponent("rice-navbar", _easycom_rice_navbar);
             const _component_rice_avatar = resolveEasyComponent("rice-avatar", _easycom_rice_avatar);
             const _component_rice_cell = resolveEasyComponent("rice-cell", _easycom_rice_cell);
             const _component_rice_cell_group = resolveEasyComponent("rice-cell-group", _easycom_rice_cell_group);
             return _cE("view", _uM({
                 class: _nC([`rice-theme-${unref(state).appTheme}`, "page"])
             }), [
-                _cV(_component_rice_navbar, _uM({
+                _cV(unref(MyAvatar), _uM({
                     "left-arrow": false,
                     height: unref(state).navbarHeight
                 }), _uM({
@@ -68,14 +65,14 @@ const __sfc__ = defineComponent({
                                 ? _cV(_component_rice_icon, _uM({
                                     key: 0,
                                     name: "sun",
-                                    size: "20",
+                                    size: "24",
                                     class: "nac-icon",
                                     onClick: () => { onSetTheme('light'); }
                                 }), null, 8 /* PROPS */, ["onClick"])
                                 : _cV(_component_rice_icon, _uM({
                                     key: 1,
                                     name: "sleep",
-                                    size: "20",
+                                    size: "24",
                                     class: "nac-icon",
                                     onClick: () => { onSetTheme('dark'); }
                                 }), null, 8 /* PROPS */, ["onClick"]),
@@ -83,7 +80,7 @@ const __sfc__ = defineComponent({
                                 default: withSlotCtx((): any[] => [
                                     _cV(_component_rice_icon, _uM({
                                         name: "remind",
-                                        size: "20",
+                                        size: "24",
                                         class: "nac-icon"
                                     }))
                                 ]),

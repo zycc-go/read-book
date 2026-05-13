@@ -3,9 +3,8 @@ import 'D:/Install/HBuilderX/plugins/uniapp-cli-vite/node_modules/@dcloudio/uni-
 import { createSSRApp } from 'vue'
 export function createApp() {
 	const app = createSSRApp(App)
-	
 	return {
-		app	
+		app
 	}
 }
 export function main(app: IApp) {
@@ -15,8 +14,8 @@ export function main(app: IApp) {
 }
 
 export class UniAppConfig extends io.dcloud.uniapp.appframe.AppConfig {
-    override name: string = "测试"
-    override appid: string = "__UNI__4CF4B90"
+    override name: string = "uniapp-readbook"
+    override appid: string = "__UNI__194B5B1"
     override versionName: string = "1.0.0"
     override versionCode: string = "100"
     override uniCompilerVersion: string = "5.07"

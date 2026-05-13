@@ -1,6 +1,6 @@
 <template>
 	<view :class="`rice-theme-${state.appTheme}`" class="page">
-		<rice-navbar :left-arrow="false" :height="state.navbarHeight">
+		<MyAvatar :left-arrow="false" :height="state.navbarHeight">
 			<template #right>
 				<view class="nav-right">
 					<rice-icon name="sun" size='24' class="nac-icon" v-if="state.appTheme=='dark'" @click="onSetTheme('light')" />
@@ -10,7 +10,7 @@
 					</rice-badge>
 				</view>
 			</template>
-		</rice-navbar>
+		</MyAvatar>
 
 		<view class="header">
 			<rice-avatar src="/static/images/avatar-square.png" size="large" />
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="uts">
-	import { setTheme } from "@/uni_modules/rice-ui"
+	import MyAvatar from '@/componnets/MyAvatar.uvue'
 	import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts'
 
 	const onAbout = () => {
@@ -52,7 +52,6 @@
 	}
 
 	const onSetTheme = (val : "light" | "dark") => {
-		setTheme(val)
 		setAppTheme(val)
 		setIsFollowSystem(false)
 		if (state.uniPlatform === 'app') {

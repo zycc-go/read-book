@@ -7,13 +7,13 @@
 			</view>
 		</view>
 
-		<scroll-view id="backId" direction="vertical" style="flex: 1" :refresher-enabled="true" :enable-passive="true"
+		<scroll-view direction="vertical" style="flex: 1" :refresher-enabled="true" :enable-passive="true"
 			:refresher-triggered="refresherTriggered" @refresherrefresh="onRefresherrefresh">
 			<view class="card">
 				<view v-for="(item, index) in discussListC" :key="item.id"
 					:class="['item', index > 0 ? 'item-index' : '']">
 					<view class="item-top">
-						<rice-avatar icon="star" size="mini" />
+						<MyAvatar />
 						<view class="item-text">
 							<text class="item-tit">{{ item.name }}</text>
 						</view>
@@ -21,32 +21,34 @@
 					<text class="item-content">{{ item.content }}</text>
 					<view class="item-bottom">
 						<view class="item-hand" @click="onHandle(item, 'good')">
-							<rice-icon name="good-fill" color="#ff0000" v-if="item.isGood" />
-							<rice-icon name="good" v-else />
+							<text class="icon" v-if="item.isGood">{{ '\ue8AD' }}</text>
+							<text class="icon" v-else>{{ '\ue8C3' }}</text>
 							<text class="item-hand-num">&nbsp;{{ item.goodNum }}</text>
 						</view>
 						<view class="item-hand" @click="onHandle(item, 'like')">
-							<rice-icon name="like-fill" color="#ff0000" v-if="item.isLike" />
-							<rice-icon name="like" v-else />
+							<text class="icon" v-if="item.isLike">{{ '\ue6d4' }}</text>
+							<text class="icon" v-else>{{ '\ue6d7' }}</text>
 							<text class="item-hand-num">&nbsp;{{ item.likeNum }}</text>
 						</view>
 						<view class="item-hand">
-							<rice-icon name="eyes" />
+							<text class="icon">{{ '\ue6B3' }}</text>
 							<text class="item-hand-num">&nbsp;{{ item.viewNum }}</text>
 						</view>
 						<view class="item-hand" @click="onHandle(item, 'share')">
-							<rice-icon name="share" />
+							<text class="icon">{{ '\ue716' }}</text>
 							<text class="item-hand-num">&nbsp;{{ item.shareNum }}</text>
 						</view>
 					</view>
 				</view>
 			</view>
-			<rice-back-top parentId="backId"></rice-back-top>
 		</scroll-view>
+
+		<uni-fab-button class="fab-btn"></uni-fab-button>
 	</view>
 </template>
 
 <script setup lang="uts">
+	import MyAvatar from '@/componnets/MyAvatar.uvue'
 	import { state, setAppTheme } from '@/store/index.uts'
 	import { discussListFun, type DiscussItem } from '@/data/discuss'
 
@@ -72,9 +74,9 @@
 		{ name: '关注', dotNum: 10 },
 		{ name: '我的收藏', dotNum: 999 },
 		{ name: 'AI' }])
-		
+
 	const activeTab = ref<number>(0)
-	
+
 	const onRefresherrefresh = () => {
 		refresherTriggered.value = true
 		setTimeout(() => {
@@ -82,7 +84,7 @@
 			refresherTriggered.value = false
 		}, 2000)
 	}
-	
+
 	const onChangeTab = (item : BadgeItem, index : number) => {
 		activeTab.value = index
 		onRefresherrefresh()
@@ -208,5 +210,11 @@
 				}
 			}
 		}
+	}
+
+	.fab-btn {
+		position: absolute;
+		right: 16px;
+		bottom: 16px;
 	}
 </style>

@@ -1,8 +1,10 @@
-import _easycom_rice_icon from '@/uni_modules/rice-ui/components/rice-icon/rice-icon.uvue'
-import _easycom_rice_search from '@/uni_modules/rice-ui/components/rice-search/rice-search.uvue'
-import { setTheme } from "@/uni_modules/rice-ui"
-	import { state } from '@/store/index.uts'
-	import { searchHistoryList, SearchHistoryItem } from '@/data/book'
+import { state } from '@/store/index.uts'
+	import { getRandomDigits } from '@/utils/index.uts'
+
+	type SearchRecordItem = { __$originalPosition?: UTSSourceMapPosition<"SearchRecordItem", "pages/search/index.uvue", 65, 7>;
+		id : string,
+		text : string
+	}
 
 	
 const __sfc__ = defineComponent({
@@ -12,41 +14,79 @@ const __ins = getCurrentInstance()!;
 const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
 const _cache = __ins.renderCache;
 
-	const keywords = ref('')
+	const keywords = ref<string>('')
 
-	const searchHistoryLists = ref<SearchHistoryItem[]>([])
+	const searchRecord = ref<SearchRecordItem[]>([])
+
+	const searchType = ref<string>('record')
 
 	const onBack = () => {
 		uni.navigateBack()
 	}
 
 	const onClickAction = () => {
-		uni.showToast({
-			title: '搜索' + keywords.value
-		})
+		if (keywords.value.length > 0) {
+			searchType.value = 'result'
+			uni.showLoading({ title: '加载中...' })
+			searchRecord.value.push({ id: getRandomDigits(12), text: keywords.value } as SearchRecordItem)
+			uni.setStorage({
+				key: 'searchRecord',
+				data: searchRecord.value,
+				complete: () => uni.hideLoading()
+			})
+		} else if (searchType.value === 'result') {
+			searchType.value = 'record'
+		} else {
+			uni.showToast({ title: '请输入内容', icon: 'error' })
+		}
 	}
 
-	const onSearchItem = (item : SearchHistoryItem) => {
+	const onSearchItem = (item : SearchRecordItem) => {
 		keywords.value = item.text
 		onClickAction()
 	}
 
-	const initData = () => {
-		const list : SearchHistoryItem[] = []
-		const books = ['三体', '活着', '百年孤独', '红楼梦', '西游记', '斗破苍穹', '盗墓笔记', '解忧杂货店']
-		for (let i = 1; i <= 200; i++) {
-			const text = books[i % books.length] as string
-			list.push({ id: `${i}`, text })
-		}
-		searchHistoryLists.value = list
+	const onDeleteItem = (item : SearchRecordItem) => {
+		searchRecord.value = searchRecord.value.filter(item1 => item1.id !== item.id)
+		uni.setStorage({
+			key: 'searchRecord',
+			data: searchRecord.value,
+			fail: (err : UniError) => {
+				console.log(err, " at pages/search/index.uvue:108")
+			}
+		})
 	}
 
-	initData()
+	const onClearItems = () => {
+		if (searchRecord.value.length > 0) {
+			searchRecord.value = []
+			uni.setStorage({
+				key: 'searchRecord',
+				data: searchRecord.value,
+				fail: (err : UniError) => {
+					console.log(err, " at pages/search/index.uvue:120")
+				}
+			})
+		}
+	}
+
+	const initData = () => {
+		uni.showLoading({ title: '加载中...' })
+		uni.getStorage({
+			key: 'searchRecord',
+			success: (res : GetStorageSuccess) => {
+				const data = UTSAndroid.consoleDebugError(JSON.parse<Array<SearchRecordItem>>(JSON.stringify(res.data)), " at pages/search/index.uvue:131")
+				searchRecord.value = data ?? []
+			},
+			complete: () => uni.hideLoading()
+		})
+	}
+
+	onMounted(() => {
+		initData()
+	})
 
 return (): any | null => {
-
-const _component_rice_icon = resolveEasyComponent("rice-icon",_easycom_rice_icon)
-const _component_rice_search = resolveEasyComponent("rice-search",_easycom_rice_search)
 
   return _cE("view", _uM({
     class: _nC([`rice-theme-${unref(state).appTheme}`, 'page']),
@@ -60,39 +100,102 @@ const _component_rice_search = resolveEasyComponent("rice-search",_easycom_rice_
         class: "page-navbar-left",
         onClick: onBack
       }), [
-        _cV(_component_rice_icon, _uM({
-          name: "arrow-left",
-          size: "20",
-          color: "var(--text-color4)"
-        }))
+        _cE("text", _uM({ class: "icon" }), _tD("\ue668"))
       ]),
-      _cV(_component_rice_search, _uM({
-        modelValue: unref(keywords),
-        "onUpdate:modelValue": $event => {trySetRefValue(keywords, $event)},
-        placeholder: "请输入搜索关键词",
-        "show-action": "",
-        onSearch: onClickAction,
-        onClickAction: onClickAction
-      }), null, 8 /* PROPS */, ["modelValue"])
+      _cE("view", _uM({ class: "input-wrapper" }), [
+        _cE("input", _uM({
+          focus: "",
+          maxlength: 20,
+          modelValue: unref(keywords),
+          onInput: ($event: UniInputEvent) => {trySetRefValue(keywords, $event.detail.value)}
+        }), null, 40 /* PROPS, NEED_HYDRATION */, ["modelValue"])
+      ]),
+      _cE("text", _uM({
+        class: "page-navbar-right",
+        onClick: onClickAction
+      }), "搜索")
     ], 4 /* STYLE */),
     _cE("view", _uM({
-      class: "card",
+      class: "card-box",
       style: _nS(_uM({ marginTop:`${unref(state).navbarHeight}px`, paddingBottom:`${unref(state).navbarHeight + unref(state).safeAreaInsetsHeight}px`}))
     }), [
-      _cE("text", _uM({ class: "card-title" }), "历史记录"),
-      _cE("scroll-view", _uM({
-        direction: "vertical",
-        style: _nS(_uM({"flex":"1"}))
-      }), [
-        _cE("view", _uM({ class: "tag-list" }), [
-          _cE(Fragment, null, RenderHelpers.renderList(unref(searchHistoryLists), (item, __key, __index, _cached): any => {
-            return _cE("text", _uM({
-              class: "tag",
-              onClick: () => {onSearchItem(item)}
-            }), _tD(item.text), 9 /* TEXT, PROPS */, ["onClick"])
-          }), 256 /* UNKEYED_FRAGMENT */)
-        ])
-      ], 4 /* STYLE */)
+      unref(searchType) === 'record'
+        ? _cE("view", _uM({
+            key: 0,
+            class: "card"
+          }), [
+            _cE("view", _uM({ class: "card-title-box" }), [
+              _cE("text", _uM({ class: "card-title" }), "历史记录"),
+              _cE("view", _uM({
+                class: "card-clear",
+                onClick: onClearItems
+              }), [
+                _cE("text", _uM({ class: "card-clear-text" }), "清空"),
+                _cE("text", _uM({ class: "icon" }), _tD("\ue6a6"))
+              ])
+            ]),
+            _cE("scroll-view", _uM({
+              direction: "vertical",
+              style: _nS(_uM({"flex":"1"}))
+            }), [
+              unref(searchRecord).length > 0
+                ? _cE("view", _uM({
+                    key: 0,
+                    class: "tag-list"
+                  }), [
+                    _cE(Fragment, null, RenderHelpers.renderList(unref(searchRecord), (item, __key, __index, _cached): any => {
+                      return _cE("view", _uM({
+                        class: "tag-box",
+                        onClick: () => {onSearchItem(item)}
+                      }), [
+                        _cE("text", _uM({ class: "tag" }), _tD(item.text), 1 /* TEXT */),
+                        _cE("view", _uM({
+                          onClick: withModifiers(() => {onDeleteItem(item)}, ["stop"])
+                        }), [
+                          _cE("text", _uM({ class: "icon" }), _tD("\ue6a7"))
+                        ], 8 /* PROPS */, ["onClick"])
+                      ], 8 /* PROPS */, ["onClick"])
+                    }), 256 /* UNKEYED_FRAGMENT */)
+                  ])
+                : _cC("v-if", true)
+            ], 4 /* STYLE */)
+          ])
+        : _cC("v-if", true),
+      unref(searchType) === 'result'
+        ? _cE("view", _uM({
+            key: 1,
+            class: "card"
+          }), [
+            _cE("view", _uM({ class: "card-title-box" }), [
+              _cE("text", _uM({ class: "card-title" }), "搜索结果")
+            ]),
+            _cE("scroll-view", _uM({
+              direction: "vertical",
+              style: _nS(_uM({"flex":"1"}))
+            }), [
+              unref(searchRecord).length > 0
+                ? _cE("view", _uM({
+                    key: 0,
+                    class: "tag-list"
+                  }), [
+                    _cE(Fragment, null, RenderHelpers.renderList(unref(searchRecord), (item, __key, __index, _cached): any => {
+                      return _cE("view", _uM({
+                        class: "tag-box",
+                        onClick: () => {onSearchItem(item)}
+                      }), [
+                        _cE("text", _uM({ class: "tag" }), _tD(item.text), 1 /* TEXT */),
+                        _cE("view", _uM({
+                          onClick: withModifiers(() => {onDeleteItem(item)}, ["stop"])
+                        }), [
+                          _cE("text", _uM({ class: "icon" }), _tD("\ue6a7"))
+                        ], 8 /* PROPS */, ["onClick"])
+                      ], 8 /* PROPS */, ["onClick"])
+                    }), 256 /* UNKEYED_FRAGMENT */)
+                  ])
+                : _cC("v-if", true)
+            ], 4 /* STYLE */)
+          ])
+        : _cC("v-if", true)
     ], 4 /* STYLE */)
   ], 6 /* CLASS, STYLE */)
 }
@@ -100,4 +203,4 @@ const _component_rice_search = resolveEasyComponent("rice-search",_easycom_rice_
 
 })
 export default __sfc__
-const GenPagesSearchIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["width", "100%"], ["height", "100%"], ["paddingBottom", 20]]))], ["page-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["justifyContent", "space-between"], ["alignItems", "center"], ["position", "fixed"], ["width", "100%"], ["zIndex", 9], ["backgroundColor", "var(--rice-navbar-background)"]]))], ["page-navbar-left", _uM([[".page-navbar ", _uM([["paddingTop", 0], ["paddingRight", 12], ["paddingBottom", 0], ["paddingLeft", 12]])]])], ["rice-search", _uM([[".page-navbar ", _uM([["flexGrow", 1], ["flexShrink", 1], ["flexBasis", "0%"], ["paddingTop", 0], ["paddingRight", 16], ["paddingBottom", 0], ["paddingLeft", 0]])]])], ["card", _pS(_uM([["paddingTop", 0], ["paddingRight", 15], ["paddingBottom", 0], ["paddingLeft", 15], ["zIndex", 0], ["height", "100%"]]))], ["card-title", _uM([[".card ", _uM([["marginTop", 12], ["marginRight", 0], ["marginBottom", 12], ["marginLeft", 0], ["color", "var(--rice-text-color)"]])]])], ["scroll-view-box", _uM([[".card ", _uM([["flexGrow", 1], ["flexShrink", 1], ["flexBasis", "0%"]])]])], ["tag-list", _uM([[".card ", _uM([["display", "flex"], ["flexDirection", "row"], ["flexWrap", "wrap"], ["marginTop", 0], ["marginRight", -4], ["marginBottom", 0], ["marginLeft", -4]])]])], ["tag", _uM([[".card .tag-list ", _uM([["marginTop", 4], ["marginRight", 4], ["marginBottom", 4], ["marginLeft", 4], ["paddingTop", 4], ["paddingRight", 8], ["paddingBottom", 4], ["paddingLeft", 8], ["fontSize", 14], ["borderTopLeftRadius", 3], ["borderTopRightRadius", 3], ["borderBottomRightRadius", 3], ["borderBottomLeftRadius", 3], ["color", "var(--text-color2)"], ["backgroundColor", "var(--background-color5)"]])]])]])]
+const GenPagesSearchIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["width", "100%"], ["height", "100%"], ["paddingBottom", 20]]))], ["page-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["position", "fixed"], ["width", "100%"], ["zIndex", 9], ["backgroundColor", "var(--rice-navbar-background)"]]))], ["page-navbar-left", _uM([[".page-navbar ", _uM([["width", "80rpx"], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "center"]])]])], ["icon", _uM([[".page-navbar ", _uM([["fontSize", 24]])]])], ["input-wrapper", _uM([[".page-navbar ", _uM([["flexGrow", 1], ["flexShrink", 1], ["flexBasis", "0%"], ["display", "flex"], ["paddingTop", "16rpx"], ["paddingRight", "32rpx"], ["paddingBottom", "16rpx"], ["paddingLeft", "32rpx"], ["marginTop", "4rpx"], ["marginRight", 0], ["marginBottom", "4rpx"], ["marginLeft", 0], ["flexDirection", "row"], ["backgroundColor", "var(--background-color3)"], ["borderTopLeftRadius", 16], ["borderTopRightRadius", 16], ["borderBottomRightRadius", 16], ["borderBottomLeftRadius", 16]])]])], ["page-navbar-right", _uM([[".page-navbar ", _uM([["width", "120rpx"], ["textAlign", "center"], ["color", "var(--text-color1)"], ["fontSize", 16]])]])], ["card-box", _pS(_uM([["zIndex", 0], ["height", "100%"]]))], ["card", _uM([[".card-box ", _uM([["paddingTop", 0], ["paddingRight", 15], ["paddingBottom", 0], ["paddingLeft", 15]])]])], ["card-title-box", _uM([[".card-box .card ", _uM([["display", "flex"], ["flexDirection", "row"], ["justifyContent", "space-between"]])]])], ["card-title", _uM([[".card-box .card .card-title-box ", _uM([["marginTop", 12], ["marginRight", 0], ["marginBottom", 12], ["marginLeft", 0], ["color", "var(--rice-text-color)"]])]])], ["card-clear", _uM([[".card-box .card .card-title-box ", _uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"]])]])], ["card-clear-text", _uM([[".card-box .card .card-title-box .card-clear ", _uM([["color", "var(--text-color2)"], ["fontSize", 14], ["marginRight", "4rpx"]])]])], ["scroll-view-box", _uM([[".card-box .card ", _uM([["flexGrow", 1], ["flexShrink", 1], ["flexBasis", "0%"]])]])], ["tag-list", _uM([[".card-box .card ", _uM([["display", "flex"], ["flexDirection", "row"], ["flexWrap", "wrap"]])]])], ["tag-box", _uM([[".card-box .card .tag-list ", _uM([["paddingTop", 4], ["paddingRight", 8], ["paddingBottom", 4], ["paddingLeft", 8], ["borderTopLeftRadius", 3], ["borderTopRightRadius", 3], ["borderBottomRightRadius", 3], ["borderBottomLeftRadius", 3], ["backgroundColor", "var(--background-color5)"], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["marginTop", 0], ["marginRight", 12], ["marginBottom", 12], ["marginLeft", 0]])]])], ["tag", _uM([[".card-box .card .tag-list ", _uM([["color", "var(--text-color2)"], ["fontSize", 14], ["marginRight", 4]])]])], ["empty", _uM([[".card-box ", _uM([["minHeight", "200rpx"], ["display", "flex"], ["alignItems", "center"], ["justifyContent", "center"]])]])]])]

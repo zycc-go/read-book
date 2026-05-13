@@ -1,5 +1,5 @@
 @file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME", "UNUSED_ANONYMOUS_PARAMETER", "SENSELESS_COMPARISON", "NAME_SHADOWING", "UNNECESSARY_NOT_NULL_ASSERTION")
-package uni.UNI4CF4B90
+package uni.UNI194B5B1
 import io.dcloud.uniapp.*
 import io.dcloud.uniapp.extapi.*
 import io.dcloud.uniapp.framework.*
@@ -27,15 +27,14 @@ open class GenPagesMineIndex : BasePage {
                 uni_showModal(ShowModalOptions(title = "声明哦", content = "本应用 / 网站 / 内容仅供学习、交流及个人参考使用，不构成任何形式的投资建议、法律意见、专业指导或商业承诺。\n\t内容准确性：我们力求内容准确、完整、及时，但不保证所有信息绝对无误，不对因内容疏漏、错误或过时导致的任何损失承担责任。\n\t使用风险：用户基于本应用 / 内容进行的任何操作、决策或行为，均由用户自行承担风险，我们不承担任何直接、间接、附带或衍生的损失赔偿责任。\n\t第三方链接：本应用 / 内容可能包含第三方链接，第三方网站的内容、隐私政策及服务由其自行负责，我们不对其合法性、安全性及准确性负责。\n\t版权与合规：本应用 / 内容所使用的素材、代码、数据等，均尽可能遵循版权规范；若涉及侵权，请联系我们及时处理，我们不承担因用户违规使用素材导致的法律责任。\n\t变更与终止：我们有权随时更新、修改或终止本应用 / 内容，无需提前通知，且不承担因此产生的任何责任。\n\t适用范围：本声明适用于所有使用本应用 / 内容的用户，使用即视为已阅读、理解并同意本声明全部条款。\n\t如需适配特定场景（如小说阅读类、工具类、社区类、付费服务类），告诉我用途，我可以帮你定制更精准的版本。", showCancel = false, confirmText = "知道了"))
             }
             val onSetTheme = fun(kVal: String){
-                setTheme(kVal)
                 setAppTheme(kVal)
                 setIsFollowSystem(false)
                 if (state.uniPlatform === "app") {
                     uni_setAppTheme(SetAppThemeOptions(theme = kVal as String, success = fun(_) {
-                        console.log("设置appTheme为 " + kVal + " 成功", " at pages/mine/index.uvue:62")
+                        console.log("设置appTheme为 " + kVal + " 成功", " at pages/mine/index.uvue:61")
                     }
                     , fail = fun(e: IAppThemeFail) {
-                        console.log("设置appTheme为 " + kVal + " 失败,原因:", e.errMsg, " at pages/mine/index.uvue:65")
+                        console.log("设置appTheme为 " + kVal + " 失败,原因:", e.errMsg, " at pages/mine/index.uvue:64")
                     }
                     ))
                 }
@@ -49,7 +48,6 @@ open class GenPagesMineIndex : BasePage {
             return fun(): Any? {
                 val _component_rice_icon = resolveEasyComponent("rice-icon", GenUniModulesRiceUiComponentsRiceIconRiceIconClass)
                 val _component_rice_badge = resolveEasyComponent("rice-badge", GenUniModulesRiceUiComponentsRiceBadgeRiceBadgeClass)
-                val _component_rice_navbar = resolveEasyComponent("rice-navbar", GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass)
                 val _component_rice_avatar = resolveEasyComponent("rice-avatar", GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass)
                 val _component_rice_cell = resolveEasyComponent("rice-cell", GenUniModulesRiceUiComponentsRiceCellRiceCellClass)
                 val _component_rice_cell_group = resolveEasyComponent("rice-cell-group", GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroupClass)
@@ -57,17 +55,17 @@ open class GenPagesMineIndex : BasePage {
                     "rice-theme-" + unref(state).appTheme,
                     "page"
                 ))), _uA(
-                    _cV(_component_rice_navbar, _uM("left-arrow" to false, "height" to unref(state).navbarHeight), _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cV(unref(GenComponnetsMyAvatarClass), _uM("left-arrow" to false, "height" to unref(state).navbarHeight), _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
                             _cE("view", _uM("class" to "nav-right"), _uA(
                                 if (unref(state).appTheme == "dark") {
-                                    _cV(_component_rice_icon, _uM("key" to 0, "name" to "sun", "size" to "20", "class" to "nac-icon", "onClick" to fun(){
+                                    _cV(_component_rice_icon, _uM("key" to 0, "name" to "sun", "size" to "24", "class" to "nac-icon", "onClick" to fun(){
                                         onSetTheme("light")
                                     }), null, 8, _uA(
                                         "onClick"
                                     ))
                                 } else {
-                                    _cV(_component_rice_icon, _uM("key" to 1, "name" to "sleep", "size" to "20", "class" to "nac-icon", "onClick" to fun(){
+                                    _cV(_component_rice_icon, _uM("key" to 1, "name" to "sleep", "size" to "24", "class" to "nac-icon", "onClick" to fun(){
                                         onSetTheme("dark")
                                     }
                                     ), null, 8, _uA(
@@ -77,7 +75,7 @@ open class GenPagesMineIndex : BasePage {
                                 ,
                                 _cV(_component_rice_badge, _uM("value" to 5), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
                                     return _uA(
-                                        _cV(_component_rice_icon, _uM("name" to "remind", "size" to "20", "class" to "nac-icon"))
+                                        _cV(_component_rice_icon, _uM("name" to "remind", "size" to "24", "class" to "nac-icon"))
                                     )
                                 }
                                 ), "_" to 1))

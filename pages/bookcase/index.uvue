@@ -23,7 +23,7 @@
 					<view v-for="(item, index) in bookList" :key="item.id"
 						:class="index > 0 ? 'book-li book-li-top' : 'book-li'" @click="onBookClick(item)">
 						<view class="book-li-avatar">
-							<image src="/static/logo.png" mode="aspectFit" style="width: 100%;height: 100%;" />
+							<image src="/static/image/logo.png" mode="aspectFit" style="width: 100%;height: 100%;" />
 						</view>
 						<view class="book-li-content">
 							<text class="book-title">{{ item?.title }}</text>
