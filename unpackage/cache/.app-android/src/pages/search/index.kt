@@ -86,7 +86,7 @@ open class GenPagesSearchIndex : BasePage {
             )
             return fun(): Any? {
                 return _cE("view", _uM("class" to _nC(_uA(
-                    "rice-theme-" + unref(state).appTheme,
+                    "theme-" + unref(state).appTheme,
                     "page"
                 )), "style" to _nS(_uM("paddingTop" to ("" + unref(state).statusBarHeight + "px")))), _uA(
                     _cE("view", _uM("class" to "page-navbar", "style" to _nS(_uM("height" to ("" + unref(state).navbarHeight + "px"), "top" to ("" + unref(state).statusBarHeight + "px")))), _uA(

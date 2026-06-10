@@ -12,9 +12,6 @@ import io.dcloud.uts.Map
 import io.dcloud.uts.Set
 import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
-import io.dcloud.uniapp.extapi.`$emit` as uni__emit
-import io.dcloud.uniapp.extapi.`$off` as uni__off
-import io.dcloud.uniapp.extapi.`$on` as uni__on
 import io.dcloud.uniapp.extapi.connectSocket as uni_connectSocket
 import io.dcloud.uniapp.extapi.exit as uni_exit
 import io.dcloud.uniapp.extapi.getAppBaseInfo as uni_getAppBaseInfo
@@ -22,7 +19,6 @@ import io.dcloud.uniapp.extapi.getDeviceInfo as uni_getDeviceInfo
 import io.dcloud.uniapp.extapi.getFileSystemManager as uni_getFileSystemManager
 import io.dcloud.uniapp.extapi.getStorageSync as uni_getStorageSync
 import io.dcloud.uniapp.extapi.getWindowInfo as uni_getWindowInfo
-import io.dcloud.uniapp.extapi.openDialogPage as uni_openDialogPage
 import io.dcloud.uniapp.extapi.rpx2px as uni_rpx2px
 import io.dcloud.uniapp.extapi.setAppTheme as uni_setAppTheme
 import io.dcloud.uniapp.extapi.setStorageSync as uni_setStorageSync
@@ -111,9 +107,9 @@ fun tryConnectSocket(host: String, port: String, id: String): UTSPromise<SocketT
     )
 }
 fun initRuntimeSocketService(): UTSPromise<Boolean> {
-    val hosts: String = "10.189.116.93,169.254.3.126,169.254.166.164,10.191.92.87,127.0.0.1"
+    val hosts: String = "10.191.92.87,127.0.0.1"
     val port: String = "8090"
-    val id: String = "app-android__USlvz"
+    val id: String = "app-android_inPLBz"
     if (hosts == "" || port == "" || id == "") {
         return UTSPromise.resolve(false)
     }
@@ -134,6 +130,307 @@ fun initRuntimeSocketService(): UTSPromise<Boolean> {
 }
 val runBlock2 = run {
     initRuntimeSocketService()
+}
+open class UserInfo (
+    @JsonNotNull
+    open var nickName: String,
+    open var avatarUrl: String? = null,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("UserInfo", "store/index.uts", 1, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return UserInfoReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class UserInfoReactiveObject : UserInfo, IUTSReactive<UserInfo> {
+    override var __v_raw: UserInfo
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: UserInfo, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(nickName = __v_raw.nickName, avatarUrl = __v_raw.avatarUrl) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UserInfoReactiveObject {
+        return UserInfoReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var nickName: String
+        get() {
+            return _tRG(__v_raw, "nickName", __v_raw.nickName, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("nickName")) {
+                return
+            }
+            val oldValue = __v_raw.nickName
+            __v_raw.nickName = value
+            _tRS(__v_raw, "nickName", oldValue, value)
+        }
+    override var avatarUrl: String?
+        get() {
+            return _tRG(__v_raw, "avatarUrl", __v_raw.avatarUrl, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("avatarUrl")) {
+                return
+            }
+            val oldValue = __v_raw.avatarUrl
+            __v_raw.avatarUrl = value
+            _tRS(__v_raw, "avatarUrl", oldValue, value)
+        }
+}
+open class State (
+    @JsonNotNull
+    open var statusBarHeight: Number,
+    @JsonNotNull
+    open var navbarHeight: Number,
+    @JsonNotNull
+    open var safeAreaInsetsHeight: Number,
+    @JsonNotNull
+    open var uniPlatform: String,
+    @JsonNotNull
+    open var devicePixelRatio: Number,
+    @JsonNotNull
+    open var active: String,
+    @JsonNotNull
+    open var leftWinActive: String,
+    open var agreeToPrivacy: Boolean? = null,
+    @JsonNotNull
+    open var isFollowSystem: Boolean = false,
+    @JsonNotNull
+    open var appTheme: String,
+    @JsonNotNull
+    open var osTheme: String,
+    @JsonNotNull
+    open var netless: Boolean = false,
+    open var userInfo: UserInfo? = null,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("State", "store/index.uts", 16, 6)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return StateReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class StateReactiveObject : State, IUTSReactive<State> {
+    override var __v_raw: State
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: State, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(statusBarHeight = __v_raw.statusBarHeight, navbarHeight = __v_raw.navbarHeight, safeAreaInsetsHeight = __v_raw.safeAreaInsetsHeight, uniPlatform = __v_raw.uniPlatform, devicePixelRatio = __v_raw.devicePixelRatio, active = __v_raw.active, leftWinActive = __v_raw.leftWinActive, agreeToPrivacy = __v_raw.agreeToPrivacy, isFollowSystem = __v_raw.isFollowSystem, appTheme = __v_raw.appTheme, osTheme = __v_raw.osTheme, netless = __v_raw.netless, userInfo = __v_raw.userInfo) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): StateReactiveObject {
+        return StateReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var statusBarHeight: Number
+        get() {
+            return _tRG(__v_raw, "statusBarHeight", __v_raw.statusBarHeight, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("statusBarHeight")) {
+                return
+            }
+            val oldValue = __v_raw.statusBarHeight
+            __v_raw.statusBarHeight = value
+            _tRS(__v_raw, "statusBarHeight", oldValue, value)
+        }
+    override var navbarHeight: Number
+        get() {
+            return _tRG(__v_raw, "navbarHeight", __v_raw.navbarHeight, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("navbarHeight")) {
+                return
+            }
+            val oldValue = __v_raw.navbarHeight
+            __v_raw.navbarHeight = value
+            _tRS(__v_raw, "navbarHeight", oldValue, value)
+        }
+    override var safeAreaInsetsHeight: Number
+        get() {
+            return _tRG(__v_raw, "safeAreaInsetsHeight", __v_raw.safeAreaInsetsHeight, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("safeAreaInsetsHeight")) {
+                return
+            }
+            val oldValue = __v_raw.safeAreaInsetsHeight
+            __v_raw.safeAreaInsetsHeight = value
+            _tRS(__v_raw, "safeAreaInsetsHeight", oldValue, value)
+        }
+    override var uniPlatform: String
+        get() {
+            return _tRG(__v_raw, "uniPlatform", __v_raw.uniPlatform, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("uniPlatform")) {
+                return
+            }
+            val oldValue = __v_raw.uniPlatform
+            __v_raw.uniPlatform = value
+            _tRS(__v_raw, "uniPlatform", oldValue, value)
+        }
+    override var devicePixelRatio: Number
+        get() {
+            return _tRG(__v_raw, "devicePixelRatio", __v_raw.devicePixelRatio, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("devicePixelRatio")) {
+                return
+            }
+            val oldValue = __v_raw.devicePixelRatio
+            __v_raw.devicePixelRatio = value
+            _tRS(__v_raw, "devicePixelRatio", oldValue, value)
+        }
+    override var active: String
+        get() {
+            return _tRG(__v_raw, "active", __v_raw.active, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("active")) {
+                return
+            }
+            val oldValue = __v_raw.active
+            __v_raw.active = value
+            _tRS(__v_raw, "active", oldValue, value)
+        }
+    override var leftWinActive: String
+        get() {
+            return _tRG(__v_raw, "leftWinActive", __v_raw.leftWinActive, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("leftWinActive")) {
+                return
+            }
+            val oldValue = __v_raw.leftWinActive
+            __v_raw.leftWinActive = value
+            _tRS(__v_raw, "leftWinActive", oldValue, value)
+        }
+    override var agreeToPrivacy: Boolean?
+        get() {
+            return _tRG(__v_raw, "agreeToPrivacy", __v_raw.agreeToPrivacy, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("agreeToPrivacy")) {
+                return
+            }
+            val oldValue = __v_raw.agreeToPrivacy
+            __v_raw.agreeToPrivacy = value
+            _tRS(__v_raw, "agreeToPrivacy", oldValue, value)
+        }
+    override var isFollowSystem: Boolean
+        get() {
+            return _tRG(__v_raw, "isFollowSystem", __v_raw.isFollowSystem, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("isFollowSystem")) {
+                return
+            }
+            val oldValue = __v_raw.isFollowSystem
+            __v_raw.isFollowSystem = value
+            _tRS(__v_raw, "isFollowSystem", oldValue, value)
+        }
+    override var appTheme: String
+        get() {
+            return _tRG(__v_raw, "appTheme", __v_raw.appTheme, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("appTheme")) {
+                return
+            }
+            val oldValue = __v_raw.appTheme
+            __v_raw.appTheme = value
+            _tRS(__v_raw, "appTheme", oldValue, value)
+        }
+    override var osTheme: String
+        get() {
+            return _tRG(__v_raw, "osTheme", __v_raw.osTheme, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("osTheme")) {
+                return
+            }
+            val oldValue = __v_raw.osTheme
+            __v_raw.osTheme = value
+            _tRS(__v_raw, "osTheme", oldValue, value)
+        }
+    override var netless: Boolean
+        get() {
+            return _tRG(__v_raw, "netless", __v_raw.netless, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("netless")) {
+                return
+            }
+            val oldValue = __v_raw.netless
+            __v_raw.netless = value
+            _tRS(__v_raw, "netless", oldValue, value)
+        }
+    override var userInfo: UserInfo?
+        get() {
+            return _tRG(__v_raw, "userInfo", __v_raw.userInfo, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("userInfo")) {
+                return
+            }
+            val oldValue = __v_raw.userInfo
+            __v_raw.userInfo = value
+            _tRS(__v_raw, "userInfo", oldValue, value)
+        }
+}
+val state = reactive(State(statusBarHeight = 0, navbarHeight = 44, safeAreaInsetsHeight = 0, uniPlatform = "", devicePixelRatio = 1, active = "componentPage", leftWinActive = "/pages/bookcase/index", appTheme = "light", osTheme = "light", isFollowSystem = false, netless = false, userInfo = null, agreeToPrivacy = null))
+val setAppTheme = fun(value: String){
+    state.appTheme = value
+    uni_setStorageSync("appTheme", value)
+}
+val setIsFollowSystem = fun(value: Boolean){
+    state.isFollowSystem = value
+    uni_setStorageSync("isFollowSystem", value)
+}
+val checkSystemInfo = fun(){
+    val appBaseInfo: GetAppBaseInfoResult = uni_getAppBaseInfo(null)
+    val deviceInfo: GetDeviceInfoResult = uni_getDeviceInfo(null)
+    val windowInfo = uni_getWindowInfo()
+    state.uniPlatform = appBaseInfo.uniPlatform ?: ""
+    state.statusBarHeight = windowInfo.statusBarHeight
+    state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom
+    if (appBaseInfo.uniPlatform === "app") {
+        try {
+            val isFollowSystem = if (uni_getStorageSync("isFollowSystem") === "") {
+                false
+            } else {
+                uni_getStorageSync("isFollowSystem") as Boolean
+            }
+            state.isFollowSystem = isFollowSystem
+            if (isFollowSystem) {
+                val osTheme = deviceInfo.osTheme as String
+                state.osTheme = osTheme
+                setAppTheme(osTheme)
+                uni_setAppTheme(SetAppThemeOptions(theme = osTheme))
+                uni_setStorageSync("osTheme", osTheme)
+            } else {
+                var appTheme = uni_getStorageSync("appTheme") as String
+                appTheme = if (appTheme == "dark") {
+                    "dark"
+                } else {
+                    "light"
+                }
+                setAppTheme(appTheme)
+                uni_setAppTheme(SetAppThemeOptions(theme = appTheme))
+            }
+        }
+         catch (e: Throwable) {
+            console.log("" + e + " 失败", " at store/index.uts:117")
+        }
+    }
 }
 open class Config (
     @JsonNotNull
@@ -411,9 +708,6 @@ fun callInterceptor(interceptor: BeforeChangeInterceptor, interceptorOption: Int
         }
     }
 }
-val getUID = fun(): String {
-    return Date.now() + "" + Math.floor(Math.random() * 1e7)
-}
 open class UseNamespace (
     open var b: (blockSuffix: String) -> String,
     open var e: (element: String?) -> String,
@@ -477,149 +771,6 @@ fun useNamespace(block: String): UseNamespace {
         }
     }
     return UseNamespace(b = b, e = e, m = m, `is` = kIs, theme = theme)
-}
-open class UseSafeArea (
-    @JsonNotNull
-    open var safeBottom: Ref<Number>,
-    @JsonNotNull
-    open var safeTop: Ref<Number>,
-    @JsonNotNull
-    open var statusBarHeight: Ref<Number>,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("UseSafeArea", "uni_modules/rice-ui/libs/use/useSafeArea/index.uts", 2, 13)
-    }
-}
-fun useSafeArea(): UseSafeArea {
-    val safeBottom = ref(0)
-    val safeTop = ref(0)
-    val statusBarHeight = ref(0)
-    val getWindowInfo = fun(): UTSPromise<Unit> {
-        return wrapUTSPromise(suspend {
-                await(nextTick())
-                val windowInfo = uni_getWindowInfo()
-                val areaInfo = windowInfo.safeArea
-                if (areaInfo.bottom > 0) {
-                    safeBottom.value = windowInfo.screenHeight - areaInfo.bottom
-                }
-                if (areaInfo.top > 0) {
-                    safeTop.value = areaInfo.top
-                }
-                statusBarHeight.value = windowInfo.statusBarHeight
-        })
-    }
-    var timer: Number? = null
-    onMounted(fun(){
-        if (timer != null) {
-            clearTimeout(timer!!)
-        }
-        timer = setTimeout(fun(){
-            getWindowInfo()
-        }
-        , 200)
-    }
-    )
-    onUnmounted(fun(){
-        if (timer != null) {
-            clearTimeout(timer!!)
-        }
-    }
-    )
-    return UseSafeArea(safeTop = safeTop, safeBottom = safeBottom, statusBarHeight = statusBarHeight)
-}
-val MIN_DISTANCE: Number = 10
-val LOCK_DIRECTION_DISTANCE: Number = 10
-val TAP_OFFSET: Number = 5
-typealias SlideDirection = String
-open class UseTouch (
-    @JsonNotNull
-    open var startX: Ref<Number>,
-    @JsonNotNull
-    open var startY: Ref<Number>,
-    @JsonNotNull
-    open var deltaX: Ref<Number>,
-    @JsonNotNull
-    open var deltaY: Ref<Number>,
-    @JsonNotNull
-    open var offsetX: Ref<Number>,
-    @JsonNotNull
-    open var offsetY: Ref<Number>,
-    @JsonNotNull
-    open var direction: Ref<SlideDirection>,
-    @JsonNotNull
-    open var isTap: Ref<Boolean>,
-    @JsonNotNull
-    open var skipMove: Ref<Boolean>,
-    @JsonNotNull
-    open var dragging: Ref<Boolean>,
-    open var start: (e: UniTouchEvent) -> Unit,
-    open var move: (e: UniTouchEvent) -> Unit,
-    open var end: () -> Unit,
-    open var changeDragging: (flag: Boolean) -> Unit,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("UseTouch", "uni_modules/rice-ui/libs/use/useTouch/index.uts", 6, 6)
-    }
-}
-fun getSlideDirection(x: Number, y: Number): SlideDirection {
-    if (x > y && x > MIN_DISTANCE) {
-        return "horizontal"
-    }
-    if (y > x && y > MIN_DISTANCE) {
-        return "vertical"
-    }
-    return ""
-}
-fun useTouch(): UseTouch {
-    val startX = ref(0)
-    val startY = ref(0)
-    val deltaX = ref(0)
-    val deltaY = ref(0)
-    val offsetX = ref(0)
-    val offsetY = ref(0)
-    val direction = ref<SlideDirection>("")
-    val isTap = ref(false)
-    val dragging = ref(false)
-    val skipMove = ref(false)
-    val reset = fun(){
-        deltaX.value = 0
-        deltaY.value = 0
-        offsetX.value = 0
-        offsetY.value = 0
-        direction.value = ""
-        isTap.value = true
-        dragging.value = true
-        skipMove.value = false
-    }
-    val start = fun(e: UniTouchEvent){
-        val touches = e.touches[0]
-        reset()
-        startX.value = touches.clientX
-        startY.value = touches.clientY
-    }
-    val move = fun(e: UniTouchEvent){
-        val touches = e.touches[0]
-        deltaX.value = touches.clientX - startX.value
-        deltaY.value = touches.clientY - startY.value
-        offsetX.value = Math.abs(deltaX.value)
-        offsetY.value = Math.abs(deltaY.value)
-        if (direction.value == "" || (offsetX.value < LOCK_DIRECTION_DISTANCE && offsetY.value < LOCK_DIRECTION_DISTANCE)) {
-            direction.value = getSlideDirection(offsetX.value, offsetY.value)
-        }
-        if (isTap.value && (offsetX.value > TAP_OFFSET || offsetY.value > TAP_OFFSET)) {
-            isTap.value = false
-        }
-        if (direction.value == "vertical") {
-            skipMove.value = true
-        }
-    }
-    val end = fun(){
-        dragging.value = false
-    }
-    val changeDragging = fun(flag: Boolean){
-        dragging.value = flag
-    }
-    return UseTouch(startX = startX, startY = startY, deltaX = deltaX, deltaY = deltaY, offsetX = offsetX, offsetY = offsetY, direction = direction, isTap = isTap, dragging = dragging, skipMove = skipMove, start = start, move = move, end = end, changeDragging = changeDragging)
 }
 val presetColors: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("presetColors", "uni_modules/rice-ui/libs/plugin/coloruts/constant.uts", 44, 14), "aliceblue" to "9ehhb", "antiquewhite" to "9sgk7", "aqua" to "1ekf", "aquamarine" to "4zsno", "azure" to "9eiv3", "beige" to "9lhp8", "bisque" to "9zg04", "black" to "0", "blanchedalmond" to "9zhe5", "blue" to "73", "blueviolet" to "5e31e", "brown" to "6g016", "burlywood" to "8ouiv", "cadetblue" to "3qba8", "chartreuse" to "4zshs", "chocolate" to "87k0u", "coral" to "9yvyo", "cornflowerblue" to "3xael", "cornsilk" to "9zjz0", "crimson" to "8l4xo", "cyan" to "1ekf", "darkblue" to "3v", "darkcyan" to "rkb", "darkgoldenrod" to "776yz", "darkgray" to "6mbhl", "darkgreen" to "jr4", "darkgrey" to "6mbhl", "darkkhaki" to "7ehkb", "darkmagenta" to "5f91n", "darkolivegreen" to "3bzfz", "darkorange" to "9yygw", "darkorchid" to "5z6x8", "darkred" to "5f8xs", "darksalmon" to "9441m", "darkseagreen" to "5lwgf", "darkslateblue" to "2th1n", "darkslategray" to "1ugcv", "darkslategrey" to "1ugcv", "darkturquoise" to "14up", "darkviolet" to "5rw7n", "deeppink" to "9yavn", "deepskyblue" to "11xb", "dimgray" to "442g9", "dimgrey" to "442g9", "dodgerblue" to "16xof", "firebrick" to "6y7tu", "floralwhite" to "9zkds", "forestgreen" to "1cisi", "fuchsia" to "9y70f", "gainsboro" to "8m8kc", "ghostwhite" to "9pq0v", "goldenrod" to "8j4f4", "gold" to "9zda8", "gray" to "50i2o", "green" to "pa8", "greenyellow" to "6senj", "grey" to "50i2o", "honeydew" to "9eiuo", "hotpink" to "9yrp0", "indianred" to "80gnw", "indigo" to "2xcoy", "ivory" to "9zldc", "khaki" to "9edu4", "lavenderblush" to "9ziet", "lavender" to "90c8q", "lawngreen" to "4vk74", "lemonchiffon" to "9zkct", "lightblue" to "6s73a", "lightcoral" to "9dtog", "lightcyan" to "8s1rz", "lightgoldenrodyellow" to "9sjiq", "lightgray" to "89jo3", "lightgreen" to "5nkwg", "lightgrey" to "89jo3", "lightpink" to "9z6wx", "lightsalmon" to "9z2ii", "lightseagreen" to "19xgq", "lightskyblue" to "5arju", "lightslategray" to "4nwk9", "lightslategrey" to "4nwk9", "lightsteelblue" to "6wau6", "lightyellow" to "9zlcw", "lime" to "1edc", "limegreen" to "1zcxe", "linen" to "9shk6", "magenta" to "9y70f", "maroon" to "4zsow", "mediumaquamarine" to "40eju", "mediumblue" to "5p", "mediumorchid" to "79qkz", "mediumpurple" to "5r3rv", "mediumseagreen" to "2d9ip", "mediumslateblue" to "4tcku", "mediumspringgreen" to "1di2", "mediumturquoise" to "2uabw", "mediumvioletred" to "7rn9h", "midnightblue" to "z980", "mintcream" to "9ljp6", "mistyrose" to "9zg0x", "moccasin" to "9zfzp", "navajowhite" to "9zest", "navy" to "3k", "oldlace" to "9wq92", "olive" to "50hz4", "olivedrab" to "472ub", "orange" to "9z3eo", "orangered" to "9ykg0", "orchid" to "8iu3a", "palegoldenrod" to "9bl4a", "palegreen" to "5yw0o", "paleturquoise" to "6v4ku", "palevioletred" to "8k8lv", "papayawhip" to "9zi6t", "peachpuff" to "9ze0p", "peru" to "80oqn", "pink" to "9z8wb", "plum" to "8nba5", "powderblue" to "6wgdi", "purple" to "4zssg", "rebeccapurple" to "3zk49", "red" to "9y6tc", "rosybrown" to "7cv4f", "royalblue" to "2jvtt", "saddlebrown" to "5fmkz", "salmon" to "9rvci", "sandybrown" to "9jn1c", "seagreen" to "1tdnb", "seashell" to "9zje6", "sienna" to "6973h", "silver" to "7ir40", "skyblue" to "5arjf", "slateblue" to "45e4t", "slategray" to "4e100", "slategrey" to "4e100", "snow" to "9zke2", "springgreen" to "1egv", "steelblue" to "2r1kk", "tan" to "87yx8", "teal" to "pds", "thistle" to "8ggk8", "tomato" to "9yqfb", "turquoise" to "2j4r4", "violet" to "9b10u", "wheat" to "9ld4j", "white" to "9zldr", "whitesmoke" to "9lhpx", "yellow" to "9zl6o", "yellowgreen" to "61fzm")
 fun fillArr(arr: UTSArray<String>): UTSArray<String> {
@@ -1864,391 +2015,6 @@ open class DateObject (
     }
 }
 typealias DateUnits = String
-open class ActionSheetAction (
-    @JsonNotNull
-    open var name: String,
-    open var subname: String? = null,
-    open var color: String? = null,
-    open var icon: String? = null,
-    open var iconSize: Any? = null,
-    open var disabled: Boolean? = null,
-) : UTSReactiveObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("ActionSheetAction", "uni_modules/rice-ui/components/rice-action-sheet/type.uts", 1, 13)
-    }
-    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
-        return ActionSheetActionReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-}
-class ActionSheetActionReactiveObject : ActionSheetAction, IUTSReactive<ActionSheetAction> {
-    override var __v_raw: ActionSheetAction
-    override var __v_isReadonly: Boolean
-    override var __v_isShallow: Boolean
-    override var __v_skip: Boolean
-    constructor(__v_raw: ActionSheetAction, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(name = __v_raw.name, subname = __v_raw.subname, color = __v_raw.color, icon = __v_raw.icon, iconSize = __v_raw.iconSize, disabled = __v_raw.disabled) {
-        this.__v_raw = __v_raw
-        this.__v_isReadonly = __v_isReadonly
-        this.__v_isShallow = __v_isShallow
-        this.__v_skip = __v_skip
-    }
-    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): ActionSheetActionReactiveObject {
-        return ActionSheetActionReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-    override var name: String
-        get() {
-            return _tRG(__v_raw, "name", __v_raw.name, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("name")) {
-                return
-            }
-            val oldValue = __v_raw.name
-            __v_raw.name = value
-            _tRS(__v_raw, "name", oldValue, value)
-        }
-    override var subname: String?
-        get() {
-            return _tRG(__v_raw, "subname", __v_raw.subname, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("subname")) {
-                return
-            }
-            val oldValue = __v_raw.subname
-            __v_raw.subname = value
-            _tRS(__v_raw, "subname", oldValue, value)
-        }
-    override var color: String?
-        get() {
-            return _tRG(__v_raw, "color", __v_raw.color, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("color")) {
-                return
-            }
-            val oldValue = __v_raw.color
-            __v_raw.color = value
-            _tRS(__v_raw, "color", oldValue, value)
-        }
-    override var icon: String?
-        get() {
-            return _tRG(__v_raw, "icon", __v_raw.icon, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("icon")) {
-                return
-            }
-            val oldValue = __v_raw.icon
-            __v_raw.icon = value
-            _tRS(__v_raw, "icon", oldValue, value)
-        }
-    override var iconSize: Any?
-        get() {
-            return _tRG(__v_raw, "iconSize", __v_raw.iconSize, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("iconSize")) {
-                return
-            }
-            val oldValue = __v_raw.iconSize
-            __v_raw.iconSize = value
-            _tRS(__v_raw, "iconSize", oldValue, value)
-        }
-    override var disabled: Boolean?
-        get() {
-            return _tRG(__v_raw, "disabled", __v_raw.disabled, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("disabled")) {
-                return
-            }
-            val oldValue = __v_raw.disabled
-            __v_raw.disabled = value
-            _tRS(__v_raw, "disabled", oldValue, value)
-        }
-}
-open class ActionSheetProps (
-    open var actions: UTSArray<ActionSheetAction>? = null,
-    open var title: String? = null,
-    open var showCancel: Boolean? = null,
-    open var cancelText: String? = null,
-    open var duration: Number? = null,
-    open var zIndex: Number? = null,
-    open var opacity: Boolean? = null,
-    open var overlay: Boolean? = null,
-    open var overlayBgColor: String? = null,
-    open var closeOnClickAction: Boolean? = null,
-    open var closeOnClickOverlay: Boolean? = null,
-    open var radius: Any? = null,
-    open var safeAreaInsetBottom: Boolean? = null,
-    open var useDialogPage: Boolean? = null,
-    open var customStyle: UTSJSONObject? = null,
-    open var select: ((action: ActionSheetAction, index: Number) -> Unit)? = null,
-    open var cancel: (() -> Unit)? = null,
-    open var clickOverlay: (() -> Unit)? = null,
-    open var open: (() -> Unit)? = null,
-    open var close: (() -> Unit)? = null,
-    open var opened: (() -> Unit)? = null,
-    open var closed: (() -> Unit)? = null,
-    open var ready: ((pageIns: UniPage) -> Unit)? = null,
-    open var fail: ((errMsg: String) -> Unit)? = null,
-) : UTSReactiveObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("ActionSheetProps", "uni_modules/rice-ui/components/rice-action-sheet/type.uts", 9, 13)
-    }
-    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
-        return ActionSheetPropsReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-}
-class ActionSheetPropsReactiveObject : ActionSheetProps, IUTSReactive<ActionSheetProps> {
-    override var __v_raw: ActionSheetProps
-    override var __v_isReadonly: Boolean
-    override var __v_isShallow: Boolean
-    override var __v_skip: Boolean
-    constructor(__v_raw: ActionSheetProps, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(actions = __v_raw.actions, title = __v_raw.title, showCancel = __v_raw.showCancel, cancelText = __v_raw.cancelText, duration = __v_raw.duration, zIndex = __v_raw.zIndex, opacity = __v_raw.opacity, overlay = __v_raw.overlay, overlayBgColor = __v_raw.overlayBgColor, closeOnClickAction = __v_raw.closeOnClickAction, closeOnClickOverlay = __v_raw.closeOnClickOverlay, radius = __v_raw.radius, safeAreaInsetBottom = __v_raw.safeAreaInsetBottom, useDialogPage = __v_raw.useDialogPage, customStyle = __v_raw.customStyle, select = __v_raw.select, cancel = __v_raw.cancel, clickOverlay = __v_raw.clickOverlay, open = __v_raw.open, close = __v_raw.close, opened = __v_raw.opened, closed = __v_raw.closed, ready = __v_raw.ready, fail = __v_raw.fail) {
-        this.__v_raw = __v_raw
-        this.__v_isReadonly = __v_isReadonly
-        this.__v_isShallow = __v_isShallow
-        this.__v_skip = __v_skip
-    }
-    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): ActionSheetPropsReactiveObject {
-        return ActionSheetPropsReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-    override var actions: UTSArray<ActionSheetAction>?
-        get() {
-            return _tRG(__v_raw, "actions", __v_raw.actions, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("actions")) {
-                return
-            }
-            val oldValue = __v_raw.actions
-            __v_raw.actions = value
-            _tRS(__v_raw, "actions", oldValue, value)
-        }
-    override var title: String?
-        get() {
-            return _tRG(__v_raw, "title", __v_raw.title, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("title")) {
-                return
-            }
-            val oldValue = __v_raw.title
-            __v_raw.title = value
-            _tRS(__v_raw, "title", oldValue, value)
-        }
-    override var showCancel: Boolean?
-        get() {
-            return _tRG(__v_raw, "showCancel", __v_raw.showCancel, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("showCancel")) {
-                return
-            }
-            val oldValue = __v_raw.showCancel
-            __v_raw.showCancel = value
-            _tRS(__v_raw, "showCancel", oldValue, value)
-        }
-    override var cancelText: String?
-        get() {
-            return _tRG(__v_raw, "cancelText", __v_raw.cancelText, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("cancelText")) {
-                return
-            }
-            val oldValue = __v_raw.cancelText
-            __v_raw.cancelText = value
-            _tRS(__v_raw, "cancelText", oldValue, value)
-        }
-    override var duration: Number?
-        get() {
-            return _tRG(__v_raw, "duration", __v_raw.duration, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("duration")) {
-                return
-            }
-            val oldValue = __v_raw.duration
-            __v_raw.duration = value
-            _tRS(__v_raw, "duration", oldValue, value)
-        }
-    override var zIndex: Number?
-        get() {
-            return _tRG(__v_raw, "zIndex", __v_raw.zIndex, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("zIndex")) {
-                return
-            }
-            val oldValue = __v_raw.zIndex
-            __v_raw.zIndex = value
-            _tRS(__v_raw, "zIndex", oldValue, value)
-        }
-    override var opacity: Boolean?
-        get() {
-            return _tRG(__v_raw, "opacity", __v_raw.opacity, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("opacity")) {
-                return
-            }
-            val oldValue = __v_raw.opacity
-            __v_raw.opacity = value
-            _tRS(__v_raw, "opacity", oldValue, value)
-        }
-    override var overlay: Boolean?
-        get() {
-            return _tRG(__v_raw, "overlay", __v_raw.overlay, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("overlay")) {
-                return
-            }
-            val oldValue = __v_raw.overlay
-            __v_raw.overlay = value
-            _tRS(__v_raw, "overlay", oldValue, value)
-        }
-    override var overlayBgColor: String?
-        get() {
-            return _tRG(__v_raw, "overlayBgColor", __v_raw.overlayBgColor, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("overlayBgColor")) {
-                return
-            }
-            val oldValue = __v_raw.overlayBgColor
-            __v_raw.overlayBgColor = value
-            _tRS(__v_raw, "overlayBgColor", oldValue, value)
-        }
-    override var closeOnClickAction: Boolean?
-        get() {
-            return _tRG(__v_raw, "closeOnClickAction", __v_raw.closeOnClickAction, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("closeOnClickAction")) {
-                return
-            }
-            val oldValue = __v_raw.closeOnClickAction
-            __v_raw.closeOnClickAction = value
-            _tRS(__v_raw, "closeOnClickAction", oldValue, value)
-        }
-    override var closeOnClickOverlay: Boolean?
-        get() {
-            return _tRG(__v_raw, "closeOnClickOverlay", __v_raw.closeOnClickOverlay, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("closeOnClickOverlay")) {
-                return
-            }
-            val oldValue = __v_raw.closeOnClickOverlay
-            __v_raw.closeOnClickOverlay = value
-            _tRS(__v_raw, "closeOnClickOverlay", oldValue, value)
-        }
-    override var radius: Any?
-        get() {
-            return _tRG(__v_raw, "radius", __v_raw.radius, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("radius")) {
-                return
-            }
-            val oldValue = __v_raw.radius
-            __v_raw.radius = value
-            _tRS(__v_raw, "radius", oldValue, value)
-        }
-    override var safeAreaInsetBottom: Boolean?
-        get() {
-            return _tRG(__v_raw, "safeAreaInsetBottom", __v_raw.safeAreaInsetBottom, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("safeAreaInsetBottom")) {
-                return
-            }
-            val oldValue = __v_raw.safeAreaInsetBottom
-            __v_raw.safeAreaInsetBottom = value
-            _tRS(__v_raw, "safeAreaInsetBottom", oldValue, value)
-        }
-    override var useDialogPage: Boolean?
-        get() {
-            return _tRG(__v_raw, "useDialogPage", __v_raw.useDialogPage, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("useDialogPage")) {
-                return
-            }
-            val oldValue = __v_raw.useDialogPage
-            __v_raw.useDialogPage = value
-            _tRS(__v_raw, "useDialogPage", oldValue, value)
-        }
-    override var customStyle: UTSJSONObject?
-        get() {
-            return _tRG(__v_raw, "customStyle", __v_raw.customStyle, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("customStyle")) {
-                return
-            }
-            val oldValue = __v_raw.customStyle
-            __v_raw.customStyle = value
-            _tRS(__v_raw, "customStyle", oldValue, value)
-        }
-}
-open class ActionSheetBusEvent (
-    @JsonNotNull
-    open var type: String,
-    open var action: ActionSheetAction? = null,
-    open var index: Number? = null,
-    open var errMsg: String? = null,
-    open var pageIns: UniPage? = null,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("ActionSheetBusEvent", "uni_modules/rice-ui/components/rice-action-sheet/api.uts", 3, 13)
-    }
-}
-val url = "uni_modules/rice-ui/pages/action-sheet/action-sheet"
-val showActionSheet = fun(options: ActionSheetProps){
-    val uid = getUID()
-    val baseEventName = "rice_action_sheet_" + uid
-    val readyEventName = baseEventName + "_ready"
-    val optionsEventName = baseEventName + "_options"
-    val busEventName = baseEventName + "_bus"
-    uni__on(readyEventName, fun(){
-        uni__emit(optionsEventName, options)
-    }
-    )
-    uni__on(busEventName, fun(event: ActionSheetBusEvent){
-        val type = event.type
-        if (type == "select") {
-            options.select?.invoke(event.action!!, event.index as Number)
-        } else if (type == "cancel") {
-            options.cancel?.invoke()
-        } else if (type == "open") {
-            options.open?.invoke()
-        } else if (type == "close") {
-            options.close?.invoke()
-        } else if (type == "opened") {
-            options.opened?.invoke()
-        } else if (type == "closed") {
-            options.closed?.invoke()
-        } else if (type == "ready") {
-            options.ready?.invoke(event.pageIns!!)
-        } else if (type == "clickOverlay") {
-            options.clickOverlay?.invoke()
-        } else if (type == "fail") {
-            options.fail?.invoke(event.errMsg ?: "")
-        }
-    }
-    )
-    uni_openDialogPage(OpenDialogPageOptions(url = "/" + url + "?readyEventName=" + readyEventName + "&optionsEventName=" + optionsEventName + "&busEventName=" + busEventName, fail = fun(err){
-        options.fail?.invoke(err.errMsg)
-        uni__off(readyEventName, null)
-        uni__off(busEventName, null)
-        debugWarn("action-sheet", "请在pages.json 中注册" + url + "页面！errMsg:" + err.errMsg)
-    }
-    ))
-}
 typealias LoadingMode = String
 typealias LoadingTimingFunction = String
 val lunarYears: UTSArray<Number> = _uA(
@@ -2717,391 +2483,6 @@ open class PickerOption (
         return UTSSourceMapPosition("PickerOption", "uni_modules/rice-ui/components/rice-picker/type.uts", 1, 13)
     }
 }
-open class DialogProps (
-    open var title: String? = null,
-    open var width: Any? = null,
-    open var message: String? = null,
-    open var messageAlign: String? = null,
-    open var buttonTheme: String? = null,
-    open var buttonLayout: String? = null,
-    open var showConfirmButton: Boolean? = null,
-    open var confirmButtonText: String? = null,
-    open var confirmButtonColor: String? = null,
-    open var confirmButtonDisabled: Boolean? = null,
-    open var showCancelButton: Boolean? = null,
-    open var cancelButtonText: String? = null,
-    open var cancelButtonColor: String? = null,
-    open var cancelButtonDisabled: Boolean? = null,
-    open var duration: Number? = null,
-    open var overlay: Boolean? = null,
-    open var overlayBgColor: String? = null,
-    open var closeOnClickOverlay: Boolean? = null,
-    open var beforeClose: BeforeChangeInterceptor? = null,
-    open var zIndex: Number? = null,
-    open var bgColor: String? = null,
-    open var marginTop: Any? = null,
-    open var useDialogPage: Boolean? = null,
-    open var customStyle: UTSJSONObject? = null,
-    open var confirm: (() -> Unit)? = null,
-    open var cancel: (() -> Unit)? = null,
-    open var clickOverlay: (() -> Unit)? = null,
-    open var open: (() -> Unit)? = null,
-    open var close: (() -> Unit)? = null,
-    open var opened: (() -> Unit)? = null,
-    open var closed: (() -> Unit)? = null,
-    open var ready: ((pageIns: UniPage) -> Unit)? = null,
-    open var fail: ((errMsg: String) -> Unit)? = null,
-) : UTSReactiveObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("DialogProps", "uni_modules/rice-ui/components/rice-dialog/type.uts", 2, 13)
-    }
-    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
-        return DialogPropsReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-}
-class DialogPropsReactiveObject : DialogProps, IUTSReactive<DialogProps> {
-    override var __v_raw: DialogProps
-    override var __v_isReadonly: Boolean
-    override var __v_isShallow: Boolean
-    override var __v_skip: Boolean
-    constructor(__v_raw: DialogProps, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(title = __v_raw.title, width = __v_raw.width, message = __v_raw.message, messageAlign = __v_raw.messageAlign, buttonTheme = __v_raw.buttonTheme, buttonLayout = __v_raw.buttonLayout, showConfirmButton = __v_raw.showConfirmButton, confirmButtonText = __v_raw.confirmButtonText, confirmButtonColor = __v_raw.confirmButtonColor, confirmButtonDisabled = __v_raw.confirmButtonDisabled, showCancelButton = __v_raw.showCancelButton, cancelButtonText = __v_raw.cancelButtonText, cancelButtonColor = __v_raw.cancelButtonColor, cancelButtonDisabled = __v_raw.cancelButtonDisabled, duration = __v_raw.duration, overlay = __v_raw.overlay, overlayBgColor = __v_raw.overlayBgColor, closeOnClickOverlay = __v_raw.closeOnClickOverlay, beforeClose = __v_raw.beforeClose, zIndex = __v_raw.zIndex, bgColor = __v_raw.bgColor, marginTop = __v_raw.marginTop, useDialogPage = __v_raw.useDialogPage, customStyle = __v_raw.customStyle, confirm = __v_raw.confirm, cancel = __v_raw.cancel, clickOverlay = __v_raw.clickOverlay, open = __v_raw.open, close = __v_raw.close, opened = __v_raw.opened, closed = __v_raw.closed, ready = __v_raw.ready, fail = __v_raw.fail) {
-        this.__v_raw = __v_raw
-        this.__v_isReadonly = __v_isReadonly
-        this.__v_isShallow = __v_isShallow
-        this.__v_skip = __v_skip
-    }
-    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): DialogPropsReactiveObject {
-        return DialogPropsReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-    override var title: String?
-        get() {
-            return _tRG(__v_raw, "title", __v_raw.title, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("title")) {
-                return
-            }
-            val oldValue = __v_raw.title
-            __v_raw.title = value
-            _tRS(__v_raw, "title", oldValue, value)
-        }
-    override var width: Any?
-        get() {
-            return _tRG(__v_raw, "width", __v_raw.width, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("width")) {
-                return
-            }
-            val oldValue = __v_raw.width
-            __v_raw.width = value
-            _tRS(__v_raw, "width", oldValue, value)
-        }
-    override var message: String?
-        get() {
-            return _tRG(__v_raw, "message", __v_raw.message, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("message")) {
-                return
-            }
-            val oldValue = __v_raw.message
-            __v_raw.message = value
-            _tRS(__v_raw, "message", oldValue, value)
-        }
-    override var messageAlign: String?
-        get() {
-            return _tRG(__v_raw, "messageAlign", __v_raw.messageAlign, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("messageAlign")) {
-                return
-            }
-            val oldValue = __v_raw.messageAlign
-            __v_raw.messageAlign = value
-            _tRS(__v_raw, "messageAlign", oldValue, value)
-        }
-    override var buttonTheme: String?
-        get() {
-            return _tRG(__v_raw, "buttonTheme", __v_raw.buttonTheme, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("buttonTheme")) {
-                return
-            }
-            val oldValue = __v_raw.buttonTheme
-            __v_raw.buttonTheme = value
-            _tRS(__v_raw, "buttonTheme", oldValue, value)
-        }
-    override var buttonLayout: String?
-        get() {
-            return _tRG(__v_raw, "buttonLayout", __v_raw.buttonLayout, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("buttonLayout")) {
-                return
-            }
-            val oldValue = __v_raw.buttonLayout
-            __v_raw.buttonLayout = value
-            _tRS(__v_raw, "buttonLayout", oldValue, value)
-        }
-    override var showConfirmButton: Boolean?
-        get() {
-            return _tRG(__v_raw, "showConfirmButton", __v_raw.showConfirmButton, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("showConfirmButton")) {
-                return
-            }
-            val oldValue = __v_raw.showConfirmButton
-            __v_raw.showConfirmButton = value
-            _tRS(__v_raw, "showConfirmButton", oldValue, value)
-        }
-    override var confirmButtonText: String?
-        get() {
-            return _tRG(__v_raw, "confirmButtonText", __v_raw.confirmButtonText, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("confirmButtonText")) {
-                return
-            }
-            val oldValue = __v_raw.confirmButtonText
-            __v_raw.confirmButtonText = value
-            _tRS(__v_raw, "confirmButtonText", oldValue, value)
-        }
-    override var confirmButtonColor: String?
-        get() {
-            return _tRG(__v_raw, "confirmButtonColor", __v_raw.confirmButtonColor, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("confirmButtonColor")) {
-                return
-            }
-            val oldValue = __v_raw.confirmButtonColor
-            __v_raw.confirmButtonColor = value
-            _tRS(__v_raw, "confirmButtonColor", oldValue, value)
-        }
-    override var confirmButtonDisabled: Boolean?
-        get() {
-            return _tRG(__v_raw, "confirmButtonDisabled", __v_raw.confirmButtonDisabled, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("confirmButtonDisabled")) {
-                return
-            }
-            val oldValue = __v_raw.confirmButtonDisabled
-            __v_raw.confirmButtonDisabled = value
-            _tRS(__v_raw, "confirmButtonDisabled", oldValue, value)
-        }
-    override var showCancelButton: Boolean?
-        get() {
-            return _tRG(__v_raw, "showCancelButton", __v_raw.showCancelButton, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("showCancelButton")) {
-                return
-            }
-            val oldValue = __v_raw.showCancelButton
-            __v_raw.showCancelButton = value
-            _tRS(__v_raw, "showCancelButton", oldValue, value)
-        }
-    override var cancelButtonText: String?
-        get() {
-            return _tRG(__v_raw, "cancelButtonText", __v_raw.cancelButtonText, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("cancelButtonText")) {
-                return
-            }
-            val oldValue = __v_raw.cancelButtonText
-            __v_raw.cancelButtonText = value
-            _tRS(__v_raw, "cancelButtonText", oldValue, value)
-        }
-    override var cancelButtonColor: String?
-        get() {
-            return _tRG(__v_raw, "cancelButtonColor", __v_raw.cancelButtonColor, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("cancelButtonColor")) {
-                return
-            }
-            val oldValue = __v_raw.cancelButtonColor
-            __v_raw.cancelButtonColor = value
-            _tRS(__v_raw, "cancelButtonColor", oldValue, value)
-        }
-    override var cancelButtonDisabled: Boolean?
-        get() {
-            return _tRG(__v_raw, "cancelButtonDisabled", __v_raw.cancelButtonDisabled, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("cancelButtonDisabled")) {
-                return
-            }
-            val oldValue = __v_raw.cancelButtonDisabled
-            __v_raw.cancelButtonDisabled = value
-            _tRS(__v_raw, "cancelButtonDisabled", oldValue, value)
-        }
-    override var duration: Number?
-        get() {
-            return _tRG(__v_raw, "duration", __v_raw.duration, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("duration")) {
-                return
-            }
-            val oldValue = __v_raw.duration
-            __v_raw.duration = value
-            _tRS(__v_raw, "duration", oldValue, value)
-        }
-    override var overlay: Boolean?
-        get() {
-            return _tRG(__v_raw, "overlay", __v_raw.overlay, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("overlay")) {
-                return
-            }
-            val oldValue = __v_raw.overlay
-            __v_raw.overlay = value
-            _tRS(__v_raw, "overlay", oldValue, value)
-        }
-    override var overlayBgColor: String?
-        get() {
-            return _tRG(__v_raw, "overlayBgColor", __v_raw.overlayBgColor, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("overlayBgColor")) {
-                return
-            }
-            val oldValue = __v_raw.overlayBgColor
-            __v_raw.overlayBgColor = value
-            _tRS(__v_raw, "overlayBgColor", oldValue, value)
-        }
-    override var closeOnClickOverlay: Boolean?
-        get() {
-            return _tRG(__v_raw, "closeOnClickOverlay", __v_raw.closeOnClickOverlay, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("closeOnClickOverlay")) {
-                return
-            }
-            val oldValue = __v_raw.closeOnClickOverlay
-            __v_raw.closeOnClickOverlay = value
-            _tRS(__v_raw, "closeOnClickOverlay", oldValue, value)
-        }
-    override var zIndex: Number?
-        get() {
-            return _tRG(__v_raw, "zIndex", __v_raw.zIndex, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("zIndex")) {
-                return
-            }
-            val oldValue = __v_raw.zIndex
-            __v_raw.zIndex = value
-            _tRS(__v_raw, "zIndex", oldValue, value)
-        }
-    override var bgColor: String?
-        get() {
-            return _tRG(__v_raw, "bgColor", __v_raw.bgColor, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("bgColor")) {
-                return
-            }
-            val oldValue = __v_raw.bgColor
-            __v_raw.bgColor = value
-            _tRS(__v_raw, "bgColor", oldValue, value)
-        }
-    override var marginTop: Any?
-        get() {
-            return _tRG(__v_raw, "marginTop", __v_raw.marginTop, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("marginTop")) {
-                return
-            }
-            val oldValue = __v_raw.marginTop
-            __v_raw.marginTop = value
-            _tRS(__v_raw, "marginTop", oldValue, value)
-        }
-    override var useDialogPage: Boolean?
-        get() {
-            return _tRG(__v_raw, "useDialogPage", __v_raw.useDialogPage, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("useDialogPage")) {
-                return
-            }
-            val oldValue = __v_raw.useDialogPage
-            __v_raw.useDialogPage = value
-            _tRS(__v_raw, "useDialogPage", oldValue, value)
-        }
-    override var customStyle: UTSJSONObject?
-        get() {
-            return _tRG(__v_raw, "customStyle", __v_raw.customStyle, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("customStyle")) {
-                return
-            }
-            val oldValue = __v_raw.customStyle
-            __v_raw.customStyle = value
-            _tRS(__v_raw, "customStyle", oldValue, value)
-        }
-}
-open class DialogBusEvent (
-    @JsonNotNull
-    open var type: String,
-    open var errMsg: String? = null,
-    open var pageIns: UniPage? = null,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("DialogBusEvent", "uni_modules/rice-ui/components/rice-dialog/api.uts", 3, 13)
-    }
-}
-val url__1 = "uni_modules/rice-ui/pages/dialog/dialog"
-val showDialog = fun(options: DialogProps){
-    val uid = getUID()
-    val baseEventName = "rice_dialog_" + uid
-    val readyEventName = baseEventName + "_ready"
-    val optionsEventName = baseEventName + "_options"
-    val busEventName = baseEventName + "_bus"
-    uni__on(readyEventName, fun(){
-        uni__emit(optionsEventName, options)
-    }
-    )
-    uni__on(busEventName, fun(event: DialogBusEvent){
-        val type = event.type
-        if (type == "confirm") {
-            options.confirm?.invoke()
-        } else if (type == "cancel") {
-            options.cancel?.invoke()
-        } else if (type == "open") {
-            options.open?.invoke()
-        } else if (type == "close") {
-            options.close?.invoke()
-        } else if (type == "opened") {
-            options.opened?.invoke()
-        } else if (type == "closed") {
-            options.closed?.invoke()
-        } else if (type == "ready") {
-            options.ready?.invoke(event.pageIns!!)
-        } else if (type == "clickOverlay") {
-            options.clickOverlay?.invoke()
-        } else if (type == "fail") {
-            options.fail?.invoke(event.errMsg ?: "")
-        }
-    }
-    )
-    uni_openDialogPage(OpenDialogPageOptions(url = "/" + url__1 + "?readyEventName=" + readyEventName + "&optionsEventName=" + optionsEventName + "&busEventName=" + busEventName, fail = fun(err){
-        options.fail?.invoke(err.errMsg)
-        uni__off(readyEventName, null)
-        uni__off(busEventName, null)
-        debugWarn("action-sheet", "请在pages.json 中注册" + url__1 + "页面！errMsg:" + err.errMsg)
-    }
-    ))
-}
 open class FontData (
     @JsonNotNull
     open var name: String,
@@ -3245,304 +2626,6 @@ val formItemBlurInjectKey = "FormItemBlurKey-" + getRandomStr()
 val radioGroupInjectKey = "RdioGroupKey-" + getRandomStr()
 val swipeActionsName = "SwipeActions"
 val swipeActionsInjectKey = "SwipeActionsKey-" + getRandomStr()
-open class UserInfo (
-    @JsonNotNull
-    open var nickName: String,
-    open var avatarUrl: String? = null,
-) : UTSReactiveObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("UserInfo", "store/index.uts", 2, 13)
-    }
-    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
-        return UserInfoReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-}
-class UserInfoReactiveObject : UserInfo, IUTSReactive<UserInfo> {
-    override var __v_raw: UserInfo
-    override var __v_isReadonly: Boolean
-    override var __v_isShallow: Boolean
-    override var __v_skip: Boolean
-    constructor(__v_raw: UserInfo, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(nickName = __v_raw.nickName, avatarUrl = __v_raw.avatarUrl) {
-        this.__v_raw = __v_raw
-        this.__v_isReadonly = __v_isReadonly
-        this.__v_isShallow = __v_isShallow
-        this.__v_skip = __v_skip
-    }
-    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UserInfoReactiveObject {
-        return UserInfoReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-    override var nickName: String
-        get() {
-            return _tRG(__v_raw, "nickName", __v_raw.nickName, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("nickName")) {
-                return
-            }
-            val oldValue = __v_raw.nickName
-            __v_raw.nickName = value
-            _tRS(__v_raw, "nickName", oldValue, value)
-        }
-    override var avatarUrl: String?
-        get() {
-            return _tRG(__v_raw, "avatarUrl", __v_raw.avatarUrl, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("avatarUrl")) {
-                return
-            }
-            val oldValue = __v_raw.avatarUrl
-            __v_raw.avatarUrl = value
-            _tRS(__v_raw, "avatarUrl", oldValue, value)
-        }
-}
-open class State (
-    @JsonNotNull
-    open var statusBarHeight: Number,
-    @JsonNotNull
-    open var navbarHeight: Number,
-    @JsonNotNull
-    open var safeAreaInsetsHeight: Number,
-    @JsonNotNull
-    open var uniPlatform: String,
-    @JsonNotNull
-    open var devicePixelRatio: Number,
-    @JsonNotNull
-    open var active: String,
-    @JsonNotNull
-    open var leftWinActive: String,
-    open var agreeToPrivacy: Boolean? = null,
-    @JsonNotNull
-    open var isFollowSystem: Boolean = false,
-    @JsonNotNull
-    open var appTheme: String,
-    @JsonNotNull
-    open var osTheme: String,
-    @JsonNotNull
-    open var netless: Boolean = false,
-    open var userInfo: UserInfo? = null,
-) : UTSReactiveObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("State", "store/index.uts", 17, 6)
-    }
-    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
-        return StateReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-}
-class StateReactiveObject : State, IUTSReactive<State> {
-    override var __v_raw: State
-    override var __v_isReadonly: Boolean
-    override var __v_isShallow: Boolean
-    override var __v_skip: Boolean
-    constructor(__v_raw: State, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(statusBarHeight = __v_raw.statusBarHeight, navbarHeight = __v_raw.navbarHeight, safeAreaInsetsHeight = __v_raw.safeAreaInsetsHeight, uniPlatform = __v_raw.uniPlatform, devicePixelRatio = __v_raw.devicePixelRatio, active = __v_raw.active, leftWinActive = __v_raw.leftWinActive, agreeToPrivacy = __v_raw.agreeToPrivacy, isFollowSystem = __v_raw.isFollowSystem, appTheme = __v_raw.appTheme, osTheme = __v_raw.osTheme, netless = __v_raw.netless, userInfo = __v_raw.userInfo) {
-        this.__v_raw = __v_raw
-        this.__v_isReadonly = __v_isReadonly
-        this.__v_isShallow = __v_isShallow
-        this.__v_skip = __v_skip
-    }
-    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): StateReactiveObject {
-        return StateReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
-    }
-    override var statusBarHeight: Number
-        get() {
-            return _tRG(__v_raw, "statusBarHeight", __v_raw.statusBarHeight, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("statusBarHeight")) {
-                return
-            }
-            val oldValue = __v_raw.statusBarHeight
-            __v_raw.statusBarHeight = value
-            _tRS(__v_raw, "statusBarHeight", oldValue, value)
-        }
-    override var navbarHeight: Number
-        get() {
-            return _tRG(__v_raw, "navbarHeight", __v_raw.navbarHeight, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("navbarHeight")) {
-                return
-            }
-            val oldValue = __v_raw.navbarHeight
-            __v_raw.navbarHeight = value
-            _tRS(__v_raw, "navbarHeight", oldValue, value)
-        }
-    override var safeAreaInsetsHeight: Number
-        get() {
-            return _tRG(__v_raw, "safeAreaInsetsHeight", __v_raw.safeAreaInsetsHeight, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("safeAreaInsetsHeight")) {
-                return
-            }
-            val oldValue = __v_raw.safeAreaInsetsHeight
-            __v_raw.safeAreaInsetsHeight = value
-            _tRS(__v_raw, "safeAreaInsetsHeight", oldValue, value)
-        }
-    override var uniPlatform: String
-        get() {
-            return _tRG(__v_raw, "uniPlatform", __v_raw.uniPlatform, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("uniPlatform")) {
-                return
-            }
-            val oldValue = __v_raw.uniPlatform
-            __v_raw.uniPlatform = value
-            _tRS(__v_raw, "uniPlatform", oldValue, value)
-        }
-    override var devicePixelRatio: Number
-        get() {
-            return _tRG(__v_raw, "devicePixelRatio", __v_raw.devicePixelRatio, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("devicePixelRatio")) {
-                return
-            }
-            val oldValue = __v_raw.devicePixelRatio
-            __v_raw.devicePixelRatio = value
-            _tRS(__v_raw, "devicePixelRatio", oldValue, value)
-        }
-    override var active: String
-        get() {
-            return _tRG(__v_raw, "active", __v_raw.active, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("active")) {
-                return
-            }
-            val oldValue = __v_raw.active
-            __v_raw.active = value
-            _tRS(__v_raw, "active", oldValue, value)
-        }
-    override var leftWinActive: String
-        get() {
-            return _tRG(__v_raw, "leftWinActive", __v_raw.leftWinActive, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("leftWinActive")) {
-                return
-            }
-            val oldValue = __v_raw.leftWinActive
-            __v_raw.leftWinActive = value
-            _tRS(__v_raw, "leftWinActive", oldValue, value)
-        }
-    override var agreeToPrivacy: Boolean?
-        get() {
-            return _tRG(__v_raw, "agreeToPrivacy", __v_raw.agreeToPrivacy, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("agreeToPrivacy")) {
-                return
-            }
-            val oldValue = __v_raw.agreeToPrivacy
-            __v_raw.agreeToPrivacy = value
-            _tRS(__v_raw, "agreeToPrivacy", oldValue, value)
-        }
-    override var isFollowSystem: Boolean
-        get() {
-            return _tRG(__v_raw, "isFollowSystem", __v_raw.isFollowSystem, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("isFollowSystem")) {
-                return
-            }
-            val oldValue = __v_raw.isFollowSystem
-            __v_raw.isFollowSystem = value
-            _tRS(__v_raw, "isFollowSystem", oldValue, value)
-        }
-    override var appTheme: String
-        get() {
-            return _tRG(__v_raw, "appTheme", __v_raw.appTheme, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("appTheme")) {
-                return
-            }
-            val oldValue = __v_raw.appTheme
-            __v_raw.appTheme = value
-            _tRS(__v_raw, "appTheme", oldValue, value)
-        }
-    override var osTheme: String
-        get() {
-            return _tRG(__v_raw, "osTheme", __v_raw.osTheme, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("osTheme")) {
-                return
-            }
-            val oldValue = __v_raw.osTheme
-            __v_raw.osTheme = value
-            _tRS(__v_raw, "osTheme", oldValue, value)
-        }
-    override var netless: Boolean
-        get() {
-            return _tRG(__v_raw, "netless", __v_raw.netless, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("netless")) {
-                return
-            }
-            val oldValue = __v_raw.netless
-            __v_raw.netless = value
-            _tRS(__v_raw, "netless", oldValue, value)
-        }
-    override var userInfo: UserInfo?
-        get() {
-            return _tRG(__v_raw, "userInfo", __v_raw.userInfo, __v_isReadonly, __v_isShallow)
-        }
-        set(value) {
-            if (!__v_canSet("userInfo")) {
-                return
-            }
-            val oldValue = __v_raw.userInfo
-            __v_raw.userInfo = value
-            _tRS(__v_raw, "userInfo", oldValue, value)
-        }
-}
-val state = reactive(State(statusBarHeight = 0, navbarHeight = 44, safeAreaInsetsHeight = 0, uniPlatform = "", devicePixelRatio = 1, active = "componentPage", leftWinActive = "/pages/bookcase/index", appTheme = "light", osTheme = "light", isFollowSystem = false, netless = false, userInfo = null, agreeToPrivacy = null))
-val setAppTheme = fun(value: String){
-    state.appTheme = value
-    uni_setStorageSync("appTheme", value)
-}
-val setIsFollowSystem = fun(value: Boolean){
-    state.isFollowSystem = value
-    uni_setStorageSync("isFollowSystem", value)
-}
-val checkSystemInfo = fun(){
-    val appBaseInfo: GetAppBaseInfoResult = uni_getAppBaseInfo(null)
-    val deviceInfo: GetDeviceInfoResult = uni_getDeviceInfo(null)
-    val windowInfo = uni_getWindowInfo()
-    state.uniPlatform = appBaseInfo.uniPlatform ?: ""
-    state.statusBarHeight = windowInfo.statusBarHeight
-    state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom
-    if (appBaseInfo.uniPlatform === "app") {
-        try {
-            val isFollowSystem = if (uni_getStorageSync("isFollowSystem") === "") {
-                false
-            } else {
-                uni_getStorageSync("isFollowSystem") as Boolean
-            }
-            val osTheme = deviceInfo.osTheme ?: "dark"
-            state.osTheme = osTheme
-            state.isFollowSystem = isFollowSystem
-            uni_setStorageSync("osTheme", osTheme)
-            if (isFollowSystem) {
-                uni_setAppTheme(SetAppThemeOptions(theme = osTheme))
-                setTheme(osTheme)
-                setAppTheme(osTheme)
-            } else {
-                val appTheme = uni_getStorageSync("appTheme") as String ?: "light"
-                uni_setAppTheme(SetAppThemeOptions(theme = appTheme))
-                setTheme(appTheme)
-                state.appTheme = appTheme
-            }
-        }
-         catch (e: Throwable) {
-            console.log("" + e + " 失败", " at store/index.uts:120")
-        }
-    }
-}
 open class GenApp : BaseApp {
     constructor(__ins: ComponentInternalInstance) : super(__ins) {
         setCurrentInstance(__ins)
@@ -3598,7 +2681,7 @@ open class GenApp : BaseApp {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#845ec2", "--rice-primary-color-1" to "#b7abc2", "--rice-primary-color-7" to "#782ec2", "--rice-success-color" to "#4d8076", "--rice-success-color-1" to "#4d8076", "--rice-success-color-7" to "#4d8076", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "transparent", "--rice-search-input-background" to "rgba(0, 0, 0, 0.04)", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#f5f5f5", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa", "--text-color1" to "#02070F", "--text-color2" to "#666", "--text-color3" to "#999", "--text-color4" to "#111", "--background-color1" to "rgba(0, 0, 0, 0.50)", "--background-color2" to "#F5F5F5", "--background-color3" to "#FFF", "--background-color4" to "rgba(0, 0, 0, 0.04)", "--background-color5" to "#FFF")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#6235c2", "--rice-primary-color-1" to "#a391c2", "--rice-primary-color-7" to "#aa97c2", "--rice-success-color" to "#0d8063", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#333", "--rice-search-background" to "transparent", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727", "--text-color1" to "#F5F5F5", "--text-color2" to "#CCC", "--text-color3" to "#999", "--text-color4" to "#F5F5F5", "--background-color1" to "#111", "--background-color2" to "#222", "--background-color3" to "rgba(255, 255, 255, 0.13)", "--background-color4" to "#333", "--background-color5" to "rgba(255, 255, 255, 0.13)")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "icon" to _pS(_uM("fontFamily" to "vant-icon")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "@FONT-FACE" to _uM("0" to _uM("fontFamily" to "vant-icon", "src" to "url('/static/vant-icon.ttf')")))
+                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#e6f7ff", "--rice-primary-color-7" to "#0b68d4", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "#fff", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#fff", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#111c2b", "--rice-primary-color-7" to "#3d98e8", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#11231b", "--rice-success-color-7" to "#27bc6a", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#281f15", "--rice-warning-color-7" to "#dcae5e", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#2a1a1b", "--rice-error-color-7" to "#e88e8c", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "#242424", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "theme-light" to _pS(_uM("--navbar-background" to "#f5f5f5", "--search-background" to "transparent", "--search-input-background" to "rgba(0, 0, 0, 0.04)", "--primary-color" to "#845ec2", "--primary-color-1" to "#b7abc2", "--primary-color-7" to "#782ec2", "--success-color" to "#4d8076", "--success-color-1" to "#4d8076", "--success-color-7" to "#4d8076", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color1" to "#02070F", "--text-color2" to "#666", "--text-color3" to "#999", "--text-color4" to "#111", "--background-color1" to "rgba(0, 0, 0, 0.50)", "--background-color2" to "#F5F5F5", "--background-color3" to "#FFF", "--background-color4" to "rgba(0, 0, 0, 0.04)", "--background-color5" to "#FFF")), "theme-dark" to _pS(_uM("--navbar-background" to "#181818", "--search-background" to "transparent", "--search-input-background" to "#333", "--primary-color" to "#6235c2", "--primary-color-1" to "#a391c2", "--primary-color-7" to "#aa97c2", "--success-color" to "#0d8063", "--success-color-1" to "#e6ffee", "--success-color-7" to "#009c50", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color1" to "#F5F5F5", "--text-color2" to "#CCC", "--text-color3" to "#999", "--text-color4" to "#F5F5F5", "--background-color1" to "#111", "--background-color2" to "#222", "--background-color3" to "rgba(255, 255, 255, 0.13)", "--background-color4" to "#333", "--background-color5" to "rgba(255, 255, 255, 0.13)")), "icon" to _pS(_uM("fontFamily" to "vant-icon")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "@FONT-FACE" to _uM("0" to _uM("fontFamily" to "vant-icon", "src" to "url('/static/vant-icon.ttf')")))
             }
     }
 }
@@ -4006,16 +3089,6 @@ val GenUniModulesRiceUiComponentsRiceBadgeRiceBadgeClass = CreateVueComponent(Ge
     return GenUniModulesRiceUiComponentsRiceBadgeRiceBadge(instance)
 }
 )
-val GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.inject, props = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.emits, components = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.components, styles = GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar.setup(props as GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar {
-    return GenUniModulesRiceUiComponentsRiceAvatarRiceAvatar(instance)
-}
-)
 val GenUniModulesRiceUiComponentsRiceCellRiceCellClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceCellRiceCell::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceCellRiceCell.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceCellRiceCell.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceCellRiceCell.inject, props = GenUniModulesRiceUiComponentsRiceCellRiceCell.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceCellRiceCell.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceCellRiceCell.emits, components = GenUniModulesRiceUiComponentsRiceCellRiceCell.components, styles = GenUniModulesRiceUiComponentsRiceCellRiceCell.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenUniModulesRiceUiComponentsRiceCellRiceCell.setup(props as GenUniModulesRiceUiComponentsRiceCellRiceCell)
@@ -4334,56 +3407,6 @@ val GenPagesFeedbackIndexClass = CreateVueComponent(GenPagesFeedbackIndex::class
     return GenPagesFeedbackIndex(instance, renderer)
 }
 )
-val GenUniModulesRiceUiComponentsRiceOverlayRiceOverlayClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.inject, props = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.emits, components = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.components, styles = GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay.setup(props as GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay {
-    return GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay(instance)
-}
-)
-val GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheetClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.inject, props = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.emits, components = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.components, styles = GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet.setup(props as GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet {
-    return GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet(instance)
-}
-)
-val GenUniModulesRiceUiPagesActionSheetActionSheetClass = CreateVueComponent(GenUniModulesRiceUiPagesActionSheetActionSheet::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "page", name = GenUniModulesRiceUiPagesActionSheetActionSheet.name, inheritAttrs = GenUniModulesRiceUiPagesActionSheetActionSheet.inheritAttrs, inject = GenUniModulesRiceUiPagesActionSheetActionSheet.inject, props = GenUniModulesRiceUiPagesActionSheetActionSheet.props, propsNeedCastKeys = GenUniModulesRiceUiPagesActionSheetActionSheet.propsNeedCastKeys, emits = GenUniModulesRiceUiPagesActionSheetActionSheet.emits, components = GenUniModulesRiceUiPagesActionSheetActionSheet.components, styles = GenUniModulesRiceUiPagesActionSheetActionSheet.styles, setup = fun(props: ComponentPublicInstance, ctx: SetupContext): Any? {
-        return GenUniModulesRiceUiPagesActionSheetActionSheet.setup(props as GenUniModulesRiceUiPagesActionSheetActionSheet, ctx)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiPagesActionSheetActionSheet {
-    return GenUniModulesRiceUiPagesActionSheetActionSheet(instance, renderer)
-}
-)
-val GenUniModulesRiceUiComponentsRiceDialogRiceDialogClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceDialogRiceDialog::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.inject, props = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.emits, components = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.components, styles = GenUniModulesRiceUiComponentsRiceDialogRiceDialog.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceDialogRiceDialog.setup(props as GenUniModulesRiceUiComponentsRiceDialogRiceDialog)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceDialogRiceDialog {
-    return GenUniModulesRiceUiComponentsRiceDialogRiceDialog(instance)
-}
-)
-val GenUniModulesRiceUiPagesDialogDialogClass = CreateVueComponent(GenUniModulesRiceUiPagesDialogDialog::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "page", name = GenUniModulesRiceUiPagesDialogDialog.name, inheritAttrs = GenUniModulesRiceUiPagesDialogDialog.inheritAttrs, inject = GenUniModulesRiceUiPagesDialogDialog.inject, props = GenUniModulesRiceUiPagesDialogDialog.props, propsNeedCastKeys = GenUniModulesRiceUiPagesDialogDialog.propsNeedCastKeys, emits = GenUniModulesRiceUiPagesDialogDialog.emits, components = GenUniModulesRiceUiPagesDialogDialog.components, styles = GenUniModulesRiceUiPagesDialogDialog.styles, setup = fun(props: ComponentPublicInstance, ctx: SetupContext): Any? {
-        return GenUniModulesRiceUiPagesDialogDialog.setup(props as GenUniModulesRiceUiPagesDialogDialog, ctx)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiPagesDialogDialog {
-    return GenUniModulesRiceUiPagesDialogDialog(instance, renderer)
-}
-)
 fun createApp(): UTSJSONObject {
     val app = createSSRApp(GenAppClass)
     return _uO("app" to app)
@@ -4409,8 +3432,6 @@ fun definePageRoutes() {
     __uniRoutes.push(UniPageRoute(path = "pages/search/index", component = GenPagesSearchIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/setting/index", component = GenPagesSettingIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/feedback/index", component = GenPagesFeedbackIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
-    __uniRoutes.push(UniPageRoute(path = "uni_modules/rice-ui/pages/action-sheet/action-sheet", component = GenUniModulesRiceUiPagesActionSheetActionSheetClass, meta = UniPageMeta(isQuit = false), style = _uM()))
-    __uniRoutes.push(UniPageRoute(path = "uni_modules/rice-ui/pages/dialog/dialog", component = GenUniModulesRiceUiPagesDialogDialogClass, meta = UniPageMeta(isQuit = false), style = _uM()))
 }
 val __uniTabBar: Map<String, Any?>? = _uM("color" to "@tabBarColor", "selectedColor" to "@tabBarSelectedColor", "borderStyle" to "@tabBarBorderStyle", "backgroundColor" to "@tabBarBackgroundColor", "list" to _uA(
     _uM("pagePath" to "pages/bookcase/index", "iconPath" to "@tabBarIconPath1", "selectedIconPath" to "@tabBarSelectedIconPath1", "text" to "书架"),

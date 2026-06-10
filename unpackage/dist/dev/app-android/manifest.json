@@ -1,7 +1,7 @@
 {
   "id": "__UNI__194B5B1",
   "name": "uniapp-readbook",
-  "description": "",
+  "description": "嘿嘿",
   "version": {
     "name": "1.0.0",
     "code": "100"
@@ -9,15 +9,17 @@
   "uni-app-x": {
     "compilerVersion": "5.07"
   },
-  "app": {
+  "app-android": {
     "distribute": {
+      "modules": {},
       "icons": {
-        "android": {
-          "hdpi": "",
-          "xhdpi": "",
-          "xxhdpi": "",
-          "xxxhdpi": ""
-        }
+        "hdpi": "D:/My/Project/uniapp-readbook/static/image/vuejs.png",
+        "xhdpi": "D:/My/Project/uniapp-readbook/static/image/vuejs.png",
+        "xxhdpi": "D:/My/Project/uniapp-readbook/static/image/vuejs.png",
+        "xxxhdpi": "D:/My/Project/uniapp-readbook/static/image/vuejs.png"
+      },
+      "splashScreens": {
+        "default": {}
       }
     }
   }

@@ -20,8 +20,6 @@ const index_uvue_vue_type_style_index_0_lang$4 = {};
 
 const riceBadge_uvue_vue_type_style_index_0_lang = {};
 
-const riceAvatar_uvue_vue_type_style_index_0_lang = {};
-
 const riceCell_uvue_vue_type_style_index_0_lang = {};
 
 const riceCellGroup_uvue_vue_type_style_index_0_lang = {};
@@ -41,11 +39,5 @@ const riceTextarea_uvue_vue_type_style_index_0_lang = {};
 const riceButton_uvue_vue_type_style_index_0_lang = {};
 
 const index_uvue_vue_type_style_index_0_lang = {};
-
-const riceOverlay_uvue_vue_type_style_index_0_lang = {};
-
-const riceActionSheet_uvue_vue_type_style_index_0_lang = {};
-
-const riceDialog_uvue_vue_type_style_index_0_lang = {};
 
 const App_uvue_vue_type_style_index_0_lang = {};

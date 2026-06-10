@@ -72,7 +72,7 @@ open class GenComponnetsMyNavbar : VueComponent {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("my-navbar" to _pS(_uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "space-between", "position" to "relative")), "my-navbar-title" to _uM(".my-navbar " to _uM("position" to "absolute", "top" to "50%", "left" to "50%", "transform" to "translate(-50%, -50%)")))
+                return _uM("my-navbar" to _pS(_uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "space-between", "position" to "relative")), "my-navbar-title" to _uM(".my-navbar " to _uM("position" to "absolute", "top" to "50%", "left" to "50%", "transform" to "translate(-50%, -50%)")), "my-navbar-right" to _uM(".my-navbar " to _uM("overflow" to "visible")))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

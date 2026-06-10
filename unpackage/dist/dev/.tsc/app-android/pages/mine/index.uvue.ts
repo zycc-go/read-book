@@ -1,9 +1,9 @@
 import _easycom_rice_icon from '@/uni_modules/rice-ui/components/rice-icon/rice-icon.uvue'
 import _easycom_rice_badge from '@/uni_modules/rice-ui/components/rice-badge/rice-badge.uvue'
-import _easycom_rice_avatar from '@/uni_modules/rice-ui/components/rice-avatar/rice-avatar.uvue'
 import _easycom_rice_cell from '@/uni_modules/rice-ui/components/rice-cell/rice-cell.uvue'
 import _easycom_rice_cell_group from '@/uni_modules/rice-ui/components/rice-cell-group/rice-cell-group.uvue'
-import MyAvatar from '@/componnets/MyAvatar.uvue'
+import MyNavbar from '@/componnets/MyNavbar.uvue'
+	import MyAvatar from '@/componnets/MyAvatar.uvue'
 	import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts'
 
 	
@@ -37,17 +37,17 @@ const _cache = __ins.renderCache;
 			uni.setAppTheme({
 				theme: val as "light" | "dark" | "auto",
 				success: function () {
-					console.log(`设置appTheme为 ${val} 成功`, " at pages/mine/index.uvue:61")
+					console.log(`设置appTheme为 ${val} 成功`, " at pages/mine/index.uvue:65")
 				},
 				fail: function (e : IAppThemeFail) {
-					console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg, " at pages/mine/index.uvue:64")
+					console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg, " at pages/mine/index.uvue:68")
 				}
 			})
 		}
 	}
 
 	const onShow = () => {
-		console.log(688767868, " at pages/mine/index.uvue:71")
+		console.log(688767868, " at pages/mine/index.uvue:75")
 	}
 
 	const onToSetting = () => uni.navigateTo({ url: '/pages/setting/index' })
@@ -58,17 +58,13 @@ return (): any | null => {
 
 const _component_rice_icon = resolveEasyComponent("rice-icon",_easycom_rice_icon)
 const _component_rice_badge = resolveEasyComponent("rice-badge",_easycom_rice_badge)
-const _component_rice_avatar = resolveEasyComponent("rice-avatar",_easycom_rice_avatar)
 const _component_rice_cell = resolveEasyComponent("rice-cell",_easycom_rice_cell)
 const _component_rice_cell_group = resolveEasyComponent("rice-cell-group",_easycom_rice_cell_group)
 
   return _cE("view", _uM({
     class: _nC([`rice-theme-${unref(state).appTheme}`, "page"])
   }), [
-    _cV(unref(MyAvatar), _uM({
-      "left-arrow": false,
-      height: unref(state).navbarHeight
-    }), _uM({
+    _cV(unref(MyNavbar), _uM({ "left-arrow": false }), _uM({
       right: withSlotCtx((): any[] => [
         _cE("view", _uM({ class: "nav-right" }), [
           unref(state).appTheme=='dark'
@@ -99,12 +95,15 @@ const _component_rice_cell_group = resolveEasyComponent("rice-cell-group",_easyc
         ])
       ]),
       _: 1 /* STABLE */
-    }), 8 /* PROPS */, ["height"]),
+    })),
     _cE("view", _uM({ class: "header" }), [
-      _cV(_component_rice_avatar, _uM({
-        src: "/static/images/avatar-square.png",
-        size: "large"
-      })),
+      _cE("view", _uM({ class: "header-avatar" }), [
+        _cV(unref(MyAvatar), _uM({
+          src: "/static/image/avatar.jpg",
+          mode: "aspectFit",
+          style: _nS(_uM({"width":"100%","height":"100%"}))
+        }), null, 8 /* PROPS */, ["style"])
+      ]),
       _cE("view", _uM({ class: "h-right" }), [
         _cE("text", _uM({ class: "h-text1" }), "昵称"),
         _cE("text", _uM({ class: "h-text2" }), "等级")
@@ -143,4 +142,4 @@ const _component_rice_cell_group = resolveEasyComponent("rice-cell-group",_easyc
 
 })
 export default __sfc__
-const GenPagesMineIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["nav-right", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["overflow", "visible"], ["marginRight", 15]]))], ["nac-icon", _uM([[".nav-right ", _uM([["marginLeft", 10]])]])], ["header", _pS(_uM([["marginTop", 12], ["marginRight", 16], ["marginBottom", 12], ["marginLeft", 16], ["display", "flex"], ["flexDirection", "row"]]))], ["h-right", _uM([[".header ", _uM([["marginLeft", 10], ["display", "flex"], ["justifyContent", "center"]])]])], ["h-text1", _uM([[".header ", _uM([["color", "var(--rice-text-color)"], ["fontSize", 16]])]])], ["h-text2", _uM([[".header ", _uM([["marginTop", 4], ["fontSize", 14], ["color", "var(--rice-text-color-2)"]])]])], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 16], ["paddingBottom", 12], ["paddingLeft", 16], ["marginTop", 8]]))], ["rice-icon", _uM([[".card ", _uM([["lineHeight", "24px"]])]])]])]
+const GenPagesMineIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["nav-right", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["marginRight", 15]]))], ["nac-icon", _uM([[".nav-right ", _uM([["marginLeft", 10]])]])], ["header", _pS(_uM([["marginTop", 12], ["marginRight", 16], ["marginBottom", 12], ["marginLeft", 16], ["display", "flex"], ["flexDirection", "row"]]))], ["header-avatar", _uM([[".header ", _uM([["width", 80], ["height", 80]])]])], ["h-right", _uM([[".header ", _uM([["marginLeft", 10], ["display", "flex"], ["justifyContent", "center"]])]])], ["h-text1", _uM([[".header ", _uM([["color", "var(--rice-text-color)"], ["fontSize", 16]])]])], ["h-text2", _uM([[".header ", _uM([["marginTop", 4], ["fontSize", 14], ["color", "var(--rice-text-color-2)"]])]])], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 16], ["paddingBottom", 12], ["paddingLeft", 16], ["marginTop", 8]]))], ["rice-icon", _uM([[".card ", _uM([["lineHeight", "24px"]])]])]])]

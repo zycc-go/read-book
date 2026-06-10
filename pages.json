@@ -42,12 +42,6 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
-		},
-		{
-			"path": "uni_modules/rice-ui/pages/action-sheet/action-sheet"
-		},
-		{
-			"path": "uni_modules/rice-ui/pages/dialog/dialog"
 		}
 	],
 	"tabBar": {

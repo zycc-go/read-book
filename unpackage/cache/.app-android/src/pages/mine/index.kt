@@ -31,10 +31,10 @@ open class GenPagesMineIndex : BasePage {
                 setIsFollowSystem(false)
                 if (state.uniPlatform === "app") {
                     uni_setAppTheme(SetAppThemeOptions(theme = kVal as String, success = fun(_) {
-                        console.log("设置appTheme为 " + kVal + " 成功", " at pages/mine/index.uvue:61")
+                        console.log("设置appTheme为 " + kVal + " 成功", " at pages/mine/index.uvue:65")
                     }
                     , fail = fun(e: IAppThemeFail) {
-                        console.log("设置appTheme为 " + kVal + " 失败,原因:", e.errMsg, " at pages/mine/index.uvue:64")
+                        console.log("设置appTheme为 " + kVal + " 失败,原因:", e.errMsg, " at pages/mine/index.uvue:68")
                     }
                     ))
                 }
@@ -48,14 +48,13 @@ open class GenPagesMineIndex : BasePage {
             return fun(): Any? {
                 val _component_rice_icon = resolveEasyComponent("rice-icon", GenUniModulesRiceUiComponentsRiceIconRiceIconClass)
                 val _component_rice_badge = resolveEasyComponent("rice-badge", GenUniModulesRiceUiComponentsRiceBadgeRiceBadgeClass)
-                val _component_rice_avatar = resolveEasyComponent("rice-avatar", GenUniModulesRiceUiComponentsRiceAvatarRiceAvatarClass)
                 val _component_rice_cell = resolveEasyComponent("rice-cell", GenUniModulesRiceUiComponentsRiceCellRiceCellClass)
                 val _component_rice_cell_group = resolveEasyComponent("rice-cell-group", GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroupClass)
                 return _cE("view", _uM("class" to _nC(_uA(
                     "rice-theme-" + unref(state).appTheme,
                     "page"
                 ))), _uA(
-                    _cV(unref(GenComponnetsMyAvatarClass), _uM("left-arrow" to false, "height" to unref(state).navbarHeight), _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cV(unref(GenComponnetsMyNavbarClass), _uM("left-arrow" to false), _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
                             _cE("view", _uM("class" to "nav-right"), _uA(
                                 if (unref(state).appTheme == "dark") {
@@ -82,11 +81,13 @@ open class GenPagesMineIndex : BasePage {
                             ))
                         )
                     }
-                    ), "_" to 1), 8, _uA(
-                        "height"
-                    )),
+                    ), "_" to 1)),
                     _cE("view", _uM("class" to "header"), _uA(
-                        _cV(_component_rice_avatar, _uM("src" to "/static/images/avatar-square.png", "size" to "large")),
+                        _cE("view", _uM("class" to "header-avatar"), _uA(
+                            _cV(unref(GenComponnetsMyAvatarClass), _uM("src" to "/static/image/avatar.jpg", "mode" to "aspectFit", "style" to _nS(_uM("width" to "100%", "height" to "100%"))), null, 8, _uA(
+                                "style"
+                            ))
+                        )),
                         _cE("view", _uM("class" to "h-right"), _uA(
                             _cE("text", _uM("class" to "h-text1"), "昵称"),
                             _cE("text", _uM("class" to "h-text2"), "等级")
@@ -113,7 +114,7 @@ open class GenPagesMineIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "overflow" to "visible", "marginRight" to 15)), "nac-icon" to _uM(".nav-right " to _uM("marginLeft" to 10)), "header" to _pS(_uM("marginTop" to 12, "marginRight" to 16, "marginBottom" to 12, "marginLeft" to 16, "display" to "flex", "flexDirection" to "row")), "h-right" to _uM(".header " to _uM("marginLeft" to 10, "display" to "flex", "justifyContent" to "center")), "h-text1" to _uM(".header " to _uM("color" to "var(--rice-text-color)", "fontSize" to 16)), "h-text2" to _uM(".header " to _uM("marginTop" to 4, "fontSize" to 14, "color" to "var(--rice-text-color-2)")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16, "marginTop" to 8)), "rice-icon" to _uM(".card " to _uM("lineHeight" to "24px")))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "marginRight" to 15)), "nac-icon" to _uM(".nav-right " to _uM("marginLeft" to 10)), "header" to _pS(_uM("marginTop" to 12, "marginRight" to 16, "marginBottom" to 12, "marginLeft" to 16, "display" to "flex", "flexDirection" to "row")), "header-avatar" to _uM(".header " to _uM("width" to 80, "height" to 80)), "h-right" to _uM(".header " to _uM("marginLeft" to 10, "display" to "flex", "justifyContent" to "center")), "h-text1" to _uM(".header " to _uM("color" to "var(--rice-text-color)", "fontSize" to 16)), "h-text2" to _uM(".header " to _uM("marginTop" to 4, "fontSize" to 14, "color" to "var(--rice-text-color-2)")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16, "marginTop" to 8)), "rice-icon" to _uM(".card " to _uM("lineHeight" to "24px")))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

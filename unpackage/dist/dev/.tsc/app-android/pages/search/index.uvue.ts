@@ -89,7 +89,7 @@ const _cache = __ins.renderCache;
 return (): any | null => {
 
   return _cE("view", _uM({
-    class: _nC([`rice-theme-${unref(state).appTheme}`, 'page']),
+    class: _nC([`theme-${unref(state).appTheme}`, 'page']),
     style: _nS(_uM({ paddingTop:`${unref(state).statusBarHeight}px`}))
   }), [
     _cE("view", _uM({

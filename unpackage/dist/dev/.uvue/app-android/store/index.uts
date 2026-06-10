@@ -1,4 +1,3 @@
-import { setTheme } from "@/uni_modules/rice-ui";
 export type UserInfo = {
     nickName: string;
     avatarUrl?: string;
@@ -90,24 +89,23 @@ export const checkSystemInfo = () => {
     if (appBaseInfo.uniPlatform === 'app') {
         try {
             const isFollowSystem = uni.getStorageSync('isFollowSystem') === '' ? false : uni.getStorageSync('isFollowSystem') as boolean;
-            const osTheme = deviceInfo.osTheme ?? 'dark';
-            state.osTheme = osTheme;
             state.isFollowSystem = isFollowSystem;
-            uni.setStorageSync('osTheme', osTheme);
             if (isFollowSystem) {
-                uni.setAppTheme({ theme: osTheme });
-                setTheme(osTheme);
+                const osTheme = deviceInfo.osTheme as "light" | "dark";
+                state.osTheme = osTheme;
                 setAppTheme(osTheme);
+                uni.setAppTheme({ theme: osTheme });
+                uni.setStorageSync('osTheme', osTheme);
             }
             else {
-                const appTheme = uni.getStorageSync('appTheme') as 'dark' | 'light' ?? 'light';
+                let appTheme = uni.getStorageSync('appTheme') as 'dark' | 'light';
+                appTheme = appTheme == 'dark' ? 'dark' : 'light';
+                setAppTheme(appTheme);
                 uni.setAppTheme({ theme: appTheme });
-                setTheme(appTheme);
-                state.appTheme = appTheme;
             }
         }
         catch (e: any) {
-            __f__('log', 'at store/index.uts:120', `${e} 失败`);
+            __f__('log', 'at store/index.uts:117', `${e} 失败`);
         }
     }
 };

@@ -54,4 +54,4 @@ return (): any | null => {
 
 })
 export default __sfc__
-const GenComponnetsMyNavbarStyles = [_uM([["my-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "space-between"], ["position", "relative"]]))], ["my-navbar-title", _uM([[".my-navbar ", _uM([["position", "absolute"], ["top", "50%"], ["left", "50%"], ["transform", "translate(-50%, -50%)"]])]])]])]
+const GenComponnetsMyNavbarStyles = [_uM([["my-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "space-between"], ["position", "relative"]]))], ["my-navbar-title", _uM([[".my-navbar ", _uM([["position", "absolute"], ["top", "50%"], ["left", "50%"], ["transform", "translate(-50%, -50%)"]])]])], ["my-navbar-right", _uM([[".my-navbar ", _uM([["overflow", "visible"]])]])]])]

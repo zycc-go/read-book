@@ -1,5 +1,5 @@
 <template>
-	<view :class="[`rice-theme-${state.appTheme}`, 'page']" :style="{ paddingTop:`${state.statusBarHeight}px`}">
+	<view :class="[`theme-${state.appTheme}`, 'page']" :style="{ paddingTop:`${state.statusBarHeight}px`}">
 		<view class="page-navbar" :style="{ height:`${state.navbarHeight}px`, top:`${state.statusBarHeight}px`}">
 			<view class="page-navbar-left" @tap="onBack">
 				<text class="icon">{{ "\ue668" }}</text>
