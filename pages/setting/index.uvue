@@ -1,55 +1,53 @@
 <template>
-	<view :class="`rice-theme-${state.appTheme}`" class="page">
-		<rice-navbar :height="state.navbarHeight" title="设置" @clickLeft="onClickLeft" />
+	<view :class="`theme-${state.appTheme}`" class="page">
+		<my-navbar leftArrow title="设置" />
 
-		<view class="card">
-			<rice-cell-group radius="8px">
-				<rice-cell title="深色模式">
-					<template #rightIcon>
-						<rice-switch v-model="isDark" @change="onChangeIsDark"></rice-switch>
-					</template>
-				</rice-cell>
-				<rice-cell title="跟随系统设置" label="开启后，自动跟随系统外观模式设置">
-					<template #rightIcon>
-						<rice-switch v-model="isFollowSystem" @change="onChangeIsFollowSystem"
-							:disabled="state.uniPlatform !== 'app'" @click="onClickSwitch"></rice-switch>
-					</template>
-				</rice-cell>
-			</rice-cell-group>
-		</view>
+		<my-cell-group>
+			<my-cell title="深色模式">
+				<template #rightIcon>
+					<switch :checked="isDark" @change="onChangeIsDark"></switch>
+				</template>
+			</my-cell>
+			<my-cell title="跟随系统设置" label="开启后，自动跟随系统外观模式设置">
+				<template #rightIcon>
+					<switch :checked="isFollowSystem" @change="onChangeIsFollowSystem"
+						:disabled="state.uniPlatform !== 'app'" @click="onClickSwitch"></switch>
+				</template>
+			</my-cell>
+		</my-cell-group>
 	</view>
 </template>
 
 <script setup lang="uts">
-	import { setTheme } from "@/uni_modules/rice-ui"
 	import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts'
+	import MyNavbar from '@/componnets/MyNavbar.uvue';
+	import MyCell from '@/componnets/MyCell.uvue';
+	import MyCellGroup from '@/componnets/MyCellGroup.uvue';
 
 	const isDark = ref<boolean>(!state.isFollowSystem && state.appTheme == 'dark')
 	const isFollowSystem = ref<boolean>(state.isFollowSystem)
 
-	const onChangeIsDark = (value : boolean) => {
-		isDark.value = value
+	const onChangeIsDark = (event: UniSwitchChangeEvent) => {
+		isDark.value = event.detail.value
 		let themeReal : "light" | "dark" = 'light'
-		if (value) {
+		if (isDark.value) {
 			isFollowSystem.value = false
 			setIsFollowSystem(false)
 			themeReal = 'dark';
 		}
-		setTheme(themeReal)
 		setAppTheme(themeReal)
 		uni.setAppTheme({ theme: themeReal })
 	}
 
-	const onChangeIsFollowSystem = (value : boolean) => {
-		isFollowSystem.value = value
+	const onChangeIsFollowSystem = (event: UniSwitchChangeEvent) => {
+		isFollowSystem.value = event.detail.value
 		let themeReal : "light" | "dark" = 'light'
-		if (value) {
+		if (isFollowSystem.value) {
 			isDark.value = false
 			themeReal = state.osTheme
 		}
-		setTheme(themeReal)
 		setAppTheme(themeReal)
-		setIsFollowSystem(value)
+		setIsFollowSystem(isFollowSystem.value)
 		uni.setAppTheme({ theme: themeReal })
 	}
 
@@ -70,17 +68,12 @@
 
 <style lang="scss" scoped>
 	.page {
-		background-color: var(--rice-navbar-background);
+		background-color: var(--navbar-background);
 		height: 100%;
 		width: 100%;
 	}
 
 	.card {
 		padding: $uni-spacing-col-12 $uni-spacing-row-16;
-
-		:deep(.rice-icon) {
-			display: flex;
-			align-items: center;
-		}
 	}
 </style>

@@ -1,7 +1,7 @@
-import _easycom_rice_navbar from '@/uni_modules/rice-ui/components/rice-navbar/rice-navbar.uvue'
 import _easycom_rice_textarea from '@/uni_modules/rice-ui/components/rice-textarea/rice-textarea.uvue'
 import _easycom_rice_button from '@/uni_modules/rice-ui/components/rice-button/rice-button.uvue'
 import { state } from '@/store/index.uts'
+	import MyNavbar from '@/componnets/MyNavbar.uvue';
 
 	
 const __sfc__ = defineComponent({
@@ -13,13 +13,6 @@ const _cache = __ins.renderCache;
 
 	const value = ref<string>('')
 
-	const onClickLeft = () => {
-
-
-
-		uni.switchTab({ url: '/pages/mine/index' })
-	}
-
 	const onSubmit = () => {
 		uni.showLoading()
 		setTimeout(() => {
@@ -30,18 +23,16 @@ const _cache = __ins.renderCache;
 
 return (): any | null => {
 
-const _component_rice_navbar = resolveEasyComponent("rice-navbar",_easycom_rice_navbar)
 const _component_rice_textarea = resolveEasyComponent("rice-textarea",_easycom_rice_textarea)
 const _component_rice_button = resolveEasyComponent("rice-button",_easycom_rice_button)
 
   return _cE("view", _uM({
-    class: _nC([`rice-theme-${unref(state).appTheme}`, "page"])
+    class: _nC([`theme-${unref(state).appTheme}`, "page"])
   }), [
-    _cV(_component_rice_navbar, _uM({
-      height: unref(state).navbarHeight,
-      title: "反馈",
-      onClickLeft: onClickLeft
-    }), null, 8 /* PROPS */, ["height"]),
+    _cV(unref(MyNavbar), _uM({
+      leftArrow: "",
+      title: "反馈"
+    })),
     _cE("view", _uM({ class: "card" }), [
       _cV(_component_rice_textarea, _uM({
         modelValue: unref(value),
@@ -64,4 +55,4 @@ const _component_rice_button = resolveEasyComponent("rice-button",_easycom_rice_
 
 })
 export default __sfc__
-const GenPagesFeedbackIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 15], ["paddingBottom", 12], ["paddingLeft", 15]]))], ["btn", _uM([[".card ", _uM([["marginTop", 12]])]])]])]
+const GenPagesFeedbackIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 15], ["paddingBottom", 12], ["paddingLeft", 15]]))], ["btn", _uM([[".card ", _uM([["marginTop", 12]])]])]])]

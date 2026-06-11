@@ -1,3 +1,227 @@
+function __uts_large_lunarYears_fill_fill_1(__arr: number[]): void {
+    __arr.push(0x04bd8);
+    __arr.push(
+    // 1901-2000
+    0x04ae0);
+    __arr.push(0x0a570);
+    __arr.push(0x054d5);
+    __arr.push(0x0d260);
+    __arr.push(0x0d950);
+    __arr.push(0x16554);
+    __arr.push(0x056a0);
+    __arr.push(0x09ad0);
+    __arr.push(0x055d2);
+    __arr.push(0x04ae0);
+    __arr.push(0x0a5b6);
+    __arr.push(0x0a4d0);
+    __arr.push(0x0d250);
+    __arr.push(0x1d255);
+    __arr.push(0x0b540);
+    __arr.push(0x0d6a0);
+    __arr.push(0x0ada2);
+    __arr.push(0x095b0);
+    __arr.push(0x14977);
+    __arr.push(0x04970);
+    __arr.push(0x0a4b0);
+    __arr.push(0x0b4b5);
+    __arr.push(0x06a50);
+    __arr.push(0x06d40);
+    __arr.push(0x1ab54);
+    __arr.push(0x02b60);
+    __arr.push(0x09570);
+    __arr.push(0x052f2);
+    __arr.push(0x04970);
+    __arr.push(0x06566);
+    __arr.push(0x0d4a0);
+    __arr.push(0x0ea50);
+    __arr.push(0x16a95);
+    __arr.push(0x05ad0);
+    __arr.push(0x02b60);
+    __arr.push(0x186e3);
+    __arr.push(0x092e0);
+    __arr.push(0x1c8d7);
+    __arr.push(0x0c950);
+    __arr.push(0x0d4a0);
+    __arr.push(0x1d8a6);
+    __arr.push(0x0b550);
+    __arr.push(0x056a0);
+    __arr.push(0x1a5b4);
+    __arr.push(0x025d0);
+    __arr.push(0x092d0);
+    __arr.push(0x0d2b2);
+}
+function __uts_large_lunarYears_fill_fill_2(__arr: number[]): void {
+    __arr.push(0x0a950);
+    __arr.push(0x0b557);
+    __arr.push(0x06ca0);
+    __arr.push(0x0b550);
+    __arr.push(0x15355);
+    __arr.push(0x04da0);
+    __arr.push(0x0a5b0);
+    __arr.push(0x14573);
+    __arr.push(0x052b0);
+    __arr.push(0x0a9a8);
+    __arr.push(0x0e950);
+    __arr.push(0x06aa0);
+    __arr.push(0x0aea6);
+    __arr.push(0x0ab50);
+    __arr.push(0x04b60);
+    __arr.push(0x0aae4);
+    __arr.push(0x0a570);
+    __arr.push(0x05260);
+    __arr.push(0x0f263);
+    __arr.push(0x0d950);
+    __arr.push(0x05b57);
+    __arr.push(0x056a0);
+    __arr.push(0x096d0);
+    __arr.push(0x04dd5);
+    __arr.push(0x04ad0);
+    __arr.push(0x0a4d0);
+    __arr.push(0x0d4d4);
+    __arr.push(0x0d250);
+    __arr.push(0x0d558);
+    __arr.push(0x0b540);
+    __arr.push(0x0b6a0);
+    __arr.push(0x195a6);
+    __arr.push(0x095b0);
+    __arr.push(0x049b0);
+    __arr.push(0x0a974);
+    __arr.push(0x0a4b0);
+    __arr.push(0x0b27a);
+    __arr.push(0x06a50);
+    __arr.push(0x06d40);
+    __arr.push(0x0af46);
+    __arr.push(0x0ab60);
+    __arr.push(0x09570);
+    __arr.push(0x04af5);
+    __arr.push(0x04970);
+    __arr.push(0x064b0);
+    __arr.push(0x074a3);
+    __arr.push(0x0ea50);
+    __arr.push(0x06b58);
+}
+function __uts_large_lunarYears_fill_fill_3(__arr: number[]): void {
+    __arr.push(0x05ac0);
+    __arr.push(0x0ab60);
+    __arr.push(0x096d5);
+    __arr.push(0x092e0);
+    __arr.push(0x0c960);
+    __arr.push(
+    // 2001-2100
+    0x0d954);
+    __arr.push(0x0d4a0);
+    __arr.push(0x0da50);
+    __arr.push(0x07552);
+    __arr.push(0x056a0);
+    __arr.push(0x0abb7);
+    __arr.push(0x025d0);
+    __arr.push(0x092d0);
+    __arr.push(0x0cab5);
+    __arr.push(0x0a950);
+    __arr.push(0x0b4a0);
+    __arr.push(0x0baa4);
+    __arr.push(0x0ad50);
+    __arr.push(0x055d9);
+    __arr.push(0x04ba0);
+    __arr.push(0x0a5b0);
+    __arr.push(0x15176);
+    __arr.push(0x052b0);
+    __arr.push(0x0a930);
+    __arr.push(0x07954);
+    __arr.push(0x06aa0);
+    __arr.push(0x0ad50);
+    __arr.push(0x05b52);
+    __arr.push(0x04b60);
+    __arr.push(0x0a6e6);
+    __arr.push(0x0a4e0);
+    __arr.push(0x0d260);
+    __arr.push(0x0ea65);
+    __arr.push(0x0d530);
+    __arr.push(0x05aa0);
+    __arr.push(0x076a3);
+    __arr.push(0x096d0);
+    __arr.push(0x04afb);
+    __arr.push(0x04ad0);
+    __arr.push(0x0a4d0);
+    __arr.push(0x1d0b6);
+    __arr.push(0x0d250);
+    __arr.push(0x0d520);
+    __arr.push(0x0dd45);
+    __arr.push(0x0b5a0);
+    __arr.push(0x056d0);
+    __arr.push(0x055b2);
+    __arr.push(0x049b0);
+}
+function __uts_large_lunarYears_fill_fill_4(__arr: number[]): void {
+    __arr.push(0x0a577);
+    __arr.push(0x0a4b0);
+    __arr.push(0x0aa50);
+    __arr.push(0x1b255);
+    __arr.push(0x06d20);
+    __arr.push(0x0ada0);
+    __arr.push(0x14b63);
+    __arr.push(0x09370);
+    __arr.push(0x049f8);
+    __arr.push(0x04970);
+    __arr.push(0x064b0);
+    __arr.push(0x168a6);
+    __arr.push(0x0ea50);
+    __arr.push(0x06b20);
+    __arr.push(0x1a6c4);
+    __arr.push(0x0aae0);
+    __arr.push(0x092e0);
+    __arr.push(0x0d2e3);
+    __arr.push(0x0c960);
+    __arr.push(0x0d557);
+    __arr.push(0x0d4a0);
+    __arr.push(0x0da50);
+    __arr.push(0x05d55);
+    __arr.push(0x056a0);
+    __arr.push(0x0a6d0);
+    __arr.push(0x055d4);
+    __arr.push(0x052d0);
+    __arr.push(0x0a9b8);
+    __arr.push(0x0a950);
+    __arr.push(0x0b4a0);
+    __arr.push(0x0b6a6);
+    __arr.push(0x0ad50);
+    __arr.push(0x055a0);
+    __arr.push(0x0aba4);
+    __arr.push(0x0a5b0);
+    __arr.push(0x052b0);
+    __arr.push(0x0b273);
+    __arr.push(0x06930);
+    __arr.push(0x07337);
+    __arr.push(0x06aa0);
+    __arr.push(0x0ad50);
+    __arr.push(0x14b55);
+    __arr.push(0x04b60);
+    __arr.push(0x0a570);
+    __arr.push(0x054e4);
+    __arr.push(0x0d160);
+    __arr.push(0x0e968);
+    __arr.push(0x0d520);
+}
+function __uts_large_lunarYears_fill_fill_5(__arr: number[]): void {
+    __arr.push(0x0daa0);
+    __arr.push(0x16aa6);
+    __arr.push(0x056d0);
+    __arr.push(0x04ae0);
+    __arr.push(0x0a9d4);
+    __arr.push(0x0a2d0);
+    __arr.push(0x0d150);
+    __arr.push(0x0f252);
+    __arr.push(0x0d520);
+}
+function __uts_large_lunarYears_build_0(): number[] {
+    const __arr = [] as number[];
+    __uts_large_lunarYears_fill_fill_1(__arr);
+    __uts_large_lunarYears_fill_fill_2(__arr);
+    __uts_large_lunarYears_fill_fill_3(__arr);
+    __uts_large_lunarYears_fill_fill_4(__arr);
+    __uts_large_lunarYears_fill_fill_5(__arr);
+    return __arr;
+}
 /**
     * 农历1900-2100的润大小信息表
     * @Array Of Property
@@ -15,31 +239,7 @@
  *   5-16：为除了闰月外的正常月份是大月还是小月，1为30天，0为29天。从1月到12月对应的是第16位到第5位，2021年各月天数[29,30,30,29,30,29,30,29,30,29,30,29]
  *   17-20： 表示闰月是大月还是小月，仅当存在闰月的情况下有意义。(0/1,即闰大/小月)
  */
-const lunarYears = [
-    0x04bd8,
-    // 1901-2000
-    0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0, 0x09ad0, 0x055d2, 0x04ae0,
-    0x0a5b6, 0x0a4d0, 0x0d250, 0x1d255, 0x0b540, 0x0d6a0, 0x0ada2, 0x095b0, 0x14977, 0x04970,
-    0x0a4b0, 0x0b4b5, 0x06a50, 0x06d40, 0x1ab54, 0x02b60, 0x09570, 0x052f2, 0x04970, 0x06566,
-    0x0d4a0, 0x0ea50, 0x16a95, 0x05ad0, 0x02b60, 0x186e3, 0x092e0, 0x1c8d7, 0x0c950, 0x0d4a0,
-    0x1d8a6, 0x0b550, 0x056a0, 0x1a5b4, 0x025d0, 0x092d0, 0x0d2b2, 0x0a950, 0x0b557, 0x06ca0,
-    0x0b550, 0x15355, 0x04da0, 0x0a5b0, 0x14573, 0x052b0, 0x0a9a8, 0x0e950, 0x06aa0, 0x0aea6,
-    0x0ab50, 0x04b60, 0x0aae4, 0x0a570, 0x05260, 0x0f263, 0x0d950, 0x05b57, 0x056a0, 0x096d0,
-    0x04dd5, 0x04ad0, 0x0a4d0, 0x0d4d4, 0x0d250, 0x0d558, 0x0b540, 0x0b6a0, 0x195a6, 0x095b0,
-    0x049b0, 0x0a974, 0x0a4b0, 0x0b27a, 0x06a50, 0x06d40, 0x0af46, 0x0ab60, 0x09570, 0x04af5,
-    0x04970, 0x064b0, 0x074a3, 0x0ea50, 0x06b58, 0x05ac0, 0x0ab60, 0x096d5, 0x092e0, 0x0c960,
-    // 2001-2100
-    0x0d954, 0x0d4a0, 0x0da50, 0x07552, 0x056a0, 0x0abb7, 0x025d0, 0x092d0, 0x0cab5, 0x0a950,
-    0x0b4a0, 0x0baa4, 0x0ad50, 0x055d9, 0x04ba0, 0x0a5b0, 0x15176, 0x052b0, 0x0a930, 0x07954,
-    0x06aa0, 0x0ad50, 0x05b52, 0x04b60, 0x0a6e6, 0x0a4e0, 0x0d260, 0x0ea65, 0x0d530, 0x05aa0,
-    0x076a3, 0x096d0, 0x04afb, 0x04ad0, 0x0a4d0, 0x1d0b6, 0x0d250, 0x0d520, 0x0dd45, 0x0b5a0,
-    0x056d0, 0x055b2, 0x049b0, 0x0a577, 0x0a4b0, 0x0aa50, 0x1b255, 0x06d20, 0x0ada0, 0x14b63,
-    0x09370, 0x049f8, 0x04970, 0x064b0, 0x168a6, 0x0ea50, 0x06b20, 0x1a6c4, 0x0aae0, 0x092e0,
-    0x0d2e3, 0x0c960, 0x0d557, 0x0d4a0, 0x0da50, 0x05d55, 0x056a0, 0x0a6d0, 0x055d4, 0x052d0,
-    0x0a9b8, 0x0a950, 0x0b4a0, 0x0b6a6, 0x0ad50, 0x055a0, 0x0aba4, 0x0a5b0, 0x052b0, 0x0b273,
-    0x06930, 0x07337, 0x06aa0, 0x0ad50, 0x14b55, 0x04b60, 0x0a570, 0x054e4, 0x0d160, 0x0e968,
-    0x0d520, 0x0daa0, 0x16aa6, 0x056d0, 0x04ae0, 0x0a9d4, 0x0a2d0, 0x0d150, 0x0f252, 0x0d520
-];
+const lunarYears = __uts_large_lunarYears_build_0();
 // ['月','正','一','二','三','四','五','六','七','八','九','十','冬','腊'];
 const N_STR_3 = ["\u6708", "\u6b63", "\u4e8c", "\u4e09", "\u56db", "\u4e94", "\u516d", "\u4e03", "\u516b", "\u4e5d", "\u5341", "\u51ac", "\u814a"];
 // ['日','一','二','三','四','五','六','七','八','九','十']

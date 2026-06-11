@@ -1,0 +1,33 @@
+<template>
+	<view :class="{'my-cell-group': true, 'my-cell-group-inset':inset}">
+		<view class="my-cell-group-title" v-if="props.title?.length">
+			<text>{{ props.title }}</text>
+		</view>
+		<slot />
+	</view>
+</template>
+
+<script setup lang="uts">
+	type NavbarPropsType = {
+		title ?: string
+		inset ?: Boolean
+	}
+
+	const props = defineProps<NavbarPropsType>()
+
+	const inset = computed(() => [null, true].includes(props.inset) ? true : false)
+</script>
+
+<style lang="scss" scoped>
+	.my-cell-group {
+		background-color: var(--background-color3);
+
+		.text {
+			color: var(--text-color1);
+		}
+	}
+
+	.my-cell-group {
+		margin: $uni-spacing-col-12 $uni-spacing-row-16;
+	}
+</style>

@@ -32,7 +32,7 @@ return (): any | null => {
   return _cE("view", _uM({
     class: _nC([`theme-${unref(state).appTheme}`, "page"])
   }), [
-    _cV(unref(MyNavbar), _uM({ "left-arrow": false }), _uM({
+    _cV(unref(MyNavbar), null, _uM({
       left: withSlotCtx((): any[] => [
         _cE("text", _uM({ class: "read-time" }), "今天阅读了30分钟")
       ]),

@@ -14,7 +14,6 @@ import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
 import io.dcloud.uniapp.extapi.navigateTo as uni_navigateTo
 import io.dcloud.uniapp.extapi.setAppTheme as uni_setAppTheme
-import io.dcloud.uniapp.extapi.showModal as uni_showModal
 open class GenPagesMineIndex : BasePage {
     constructor(__ins: ComponentInternalInstance, __renderer: String?) : super(__ins, __renderer) {}
     companion object {
@@ -23,58 +22,60 @@ open class GenPagesMineIndex : BasePage {
             val __ins = getCurrentInstance()!!
             val _ctx = __ins.proxy as GenPagesMineIndex
             val _cache = __ins.renderCache
-            val onAbout = fun(){
-                uni_showModal(ShowModalOptions(title = "声明哦", content = "本应用 / 网站 / 内容仅供学习、交流及个人参考使用，不构成任何形式的投资建议、法律意见、专业指导或商业承诺。\n\t内容准确性：我们力求内容准确、完整、及时，但不保证所有信息绝对无误，不对因内容疏漏、错误或过时导致的任何损失承担责任。\n\t使用风险：用户基于本应用 / 内容进行的任何操作、决策或行为，均由用户自行承担风险，我们不承担任何直接、间接、附带或衍生的损失赔偿责任。\n\t第三方链接：本应用 / 内容可能包含第三方链接，第三方网站的内容、隐私政策及服务由其自行负责，我们不对其合法性、安全性及准确性负责。\n\t版权与合规：本应用 / 内容所使用的素材、代码、数据等，均尽可能遵循版权规范；若涉及侵权，请联系我们及时处理，我们不承担因用户违规使用素材导致的法律责任。\n\t变更与终止：我们有权随时更新、修改或终止本应用 / 内容，无需提前通知，且不承担因此产生的任何责任。\n\t适用范围：本声明适用于所有使用本应用 / 内容的用户，使用即视为已阅读、理解并同意本声明全部条款。\n\t如需适配特定场景（如小说阅读类、工具类、社区类、付费服务类），告诉我用途，我可以帮你定制更精准的版本。", showCancel = false, confirmText = "知道了"))
-            }
             val onSetTheme = fun(kVal: String){
                 setAppTheme(kVal)
                 setIsFollowSystem(false)
                 if (state.uniPlatform === "app") {
                     uni_setAppTheme(SetAppThemeOptions(theme = kVal as String, success = fun(_) {
-                        console.log("设置appTheme为 " + kVal + " 成功", " at pages/mine/index.uvue:65")
+                        console.log("设置appTheme为 " + kVal + " 成功", " at pages/mine/index.uvue:49")
                     }
                     , fail = fun(e: IAppThemeFail) {
-                        console.log("设置appTheme为 " + kVal + " 失败,原因:", e.errMsg, " at pages/mine/index.uvue:68")
+                        console.log("设置appTheme为 " + kVal + " 失败,原因:", e.errMsg, " at pages/mine/index.uvue:52")
                     }
                     ))
                 }
             }
-            val onToSetting = fun(): UTSPromise<AsyncApiSuccessResult>? {
-                return uni_navigateTo(NavigateToOptions(url = "/pages/setting/index"))
+            val onToAbout = fun(){
+                uni_navigateTo(NavigateToOptions(url = "/pages/explanation/index"))
             }
-            val onToFeedback = fun(): UTSPromise<AsyncApiSuccessResult>? {
-                return uni_navigateTo(NavigateToOptions(url = "/pages/feedback/index"))
+            val onToSetting = fun(){
+                uni_navigateTo(NavigateToOptions(url = "/pages/setting/index"))
+            }
+            val onToFeedback = fun(){
+                uni_navigateTo(NavigateToOptions(url = "/pages/feedback/index"))
             }
             return fun(): Any? {
-                val _component_rice_icon = resolveEasyComponent("rice-icon", GenUniModulesRiceUiComponentsRiceIconRiceIconClass)
-                val _component_rice_badge = resolveEasyComponent("rice-badge", GenUniModulesRiceUiComponentsRiceBadgeRiceBadgeClass)
-                val _component_rice_cell = resolveEasyComponent("rice-cell", GenUniModulesRiceUiComponentsRiceCellRiceCellClass)
-                val _component_rice_cell_group = resolveEasyComponent("rice-cell-group", GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroupClass)
+                val _component_uni_badge_view = resolveEasyComponent("uni-badge-view", GenUniModulesUniBadgeViewComponentsUniBadgeViewUniBadgeViewClass)
                 return _cE("view", _uM("class" to _nC(_uA(
-                    "rice-theme-" + unref(state).appTheme,
+                    "theme-" + unref(state).appTheme,
                     "page"
                 ))), _uA(
-                    _cV(unref(GenComponnetsMyNavbarClass), _uM("left-arrow" to false), _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cV(unref(GenComponnetsMyNavbarClass), null, _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
                             _cE("view", _uM("class" to "nav-right"), _uA(
                                 if (unref(state).appTheme == "dark") {
-                                    _cV(_component_rice_icon, _uM("key" to 0, "name" to "sun", "size" to "24", "class" to "nac-icon", "onClick" to fun(){
+                                    _cE("text", _uM("key" to 0, "class" to "icon nav-icon", "onClick" to fun(){
                                         onSetTheme("light")
-                                    }), null, 8, _uA(
+                                    }), _tD("\ue8C4"), 8, _uA(
                                         "onClick"
                                     ))
                                 } else {
-                                    _cV(_component_rice_icon, _uM("key" to 1, "name" to "sleep", "size" to "24", "class" to "nac-icon", "onClick" to fun(){
+                                    _cE("text", _uM("key" to 1, "class" to "icon nav-icon", "onClick" to fun(){
                                         onSetTheme("dark")
                                     }
-                                    ), null, 8, _uA(
+                                    ), _tD("\ue8C5"), 8, _uA(
                                         "onClick"
                                     ))
                                 }
                                 ,
-                                _cV(_component_rice_badge, _uM("value" to 5), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
+                                _cV(_component_uni_badge_view, _uM("text" to "5"), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
                                     return _uA(
-                                        _cV(_component_rice_icon, _uM("name" to "remind", "size" to "24", "class" to "nac-icon"))
+                                        _cE("text", _uM("class" to "icon nav-icon", "onClick" to fun(){
+                                            onSetTheme("dark")
+                                        }
+                                        ), _tD("\ue8C7"), 8, _uA(
+                                            "onClick"
+                                        ))
                                     )
                                 }
                                 ), "_" to 1))
@@ -93,17 +94,15 @@ open class GenPagesMineIndex : BasePage {
                             _cE("text", _uM("class" to "h-text2"), "等级")
                         ))
                     )),
-                    _cE("view", _uM("class" to "card"), _uA(
-                        _cV(_component_rice_cell_group, _uM("border" to ""), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
-                            return _uA(
-                                _cV(_component_rice_cell, _uM("title" to "活动", "arrow" to "")),
-                                _cV(_component_rice_cell, _uM("title" to "设置", "arrow" to "", "onClick" to onToSetting)),
-                                _cV(_component_rice_cell, _uM("title" to "反馈", "arrow" to "", "onClick" to onToFeedback)),
-                                _cV(_component_rice_cell, _uM("title" to "关于", "value" to "0.0.1", "arrow" to "", "onClick" to onAbout))
-                            )
-                        }
-                        ), "_" to 1))
-                    ))
+                    _cV(unref(GenComponnetsMyCellGroupClass), null, _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
+                        return _uA(
+                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "活动", "arrow" to "")),
+                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "设置", "arrow" to "", "onClick" to onToSetting)),
+                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "反馈", "arrow" to "", "onClick" to onToFeedback)),
+                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "关于", "arrow" to "", "onClick" to onToAbout))
+                        )
+                    }
+                    ), "_" to 1))
                 ), 2)
             }
         }
@@ -114,7 +113,7 @@ open class GenPagesMineIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "marginRight" to 15)), "nac-icon" to _uM(".nav-right " to _uM("marginLeft" to 10)), "header" to _pS(_uM("marginTop" to 12, "marginRight" to 16, "marginBottom" to 12, "marginLeft" to 16, "display" to "flex", "flexDirection" to "row")), "header-avatar" to _uM(".header " to _uM("width" to 80, "height" to 80)), "h-right" to _uM(".header " to _uM("marginLeft" to 10, "display" to "flex", "justifyContent" to "center")), "h-text1" to _uM(".header " to _uM("color" to "var(--rice-text-color)", "fontSize" to 16)), "h-text2" to _uM(".header " to _uM("marginTop" to 4, "fontSize" to 14, "color" to "var(--rice-text-color-2)")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16, "marginTop" to 8)), "rice-icon" to _uM(".card " to _uM("lineHeight" to "24px")))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "height" to "100%", "width" to "100%")), "nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "marginRight" to 16)), "nav-icon" to _uM(".nav-right " to _uM("fontSize" to 24, "marginLeft" to 12), ".card " to _uM("lineHeight" to "24px")), "header" to _pS(_uM("marginTop" to 12, "marginRight" to 16, "marginBottom" to 12, "marginLeft" to 16, "display" to "flex", "flexDirection" to "row")), "header-avatar" to _uM(".header " to _uM("width" to 80, "height" to 80)), "h-right" to _uM(".header " to _uM("marginLeft" to 10, "display" to "flex", "justifyContent" to "center", "overflow" to "visible")), "h-text1" to _uM(".header " to _uM("color" to "var(--text-color1)", "fontSize" to 16)), "h-text2" to _uM(".header " to _uM("marginTop" to 4, "fontSize" to 14, "color" to "var(--text-color2)")), "card" to _pS(_uM("marginTop" to 12, "marginRight" to 16, "marginBottom" to 12, "marginLeft" to 16, "borderTopLeftRadius" to 16, "borderTopRightRadius" to 16, "borderBottomRightRadius" to 16, "borderBottomLeftRadius" to 16, "overflow" to "hidden")))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

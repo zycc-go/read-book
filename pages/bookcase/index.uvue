@@ -1,6 +1,6 @@
 <template>
 	<view :class="`theme-${state.appTheme}`" class="page">
-		<my-navbar :left-arrow="false">
+		<my-navbar>
 			<template #left>
 				<text class="read-time">今天阅读了30分钟</text>
 			</template>

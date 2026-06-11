@@ -1,6 +1,6 @@
 <template>
-	<view :class="`rice-theme-${state.appTheme}`" class="page">
-		<rice-navbar :height="state.navbarHeight" title="反馈" @clickLeft="onClickLeft" />
+	<view :class="`theme-${state.appTheme}`" class="page">
+		<my-navbar leftArrow title="反馈" />
 
 		<view class="card">
 			<rice-textarea v-model="value" placeholder="请输入内容" show-word-limit :maxlength="500" />
@@ -13,15 +13,9 @@
 
 <script setup lang="uts">
 	import { state } from '@/store/index.uts'
+	import MyNavbar from '@/componnets/MyNavbar.uvue';
 
 	const value = ref<string>('')
-
-	const onClickLeft = () => {
-		// #ifdef WEB
-		uni.redirectTo({ url: '/pages/mine/index' })
-		// #endif
-		uni.switchTab({ url: '/pages/mine/index' })
-	}
 
 	const onSubmit = () => {
 		uni.showLoading()
@@ -34,7 +28,7 @@
 
 <style lang="scss" scoped>
 	.page {
-		background-color: var(--rice-navbar-background);
+		background-color: var(--navbar-background);
 		height: 100%;
 		width: 100%;
 	}

@@ -1,21 +1,21 @@
 <template>
-	<view :class="`rice-theme-${state.appTheme}`" class="page">
-		<my-navbar :left-arrow="false">
+	<view :class="`theme-${state.appTheme}`" class="page">
+		<my-navbar>
 			<template #right>
 				<view class="nav-right">
-					<rice-icon name="sun" size='24' class="nac-icon" v-if="state.appTheme=='dark'"
-						@click="onSetTheme('light')" />
-					<rice-icon name="sleep" size='24' class="nac-icon" v-else @click="onSetTheme('dark')" />
-					<rice-badge :value="5">
-						<rice-icon name="remind" size='24' class="nac-icon" />
-					</rice-badge>
+					<text class="icon nav-icon" v-if="state.appTheme == 'dark'"
+						@click="onSetTheme('light')">{{ '\ue8C4' }}</text>
+					<text class="icon nav-icon" v-else @click="onSetTheme('dark')">{{ '\ue8C5' }}</text>
+					<uni-badge-view text="5">
+						<text class="icon nav-icon" @click="onSetTheme('dark')">{{ '\ue8C7' }}</text>
+					</uni-badge-view>
 				</view>
 			</template>
 		</my-navbar>
 
 		<view class="header">
 			<view class="header-avatar">
-				<MyAvatar src="/static/image/avatar.jpg" mode="aspectFit" style="width: 100%;height: 100%;" />
+				<MyAvatar src="/static/image/avatar.jpg" mode="aspectFit" style="width: 100%; height: 100%" />
 			</view>
 			<view class="h-right">
 				<text class="h-text1">昵称</text>
@@ -23,66 +23,58 @@
 			</view>
 		</view>
 
-		<view class="card">
-			<rice-cell-group border>
-				<rice-cell title="活动" arrow />
-				<rice-cell title="设置" arrow @click="onToSetting" />
-				<rice-cell title="反馈" arrow @click="onToFeedback" />
-				<rice-cell title="关于" value="0.0.1" arrow @click="onAbout" />
-			</rice-cell-group>
-		</view>
+		<my-cell-group>
+			<my-cell title="活动" arrow />
+			<my-cell title="设置" arrow @click="onToSetting" />
+			<my-cell title="反馈" arrow @click="onToFeedback" />
+			<my-cell title="关于" arrow @click="onToAbout" />
+		</my-cell-group>
 	</view>
 </template>
 
 <script setup lang="uts">
-	import MyNavbar from '@/componnets/MyNavbar.uvue'
-	import MyAvatar from '@/componnets/MyAvatar.uvue'
-	import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts'
+	import MyNavbar from '@/componnets/MyNavbar.uvue';
+	import MyAvatar from '@/componnets/MyAvatar.uvue';
+	import MyCell from '@/componnets/MyCell.uvue';
+	import MyCellGroup from '@/componnets/MyCellGroup.uvue';
+	import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts';
 
-	const onAbout = () => {
-		uni.showModal({
-			title: '声明哦',
-			content: `本应用 / 网站 / 内容仅供学习、交流及个人参考使用，不构成任何形式的投资建议、法律意见、专业指导或商业承诺。
-	内容准确性：我们力求内容准确、完整、及时，但不保证所有信息绝对无误，不对因内容疏漏、错误或过时导致的任何损失承担责任。
-	使用风险：用户基于本应用 / 内容进行的任何操作、决策或行为，均由用户自行承担风险，我们不承担任何直接、间接、附带或衍生的损失赔偿责任。
-	第三方链接：本应用 / 内容可能包含第三方链接，第三方网站的内容、隐私政策及服务由其自行负责，我们不对其合法性、安全性及准确性负责。
-	版权与合规：本应用 / 内容所使用的素材、代码、数据等，均尽可能遵循版权规范；若涉及侵权，请联系我们及时处理，我们不承担因用户违规使用素材导致的法律责任。
-	变更与终止：我们有权随时更新、修改或终止本应用 / 内容，无需提前通知，且不承担因此产生的任何责任。
-	适用范围：本声明适用于所有使用本应用 / 内容的用户，使用即视为已阅读、理解并同意本声明全部条款。
-	如需适配特定场景（如小说阅读类、工具类、社区类、付费服务类），告诉我用途，我可以帮你定制更精准的版本。`,
-			showCancel: false,
-			confirmText: '知道了'
-		})
-	}
-
-	const onSetTheme = (val : "light" | "dark") => {
-		setAppTheme(val)
-		setIsFollowSystem(false)
+	const onSetTheme = (val : 'light' | 'dark') => {
+		setAppTheme(val);
+		setIsFollowSystem(false);
 		if (state.uniPlatform === 'app') {
 			uni.setAppTheme({
-				theme: val as "light" | "dark" | "auto",
+				theme: val as 'light' | 'dark' | 'auto',
 				success: function () {
-					console.log(`设置appTheme为 ${val} 成功`)
+					console.log(`设置appTheme为 ${val} 成功`);
 				},
 				fail: function (e : IAppThemeFail) {
-					console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg)
+					console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg);
 				}
-			})
+			});
 		}
-	}
+	};
 
 	const onShow = () => {
-		console.log(688767868)
+		console.log(688767868);
+	};
+
+	const onToAbout = () => {
+		uni.navigateTo({ url: '/pages/explanation/index' });
+	};
+
+	const onToSetting = () => {
+		uni.navigateTo({ url: '/pages/setting/index' });
 	}
 
-	const onToSetting = () => uni.navigateTo({ url: '/pages/setting/index' })
-
-	const onToFeedback = () => uni.navigateTo({ url: '/pages/feedback/index' })
+	const onToFeedback = () => {
+		uni.navigateTo({ url: '/pages/feedback/index' });
+	}
 </script>
 
 <style lang="scss" scoped>
 	.page {
-		background-color: var(--rice-navbar-background);
+		background-color: var(--navbar-background);
 		height: 100%;
 		width: 100%;
 	}
@@ -90,10 +82,11 @@
 	.nav-right {
 		display: flex;
 		flex-direction: row;
-		margin-right: $uni-spacing-row-lg;
+		margin-right: $uni-spacing-row-16;
 
-		.nac-icon {
-			margin-left: $uni-spacing-row-base;
+		.nav-icon {
+			font-size: $uni-font-size-24;
+			margin-left: $uni-spacing-row-12;
 		}
 	}
 
@@ -111,25 +104,27 @@
 			margin-left: $uni-spacing-row-base;
 			display: flex;
 			justify-content: center;
+			overflow: visible;
 		}
 
 		.h-text1 {
-			color: var(--rice-text-color);
+			color: var(--text-color1);
 			font-size: $uni-font-size-16;
 		}
 
 		.h-text2 {
 			margin-top: $uni-spacing-col-sm;
 			font-size: $uni-font-size-base;
-			color: var(--rice-text-color-2);
+			color: var(--text-color2);
 		}
 	}
 
 	.card {
-		padding: $uni-spacing-col-12 $uni-spacing-row-16;
-		margin-top: $uni-spacing-col-base;
+		margin: $uni-spacing-col-12 $uni-spacing-row-16;
+		border-radius: $uni-border-radius-16;
+		overflow: hidden;
 
-		:deep(.rice-icon) {
+		.nav-icon {
 			line-height: 24px;
 		}
 	}

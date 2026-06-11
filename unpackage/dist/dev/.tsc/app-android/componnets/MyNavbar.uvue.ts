@@ -21,11 +21,17 @@ const _cache = __ins.renderCache;
 
 	const props = __props
 
-	const leftArrow = computed(() => props.leftArrow === true ? true : false)
+	const leftArrow = computed(() => {
+		return [null, true, ''].includes(props.leftArrow) ? true : false
+	})
 
-	const navbarHeight = computed(() => (typeof (props.height) === 'number' ? props.height : state.navbarHeight) + 'px')
+	const navbarHeight = computed(() => (typeof (props.height) == 'number' ? props.height : state.navbarHeight) + 'px')
 
 	const statusBarHeight = computed(() => state.statusBarHeight + 'px')
+
+	const onToBack = () => {
+		uni.navigateBack()
+	}
 
 return (): any | null => {
 
@@ -37,13 +43,19 @@ return (): any | null => {
       class: "my-navbar",
       style: _nS(_uM({ height: unref(navbarHeight)}))
     }), [
-      _cE("view", _uM({ class: "my-navbar-left" }), [
+      _cE("view", _uM({
+        class: "my-navbar-left",
+        onClick: onToBack
+      }), [
         renderSlot(_ctx.$slots, "left"),
         isTrue(unref(leftArrow))
-          ? _cE("text", _uM({ key: 0 }))
+          ? _cE("text", _uM({
+              key: 0,
+              class: "icon nav-icon"
+            }), _tD('\ue668'))
           : _cC("v-if", true)
       ]),
-      _cE("view", _uM({ class: "my-navbar-title" }), _tD(props.title), 1 /* TEXT */),
+      _cE("text", _uM({ class: "my-navbar-title" }), _tD(props.title), 1 /* TEXT */),
       _cE("view", _uM({ class: "my-navbar-right" }), [
         renderSlot(_ctx.$slots, "right")
       ])
@@ -54,4 +66,4 @@ return (): any | null => {
 
 })
 export default __sfc__
-const GenComponnetsMyNavbarStyles = [_uM([["my-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "space-between"], ["position", "relative"]]))], ["my-navbar-title", _uM([[".my-navbar ", _uM([["position", "absolute"], ["top", "50%"], ["left", "50%"], ["transform", "translate(-50%, -50%)"]])]])], ["my-navbar-right", _uM([[".my-navbar ", _uM([["overflow", "visible"]])]])]])]
+const GenComponnetsMyNavbarStyles = [_uM([["my-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "space-between"], ["position", "relative"]]))], ["my-navbar-title", _uM([[".my-navbar ", _uM([["position", "absolute"], ["top", "50%"], ["left", "50%"], ["transform", "translate(-50%, -50%)"], ["color", "var(--text-color1)"]])]])], ["my-navbar-right", _uM([[".my-navbar ", _uM([["overflow", "visible"]])]])], ["nav-icon", _uM([[".my-navbar ", _uM([["fontSize", 24], ["marginLeft", 8]])]])]])]

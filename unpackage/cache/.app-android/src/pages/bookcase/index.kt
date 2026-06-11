@@ -36,7 +36,7 @@ open class GenPagesBookcaseIndex : BasePage {
                     "theme-" + unref(state).appTheme,
                     "page"
                 ))), _uA(
-                    _cV(unref(GenComponnetsMyNavbarClass), _uM("left-arrow" to false), _uM("left" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cV(unref(GenComponnetsMyNavbarClass), null, _uM("left" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
                             _cE("text", _uM("class" to "read-time"), "今天阅读了30分钟")
                         )

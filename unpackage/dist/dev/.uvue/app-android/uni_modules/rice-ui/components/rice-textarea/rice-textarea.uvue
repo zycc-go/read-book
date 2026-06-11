@@ -229,7 +229,7 @@ const __sfc__ = defineComponent({
                     onChange: onChange,
                     onLinechange: onLinechange
                 }), null, 46 /* CLASS, STYLE, PROPS, NEED_HYDRATION */, ["modelValue", "onInput", "inputmode", "placeholder", "disabled", "maxlength", "placeholder-style", "cursor-spacing", "cursor-color", "auto-focus", "focus", "confirm-type", "confirm-hold", "cursor", "selection-start", "selection-end", "adjust-position", "hold-keyboard", "fixed", "show-confirm-bar", "disable-default-padding", "auto-height"]),
-                isTrue(_ctx.showWordLimit && _ctx.maxlength >= 0)
+                isTrue(isTruthy(_ctx.showWordLimit) ? _ctx.maxlength >= 0 : _ctx.showWordLimit)
                     ? _cE("text", _uM({
                         key: 0,
                         class: _nC(unref(countClass)),

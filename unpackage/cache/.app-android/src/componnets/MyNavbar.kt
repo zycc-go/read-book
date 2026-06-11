@@ -12,6 +12,7 @@ import io.dcloud.uts.Map
 import io.dcloud.uts.Set
 import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
+import io.dcloud.uniapp.extapi.navigateBack as uni_navigateBack
 open class GenComponnetsMyNavbar : VueComponent {
     constructor(__ins: ComponentInternalInstance) : super(__ins) {}
     open var title: String? by `$props`
@@ -25,7 +26,11 @@ open class GenComponnetsMyNavbar : VueComponent {
             val _cache = __ins.renderCache
             val props = __props
             val leftArrow = computed(fun(): Boolean {
-                return if (props.leftArrow === true) {
+                return if (_uA(
+                    null,
+                    true,
+                    ""
+                ).includes(props.leftArrow)) {
                     true
                 } else {
                     false
@@ -33,7 +38,7 @@ open class GenComponnetsMyNavbar : VueComponent {
             }
             )
             val navbarHeight = computed(fun(): String {
-                return (if (UTSAndroid.`typeof`(props.height) === "number") {
+                return (if (UTSAndroid.`typeof`(props.height) == "number") {
                     props.height!!
                 } else {
                     state.navbarHeight
@@ -45,19 +50,22 @@ open class GenComponnetsMyNavbar : VueComponent {
                 return state.statusBarHeight + "px"
             }
             )
+            val onToBack = fun(){
+                uni_navigateBack(null)
+            }
             return fun(): Any? {
                 return _cE("view", _uM("class" to "navbar-status"), _uA(
                     _cE("view", _uM("style" to _nS(_uM("height" to unref(statusBarHeight)))), null, 4),
                     _cE("view", _uM("class" to "my-navbar", "style" to _nS(_uM("height" to unref(navbarHeight)))), _uA(
-                        _cE("view", _uM("class" to "my-navbar-left"), _uA(
+                        _cE("view", _uM("class" to "my-navbar-left", "onClick" to onToBack), _uA(
                             renderSlot(_ctx.`$slots`, "left"),
                             if (isTrue(unref(leftArrow))) {
-                                _cE("text", _uM("key" to 0))
+                                _cE("text", _uM("key" to 0, "class" to "icon nav-icon"), _tD("\ue668"))
                             } else {
                                 _cC("v-if", true)
                             }
                         )),
-                        _cE("view", _uM("class" to "my-navbar-title"), _tD(props.title), 1),
+                        _cE("text", _uM("class" to "my-navbar-title"), _tD(props.title), 1),
                         _cE("view", _uM("class" to "my-navbar-right"), _uA(
                             renderSlot(_ctx.`$slots`, "right")
                         ))
@@ -72,7 +80,7 @@ open class GenComponnetsMyNavbar : VueComponent {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("my-navbar" to _pS(_uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "space-between", "position" to "relative")), "my-navbar-title" to _uM(".my-navbar " to _uM("position" to "absolute", "top" to "50%", "left" to "50%", "transform" to "translate(-50%, -50%)")), "my-navbar-right" to _uM(".my-navbar " to _uM("overflow" to "visible")))
+                return _uM("my-navbar" to _pS(_uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "space-between", "position" to "relative")), "my-navbar-title" to _uM(".my-navbar " to _uM("position" to "absolute", "top" to "50%", "left" to "50%", "transform" to "translate(-50%, -50%)", "color" to "var(--text-color1)")), "my-navbar-right" to _uM(".my-navbar " to _uM("overflow" to "visible")), "nav-icon" to _uM(".my-navbar " to _uM("fontSize" to 24, "marginLeft" to 8)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

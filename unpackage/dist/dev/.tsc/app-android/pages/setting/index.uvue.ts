@@ -1,9 +1,7 @@
-import _easycom_rice_navbar from '@/uni_modules/rice-ui/components/rice-navbar/rice-navbar.uvue'
-import _easycom_rice_switch from '@/uni_modules/rice-ui/components/rice-switch/rice-switch.uvue'
-import _easycom_rice_cell from '@/uni_modules/rice-ui/components/rice-cell/rice-cell.uvue'
-import _easycom_rice_cell_group from '@/uni_modules/rice-ui/components/rice-cell-group/rice-cell-group.uvue'
-import { setTheme } from "@/uni_modules/rice-ui"
-	import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts'
+import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts'
+	import MyNavbar from '@/componnets/MyNavbar.uvue';
+	import MyCell from '@/componnets/MyCell.uvue';
+	import MyCellGroup from '@/componnets/MyCellGroup.uvue';
 
 	
 const __sfc__ = defineComponent({
@@ -16,29 +14,27 @@ const _cache = __ins.renderCache;
 	const isDark = ref<boolean>(!state.isFollowSystem && state.appTheme == 'dark')
 	const isFollowSystem = ref<boolean>(state.isFollowSystem)
 
-	const onChangeIsDark = (value : boolean) => {
-		isDark.value = value
+	const onChangeIsDark = (event: UniSwitchChangeEvent) => {
+		isDark.value = event.detail.value
 		let themeReal : "light" | "dark" = 'light'
-		if (value) {
+		if (isDark.value) {
 			isFollowSystem.value = false
 			setIsFollowSystem(false)
 			themeReal = 'dark';
 		}
-		setTheme(themeReal)
 		setAppTheme(themeReal)
 		uni.setAppTheme({ theme: themeReal })
 	}
 
-	const onChangeIsFollowSystem = (value : boolean) => {
-		isFollowSystem.value = value
+	const onChangeIsFollowSystem = (event: UniSwitchChangeEvent) => {
+		isFollowSystem.value = event.detail.value
 		let themeReal : "light" | "dark" = 'light'
-		if (value) {
+		if (isFollowSystem.value) {
 			isDark.value = false
 			themeReal = state.osTheme
 		}
-		setTheme(themeReal)
 		setAppTheme(themeReal)
-		setIsFollowSystem(value)
+		setIsFollowSystem(isFollowSystem.value)
 		uni.setAppTheme({ theme: themeReal })
 	}
 
@@ -58,55 +54,47 @@ const _cache = __ins.renderCache;
 
 return (): any | null => {
 
-const _component_rice_navbar = resolveEasyComponent("rice-navbar",_easycom_rice_navbar)
-const _component_rice_switch = resolveEasyComponent("rice-switch",_easycom_rice_switch)
-const _component_rice_cell = resolveEasyComponent("rice-cell",_easycom_rice_cell)
-const _component_rice_cell_group = resolveEasyComponent("rice-cell-group",_easycom_rice_cell_group)
+const _component_switch = resolveComponent("switch")
 
   return _cE("view", _uM({
-    class: _nC([`rice-theme-${unref(state).appTheme}`, "page"])
+    class: _nC([`theme-${unref(state).appTheme}`, "page"])
   }), [
-    _cV(_component_rice_navbar, _uM({
-      height: unref(state).navbarHeight,
-      title: "设置",
-      onClickLeft: onClickLeft
-    }), null, 8 /* PROPS */, ["height"]),
-    _cE("view", _uM({ class: "card" }), [
-      _cV(_component_rice_cell_group, _uM({ radius: "8px" }), _uM({
-        default: withSlotCtx((): any[] => [
-          _cV(_component_rice_cell, _uM({ title: "深色模式" }), _uM({
-            rightIcon: withSlotCtx((): any[] => [
-              _cV(_component_rice_switch, _uM({
-                modelValue: unref(isDark),
-                "onUpdate:modelValue": $event => {trySetRefValue(isDark, $event)},
-                onChange: onChangeIsDark
-              }), null, 8 /* PROPS */, ["modelValue"])
-            ]),
-            _: 1 /* STABLE */
-          })),
-          _cV(_component_rice_cell, _uM({
-            title: "跟随系统设置",
-            label: "开启后，自动跟随系统外观模式设置"
-          }), _uM({
-            rightIcon: withSlotCtx((): any[] => [
-              _cV(_component_rice_switch, _uM({
-                modelValue: unref(isFollowSystem),
-                "onUpdate:modelValue": $event => {trySetRefValue(isFollowSystem, $event)},
-                onChange: onChangeIsFollowSystem,
-                disabled: unref(state).uniPlatform !== 'app',
-                onClick: onClickSwitch
-              }), null, 8 /* PROPS */, ["modelValue", "disabled"])
-            ]),
-            _: 1 /* STABLE */
-          }))
-        ]),
-        _: 1 /* STABLE */
-      }))
-    ])
+    _cV(unref(MyNavbar), _uM({
+      leftArrow: "",
+      title: "设置"
+    })),
+    _cV(unref(MyCellGroup), null, _uM({
+      default: withSlotCtx((): any[] => [
+        _cV(unref(MyCell), _uM({ title: "深色模式" }), _uM({
+          rightIcon: withSlotCtx((): any[] => [
+            _cV(_component_switch, _uM({
+              checked: unref(isDark),
+              onChange: onChangeIsDark
+            }), null, 8 /* PROPS */, ["checked"])
+          ]),
+          _: 1 /* STABLE */
+        })),
+        _cV(unref(MyCell), _uM({
+          title: "跟随系统设置",
+          label: "开启后，自动跟随系统外观模式设置"
+        }), _uM({
+          rightIcon: withSlotCtx((): any[] => [
+            _cV(_component_switch, _uM({
+              checked: unref(isFollowSystem),
+              onChange: onChangeIsFollowSystem,
+              disabled: unref(state).uniPlatform !== 'app',
+              onClick: onClickSwitch
+            }), null, 8 /* PROPS */, ["checked", "disabled"])
+          ]),
+          _: 1 /* STABLE */
+        }))
+      ]),
+      _: 1 /* STABLE */
+    }))
   ], 2 /* CLASS */)
 }
 }
 
 })
 export default __sfc__
-const GenPagesSettingIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 16], ["paddingBottom", 12], ["paddingLeft", 16]]))], ["rice-icon", _uM([[".card ", _uM([["display", "flex"], ["alignItems", "center"]])]])]])]
+const GenPagesSettingIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 16], ["paddingBottom", 12], ["paddingLeft", 16]]))]])]

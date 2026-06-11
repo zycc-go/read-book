@@ -14,7 +14,6 @@ import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
 import io.dcloud.uniapp.extapi.hideLoading as uni_hideLoading
 import io.dcloud.uniapp.extapi.showLoading as uni_showLoading
-import io.dcloud.uniapp.extapi.switchTab as uni_switchTab
 open class GenPagesFeedbackIndex : BasePage {
     constructor(__ins: ComponentInternalInstance, __renderer: String?) : super(__ins, __renderer) {}
     companion object {
@@ -24,9 +23,6 @@ open class GenPagesFeedbackIndex : BasePage {
             val _ctx = __ins.proxy as GenPagesFeedbackIndex
             val _cache = __ins.renderCache
             val value = ref<String>("")
-            val onClickLeft = fun(){
-                uni_switchTab(SwitchTabOptions(url = "/pages/mine/index"))
-            }
             val onSubmit = fun(){
                 uni_showLoading(null)
                 setTimeout(fun(){
@@ -35,16 +31,13 @@ open class GenPagesFeedbackIndex : BasePage {
                 , 1000)
             }
             return fun(): Any? {
-                val _component_rice_navbar = resolveEasyComponent("rice-navbar", GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass)
                 val _component_rice_textarea = resolveEasyComponent("rice-textarea", GenUniModulesRiceUiComponentsRiceTextareaRiceTextareaClass)
                 val _component_rice_button = resolveEasyComponent("rice-button", GenUniModulesRiceUiComponentsRiceButtonRiceButtonClass)
                 return _cE("view", _uM("class" to _nC(_uA(
-                    "rice-theme-" + unref(state).appTheme,
+                    "theme-" + unref(state).appTheme,
                     "page"
                 ))), _uA(
-                    _cV(_component_rice_navbar, _uM("height" to unref(state).navbarHeight, "title" to "反馈", "onClickLeft" to onClickLeft), null, 8, _uA(
-                        "height"
-                    )),
+                    _cV(unref(GenComponnetsMyNavbarClass), _uM("leftArrow" to "", "title" to "反馈")),
                     _cE("view", _uM("class" to "card"), _uA(
                         _cV(_component_rice_textarea, _uM("modelValue" to unref(value), "onUpdate:modelValue" to fun(`$event`: String){
                             trySetRefValue(value, `$event`)
@@ -66,7 +59,7 @@ open class GenPagesFeedbackIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 15, "paddingBottom" to 12, "paddingLeft" to 15)), "btn" to _uM(".card " to _uM("marginTop" to 12)))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 15, "paddingBottom" to 12, "paddingLeft" to 15)), "btn" to _uM(".card " to _uM("marginTop" to 12)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

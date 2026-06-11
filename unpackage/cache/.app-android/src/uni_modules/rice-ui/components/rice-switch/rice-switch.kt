@@ -86,7 +86,7 @@ open class GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch : VueComponent {
             }
             val changeValue = fun(e: UniPointerEvent){
                 e.stopPropagation()
-                if (isDisabled.value || isReadonly.value || props.loading) {
+                if (isDisabled.value || isReadonly.value || isTruthy(props.loading)) {
                     return
                 }
                 if (UTSAndroid.`typeof`(props.beforeChange) != "function") {

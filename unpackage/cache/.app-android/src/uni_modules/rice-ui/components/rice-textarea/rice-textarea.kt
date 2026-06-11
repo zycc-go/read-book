@@ -198,7 +198,12 @@ open class GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea : VueComponent 
                         "disable-default-padding",
                         "auto-height"
                     )),
-                    if (isTrue(_ctx.showWordLimit && _ctx.maxlength >= 0)) {
+                    if (isTrue(if (isTruthy(_ctx.showWordLimit)) {
+                        _ctx.maxlength >= 0
+                    } else {
+                        _ctx.showWordLimit
+                    }
+                    )) {
                         _cE("text", _uM("key" to 0, "class" to _nC(unref(countClass)), "style" to _nS(unref(bgcolorStyle))), _tD(modelValue.value!!.length) + "/" + _tD(_ctx.maxlength), 7)
                     } else {
                         _cC("v-if", true)

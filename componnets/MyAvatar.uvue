@@ -23,7 +23,7 @@
 	const avatarStyle = computed(() => {
 		const wdithC = typeof props.width === 'number' ? props.width + 'px' : '24px'
 		const heightC = typeof props.height === 'number' ? props.height + 'px' : '24px'
-		const radiusC = typeof props.radius === 'boolean' ? props.radius : false
+		const radiusC = typeof props.radius  === null ? false : true
 		return { width: wdithC, height: heightC, borderRadius: radiusC ? '50%' : '' }
 	})
 </script>
@@ -34,6 +34,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
+		overflow: hidden;
 
 		.my-avatar-img {
 			width: 100%;

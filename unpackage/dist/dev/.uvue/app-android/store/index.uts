@@ -32,9 +32,9 @@ type State = {
     // 是否跟随系统主题
     isFollowSystem: boolean;
     // app主题
-    appTheme: "light" | "dark";
+    appTheme: 'light' | 'dark';
     // 系统主题
-    osTheme: "light" | "dark";
+    osTheme: 'light' | 'dark';
     // 是否无网环境
     netless: boolean;
     // 登录用户信息
@@ -70,7 +70,7 @@ export const setLeftWinActive = (leftWinActive: string) => {
 export const setNetless = (netless: boolean) => {
     state.netless = netless;
 };
-export const setAppTheme = (value: "light" | "dark") => {
+export const setAppTheme = (value: 'light' | 'dark') => {
     state.appTheme = value;
     uni.setStorageSync('appTheme', value);
 };
@@ -88,10 +88,10 @@ export const checkSystemInfo = () => {
     state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom;
     if (appBaseInfo.uniPlatform === 'app') {
         try {
-            const isFollowSystem = uni.getStorageSync('isFollowSystem') === '' ? false : uni.getStorageSync('isFollowSystem') as boolean;
+            const isFollowSystem = uni.getStorageSync('isFollowSystem') === '' ? false : (uni.getStorageSync('isFollowSystem') as boolean);
             state.isFollowSystem = isFollowSystem;
             if (isFollowSystem) {
-                const osTheme = deviceInfo.osTheme as "light" | "dark";
+                const osTheme = deviceInfo.osTheme as 'light' | 'dark';
                 state.osTheme = osTheme;
                 setAppTheme(osTheme);
                 uni.setAppTheme({ theme: osTheme });

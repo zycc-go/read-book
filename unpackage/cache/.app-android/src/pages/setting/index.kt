@@ -12,10 +12,8 @@ import io.dcloud.uts.Map
 import io.dcloud.uts.Set
 import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
-import io.dcloud.uniapp.extapi.redirectTo as uni_redirectTo
 import io.dcloud.uniapp.extapi.setAppTheme as uni_setAppTheme
 import io.dcloud.uniapp.extapi.showToast as uni_showToast
-import io.dcloud.uniapp.extapi.switchTab as uni_switchTab
 open class GenPagesSettingIndex : BasePage {
     constructor(__ins: ComponentInternalInstance, __renderer: String?) : super(__ins, __renderer) {}
     companion object {
@@ -26,36 +24,27 @@ open class GenPagesSettingIndex : BasePage {
             val _cache = __ins.renderCache
             val isDark = ref<Boolean>(!state.isFollowSystem && state.appTheme == "dark")
             val isFollowSystem = ref<Boolean>(state.isFollowSystem)
-            val onChangeIsDark = fun(value: Boolean){
-                isDark.value = value
+            val onChangeIsDark = fun(event: UniSwitchChangeEvent){
+                isDark.value = event.detail.value
                 var themeReal: String = "light"
-                if (value) {
+                if (isDark.value) {
                     isFollowSystem.value = false
                     setIsFollowSystem(false)
                     themeReal = "dark"
                 }
-                setTheme(themeReal)
                 setAppTheme(themeReal)
                 uni_setAppTheme(SetAppThemeOptions(theme = themeReal))
             }
-            val onChangeIsFollowSystem = fun(value: Boolean){
-                isFollowSystem.value = value
+            val onChangeIsFollowSystem = fun(event: UniSwitchChangeEvent){
+                isFollowSystem.value = event.detail.value
                 var themeReal: String = "light"
-                if (value) {
+                if (isFollowSystem.value) {
                     isDark.value = false
                     themeReal = state.osTheme
                 }
-                setTheme(themeReal)
                 setAppTheme(themeReal)
-                setIsFollowSystem(value)
+                setIsFollowSystem(isFollowSystem.value)
                 uni_setAppTheme(SetAppThemeOptions(theme = themeReal))
-            }
-            val onClickLeft = fun(){
-                if (state.uniPlatform === "app") {
-                    uni_switchTab(SwitchTabOptions(url = "/pages/mine/index"))
-                } else {
-                    uni_redirectTo(RedirectToOptions(url = "/pages/mine/index"))
-                }
             }
             val onClickSwitch = fun(){
                 if (state.uniPlatform !== "app") {
@@ -63,47 +52,34 @@ open class GenPagesSettingIndex : BasePage {
                 }
             }
             return fun(): Any? {
-                val _component_rice_navbar = resolveEasyComponent("rice-navbar", GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass)
-                val _component_rice_switch = resolveEasyComponent("rice-switch", GenUniModulesRiceUiComponentsRiceSwitchRiceSwitchClass)
-                val _component_rice_cell = resolveEasyComponent("rice-cell", GenUniModulesRiceUiComponentsRiceCellRiceCellClass)
-                val _component_rice_cell_group = resolveEasyComponent("rice-cell-group", GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroupClass)
+                val _component_switch = resolveComponent("switch")
                 return _cE("view", _uM("class" to _nC(_uA(
-                    "rice-theme-" + unref(state).appTheme,
+                    "theme-" + unref(state).appTheme,
                     "page"
                 ))), _uA(
-                    _cV(_component_rice_navbar, _uM("height" to unref(state).navbarHeight, "title" to "设置", "onClickLeft" to onClickLeft), null, 8, _uA(
-                        "height"
-                    )),
-                    _cE("view", _uM("class" to "card"), _uA(
-                        _cV(_component_rice_cell_group, _uM("radius" to "8px"), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
-                            return _uA(
-                                _cV(_component_rice_cell, _uM("title" to "深色模式"), _uM("rightIcon" to withSlotCtx(fun(): UTSArray<Any> {
-                                    return _uA(
-                                        _cV(_component_rice_switch, _uM("modelValue" to unref(isDark), "onUpdate:modelValue" to fun(`$event`: Boolean){
-                                            trySetRefValue(isDark, `$event`)
-                                        }
-                                        , "onChange" to onChangeIsDark), null, 8, _uA(
-                                            "modelValue"
-                                        ))
-                                    )
-                                }
-                                ), "_" to 1)),
-                                _cV(_component_rice_cell, _uM("title" to "跟随系统设置", "label" to "开启后，自动跟随系统外观模式设置"), _uM("rightIcon" to withSlotCtx(fun(): UTSArray<Any> {
-                                    return _uA(
-                                        _cV(_component_rice_switch, _uM("modelValue" to unref(isFollowSystem), "onUpdate:modelValue" to fun(`$event`: Boolean){
-                                            trySetRefValue(isFollowSystem, `$event`)
-                                        }
-                                        , "onChange" to onChangeIsFollowSystem, "disabled" to (unref(state).uniPlatform !== "app"), "onClick" to onClickSwitch), null, 8, _uA(
-                                            "modelValue",
-                                            "disabled"
-                                        ))
-                                    )
-                                }
-                                ), "_" to 1))
-                            )
-                        }
-                        ), "_" to 1))
-                    ))
+                    _cV(unref(GenComponnetsMyNavbarClass), _uM("leftArrow" to "", "title" to "设置")),
+                    _cV(unref(GenComponnetsMyCellGroupClass), null, _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
+                        return _uA(
+                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "深色模式"), _uM("rightIcon" to withSlotCtx(fun(): UTSArray<Any> {
+                                return _uA(
+                                    _cV(_component_switch, _uM("checked" to unref(isDark), "onChange" to onChangeIsDark), null, 8, _uA(
+                                        "checked"
+                                    ))
+                                )
+                            }
+                            ), "_" to 1)),
+                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "跟随系统设置", "label" to "开启后，自动跟随系统外观模式设置"), _uM("rightIcon" to withSlotCtx(fun(): UTSArray<Any> {
+                                return _uA(
+                                    _cV(_component_switch, _uM("checked" to unref(isFollowSystem), "onChange" to onChangeIsFollowSystem, "disabled" to (unref(state).uniPlatform !== "app"), "onClick" to onClickSwitch), null, 8, _uA(
+                                        "checked",
+                                        "disabled"
+                                    ))
+                                )
+                            }
+                            ), "_" to 1))
+                        )
+                    }
+                    ), "_" to 1))
                 ), 2)
             }
         }
@@ -114,7 +90,7 @@ open class GenPagesSettingIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16)), "rice-icon" to _uM(".card " to _uM("display" to "flex", "alignItems" to "center")))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()
