@@ -1,0 +1,39 @@
+<template>
+	<switch class="switch-class" :checked="checked" :disabled="disabled" @change="onChange"></switch>
+</template>
+
+<script setup lang="uts">
+	defineOptions({
+		name: "MySwitch"
+	})
+
+	type NavbarPropsType = {
+		checked ?: boolean
+		disabled ?: boolean
+	}
+
+	const props = defineProps<NavbarPropsType>()
+
+	const emit = defineEmits<{
+		(e : 'change', value : boolean) : void
+	}>()
+
+	const disabled = computed(() => props.disabled ?? false)
+
+	const checked = ref<boolean>(false)
+
+	watchEffect(() => {
+		checked.value = props.checked ?? false
+	})
+
+	const onChange = (event : UniSwitchChangeEvent) => {
+		checked.value = event.detail.value
+		emit('change', checked.value)
+	}
+</script>
+
+<style lang="scss" scoped>
+	.switch-class {
+		transform: scale(0.8);
+	}
+</style>

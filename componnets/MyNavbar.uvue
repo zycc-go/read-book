@@ -20,15 +20,13 @@
 
 	type NavbarPropsType = {
 		title ?: string
-		leftArrow ?: Boolean
+		leftArrow ?: boolean
 		height ?: number
 	}
 
 	const props = defineProps<NavbarPropsType>()
 
-	const leftArrow = computed(() => {
-		return [null, true, ''].includes(props.leftArrow) ? true : false
-	})
+	const leftArrow = computed(() => props.leftArrow ?? false)
 
 	const navbarHeight = computed(() => (typeof (props.height) == 'number' ? props.height : state.navbarHeight) + 'px')
 
@@ -40,19 +38,26 @@
 </script>
 
 <style lang="scss" scoped>
+	.navbar-status {
+		position: fixed;
+		width: 100%;
+	}
+
 	.my-navbar {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
 		position: relative;
+		z-index: 99;
+		background-color: var(--navbar-background);
 
 		.my-navbar-title {
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
-			color: var(--text-color1);
+			color: var(--text-color-1);
 		}
 
 		.my-navbar-right {

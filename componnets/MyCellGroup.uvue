@@ -1,5 +1,5 @@
 <template>
-	<view :class="{'my-cell-group': true, 'my-cell-group-inset':inset}">
+	<view :class="{'my-cell-group': true, 'my-cell-group-inset': inset }">
 		<view class="my-cell-group-title" v-if="props.title?.length">
 			<text>{{ props.title }}</text>
 		</view>
@@ -10,24 +10,25 @@
 <script setup lang="uts">
 	type NavbarPropsType = {
 		title ?: string
-		inset ?: Boolean
+		inset ?: boolean
 	}
 
 	const props = defineProps<NavbarPropsType>()
 
-	const inset = computed(() => [null, true].includes(props.inset) ? true : false)
+	const inset = computed(() => props.inset ?? false)
 </script>
 
 <style lang="scss" scoped>
 	.my-cell-group {
-		background-color: var(--background-color3);
+		background-color: var(--background-color-3);
 
 		.text {
-			color: var(--text-color1);
+			color: var(--text-color-1);
 		}
 	}
 
-	.my-cell-group {
+	.my-cell-group-inset {
 		margin: $uni-spacing-col-12 $uni-spacing-row-16;
+		border-radius: $uni-border-radius-8;
 	}
 </style>

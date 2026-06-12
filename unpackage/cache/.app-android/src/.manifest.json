@@ -5,101 +5,105 @@
     "compiler_version": "5.12.2026060409-alpha"
   },
   "files": {
-    "componnets/MyAvatar.kt": {
-      "class": "GenComponnetsMyAvatar",
-      "md5": "02319730830d9ee492292bfb949b26ae72ad6095"
-    },
-    "uni_modules/rice-ui/components/rice-switch/rice-switch.kt": {
-      "md5": "1917b9af41c3175be8230e21846deea939fcfde9",
-      "class": "GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch"
-    },
-    "pages/bookcase/index.kt": {
-      "class": "GenPagesBookcaseIndex",
-      "md5": "68700749ced65dfb871ecc2c0a56e90493c0db3d"
-    },
-    "uni_modules/rice-ui/components/rice-badge/rice-badge.kt": {
-      "md5": "d626563a5aa6dcd13c453ec3e2299d5d46d00df2",
-      "class": "GenUniModulesRiceUiComponentsRiceBadgeRiceBadge"
-    },
-    "componnets/MyCellGroup.kt": {
-      "md5": "353bfc181ef81e9a77bd3b126c58b087055b2cd9",
-      "class": "GenComponnetsMyCellGroup"
-    },
-    "uni_modules/rice-ui/components/rice-icon/rice-icon.kt": {
-      "class": "GenUniModulesRiceUiComponentsRiceIconRiceIcon",
-      "md5": "21ae5575b61c482490d315310622c335ead38d5c"
-    },
-    "uni_modules/rice-ui/components/rice-cell-group/rice-cell-group.kt": {
-      "md5": "e3ff58d2d82071979a45cbb4e92d1153134c6b4d",
-      "class": "GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup"
-    },
-    "uni_modules/rice-ui/components/rice-navbar/rice-navbar.kt": {
-      "md5": "5576b3e2eb7559a99ebc69abf308d85e77940fb6",
-      "class": "GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar"
-    },
-    "uni_modules/uni-fab-button/components/uni-fab-button/uni-fab-button.kt": {
-      "md5": "bd2cf503f7b1d65bd67a725c5e56537dc3b57689",
-      "class": "GenUniModulesUniFabButtonComponentsUniFabButtonUniFabButton"
-    },
-    "pages/discuss/index.kt": {
-      "md5": "feaa4e116e130e939883b16ad761c5cdb26e7b20",
-      "class": "GenPagesDiscussIndex"
-    },
-    "uni_modules/rice-ui/components/rice-loading/rice-loading.kt": {
-      "class": "GenUniModulesRiceUiComponentsRiceLoadingRiceLoading",
-      "md5": "934269783cd83331c03052f9e0781a8b7b33a038"
-    },
-    "componnets/MyNavbar.kt": {
-      "class": "GenComponnetsMyNavbar",
-      "md5": "29cbc95d996d58a05b1fa1ad8acda1ccc29d43b0"
-    },
     "pages/mine/index.kt": {
-      "md5": "11c16f75dd272c6e74eadf504c8dc56442f86059",
-      "class": "GenPagesMineIndex"
+      "class": "GenPagesMineIndex",
+      "md5": "3c990e92ba0017fab78e37da3a904da98b1dfb5a"
     },
-    "pages/feedback/index.kt": {
-      "class": "GenPagesFeedbackIndex",
-      "md5": "011efd69c4bb7d7c1b8a71c6bdef38e0ea136ab9"
+    "componnets/MySwitch.kt": {
+      "class": "GenComponnetsMySwitch",
+      "md5": "d6d0953dfa04f31596d525b105d31123c2941ff5"
     },
-    "uni_modules/uni-badge-view/components/uni-badge-view/uni-badge-view.kt": {
-      "md5": "ef4e63bdc2b75d17618ce8f282883e96a1c6645e",
-      "class": "GenUniModulesUniBadgeViewComponentsUniBadgeViewUniBadgeView"
+    "pages/search/index.kt": {
+      "class": "GenPagesSearchIndex",
+      "md5": "9c5e681d4520850f7b7d3de4aaea278d3b7e8c76"
     },
     "pages/library/index.kt": {
       "class": "GenPagesLibraryIndex",
       "md5": "6ba29ea9b1e53ee628d904a8bebdce92dd456458"
     },
-    "pages/setting/index.kt": {
-      "md5": "358a7bd2aa68e25e07e6ce2333255403d2df33a6",
-      "class": "GenPagesSettingIndex"
-    },
     "uni_modules/rice-ui/components/rice-textarea/rice-textarea.kt": {
-      "class": "GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea",
-      "md5": "9bdcbf02f1d921a2c56d05814d9979a3bcb26059"
+      "md5": "9bdcbf02f1d921a2c56d05814d9979a3bcb26059",
+      "class": "GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea"
     },
-    "pages/explanation/index.kt": {
-      "class": "GenPagesExplanationIndex",
-      "md5": "6f6348c4509d75665b0e8a86e90a1901c0b3bfaa"
+    "uni_modules/rice-ui/components/rice-button/rice-button.kt": {
+      "class": "GenUniModulesRiceUiComponentsRiceButtonRiceButton",
+      "md5": "9951d5d1ef0ed29e20cd0477fe37f0a27a447ce0"
     },
-    "index.kt": {
-      "class": "",
-      "md5": "3e24001111a5eb7378f0bf4e11f8e6d651b291a6"
+    "uni_modules/rice-ui/components/rice-icon/rice-icon.kt": {
+      "class": "GenUniModulesRiceUiComponentsRiceIconRiceIcon",
+      "md5": "21ae5575b61c482490d315310622c335ead38d5c"
     },
     "uni_modules/rice-ui/components/rice-cell/rice-cell.kt": {
       "class": "GenUniModulesRiceUiComponentsRiceCellRiceCell",
       "md5": "646b2ee458c838dc519305b22b25f8eaff9a0b7d"
     },
-    "uni_modules/rice-ui/components/rice-button/rice-button.kt": {
-      "md5": "9951d5d1ef0ed29e20cd0477fe37f0a27a447ce0",
-      "class": "GenUniModulesRiceUiComponentsRiceButtonRiceButton"
+    "pages/explanation/index.kt": {
+      "class": "GenPagesExplanationIndex",
+      "md5": "e163c86e2c2caec8ecfdde1bcff92e17ac282a7f"
     },
-    "pages/search/index.kt": {
-      "md5": "6f101f6922ff74ccc74a7dd6a4b6e70b8b820c4e",
-      "class": "GenPagesSearchIndex"
+    "index.kt": {
+      "class": "",
+      "md5": "6f7d96be8357a70e96962bc560977420f9ef75fa"
+    },
+    "pages/setting/index.kt": {
+      "class": "GenPagesSettingIndex",
+      "md5": "1779114ef66e1f38c6b3f8dcb9fa219719b0cf59"
+    },
+    "uni_modules/uni-badge-view/components/uni-badge-view/uni-badge-view.kt": {
+      "class": "GenUniModulesUniBadgeViewComponentsUniBadgeViewUniBadgeView",
+      "md5": "ef4e63bdc2b75d17618ce8f282883e96a1c6645e"
+    },
+    "componnets/MyCellGroup.kt": {
+      "class": "GenComponnetsMyCellGroup",
+      "md5": "d143022e72e8449b1734599afa4ec2b10a07185d"
+    },
+    "pages/feedback/index.kt": {
+      "md5": "184ad2f387a0956053958685f67e8c917a557549",
+      "class": "GenPagesFeedbackIndex"
+    },
+    "pages/bookcase/index.kt": {
+      "md5": "1c69815ea7b00a70847083dde50eee545d7c04ae",
+      "class": "GenPagesBookcaseIndex"
+    },
+    "uni_modules/uni-fab-button/components/uni-fab-button/uni-fab-button.kt": {
+      "class": "GenUniModulesUniFabButtonComponentsUniFabButtonUniFabButton",
+      "md5": "bd2cf503f7b1d65bd67a725c5e56537dc3b57689"
+    },
+    "uni_modules/rice-ui/components/rice-badge/rice-badge.kt": {
+      "md5": "d626563a5aa6dcd13c453ec3e2299d5d46d00df2",
+      "class": "GenUniModulesRiceUiComponentsRiceBadgeRiceBadge"
+    },
+    "uni_modules/rice-ui/components/rice-navbar/rice-navbar.kt": {
+      "class": "GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar",
+      "md5": "5576b3e2eb7559a99ebc69abf308d85e77940fb6"
+    },
+    "uni_modules/rice-ui/components/rice-cell-group/rice-cell-group.kt": {
+      "md5": "e3ff58d2d82071979a45cbb4e92d1153134c6b4d",
+      "class": "GenUniModulesRiceUiComponentsRiceCellGroupRiceCellGroup"
+    },
+    "componnets/MyAvatar.kt": {
+      "class": "GenComponnetsMyAvatar",
+      "md5": "4468a166cea87ba27ba07ad51c73d79d646faa92"
+    },
+    "uni_modules/rice-ui/components/rice-loading/rice-loading.kt": {
+      "class": "GenUniModulesRiceUiComponentsRiceLoadingRiceLoading",
+      "md5": "934269783cd83331c03052f9e0781a8b7b33a038"
+    },
+    "pages/discuss/index.kt": {
+      "class": "GenPagesDiscussIndex",
+      "md5": "bf2c5e05e7962f0d6204e4694e4c5d2b19fcbd2c"
+    },
+    "uni_modules/rice-ui/components/rice-switch/rice-switch.kt": {
+      "class": "GenUniModulesRiceUiComponentsRiceSwitchRiceSwitch",
+      "md5": "1917b9af41c3175be8230e21846deea939fcfde9"
     },
     "componnets/MyCell.kt": {
-      "md5": "558172c721bb6a4058674996a82500e14dee7715",
+      "md5": "2acb956dbcc01bd84b9a46fe462a3a8db56f5a00",
       "class": "GenComponnetsMyCell"
+    },
+    "componnets/MyNavbar.kt": {
+      "class": "GenComponnetsMyNavbar",
+      "md5": "eb0bb92d106e4d8c134094abafb40f74df99c440"
     }
   }
 }

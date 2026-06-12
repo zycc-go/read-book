@@ -12,6 +12,7 @@
 		height ?: number
 		radius ?: boolean
 	}
+	
 	const props = withDefaults(defineProps<Props>(), {
 		src: '/static/image/logo.png',
 		mode: 'scaleToFill',
@@ -23,7 +24,7 @@
 	const avatarStyle = computed(() => {
 		const wdithC = typeof props.width === 'number' ? props.width + 'px' : '24px'
 		const heightC = typeof props.height === 'number' ? props.height + 'px' : '24px'
-		const radiusC = typeof props.radius  === null ? false : true
+		const radiusC = props.radius ?? false
 		return { width: wdithC, height: heightC, borderRadius: radiusC ? '50%' : '' }
 	})
 </script>

@@ -22,6 +22,10 @@ open class GenPagesBookcaseIndex : BasePage {
             val __ins = getCurrentInstance()!!
             val _ctx = __ins.proxy as GenPagesBookcaseIndex
             val _cache = __ins.renderCache
+            val style = computed(fun(): UTSJSONObject {
+                return _uO("paddingTop" to (state.statusBarHeight + state.navbarHeight + "px"), "paddingBottom" to (state.safeAreaInsetsHeight + "px"))
+            }
+            )
             val onShowMenu = fun(){
                 uni_showToast(ShowToastOptions(title = "还没有哦", icon = "none"))
             }
@@ -35,7 +39,7 @@ open class GenPagesBookcaseIndex : BasePage {
                 return _cE("view", _uM("class" to _nC(_uA(
                     "theme-" + unref(state).appTheme,
                     "page"
-                ))), _uA(
+                )), "style" to _nS(unref(style))), _uA(
                     _cV(unref(GenComponnetsMyNavbarClass), null, _uM("left" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
                             _cE("text", _uM("class" to "read-time"), "今天阅读了30分钟")
@@ -96,7 +100,7 @@ open class GenPagesBookcaseIndex : BasePage {
                             ))
                         }
                     ), 4)
-                ), 2)
+                ), 6)
             }
         }
         val styles: Map<String, Map<String, Map<String, Any>>> by lazy {
@@ -106,7 +110,7 @@ open class GenPagesBookcaseIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--rice-navbar-background)", "height" to "100%", "width" to "100%")), "read-time" to _pS(_uM("fontSize" to 14, "color" to "var(--text-color2)", "paddingLeft" to 16)), "nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "marginRight" to 16)), "nav-icon" to _uM(".nav-right " to _uM("fontSize" to 24, "marginLeft" to 12)), "book-list" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16)), "book-li-top" to _uM(".book-list " to _uM("marginTop" to 16)), "book-li" to _uM(".book-list " to _uM("display" to "flex", "flexDirection" to "row")), "book-li-avatar" to _uM(".book-list .book-li " to _uM("width" to 60, "height" to 80)), "book-li-content" to _uM(".book-list .book-li " to _uM("marginLeft" to 12, "display" to "flex", "flexDirection" to "column", "justifyContent" to "center")), "book-li-row" to _uM(".book-list .book-li .book-li-content " to _uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "height" to 18)), "book-title" to _uM(".book-list .book-li .book-li-content " to _uM("fontSize" to 16, "color" to "var(--text-color1)")), "book-sub" to _uM(".book-list .book-li .book-li-content " to _uM("fontSize" to 12, "color" to "var(--text-color2)")), "book-sub-dot" to _uM(".book-list .book-li .book-li-content " to _uM("paddingTop" to 2, "paddingRight" to 4, "paddingBottom" to 2, "paddingLeft" to 4, "fontSize" to 8, "lineHeight" to "8px", "backgroundColor" to "#9ACD32", "color" to "#ffffff", "borderTopLeftRadius" to 3, "borderTopRightRadius" to 3, "borderBottomRightRadius" to 3, "borderBottomLeftRadius" to 3)), "book-li-more" to _uM(".book-list .book-li " to _uM("position" to "absolute", "right" to 0, "top" to 0)))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "height" to "100%", "width" to "100%")), "read-time" to _pS(_uM("fontSize" to 14, "color" to "var(--text-color-2)", "paddingLeft" to 16)), "nav-right" to _pS(_uM("display" to "flex", "flexDirection" to "row", "marginRight" to 16)), "nav-icon" to _uM(".nav-right " to _uM("fontSize" to 24, "marginLeft" to 12)), "book-list" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16)), "book-li-top" to _uM(".book-list " to _uM("marginTop" to 16)), "book-li" to _uM(".book-list " to _uM("display" to "flex", "flexDirection" to "row")), "book-li-avatar" to _uM(".book-list .book-li " to _uM("width" to 60, "height" to 80)), "book-li-content" to _uM(".book-list .book-li " to _uM("marginLeft" to 12, "display" to "flex", "flexDirection" to "column", "justifyContent" to "center")), "book-li-row" to _uM(".book-list .book-li .book-li-content " to _uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "height" to 18)), "book-title" to _uM(".book-list .book-li .book-li-content " to _uM("fontSize" to 16, "color" to "var(--text-color-1)")), "book-sub" to _uM(".book-list .book-li .book-li-content " to _uM("fontSize" to 12, "color" to "var(--text-color-2)")), "book-sub-dot" to _uM(".book-list .book-li .book-li-content " to _uM("paddingTop" to 2, "paddingRight" to 4, "paddingBottom" to 2, "paddingLeft" to 4, "fontSize" to 8, "lineHeight" to "8px", "backgroundColor" to "#9ACD32", "color" to "#ffffff", "borderTopLeftRadius" to 3, "borderTopRightRadius" to 3, "borderBottomRightRadius" to 3, "borderBottomLeftRadius" to 3)), "book-li-more" to _uM(".book-list .book-li " to _uM("position" to "absolute", "right" to 0, "top" to 0)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

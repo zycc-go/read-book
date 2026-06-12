@@ -2,6 +2,7 @@ import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts'
 	import MyNavbar from '@/componnets/MyNavbar.uvue';
 	import MyCell from '@/componnets/MyCell.uvue';
 	import MyCellGroup from '@/componnets/MyCellGroup.uvue';
+	import MySwitch from '@/componnets/MySwitch.uvue';
 
 	
 const __sfc__ = defineComponent({
@@ -11,11 +12,18 @@ const __ins = getCurrentInstance()!;
 const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
 const _cache = __ins.renderCache;
 
+	const style = computed(() => {
+		return {
+			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+			paddingBottom: state.safeAreaInsetsHeight + 'px',
+		};
+	})
+
 	const isDark = ref<boolean>(!state.isFollowSystem && state.appTheme == 'dark')
 	const isFollowSystem = ref<boolean>(state.isFollowSystem)
 
-	const onChangeIsDark = (event: UniSwitchChangeEvent) => {
-		isDark.value = event.detail.value
+	const onChangeIsDark = (value : boolean) => {
+		isDark.value = value
 		let themeReal : "light" | "dark" = 'light'
 		if (isDark.value) {
 			isFollowSystem.value = false
@@ -26,8 +34,8 @@ const _cache = __ins.renderCache;
 		uni.setAppTheme({ theme: themeReal })
 	}
 
-	const onChangeIsFollowSystem = (event: UniSwitchChangeEvent) => {
-		isFollowSystem.value = event.detail.value
+	const onChangeIsFollowSystem = (value : boolean) => {
+		isFollowSystem.value = value
 		let themeReal : "light" | "dark" = 'light'
 		if (isFollowSystem.value) {
 			isDark.value = false
@@ -46,28 +54,21 @@ const _cache = __ins.renderCache;
 		}
 	}
 
-	const onClickSwitch = () => {
-		if (state.uniPlatform !== 'app') {
-			uni.showToast({ title: '只有app才能用', icon: 'error' })
-		}
-	}
-
 return (): any | null => {
 
-const _component_switch = resolveComponent("switch")
-
   return _cE("view", _uM({
-    class: _nC([`theme-${unref(state).appTheme}`, "page"])
+    class: _nC([`theme-${unref(state).appTheme}`, 'page']),
+    style: _nS(unref(style))
   }), [
     _cV(unref(MyNavbar), _uM({
       leftArrow: "",
       title: "设置"
     })),
-    _cV(unref(MyCellGroup), null, _uM({
+    _cV(unref(MyCellGroup), _uM({ inset: true }), _uM({
       default: withSlotCtx((): any[] => [
         _cV(unref(MyCell), _uM({ title: "深色模式" }), _uM({
           rightIcon: withSlotCtx((): any[] => [
-            _cV(_component_switch, _uM({
+            _cV(unref(MySwitch), _uM({
               checked: unref(isDark),
               onChange: onChangeIsDark
             }), null, 8 /* PROPS */, ["checked"])
@@ -79,11 +80,10 @@ const _component_switch = resolveComponent("switch")
           label: "开启后，自动跟随系统外观模式设置"
         }), _uM({
           rightIcon: withSlotCtx((): any[] => [
-            _cV(_component_switch, _uM({
+            _cV(unref(MySwitch), _uM({
               checked: unref(isFollowSystem),
-              onChange: onChangeIsFollowSystem,
               disabled: unref(state).uniPlatform !== 'app',
-              onClick: onClickSwitch
+              onChange: onChangeIsFollowSystem
             }), null, 8 /* PROPS */, ["checked", "disabled"])
           ]),
           _: 1 /* STABLE */
@@ -91,7 +91,7 @@ const _component_switch = resolveComponent("switch")
       ]),
       _: 1 /* STABLE */
     }))
-  ], 2 /* CLASS */)
+  ], 6 /* CLASS, STYLE */)
 }
 }
 

@@ -109,7 +109,7 @@ fun tryConnectSocket(host: String, port: String, id: String): UTSPromise<SocketT
 fun initRuntimeSocketService(): UTSPromise<Boolean> {
     val hosts: String = "10.191.92.87,127.0.0.1"
     val port: String = "8090"
-    val id: String = "app-android_33_EJn"
+    val id: String = "app-android_y6M929"
     if (hosts == "" || port == "" || id == "") {
         return UTSPromise.resolve(false)
     }
@@ -399,6 +399,7 @@ val checkSystemInfo = fun(){
     val appBaseInfo: GetAppBaseInfoResult = uni_getAppBaseInfo(null)
     val deviceInfo: GetDeviceInfoResult = uni_getDeviceInfo(null)
     val windowInfo = uni_getWindowInfo()
+    console.log("windowInfo", windowInfo, " at store/index.uts:97")
     state.uniPlatform = appBaseInfo.uniPlatform ?: ""
     state.statusBarHeight = windowInfo.statusBarHeight
     state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom
@@ -428,7 +429,7 @@ val checkSystemInfo = fun(){
             }
         }
          catch (e: Throwable) {
-            console.log("" + e + " 失败", " at store/index.uts:117")
+            console.log("" + e + " 失败", " at store/index.uts:118")
         }
     }
 }
@@ -489,12 +490,6 @@ val isDark = computed(fun(): Boolean {
     return config.theme == "dark"
 }
 )
-fun debugWarn(scope: String, mess: String) {
-    if ("development" != "production") {
-        val err = "[RiceUI] " + scope + ":" + mess
-        console.warn(err, " at uni_modules/rice-ui/libs/utils/debug.uts:4")
-    }
-}
 val addUnit = fun(value: Any): String {
     val isNumeric = UTSAndroid.`typeof`(value) == "number" || UTSRegExp("^\\d+(\\.\\d+)?\$", "").test(value as String)
     return if (isNumeric) {
@@ -541,24 +536,6 @@ fun getPxNum(reassignedValue: Any, totalWidth: Number = 0): Number {
         return parseFloat(value as String) * 0.01 * totalWidth
     }
     return parseFloat(value as String)
-}
-val isGradientColor = fun(color: String?): Boolean {
-    if (color == null || color == "") {
-        return false
-    }
-    val gradientRegex = UTSRegExp("(linear-gradient|radial-gradient|conic-gradient)\\(", "i")
-    return gradientRegex.test(color!!)
-}
-val isThemeColor = fun(type: String?): Boolean {
-    if (type == null || type == "") {
-        return false
-    }
-    return _uA(
-        "primary",
-        "success",
-        "warning",
-        "error"
-    ).includes(type)
 }
 open class UseNamespace (
     open var b: (blockSuffix: String) -> String,
@@ -789,464 +766,6 @@ fun __uts_large_presetColors_build_0(): UTSJSONObject {
     return __obj
 }
 val presetColors = __uts_large_presetColors_build_0()
-fun fillArr(arr: UTSArray<String>): UTSArray<String> {
-    while(arr.length < 4){
-        arr.push("")
-    }
-    return arr
-}
-fun splitColorStr(str: String, parseNum: ParseNumber): UTSArray<Number> {
-    val match = str.replace(UTSRegExp("^[^(]*\\((.*)", ""), "\$1").replace(UTSRegExp("\\).*", ""), "").match(UTSRegExp("\\d*\\.?\\d+%?", "g")) ?: _uA<String>()
-    val m = fillArr(match as UTSArray<String>) as UTSArray<String>
-    var numList = m.map(fun(item: String): Number {
-        return parseFloat(item as String)
-    }
-    )
-    run {
-        var i: Number = 0
-        while(i < 3){
-            numList[i] = parseNum(numList[i], m[i], i)
-            i += 1
-        }
-    }
-    if (m[3] != "") {
-        numList[3] = if (m[3].includes("%")) {
-            numList[3] / 100
-        } else {
-            numList[3]
-        }
-    } else {
-        numList[3] = 1
-    }
-    return numList
-}
-fun limitRange(value: Number, max: Number = 255): Number {
-    val mergedMax = if (max == 0) {
-        255
-    } else {
-        max
-    }
-    if (value > mergedMax) {
-        return mergedMax
-    }
-    if (value < 0) {
-        return 0
-    }
-    return value
-}
-val parseHSVorHSL: ParseNumber = fun(num: Number, _: String, index: Number): Number {
-    return if (index == 0) {
-        num
-    } else {
-        num / 100
-    }
-}
-open class Coloruts : IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("Coloruts", "uni_modules/rice-ui/libs/plugin/coloruts/conversion.uts", 4, 14)
-    }
-    open var isValid: Boolean = true
-    open var r: Number = 0
-    open var g: Number = 0
-    open var b: Number = 0
-    open var a: Number = 1
-    private var _h: Number? = null
-    private var _s: Number? = null
-    private var _l: Number? = null
-    private var _v: Number? = null
-    private var _max: Number? = null
-    private var _min: Number? = null
-    private var _brightness: Number? = null
-    constructor(input: Any){
-        fun isRgb(): Boolean {
-            val inp = input as UTSJSONObject
-            return inp["r"] != null && inp["g"] != null && inp["b"] != null
-        }
-        fun isHsl(): Boolean {
-            val inp = input as UTSJSONObject
-            return inp["h"] != null && inp["s"] != null && inp["l"] != null
-        }
-        fun isHsv(): Boolean {
-            val inp = input as UTSJSONObject
-            return inp["h"] != null && inp["s"] != null && inp["v"] != null
-        }
-        if (UTSAndroid.`typeof`(input) == "string") {
-            val trimStr = (input as String).trim()
-            fun matchPrefix(prefix: String): Boolean {
-                return trimStr.startsWith(prefix)
-            }
-            if (UTSRegExp("^#?[A-F\\d]{3,8}\$", "i").test(trimStr)) {
-                this.fromHexString(trimStr)
-            } else if (matchPrefix("rgb")) {
-                this.fromRgbString(trimStr)
-            } else if (matchPrefix("hsl")) {
-                this.fromHslString(trimStr)
-            } else if (matchPrefix("hsv") || matchPrefix("hsb")) {
-                this.fromHsvString(trimStr)
-            } else {
-                val presetColor = presetColors[trimStr.toLowerCase()] as String?
-                if (presetColor != null) {
-                    this.fromHexString(parseInt(presetColor, 36).toString(16).padStart(6, "0"))
-                }
-            }
-        } else if (input is Coloruts) {
-            this.r = (input as Coloruts).r
-            this.g = (input as Coloruts).g
-            this.b = (input as Coloruts).b
-            this.a = (input as Coloruts).a
-            this._h = (input as Coloruts)._h
-            this._s = (input as Coloruts)._s
-            this._l = (input as Coloruts)._l
-            this._v = (input as Coloruts)._v
-        } else if (isRgb()) {
-            val data = input as UTSJSONObject
-            this.r = limitRange(data["r"] as Number)
-            this.g = limitRange(data["g"] as Number)
-            this.b = limitRange(data["b"] as Number)
-            this.a = if (UTSAndroid.`typeof`(data["a"]) == "number") {
-                limitRange(data["a"] as Number, 1)
-            } else {
-                1
-            }
-        } else if (isHsl()) {
-            this.fromHsl(input as UTSJSONObject)
-        } else if (isHsv()) {
-            this.fromHsv(input as UTSJSONObject)
-        } else {
-            console.warn("不支持当前的颜色值。" + input as UTSJSONObject, " at uni_modules/rice-ui/libs/plugin/coloruts/conversion.uts:78")
-        }
-    }
-    private fun fromHexString(trimStr: String) {
-        val withoutPrefix = trimStr.replace("#", "") as String
-        fun connectNum(index1: Number, reassignedIndex2: Number?): Number {
-            var index2 = reassignedIndex2
-            if (index2 == null || index2 == 0) {
-                index2 = index1
-            }
-            val str = "" + withoutPrefix[index1] + withoutPrefix[index2]
-            return parseInt(str, 16)
-        }
-        if (withoutPrefix.length < 6) {
-            this.r = connectNum(0, null)
-            this.g = connectNum(1, null)
-            this.b = connectNum(2, null)
-            this.a = if (withoutPrefix.length >= 4) {
-                connectNum(3, null) / 255
-            } else {
-                1
-            }
-        } else {
-            this.r = connectNum(0, 1)
-            this.g = connectNum(2, 3)
-            this.b = connectNum(4, 5)
-            this.a = if (withoutPrefix.length >= 7) {
-                connectNum(6, 7) / 255
-            } else {
-                1
-            }
-        }
-    }
-    private fun fromHsv(hsva: UTSJSONObject) {
-        val h = hsva["h"] as Number
-        val s = hsva["s"] as Number
-        val v = hsva["v"] as Number
-        val a = hsva["a"] as Number?
-        this._h = h % 360
-        this._s = s
-        this._v = v
-        this.a = if (UTSAndroid.`typeof`(a) == "number") {
-            a
-        } else {
-            1
-        }
-         as Number
-        val vv = Math.round(v * 255)
-        this.r = vv
-        this.g = vv
-        this.b = vv
-        if (s <= 0) {
-            return
-        }
-        val hh = h / 60
-        val i = Math.floor(hh)
-        val ff = hh - i
-        val p = Math.round(v * (1.0 - s) * 255)
-        val q = Math.round(v * (1.0 - s * ff) * 255)
-        val t = Math.round(v * (1.0 - s * (1.0 - ff)) * 255)
-        when (i) {
-            0 -> 
-                {
-                    this.g = t
-                    this.b = p
-                }
-            1 -> 
-                {
-                    this.r = q
-                    this.b = p
-                }
-            2 -> 
-                {
-                    this.r = p
-                    this.b = t
-                }
-            3 -> 
-                {
-                    this.r = p
-                    this.g = q
-                }
-            4 -> 
-                {
-                    this.r = t
-                    this.g = p
-                }
-            5 -> 
-                {
-                    this.g = p
-                    this.b = q
-                }
-            else -> 
-                {
-                    this.g = p
-                    this.b = q
-                }
-        }
-    }
-    private fun fromHsl(hsla: UTSJSONObject) {
-        val h = hsla["h"] as Number
-        val s = hsla["s"] as Number
-        val l = hsla["l"] as Number
-        val a = hsla["a"] as Number?
-        this._h = h % 360
-        this._s = s
-        this._l = l
-        this.a = if (UTSAndroid.`typeof`(a) == "number") {
-            a
-        } else {
-            1
-        }
-         as Number
-        if (s <= 0) {
-            val rgb = Math.round(l * 255)
-            this.r = rgb
-            this.g = rgb
-            this.b = rgb
-        }
-        var r: Number = 0
-        var g: Number = 0
-        var b: Number = 0
-        val huePrime = h / 60
-        val chroma = (1 - Math.abs(2 * l - 1)) * s
-        val secondComponent = chroma * (1 - Math.abs(huePrime % 2 - 1))
-        if (huePrime >= 0 && huePrime < 1) {
-            r = chroma
-            g = secondComponent
-        } else if (huePrime >= 1 && huePrime < 2) {
-            r = secondComponent
-            g = chroma
-        } else if (huePrime >= 2 && huePrime < 3) {
-            g = chroma
-            b = secondComponent
-        } else if (huePrime >= 3 && huePrime < 4) {
-            g = secondComponent
-            b = chroma
-        } else if (huePrime >= 4 && huePrime < 5) {
-            r = secondComponent
-            b = chroma
-        } else if (huePrime >= 5 && huePrime < 6) {
-            r = chroma
-            b = secondComponent
-        }
-        val lightnessModification = l - chroma / 2
-        this.r = Math.round((r + lightnessModification) * 255)
-        this.g = Math.round((g + lightnessModification) * 255)
-        this.b = Math.round((b + lightnessModification) * 255)
-    }
-    private fun fromHslString(trimStr: String) {
-        val cells = splitColorStr(trimStr, parseHSVorHSL)
-        this.fromHsl(_uO("h" to cells[0], "s" to cells[1], "l" to cells[2], "a" to cells[3]))
-    }
-    private fun fromHsvString(trimStr: String) {
-        val cells = splitColorStr(trimStr, parseHSVorHSL)
-        this.fromHsv(_uO("h" to cells[0], "s" to cells[1], "v" to cells[2], "a" to cells[3]))
-    }
-    private fun fromRgbString(trimStr: String) {
-        val cells = splitColorStr(trimStr, fun(num, txt, _index): Number {
-            return if (txt.includes("%")) {
-                Math.round((num / 100) * 255)
-            } else {
-                num
-            }
-        }
-        )
-        this.r = cells[0]
-        this.g = cells[1]
-        this.b = cells[2]
-        this.a = cells[3]
-    }
-    open fun _c(input: Any): Coloruts {
-        return Coloruts(input)
-    }
-    private fun getMax(): Number {
-        if (this._max == null) {
-            this._max = Math.max(this.r, this.g, this.b)
-        }
-        return this._max!!
-    }
-    private fun getMin(): Number {
-        if (this._min == null) {
-            this._min = Math.min(this.r, this.g, this.b)
-        }
-        return this._min!!
-    }
-    private fun getHue(): Number {
-        if (this._h == null) {
-            val delta = this.getMax() - this.getMin()
-            if (delta == 0) {
-                this._h = 0
-            } else {
-                this._h = Math.round(60 * (if (this.r === this.getMax()) {
-                    (this.g - this.b) / delta + (if (this.g < this.b) {
-                        6
-                    } else {
-                        0
-                    })
-                } else {
-                    if (this.g === this.getMax()) {
-                        (this.b - this.r) / delta + 2
-                    } else {
-                        (this.r - this.g) / delta + 4
-                    }
-                }
-                ))
-            }
-        }
-        return this._h!!
-    }
-    private fun getSaturation(): Number {
-        if (this._s == null) {
-            val delta = this.getMax() - this.getMin()
-            if (delta == 0) {
-                this._s = 0
-            } else {
-                this._s = delta / this.getMax()
-            }
-        }
-        return this._s!!
-    }
-    private fun getValue(): Number {
-        if (this._v == null) {
-            this._v = this.getMax() / 255
-        }
-        return this._v!!
-    }
-    private fun getLightness(): Number {
-        if (this._l == null) {
-            this._l = (this.getMax() + this.getMin()) / 510
-        }
-        return this._l!!
-    }
-    private fun getBrightness(): Number {
-        if (this._brightness == null) {
-            this._brightness = (this.r * 299 + this.g * 587 + this.b * 114) / 1000
-        }
-        return this._brightness!!
-    }
-    open fun toHsv(): UTSJSONObject {
-        return _uO("h" to this.getHue(), "s" to this.getSaturation(), "v" to this.getValue(), "a" to this.a)
-    }
-    open fun toRgb(): UTSJSONObject {
-        return _uO("r" to this.r, "g" to this.g, "b" to this.b, "a" to this.a)
-    }
-    open fun toRgbString(): String {
-        return if (this.a != 1) {
-            "rgba(" + this.r + "," + this.g + "," + this.b + "," + this.a + ")"
-        } else {
-            "rgb(" + this.r + "," + this.g + "," + this.b + ")"
-        }
-    }
-    open fun toHexString(): String {
-        var hex = "#"
-        val rHex = this.r.toString(16)
-        hex += if (rHex.length == 2) {
-            rHex
-        } else {
-            "0" + rHex
-        }
-        val gHex = this.g.toString(16)
-        hex += if (gHex.length == 2) {
-            gHex
-        } else {
-            "0" + gHex
-        }
-        val bHex = this.b.toString(16)
-        hex += if (bHex.length == 2) {
-            bHex
-        } else {
-            "0" + bHex
-        }
-        if (UTSAndroid.`typeof`(this.a) == "number" && this.a >= 0 && this.a < 1) {
-            val aHex = Math.round(this.a * 255).toString(16)
-            hex += if (aHex.length == 2) {
-                aHex
-            } else {
-                "0" + aHex
-            }
-        }
-        return hex
-    }
-    open fun mix(input: Any, amount: Number = 50): Coloruts {
-        val color = this._c(input)
-        val p = amount / 100
-        val calc = fun(key: String): Number {
-            if (key == "r") {
-                return (color.r - this.r) * p + this.r
-            }
-            if (key == "g") {
-                return (color.g - this.g) * p + this.g
-            }
-            if (key == "b") {
-                return (color.b - this.b) * p + this.b
-            }
-            if (key == "a") {
-                return (color.a - this.a) * p + this.a
-            }
-            return 0
-        }
-        val rgba: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("rgba", "uni_modules/rice-ui/libs/plugin/coloruts/conversion.uts", 347, 15), "r" to Math.round(calc("r")), "g" to Math.round(calc("g")), "b" to Math.round(calc("b")), "a" to (Math.round(calc("a") * 100) / 100))
-        return this._c(rgba)
-    }
-    open fun tint(amount: Number = 10): Coloruts {
-        return this.mix(_uO("r" to 255, "g" to 255, "b" to 255, "a" to 1), amount)
-    }
-    open fun shade(amount: Number = 10): Coloruts {
-        return this.mix(_uO("r" to 0, "g" to 0, "b" to 0, "a" to 1), amount)
-    }
-    open fun darken(amount: Number = 10): Coloruts {
-        val h = this.getHue()
-        val s = this.getSaturation()
-        var l = this.getLightness() - amount / 100
-        if (l < 0) {
-            l = 0
-        }
-        return this._c(_uO("h" to h, "s" to s, "l" to l, "a" to this.a))
-    }
-    open fun lighten(amount: Number = 10): Coloruts {
-        val h = this.getHue()
-        val s = this.getSaturation()
-        var l = this.getLightness() + amount / 100
-        if (l > 1) {
-            l = 1
-        }
-        return this._c(_uO("h" to h, "s" to s, "l" to l, "a" to this.a))
-    }
-    open fun isDark(): Boolean {
-        return this.getBrightness() < 128
-    }
-    open fun isLight(): Boolean {
-        return this.getBrightness() >= 128
-    }
-}
-typealias ParseNumber = (num: Number, text: String, index: Number) -> Number
 open class Locale (
     @JsonNotNull
     open var weekdays: UTSArray<String>,
@@ -2031,8 +1550,6 @@ open class DateObject (
     }
 }
 typealias DateUnits = String
-typealias LoadingMode = String
-typealias LoadingTimingFunction = String
 fun __uts_large_lunarYears_fill_fill_1(__arr: UTSArray<Number>): Unit {
     __arr.push(0x04bd8)
     __arr.push(0x04ae0)
@@ -2715,7 +2232,7 @@ open class GenApp : BaseApp {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#e6f7ff", "--rice-primary-color-7" to "#0b68d4", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "#fff", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#fff", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#111c2b", "--rice-primary-color-7" to "#3d98e8", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#11231b", "--rice-success-color-7" to "#27bc6a", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#281f15", "--rice-warning-color-7" to "#dcae5e", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#2a1a1b", "--rice-error-color-7" to "#e88e8c", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "#242424", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "theme-light" to _pS(_uM("--navbar-background" to "#f5f5f5", "--search-background" to "transparent", "--search-input-background" to "rgba(0, 0, 0, 0.04)", "--primary-color" to "#845ec2", "--primary-color-1" to "#b7abc2", "--primary-color-7" to "#782ec2", "--success-color" to "#4d8076", "--success-color-1" to "#4d8076", "--success-color-7" to "#4d8076", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color1" to "#02070F", "--text-color2" to "#666", "--text-color3" to "#999", "--text-color4" to "#111", "--background-color1" to "rgba(0, 0, 0, 0.50)", "--background-color2" to "#F5F5F5", "--background-color3" to "#FFF", "--background-color4" to "rgba(0, 0, 0, 0.04)", "--background-color5" to "#FFF", "--cell-active-color" to "#f2f3f5")), "theme-dark" to _pS(_uM("--navbar-background" to "#181818", "--search-background" to "transparent", "--search-input-background" to "#333", "--primary-color" to "#6235c2", "--primary-color-1" to "#a391c2", "--primary-color-7" to "#aa97c2", "--success-color" to "#0d8063", "--success-color-1" to "#e6ffee", "--success-color-7" to "#009c50", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color1" to "#F5F5F5", "--text-color2" to "#CCC", "--text-color3" to "#999", "--text-color4" to "#F5F5F5", "--background-color1" to "#111", "--background-color2" to "#222", "--background-color3" to "rgba(255, 255, 255, 0.13)", "--background-color4" to "#333", "--background-color5" to "rgba(255, 255, 255, 0.13)", "--cell-active-color" to "#f2f3f5")), "icon" to _pS(_uM("fontFamily" to "vant-icon", "color" to "var(--text-color1)")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "justify-between" to _pS(_uM("justifyContent" to "space-between")), "justify-around" to _pS(_uM("justifyContent" to "space-around")), "@FONT-FACE" to _uM("0" to _uM("fontFamily" to "vant-icon", "src" to "url('/static/vant-icon.ttf')")))
+                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#e6f7ff", "--rice-primary-color-7" to "#0b68d4", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "#fff", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#fff", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#111c2b", "--rice-primary-color-7" to "#3d98e8", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#11231b", "--rice-success-color-7" to "#27bc6a", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#281f15", "--rice-warning-color-7" to "#dcae5e", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#2a1a1b", "--rice-error-color-7" to "#e88e8c", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "#242424", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "theme-light" to _pS(_uM("--navbar-background" to "#f5f5f5", "--search-background" to "transparent", "--search-input-background" to "rgba(0, 0, 0, 0.04)", "--primary-color" to "#845ec2", "--primary-color-1" to "#b7abc2", "--primary-color-7" to "#782ec2", "--success-color" to "#4d8076", "--success-color-1" to "#4d8076", "--success-color-7" to "#4d8076", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color-1" to "#02070F", "--text-color-2" to "#666", "--text-color-3" to "#999", "--text-color-4" to "#111", "--background-color-1" to "rgba(0, 0, 0, 0.50)", "--background-color-2" to "#F5F5F5", "--background-color-3" to "#FFF", "--background-color-4" to "rgba(0, 0, 0, 0.04)", "--background-color-5" to "#FFF", "--cell-active-color" to "#f2f3f5")), "theme-dark" to _pS(_uM("--navbar-background" to "#181818", "--search-background" to "transparent", "--search-input-background" to "#333", "--primary-color" to "#6235c2", "--primary-color-1" to "#a391c2", "--primary-color-7" to "#aa97c2", "--success-color" to "#0d8063", "--success-color-1" to "#e6ffee", "--success-color-7" to "#009c50", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color-1" to "#F5F5F5", "--text-color-2" to "#CCC", "--text-color-3" to "#999", "--text-color-4" to "#F5F5F5", "--background-color-1" to "#111", "--background-color-2" to "#222", "--background-color-3" to "rgba(255, 255, 255, 0.13)", "--background-color-4" to "#333", "--background-color-5" to "rgba(255, 255, 255, 0.13)", "--cell-active-color" to "#f2f3f5")), "icon" to _pS(_uM("fontFamily" to "vant-icon", "color" to "var(--text-color-1)")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "justify-between" to _pS(_uM("justifyContent" to "space-between")), "justify-around" to _pS(_uM("justifyContent" to "space-around")), "@FONT-FACE" to _uM("0" to _uM("fontFamily" to "vant-icon", "src" to "url('/static/vant-icon.ttf')")))
             }
     }
 }
@@ -3174,7 +2691,7 @@ open class SearchRecordItem (
     open var text: String,
 ) : UTSReactiveObject(), IUTSSourceMap {
     override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("SearchRecordItem", "pages/search/index.uvue", 65, 7)
+        return UTSSourceMapPosition("SearchRecordItem", "pages/search/index.uvue", 49, 7)
     }
     override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
         return SearchRecordItemReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
@@ -3229,6 +2746,16 @@ val GenPagesSearchIndexClass = CreateVueComponent(GenPagesSearchIndex::class.jav
     return GenPagesSearchIndex(instance, renderer)
 }
 )
+val GenComponnetsMySwitchClass = CreateVueComponent(GenComponnetsMySwitch::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenComponnetsMySwitch.name, inheritAttrs = GenComponnetsMySwitch.inheritAttrs, inject = GenComponnetsMySwitch.inject, props = GenComponnetsMySwitch.props, propsNeedCastKeys = GenComponnetsMySwitch.propsNeedCastKeys, emits = GenComponnetsMySwitch.emits, components = GenComponnetsMySwitch.components, styles = GenComponnetsMySwitch.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenComponnetsMySwitch.setup(props as GenComponnetsMySwitch)
+    }
+    )
+}
+, fun(instance, renderer): GenComponnetsMySwitch {
+    return GenComponnetsMySwitch(instance)
+}
+)
 val GenPagesSettingIndexClass = CreateVueComponent(GenPagesSettingIndex::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesSettingIndex.inheritAttrs, inject = GenPagesSettingIndex.inject, props = GenPagesSettingIndex.props, propsNeedCastKeys = GenPagesSettingIndex.propsNeedCastKeys, emits = GenPagesSettingIndex.emits, components = GenPagesSettingIndex.components, styles = GenPagesSettingIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenPagesSettingIndex.setup(props as GenPagesSettingIndex)
@@ -3237,189 +2764,6 @@ val GenPagesSettingIndexClass = CreateVueComponent(GenPagesSettingIndex::class.j
 }
 , fun(instance, renderer): GenPagesSettingIndex {
     return GenPagesSettingIndex(instance, renderer)
-}
-)
-val GenUniModulesRiceUiComponentsRiceTextareaRiceTextareaClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.inject, props = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.emits, components = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.components, styles = GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea.setup(props as GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea {
-    return GenUniModulesRiceUiComponentsRiceTextareaRiceTextarea(instance)
-}
-)
-open class UseLoadingOptions (
-    @JsonNotNull
-    open var loadingRef: Ref<UniElement?>,
-    @JsonNotNull
-    open var coreRef: Ref<UniElement?>,
-    @JsonNotNull
-    open var circularRef: Ref<UniElement?>,
-    @JsonNotNull
-    open var mode: LoadingMode,
-    @JsonNotNull
-    open var timingFunction: LoadingTimingFunction,
-    @JsonNotNull
-    open var color: ComputedRef<String>,
-    @JsonNotNull
-    open var size: Ref<Any>,
-    @JsonNotNull
-    open var duration: Number,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("UseLoadingOptions", "uni_modules/rice-ui/components/rice-loading/use-loading.uts", 3, 13)
-    }
-}
-val easeInOutCubic = fun(t: Number): Number {
-    return if (t < 0.5) {
-        4 * t * t * t
-    } else {
-        (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
-    }
-}
-fun useLoading(options: UseLoadingOptions) {
-    var timer: Number? = null
-    var drawContext: DrawableContext? = null
-    val startAmination = fun(): UTSPromise<Unit> {
-        return wrapUTSPromise(suspend w1@{
-                val coreRef = options.coreRef
-                val timingFunction = options.timingFunction
-                await(nextTick())
-                if (coreRef.value == null) {
-                    return@w1
-                }
-                coreRef.value!!.animate(_uA(
-                    UniAnimationKeyframe(transform = "rotate(0deg)"),
-                    UniAnimationKeyframe(transform = "rotate(360deg)")
-                ), UniAnimationOption(duration = options.duration, easing = timingFunction, iterations = Infinity))
-        })
-    }
-    val drawCircular = fun(ctx: DrawableContext){
-        var rotate: Number = 0
-        val size = getPxNum(options.size.value)
-        val ARC_LENGTH: Number = 359
-        val center = size / 2
-        val lineWidth = size / 10
-        val duration = options.duration
-        val ARC_MAX: Number = 352
-        var startTime: Number = 0
-        var foreward_end: Number = 0
-        var reversal_end = ARC_MAX
-        fun pogressTime(): Number {
-            val currentTime = Date.now()
-            val elapsedTime = currentTime - startTime
-            val progress = elapsedTime / duration
-            val easedProgress = easeInOutCubic(progress)
-            return easedProgress
-        }
-        val draw = fun(){
-            ctx.reset()
-            ctx.beginPath()
-            if (reversal_end == ARC_MAX) {
-                foreward_end = Math.min(pogressTime() * ARC_LENGTH, ARC_LENGTH)
-                if (foreward_end >= ARC_MAX) {
-                    reversal_end = 0
-                    foreward_end = ARC_MAX
-                    startTime = Date.now()
-                }
-            }
-            if (foreward_end == ARC_MAX) {
-                reversal_end = Math.min(pogressTime() * ARC_LENGTH, ARC_LENGTH)
-                if (reversal_end >= ARC_MAX) {
-                    reversal_end = ARC_MAX
-                    foreward_end = 0
-                    startTime = Date.now()
-                }
-            }
-            ctx.arc(center, center, center - lineWidth, rotate + (reversal_end * Math.PI / 180), rotate + (foreward_end * Math.PI / 180))
-            ctx.lineWidth = lineWidth
-            ctx.strokeStyle = options.color.value
-            ctx.stroke()
-            ctx.update()
-            rotate += 0.05
-        }
-        timer = setInterval(fun(){
-            return draw()
-        }
-        , 16)
-    }
-    val removeInterval = fun(){
-        if (timer != null) {
-            clearInterval(timer!!)
-            timer = null
-        }
-    }
-    val initCircular = fun(){
-        val circularRef = options.circularRef
-        if (circularRef.value == null) {
-            return
-        }
-        removeInterval()
-        drawContext = circularRef.value!!.getDrawableContext()!!
-        drawContext!!.reset()
-        drawCircular(drawContext!!)
-    }
-    val init = fun(): UTSPromise<Unit> {
-        return wrapUTSPromise(suspend {
-                await(nextTick())
-                initCircular()
-                startAmination()
-        })
-    }
-    watch(_uA(
-        fun(): String {
-            return options.color.value
-        }
-        ,
-        fun(): Any {
-            return options.size.value
-        }
-    ), fun(){
-        initCircular()
-    }
-    )
-    onMounted(fun(){
-        init()
-    }
-    )
-    onUnmounted(fun(){
-        removeInterval()
-    }
-    )
-    var hasHide = false
-    onPageShow(fun(){
-        if (hasHide && drawContext != null) {
-            drawCircular(drawContext!!)
-        }
-    }
-    )
-    onPageHide(fun(){
-        hasHide = true
-        removeInterval()
-    }
-    )
-}
-val GenUniModulesRiceUiComponentsRiceLoadingRiceLoadingClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceLoadingRiceLoading::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.inject, props = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.emits, components = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.components, styles = GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceLoadingRiceLoading.setup(props as GenUniModulesRiceUiComponentsRiceLoadingRiceLoading)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceLoadingRiceLoading {
-    return GenUniModulesRiceUiComponentsRiceLoadingRiceLoading(instance)
-}
-)
-val iconSizeTypes: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("iconSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 1, 14), "large" to "18px", "default" to "16px", "small" to "14px", "mini" to "12px")
-val loadingSizeTypes: UTSJSONObject = _uO("__\$originalPosition" to UTSSourceMapPosition("loadingSizeTypes", "uni_modules/rice-ui/components/rice-button/utils.uts", 7, 14), "large" to "20px", "default" to "18px", "small" to "16px", "mini" to "14px")
-val GenUniModulesRiceUiComponentsRiceButtonRiceButtonClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceButtonRiceButton::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceButtonRiceButton.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceButtonRiceButton.inject, props = GenUniModulesRiceUiComponentsRiceButtonRiceButton.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceButtonRiceButton.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceButtonRiceButton.emits, components = GenUniModulesRiceUiComponentsRiceButtonRiceButton.components, styles = GenUniModulesRiceUiComponentsRiceButtonRiceButton.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceButtonRiceButton.setup(props as GenUniModulesRiceUiComponentsRiceButtonRiceButton)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceButtonRiceButton {
-    return GenUniModulesRiceUiComponentsRiceButtonRiceButton(instance)
 }
 )
 val GenPagesFeedbackIndexClass = CreateVueComponent(GenPagesFeedbackIndex::class.java, fun(): VueComponentOptions {

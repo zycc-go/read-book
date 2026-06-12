@@ -1,59 +1,43 @@
 <template>
-	<view :class="[`theme-${state.appTheme}`, 'page']" :style="{ paddingTop:`${state.statusBarHeight}px`}">
+	<view :class="[`theme-${state.appTheme}`, 'page']">
 		<view class="page-navbar" :style="{ height:`${state.navbarHeight}px`, top:`${state.statusBarHeight}px`}">
 			<view class="page-navbar-left" @tap="onBack">
 				<text class="icon">{{ "\ue668" }}</text>
 			</view>
 			<view class="input-wrapper">
-				<input focus :maxlength="20" v-model="keywords" />
+				<input focus :maxlength="20" v-model="keywords" @input="onInput" />
 			</view>
-			<text class="page-navbar-right" @click="onClickAction">搜索</text>
+			<text class="page-navbar-right" @tap="onClickAction">搜索</text>
 		</view>
 
-		<view class="card-box"
-			:style="{ marginTop:`${state.navbarHeight}px`, paddingBottom:`${state.navbarHeight + state.safeAreaInsetsHeight}px`}">
-			<view v-if="searchType === 'record'" class="card">
-				<view class="card-title-box">
-					<text class="card-title">历史记录</text>
-					<view class="card-clear" @tap="onClearItems">
-						<text class="card-clear-text">清空</text>
-						<text class="icon">{{ "\ue6a6" }}</text>
-					</view>
+		<view class="card" :style="{ paddingTop:`${state.navbarHeight + state.statusBarHeight}px`}">
+			<view v-if="searchType === 'record'" class="card-title-box">
+				<text class="card-title">历史记录</text>
+				<view class="card-clear" @tap="onClearItems">
+					<text class="card-clear-text">清空</text>
+					<text class="icon">{{ "\ue6a6" }}</text>
 				</view>
-				<scroll-view direction="vertical" style="flex: 1">
-					<view class="tag-list" v-if="searchRecord.length > 0">
-						<view class="tag-box" v-for="item in searchRecord" @tap="onSearchItem(item)">
-							<text class="tag">{{ item.text }}</text>
-							<view @tap.stop="onDeleteItem(item)">
-								<text class="icon">{{ "\ue6a7" }}</text>
-							</view>
-						</view>
-					</view>
-				</scroll-view>
-				<!-- <view class="empty">
-					<text>空空如也</text>
-				</view> -->
 			</view>
-			<view v-if="searchType === 'result'" class="card">
-				<view class="card-title-box">
-					<text class="card-title">搜索结果</text>
-				</view>
-				<scroll-view direction="vertical" style="flex: 1">
-					<view class="tag-list" v-if="searchRecord.length > 0">
-						<view class="tag-box" v-for="item in searchRecord" @tap="onSearchItem(item)">
-							<text class="tag">{{ item.text }}</text>
-							<view @tap.stop="onDeleteItem(item)">
-								<text class="icon">{{ "\ue6a7" }}</text>
-							</view>
-						</view>
-					</view>
-				</scroll-view>
-
-				<!-- <view class="empty">
-					<text>空空如也</text>
-				</view> -->
+			<view v-if="searchType === 'result'" class="card-title-box">
+				<text class="card-title">搜索结果</text>
 			</view>
 		</view>
+
+		<scroll-view style="flex:1" direction="vertical" scroll-with-animation="true">
+			<view class="tag-list" v-if="searchRecord.length > 0">
+				<view class="tag-box" v-for="item in searchRecord" @tap="onSearchItem(item)">
+					<text class="tag">{{ item.text }}</text>
+					<view @tap.stop="onDeleteItem(item)">
+						<text class="icon">{{ "\ue6a7" }}</text>
+					</view>
+				</view>
+			</view>
+			<view class="empty" v-else>
+				<text class="text">空空如也</text>
+			</view>
+		</scroll-view>
+
+
 	</view>
 
 </template>
@@ -67,6 +51,13 @@
 		text : string
 	}
 
+	const style = computed(() => {
+		return {
+			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+			paddingBottom: state.safeAreaInsetsHeight + 'px',
+		};
+	})
+
 	const keywords = ref<string>('')
 
 	const searchRecord = ref<SearchRecordItem[]>([])
@@ -77,16 +68,24 @@
 		uni.navigateBack()
 	}
 
+	const onInput = (event : UniInputEvent) => {
+		if (event.detail.value.length == 0) {
+			searchType.value = 'record'
+		}
+	}
+
 	const onClickAction = () => {
 		if (keywords.value.length > 0) {
 			searchType.value = 'result'
-			uni.showLoading({ title: '加载中...' })
-			searchRecord.value.push({ id: getRandomDigits(12), text: keywords.value } as SearchRecordItem)
-			uni.setStorage({
-				key: 'searchRecord',
-				data: searchRecord.value,
-				complete: () => uni.hideLoading()
-			})
+			if (searchRecord.value.findIndex(item1 => item1.text === keywords.value) < 0) {
+				uni.showLoading({ title: '加载中...' })
+				searchRecord.value.push({ id: getRandomDigits(12), text: keywords.value } as SearchRecordItem)
+				uni.setStorage({
+					key: 'searchRecord',
+					data: searchRecord.value,
+					complete: () => uni.hideLoading()
+				})
+			}
 		} else if (searchType.value === 'result') {
 			searchType.value = 'record'
 		} else {
@@ -142,10 +141,9 @@
 
 <style lang="scss" scoped>
 	.page {
-		background-color: var(--rice-navbar-background);
+		background-color: var(--navbar-background);
 		width: 100%;
 		height: 100%;
-		padding-bottom: 20px;
 	}
 
 	.page-navbar {
@@ -154,8 +152,8 @@
 		align-items: center;
 		position: fixed;
 		width: 100%;
-		z-index: 9;
-		background-color: var(--rice-navbar-background);
+		z-index: 99;
+		background-color: var(--navbar-background);
 
 		.page-navbar-left {
 			width: 80rpx;
@@ -175,82 +173,82 @@
 			padding: 16rpx 32rpx;
 			margin: 4rpx 0;
 			flex-direction: row;
-			background-color: var(--background-color3);
+			background-color: var(--background-color-3);
 			border-radius: $uni-border-radius-16;
 		}
 
 		.page-navbar-right {
 			width: 120rpx;
 			text-align: center;
-			color: var(--text-color1);
+			color: var(--text-color-1);
 			font-size: $uni-font-size-16;
 		}
 	}
 
 
-	.card-box {
-		z-index: 0;
-		height: 100%;
 
-		.card {
-			padding: 0 $uni-spacing-row-lg;
+	.card {
+		padding: 0 $uni-spacing-row-lg;
 
-			.card-title-box {
-				display: flex;
-				flex-direction: row;
-				justify-content: space-between;
+		.card-title-box {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
 
-				.card-title {
-					margin: $uni-spacing-col-12 0;
-					color: var(--text-color2);
-				}
-
-				.card-clear {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-
-					.card-clear-text {
-						color: var(--text-color2);
-						font-size: $uni-font-size-14;
-						margin-right: 4rpx;
-					}
-				}
+			.card-title {
+				margin: $uni-spacing-col-12 0;
+				color: var(--text-color-2);
 			}
 
-
-			.scroll-view-box {
-				flex: 1;
-			}
-
-			.tag-list {
+			.card-clear {
 				display: flex;
 				flex-direction: row;
-				flex-wrap: wrap;
+				align-items: center;
 
-				.tag-box {
-					padding: $uni-spacing-col-4 $uni-spacing-row-8;
-					border-radius: $uni-border-radius-base;
-					background-color: var(--background-color5);
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-					margin: 0 $uni-spacing-col-12 $uni-spacing-col-12 0;
-				}
-
-				.tag {
-					color: var(--text-color2);
+				.card-clear-text {
+					color: var(--text-color-2);
 					font-size: $uni-font-size-14;
-					margin-right: $uni-spacing-row-4;
+					margin-right: 4rpx;
 				}
 			}
 		}
 
-		.empty {
-			min-height: 200rpx;
+	}
+
+	.tag-list {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		padding: 0 $uni-spacing-row-16;
+
+		.tag-box {
+			padding: $uni-spacing-col-4 $uni-spacing-row-8;
+			border-radius: $uni-border-radius-base;
+			background-color: var(--background-color-5);
 			display: flex;
+			flex-direction: row;
 			align-items: center;
-			justify-content: center;
+			margin: 0 $uni-spacing-col-12 $uni-spacing-col-12 0;
+		}
+
+		.tag {
+			color: var(--text-color-2);
+			font-size: $uni-font-size-14;
+			margin-right: $uni-spacing-row-4;
+		}
+	}
+
+	.empty {
+		min-height: 200rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: $uni-spacing-col-12 $uni-spacing-row-16;
+		background-color: var(--background-color-3);
+		border-radius: $uni-border-radius-8;
+
+		.text {
+			color: var(--text-color-3);
 		}
 	}
 </style>

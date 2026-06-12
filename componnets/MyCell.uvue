@@ -21,12 +21,12 @@
 		title ?: string
 		value ?: string
 		label ?: string
-		arrow ?: Boolean
+		arrow ?: boolean
 	}
 
 	const props = defineProps<NavbarPropsType>()
 
-	const arrow = computed(() => ['', null, true].includes(props.arrow) ? true : false)
+	const arrow = computed(() => props.arrow ?? false)
 
 	const arrowR = ref<boolean>(false)
 
@@ -42,17 +42,33 @@
 <style lang="scss" scoped>
 	.my-cell {
 		padding: $uni-spacing-col-12 $uni-spacing-row-16;
-		background-color: var(--background-color3);
+		background-color: var(--background-color-3);
 
 		.text {
-			color: var(--text-color1);
 			line-height: $uni-line-height-24;
+		}
+
+		.my-cell-title {
+			.text {
+				color: var(--text-color-1);
+			}
 		}
 
 		.my-cell-value {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
+
+			.text {
+				color: var(--text-color-3);
+			}
+		}
+
+		.my-cell-label {
+			.text {
+				color: var(--text-color-3);
+				font-size: $uni-font-size-14;
+			}
 		}
 	}
 

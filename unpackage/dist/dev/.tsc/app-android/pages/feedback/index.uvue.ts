@@ -1,5 +1,3 @@
-import _easycom_rice_textarea from '@/uni_modules/rice-ui/components/rice-textarea/rice-textarea.uvue'
-import _easycom_rice_button from '@/uni_modules/rice-ui/components/rice-button/rice-button.uvue'
 import { state } from '@/store/index.uts'
 	import MyNavbar from '@/componnets/MyNavbar.uvue';
 
@@ -11,9 +9,25 @@ const __ins = getCurrentInstance()!;
 const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
 const _cache = __ins.renderCache;
 
-	const value = ref<string>('')
+	const style = computed(() => {
+		return {
+			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+			paddingBottom: state.safeAreaInsetsHeight + 'px',
+		};
+	})
+
+	const content = ref<string>('')
+
+	const onInput = (event : UniInputEvent) => {
+		content.value = event.detail.value
+	}
 
 	const onSubmit = () => {
+		// console.log('value', content.value)
+		if (content.value.length <= 0) {
+			uni.showToast({ title: '请输入内容', icon: 'error' })
+			return
+		}
 		uni.showLoading()
 		setTimeout(() => {
 			// 这里是提交操作
@@ -23,36 +37,34 @@ const _cache = __ins.renderCache;
 
 return (): any | null => {
 
-const _component_rice_textarea = resolveEasyComponent("rice-textarea",_easycom_rice_textarea)
-const _component_rice_button = resolveEasyComponent("rice-button",_easycom_rice_button)
-
   return _cE("view", _uM({
-    class: _nC([`theme-${unref(state).appTheme}`, "page"])
+    class: _nC([`theme-${unref(state).appTheme}`, 'page']),
+    style: _nS(unref(style))
   }), [
     _cV(unref(MyNavbar), _uM({
       leftArrow: "",
       title: "反馈"
     })),
     _cE("view", _uM({ class: "card" }), [
-      _cV(_component_rice_textarea, _uM({
-        modelValue: unref(value),
-        "onUpdate:modelValue": $event => {trySetRefValue(value, $event)},
+      _cE("textarea", _uM({
+        class: "textarea-instance",
         placeholder: "请输入内容",
-        "show-word-limit": "",
-        maxlength: 500
-      }), null, 8 /* PROPS */, ["modelValue"]),
-      _cE("view", _uM({ class: "btn" }), [
-        _cV(_component_rice_button, _uM({
-          type: "primary",
-          text: "提交",
-          onClick: onSubmit
-        }))
-      ])
+        maxlength: 500,
+        "auto-focus": true,
+        "auto-height": true,
+        value: unref(content),
+        onInput: onInput
+      }), null, 40 /* PROPS, NEED_HYDRATION */, ["value"]),
+      _cE("button", _uM({
+        class: "btn",
+        type: "primary",
+        onClick: onSubmit
+      }), "提交")
     ])
-  ], 2 /* CLASS */)
+  ], 6 /* CLASS, STYLE */)
 }
 }
 
 })
 export default __sfc__
-const GenPagesFeedbackIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 15], ["paddingBottom", 12], ["paddingLeft", 15]]))], ["btn", _uM([[".card ", _uM([["marginTop", 12]])]])]])]
+const GenPagesFeedbackIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["card", _pS(_uM([["paddingTop", 12], ["paddingRight", 15], ["paddingBottom", 12], ["paddingLeft", 15]]))], ["textarea-instance", _uM([[".card ", _uM([["minHeight", 140], ["width", "100%"], ["paddingTop", 12], ["paddingRight", 12], ["paddingBottom", 12], ["paddingLeft", 12], ["borderTopLeftRadius", 8], ["borderTopRightRadius", 8], ["borderBottomRightRadius", 8], ["borderBottomLeftRadius", 8], ["fontSize", 14], ["color", "var(--text-color-1)"], ["lineHeight", "24px"], ["backgroundColor", "var(--background-color-3)"]])]])], ["btn", _uM([[".card ", _uM([["marginTop", 12]])]])]])]

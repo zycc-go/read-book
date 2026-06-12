@@ -1,17 +1,17 @@
 <template>
-	<view :class="`theme-${state.appTheme}`" class="page">
+	<view :class="[`theme-${state.appTheme}`, 'page']" :style="style">
 		<my-navbar leftArrow title="设置" />
 
-		<my-cell-group>
+		<my-cell-group :inset="true">
 			<my-cell title="深色模式">
 				<template #rightIcon>
-					<switch :checked="isDark" @change="onChangeIsDark"></switch>
+					<my-switch :checked="isDark" @change="onChangeIsDark" />
 				</template>
 			</my-cell>
 			<my-cell title="跟随系统设置" label="开启后，自动跟随系统外观模式设置">
 				<template #rightIcon>
-					<switch :checked="isFollowSystem" @change="onChangeIsFollowSystem"
-						:disabled="state.uniPlatform !== 'app'" @click="onClickSwitch"></switch>
+					<my-switch :checked="isFollowSystem" :disabled="state.uniPlatform !== 'app'"
+						@change="onChangeIsFollowSystem" />
 				</template>
 			</my-cell>
 		</my-cell-group>
@@ -23,12 +23,20 @@
 	import MyNavbar from '@/componnets/MyNavbar.uvue';
 	import MyCell from '@/componnets/MyCell.uvue';
 	import MyCellGroup from '@/componnets/MyCellGroup.uvue';
+	import MySwitch from '@/componnets/MySwitch.uvue';
+
+	const style = computed(() => {
+		return {
+			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+			paddingBottom: state.safeAreaInsetsHeight + 'px',
+		};
+	})
 
 	const isDark = ref<boolean>(!state.isFollowSystem && state.appTheme == 'dark')
 	const isFollowSystem = ref<boolean>(state.isFollowSystem)
 
-	const onChangeIsDark = (event: UniSwitchChangeEvent) => {
-		isDark.value = event.detail.value
+	const onChangeIsDark = (value : boolean) => {
+		isDark.value = value
 		let themeReal : "light" | "dark" = 'light'
 		if (isDark.value) {
 			isFollowSystem.value = false
@@ -39,8 +47,8 @@
 		uni.setAppTheme({ theme: themeReal })
 	}
 
-	const onChangeIsFollowSystem = (event: UniSwitchChangeEvent) => {
-		isFollowSystem.value = event.detail.value
+	const onChangeIsFollowSystem = (value : boolean) => {
+		isFollowSystem.value = value
 		let themeReal : "light" | "dark" = 'light'
 		if (isFollowSystem.value) {
 			isDark.value = false
@@ -56,12 +64,6 @@
 			uni.switchTab({ url: '/pages/mine/index' })
 		} else {
 			uni.redirectTo({ url: '/pages/mine/index' })
-		}
-	}
-
-	const onClickSwitch = () => {
-		if (state.uniPlatform !== 'app') {
-			uni.showToast({ title: '只有app才能用', icon: 'error' })
 		}
 	}
 </script>

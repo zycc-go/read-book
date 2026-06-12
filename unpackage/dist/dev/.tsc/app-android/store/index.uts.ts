@@ -94,6 +94,7 @@ export const checkSystemInfo = () => {
 	const appBaseInfo: GetAppBaseInfoResult = uni.getAppBaseInfo();
 	const deviceInfo: GetDeviceInfoResult = uni.getDeviceInfo();
 	const windowInfo = uni.getWindowInfo();
+		__f__('log','at store/index.uts:97','windowInfo',windowInfo)
 	state.uniPlatform = appBaseInfo.uniPlatform ?? '';
 	state.statusBarHeight = windowInfo.statusBarHeight;
 	state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom;
@@ -114,7 +115,7 @@ export const checkSystemInfo = () => {
 				uni.setAppTheme({ theme: appTheme });
 			}
 		} catch (e) {
-			__f__('log','at store/index.uts:117',`${e} 失败`);
+			__f__('log','at store/index.uts:118',`${e} 失败`);
 		}
 	}
 };

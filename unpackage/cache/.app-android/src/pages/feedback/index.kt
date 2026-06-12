@@ -14,6 +14,7 @@ import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
 import io.dcloud.uniapp.extapi.hideLoading as uni_hideLoading
 import io.dcloud.uniapp.extapi.showLoading as uni_showLoading
+import io.dcloud.uniapp.extapi.showToast as uni_showToast
 open class GenPagesFeedbackIndex : BasePage {
     constructor(__ins: ComponentInternalInstance, __renderer: String?) : super(__ins, __renderer) {}
     companion object {
@@ -22,8 +23,19 @@ open class GenPagesFeedbackIndex : BasePage {
             val __ins = getCurrentInstance()!!
             val _ctx = __ins.proxy as GenPagesFeedbackIndex
             val _cache = __ins.renderCache
-            val value = ref<String>("")
+            val style = computed(fun(): UTSJSONObject {
+                return _uO("paddingTop" to (state.statusBarHeight + state.navbarHeight + "px"), "paddingBottom" to (state.safeAreaInsetsHeight + "px"))
+            }
+            )
+            val content = ref<String>("")
+            val onInput = fun(event: UniInputEvent){
+                content.value = event.detail.value
+            }
             val onSubmit = fun(){
+                if (content.value.length <= 0) {
+                    uni_showToast(ShowToastOptions(title = "请输入内容", icon = "error"))
+                    return
+                }
                 uni_showLoading(null)
                 setTimeout(fun(){
                     uni_hideLoading(null)
@@ -31,25 +43,18 @@ open class GenPagesFeedbackIndex : BasePage {
                 , 1000)
             }
             return fun(): Any? {
-                val _component_rice_textarea = resolveEasyComponent("rice-textarea", GenUniModulesRiceUiComponentsRiceTextareaRiceTextareaClass)
-                val _component_rice_button = resolveEasyComponent("rice-button", GenUniModulesRiceUiComponentsRiceButtonRiceButtonClass)
                 return _cE("view", _uM("class" to _nC(_uA(
                     "theme-" + unref(state).appTheme,
                     "page"
-                ))), _uA(
+                )), "style" to _nS(unref(style))), _uA(
                     _cV(unref(GenComponnetsMyNavbarClass), _uM("leftArrow" to "", "title" to "反馈")),
                     _cE("view", _uM("class" to "card"), _uA(
-                        _cV(_component_rice_textarea, _uM("modelValue" to unref(value), "onUpdate:modelValue" to fun(`$event`: String){
-                            trySetRefValue(value, `$event`)
-                        }
-                        , "placeholder" to "请输入内容", "show-word-limit" to "", "maxlength" to 500), null, 8, _uA(
-                            "modelValue"
+                        _cE("textarea", _uM("class" to "textarea-instance", "placeholder" to "请输入内容", "maxlength" to 500, "auto-focus" to true, "auto-height" to true, "value" to unref(content), "onInput" to onInput), null, 40, _uA(
+                            "value"
                         )),
-                        _cE("view", _uM("class" to "btn"), _uA(
-                            _cV(_component_rice_button, _uM("type" to "primary", "text" to "提交", "onClick" to onSubmit))
-                        ))
+                        _cE("button", _uM("class" to "btn", "type" to "primary", "onClick" to onSubmit), "提交")
                     ))
-                ), 2)
+                ), 6)
             }
         }
         val styles: Map<String, Map<String, Map<String, Any>>> by lazy {
@@ -59,7 +64,7 @@ open class GenPagesFeedbackIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 15, "paddingBottom" to 12, "paddingLeft" to 15)), "btn" to _uM(".card " to _uM("marginTop" to 12)))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 15, "paddingBottom" to 12, "paddingLeft" to 15)), "textarea-instance" to _uM(".card " to _uM("minHeight" to 140, "width" to "100%", "paddingTop" to 12, "paddingRight" to 12, "paddingBottom" to 12, "paddingLeft" to 12, "borderTopLeftRadius" to 8, "borderTopRightRadius" to 8, "borderBottomRightRadius" to 8, "borderBottomLeftRadius" to 8, "fontSize" to 14, "color" to "var(--text-color-1)", "lineHeight" to "24px", "backgroundColor" to "var(--background-color-3)")), "btn" to _uM(".card " to _uM("marginTop" to 12)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

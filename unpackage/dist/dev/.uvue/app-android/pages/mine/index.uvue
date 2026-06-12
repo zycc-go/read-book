@@ -10,6 +10,12 @@ const __sfc__ = defineComponent({
         const __ins = getCurrentInstance()!;
         const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
         const _cache = __ins.renderCache;
+        const style = computed((): UTSJSONObject => {
+            return {
+                paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+                paddingBottom: state.safeAreaInsetsHeight + 'px',
+            };
+        });
         const onSetTheme = (val: 'light' | 'dark') => {
             setAppTheme(val);
             setIsFollowSystem(false);
@@ -17,16 +23,16 @@ const __sfc__ = defineComponent({
                 uni.setAppTheme({
                     theme: val as 'light' | 'dark' | 'auto',
                     success: function () {
-                        console.log(`设置appTheme为 ${val} 成功`, " at pages/mine/index.uvue:49");
+                        console.log(`设置appTheme为 ${val} 成功`, " at pages/mine/index.uvue:56");
                     },
                     fail: function (e: IAppThemeFail) {
-                        console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg, " at pages/mine/index.uvue:52");
+                        console.log(`设置appTheme为 ${val} 失败,原因:`, e.errMsg, " at pages/mine/index.uvue:59");
                     }
                 });
             }
         };
         const onShow = () => {
-            console.log(688767868, " at pages/mine/index.uvue:59");
+            console.log(688767868, " at pages/mine/index.uvue:66");
         };
         const onToAbout = () => {
             uni.navigateTo({ url: '/pages/explanation/index' });
@@ -40,7 +46,8 @@ const __sfc__ = defineComponent({
         return (): any | null => {
             const _component_uni_badge_view = resolveEasyComponent("uni-badge-view", _easycom_uni_badge_view);
             return _cE("view", _uM({
-                class: _nC([`theme-${unref(state).appTheme}`, "page"])
+                class: _nC([`theme-${unref(state).appTheme}`, 'page']),
+                style: _nS(unref(style))
             }), [
                 _cV(unref(MyNavbar), null, _uM({
                     right: withSlotCtx((): any[] => [
@@ -58,10 +65,7 @@ const __sfc__ = defineComponent({
                                 }), _tD('\ue8C5'), 8 /* PROPS */, ["onClick"]),
                             _cV(_component_uni_badge_view, _uM({ text: "5" }), _uM({
                                 default: withSlotCtx((): any[] => [
-                                    _cE("text", _uM({
-                                        class: "icon nav-icon",
-                                        onClick: () => { onSetTheme('dark'); }
-                                    }), _tD('\ue8C7'), 8 /* PROPS */, ["onClick"])
+                                    _cE("text", _uM({ class: "icon nav-icon" }), _tD('\ue8C7'))
                                 ]),
                                 _: 1 /* STABLE */
                             }))
@@ -82,34 +86,34 @@ const __sfc__ = defineComponent({
                         _cE("text", _uM({ class: "h-text2" }), "等级")
                     ])
                 ]),
-                _cV(unref(MyCellGroup), null, _uM({
+                _cV(unref(MyCellGroup), _uM({ inset: true }), _uM({
                     default: withSlotCtx((): any[] => [
                         _cV(unref(MyCell), _uM({
                             title: "活动",
-                            arrow: ""
+                            arrow: true
                         })),
                         _cV(unref(MyCell), _uM({
                             title: "设置",
-                            arrow: "",
+                            arrow: true,
                             onClick: onToSetting
                         })),
                         _cV(unref(MyCell), _uM({
                             title: "反馈",
-                            arrow: "",
+                            arrow: true,
                             onClick: onToFeedback
                         })),
                         _cV(unref(MyCell), _uM({
                             title: "关于",
-                            arrow: "",
+                            arrow: true,
                             onClick: onToAbout
                         }))
                     ]),
                     _: 1 /* STABLE */
                 }))
-            ], 2 /* CLASS */);
+            ], 6 /* CLASS, STYLE */);
         };
     }
 });
 export default __sfc__;
-const GenPagesMineIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["nav-right", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["marginRight", 16]]))], ["nav-icon", _uM([[".nav-right ", _uM([["fontSize", 24], ["marginLeft", 12]])], [".card ", _uM([["lineHeight", "24px"]])]])], ["header", _pS(_uM([["marginTop", 12], ["marginRight", 16], ["marginBottom", 12], ["marginLeft", 16], ["display", "flex"], ["flexDirection", "row"]]))], ["header-avatar", _uM([[".header ", _uM([["width", 80], ["height", 80]])]])], ["h-right", _uM([[".header ", _uM([["marginLeft", 10], ["display", "flex"], ["justifyContent", "center"], ["overflow", "visible"]])]])], ["h-text1", _uM([[".header ", _uM([["color", "var(--text-color1)"], ["fontSize", 16]])]])], ["h-text2", _uM([[".header ", _uM([["marginTop", 4], ["fontSize", 14], ["color", "var(--text-color2)"]])]])], ["card", _pS(_uM([["marginTop", 12], ["marginRight", 16], ["marginBottom", 12], ["marginLeft", 16], ["borderTopLeftRadius", 16], ["borderTopRightRadius", 16], ["borderBottomRightRadius", 16], ["borderBottomLeftRadius", 16], ["overflow", "hidden"]]))]])];
+const GenPagesMineIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["nav-right", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["marginRight", 16]]))], ["nav-icon", _uM([[".nav-right ", _uM([["fontSize", 24], ["marginLeft", 12]])], [".card ", _uM([["lineHeight", "24px"]])]])], ["header", _pS(_uM([["marginTop", 12], ["marginRight", 16], ["marginBottom", 12], ["marginLeft", 16], ["display", "flex"], ["flexDirection", "row"]]))], ["header-avatar", _uM([[".header ", _uM([["width", 80], ["height", 80]])]])], ["h-right", _uM([[".header ", _uM([["marginLeft", 10], ["display", "flex"], ["justifyContent", "center"], ["overflow", "visible"]])]])], ["h-text1", _uM([[".header ", _uM([["color", "var(--text-color-1)"], ["fontSize", 16]])]])], ["h-text2", _uM([[".header ", _uM([["marginTop", 4], ["fontSize", 14], ["color", "var(--text-color-2)"]])]])], ["card", _pS(_uM([["marginTop", 12], ["marginRight", 16], ["marginBottom", 12], ["marginLeft", 16], ["borderTopLeftRadius", 16], ["borderTopRightRadius", 16], ["borderBottomRightRadius", 16], ["borderBottomLeftRadius", 16], ["overflow", "hidden"]]))]])];
 //# sourceMappingURL=index.uvue.map

@@ -26,15 +26,7 @@ open class GenComponnetsMyNavbar : VueComponent {
             val _cache = __ins.renderCache
             val props = __props
             val leftArrow = computed(fun(): Boolean {
-                return if (_uA(
-                    null,
-                    true,
-                    ""
-                ).includes(props.leftArrow)) {
-                    true
-                } else {
-                    false
-                }
+                return props.leftArrow ?: false
             }
             )
             val navbarHeight = computed(fun(): String {
@@ -80,7 +72,7 @@ open class GenComponnetsMyNavbar : VueComponent {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("my-navbar" to _pS(_uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "space-between", "position" to "relative")), "my-navbar-title" to _uM(".my-navbar " to _uM("position" to "absolute", "top" to "50%", "left" to "50%", "transform" to "translate(-50%, -50%)", "color" to "var(--text-color1)")), "my-navbar-right" to _uM(".my-navbar " to _uM("overflow" to "visible")), "nav-icon" to _uM(".my-navbar " to _uM("fontSize" to 24, "marginLeft" to 8)))
+                return _uM("navbar-status" to _pS(_uM("position" to "fixed", "width" to "100%")), "my-navbar" to _pS(_uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "space-between", "position" to "relative", "zIndex" to 99, "backgroundColor" to "var(--navbar-background)")), "my-navbar-title" to _uM(".my-navbar " to _uM("position" to "absolute", "top" to "50%", "left" to "50%", "transform" to "translate(-50%, -50%)", "color" to "var(--text-color-1)")), "my-navbar-right" to _uM(".my-navbar " to _uM("overflow" to "visible")), "nav-icon" to _uM(".my-navbar " to _uM("fontSize" to 24, "marginLeft" to 8)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

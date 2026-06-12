@@ -2,7 +2,7 @@ import { state, setAppTheme } from '@/store/index.uts'
 
 	type NavbarPropsType = { __$originalPosition?: UTSSourceMapPosition<"NavbarPropsType", "componnets/MyNavbar.uvue", 21, 7>;
 		title ?: string
-		leftArrow ?: Boolean
+		leftArrow ?: boolean
 		height ?: number
 	}
 
@@ -21,9 +21,7 @@ const _cache = __ins.renderCache;
 
 	const props = __props
 
-	const leftArrow = computed(() => {
-		return [null, true, ''].includes(props.leftArrow) ? true : false
-	})
+	const leftArrow = computed(() => props.leftArrow ?? false)
 
 	const navbarHeight = computed(() => (typeof (props.height) == 'number' ? props.height : state.navbarHeight) + 'px')
 
@@ -66,4 +64,4 @@ return (): any | null => {
 
 })
 export default __sfc__
-const GenComponnetsMyNavbarStyles = [_uM([["my-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "space-between"], ["position", "relative"]]))], ["my-navbar-title", _uM([[".my-navbar ", _uM([["position", "absolute"], ["top", "50%"], ["left", "50%"], ["transform", "translate(-50%, -50%)"], ["color", "var(--text-color1)"]])]])], ["my-navbar-right", _uM([[".my-navbar ", _uM([["overflow", "visible"]])]])], ["nav-icon", _uM([[".my-navbar ", _uM([["fontSize", 24], ["marginLeft", 8]])]])]])]
+const GenComponnetsMyNavbarStyles = [_uM([["navbar-status", _pS(_uM([["position", "fixed"], ["width", "100%"]]))], ["my-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "space-between"], ["position", "relative"], ["zIndex", 99], ["backgroundColor", "var(--navbar-background)"]]))], ["my-navbar-title", _uM([[".my-navbar ", _uM([["position", "absolute"], ["top", "50%"], ["left", "50%"], ["transform", "translate(-50%, -50%)"], ["color", "var(--text-color-1)"]])]])], ["my-navbar-right", _uM([[".my-navbar ", _uM([["overflow", "visible"]])]])], ["nav-icon", _uM([[".my-navbar ", _uM([["fontSize", 24], ["marginLeft", 8]])]])]])]

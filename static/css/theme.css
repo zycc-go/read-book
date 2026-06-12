@@ -15,15 +15,15 @@
 	--error-color: #f56c6c;
 	--error-color-1: #fff2f0;
 	--error-color-7: #cf5155;
-	--text-color1: #02070F;
-	--text-color2: #666;
-	--text-color3: #999;
-	--text-color4: #111;
-	--background-color1: rgba(0, 0, 0, 0.50);
-	--background-color2: #F5F5F5;
-	--background-color3: #FFF;
-	--background-color4: rgba(0, 0, 0, 0.04);
-	--background-color5: #FFF;
+	--text-color-1: #02070F;
+	--text-color-2: #666;
+	--text-color-3: #999;
+	--text-color-4: #111;
+	--background-color-1: rgba(0, 0, 0, 0.50);
+	--background-color-2: #F5F5F5;
+	--background-color-3: #FFF;
+	--background-color-4: rgba(0, 0, 0, 0.04);
+	--background-color-5: #FFF;
 	--cell-active-color: #f2f3f5;
 }
 
@@ -44,14 +44,14 @@
 	--error-color: #f56c6c;
 	--error-color-1: #fff2f0;
 	--error-color-7: #cf5155;
-	--text-color1: #F5F5F5;
-	--text-color2: #CCC;
-	--text-color3: #999;
-	--text-color4: #F5F5F5;
-	--background-color1: #111;
-	--background-color2: #222;
-	--background-color3: rgba(255, 255, 255, 0.13);
-	--background-color4: #333;
-	--background-color5: rgba(255, 255, 255, 0.13);
+	--text-color-1: #F5F5F5;
+	--text-color-2: #CCC;
+	--text-color-3: #999;
+	--text-color-4: #F5F5F5;
+	--background-color-1: #111;
+	--background-color-2: #222;
+	--background-color-3: rgba(255, 255, 255, 0.13);
+	--background-color-4: #333;
+	--background-color-5: rgba(255, 255, 255, 0.13);
 	--cell-active-color: #f2f3f5;
 }

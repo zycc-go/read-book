@@ -1,5 +1,5 @@
 <template>
-	<view :class="`theme-${state.appTheme}`" class="page">
+	<view :class="[`theme-${state.appTheme}`, 'page']" :style="style">
 		<my-navbar>
 			<template #right>
 				<view class="nav-right">
@@ -7,7 +7,7 @@
 						@click="onSetTheme('light')">{{ '\ue8C4' }}</text>
 					<text class="icon nav-icon" v-else @click="onSetTheme('dark')">{{ '\ue8C5' }}</text>
 					<uni-badge-view text="5">
-						<text class="icon nav-icon" @click="onSetTheme('dark')">{{ '\ue8C7' }}</text>
+						<text class="icon nav-icon">{{ '\ue8C7' }}</text>
 					</uni-badge-view>
 				</view>
 			</template>
@@ -23,11 +23,11 @@
 			</view>
 		</view>
 
-		<my-cell-group>
-			<my-cell title="活动" arrow />
-			<my-cell title="设置" arrow @click="onToSetting" />
-			<my-cell title="反馈" arrow @click="onToFeedback" />
-			<my-cell title="关于" arrow @click="onToAbout" />
+		<my-cell-group :inset="true" >
+			<my-cell title="活动" :arrow="true" />
+			<my-cell title="设置" :arrow="true" @click="onToSetting" />
+			<my-cell title="反馈" :arrow="true" @click="onToFeedback" />
+			<my-cell title="关于" :arrow="true" @click="onToAbout" />
 		</my-cell-group>
 	</view>
 </template>
@@ -38,6 +38,13 @@
 	import MyCell from '@/componnets/MyCell.uvue';
 	import MyCellGroup from '@/componnets/MyCellGroup.uvue';
 	import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts';
+	
+	const style = computed(() => {
+		return {
+			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+			paddingBottom: state.safeAreaInsetsHeight + 'px',
+		};
+	})
 
 	const onSetTheme = (val : 'light' | 'dark') => {
 		setAppTheme(val);
@@ -108,14 +115,14 @@
 		}
 
 		.h-text1 {
-			color: var(--text-color1);
+			color: var(--text-color-1);
 			font-size: $uni-font-size-16;
 		}
 
 		.h-text2 {
 			margin-top: $uni-spacing-col-sm;
 			font-size: $uni-font-size-base;
-			color: var(--text-color2);
+			color: var(--text-color-2);
 		}
 	}
 

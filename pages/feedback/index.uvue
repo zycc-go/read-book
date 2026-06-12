@@ -1,12 +1,11 @@
 <template>
-	<view :class="`theme-${state.appTheme}`" class="page">
+	<view :class="[`theme-${state.appTheme}`, 'page']" :style="style">
 		<my-navbar leftArrow title="反馈" />
 
 		<view class="card">
-			<rice-textarea v-model="value" placeholder="请输入内容" show-word-limit :maxlength="500" />
-			<view class="btn">
-				<rice-button type="primary" text="提交" @click="onSubmit"></rice-button>
-			</view>
+			<textarea class="textarea-instance" placeholder="请输入内容" :maxlength="500" :auto-focus="true"
+				:auto-height="true" :value="content" @input="onInput" />
+			<button class="btn" type="primary" @tap="onSubmit">提交</button>
 		</view>
 	</view>
 </template>
@@ -15,9 +14,25 @@
 	import { state } from '@/store/index.uts'
 	import MyNavbar from '@/componnets/MyNavbar.uvue';
 
-	const value = ref<string>('')
+	const style = computed(() => {
+		return {
+			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+			paddingBottom: state.safeAreaInsetsHeight + 'px',
+		};
+	})
+
+	const content = ref<string>('')
+
+	const onInput = (event : UniInputEvent) => {
+		content.value = event.detail.value
+	}
 
 	const onSubmit = () => {
+		// console.log('value', content.value)
+		if (content.value.length <= 0) {
+			uni.showToast({ title: '请输入内容', icon: 'error' })
+			return
+		}
 		uni.showLoading()
 		setTimeout(() => {
 			// 这里是提交操作
@@ -36,8 +51,19 @@
 	.card {
 		padding: $uni-spacing-col-lg $uni-spacing-row-lg;
 
+		.textarea-instance {
+			min-height: 140px;
+			width: 100%;
+			padding: $uni-spacing-col-12 $uni-spacing-row-12;
+			border-radius: $uni-border-radius-8;
+			font-size: $uni-font-size-base;
+			color: var(--text-color-1);
+			line-height: $uni-line-height-24;
+			background-color: var(--background-color-3);
+		}
+
 		.btn {
-			margin-top: $uni-spacing-col-lg;
+			margin-top: $uni-spacing-col-12;
 		}
 	}
 </style>
