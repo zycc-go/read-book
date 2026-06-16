@@ -1,24 +1,67 @@
 <template>
-	<view>
-		<rice-navbar :left-arrow="false" bg-color="#f8f8f8">
-		</rice-navbar>
+	<view :class="[`theme-${state.appTheme}`, 'page']" :style="style">
+		<my-navbar :leftArrow="false" title="书库" />
+
+		<view class="card">
+				下面是很多的分类。。。
+		</view>
 	</view>
 </template>
 
 <script setup lang="uts">
-	const title = ref('library')
-</script>
+	import { state } from '@/store/index.uts'
+	import MyNavbar from '@/componnets/MyNavbar.uvue';
 
-<style>
-	.logo {
-		height: 100px;
-		width: 100px;
-		margin: 100px auto 25px auto;
+	const style = computed(() => {
+		return {
+			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+			paddingBottom: state.safeAreaInsetsHeight + 'px',
+		};
+	})
+
+	const content = ref<string>('')
+
+	const onInput = (event : UniInputEvent) => {
+		content.value = event.detail.value
 	}
 
-	.title {
-		font-size: 18px;
-		color: #8f8f94;
-		text-align: center;
+	const onSubmit = () => {
+		// console.log('value', content.value)
+		if (content.value.length <= 0) {
+			uni.showToast({ title: '请输入内容', icon: 'error' })
+			return
+		}
+		uni.showLoading()
+		setTimeout(() => {
+			// 这里是提交操作
+			uni.hideLoading()
+		}, 1000)
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		background-color: var(--navbar-background);
+		height: 100%;
+		width: 100%;
+	}
+
+	.card {
+		padding: $uni-spacing-col-12 $uni-spacing-row-16;
+
+		.textarea-instance {
+			min-height: 140px;
+			width: 100%;
+			padding: $uni-spacing-col-12 $uni-spacing-row-16;
+			border-radius: $uni-border-radius-8;
+			font-size: $uni-font-size-14;
+			color: var(--text-color-1);
+			line-height: $uni-line-height-24;
+			background-color: var(--background-color-2);
+		}
+
+		.btn {
+			margin-top: $uni-spacing-col-12;
+		}
 	}
 </style>

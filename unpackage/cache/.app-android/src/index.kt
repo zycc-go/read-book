@@ -19,7 +19,6 @@ import io.dcloud.uniapp.extapi.getDeviceInfo as uni_getDeviceInfo
 import io.dcloud.uniapp.extapi.getFileSystemManager as uni_getFileSystemManager
 import io.dcloud.uniapp.extapi.getStorageSync as uni_getStorageSync
 import io.dcloud.uniapp.extapi.getWindowInfo as uni_getWindowInfo
-import io.dcloud.uniapp.extapi.rpx2px as uni_rpx2px
 import io.dcloud.uniapp.extapi.setAppTheme as uni_setAppTheme
 import io.dcloud.uniapp.extapi.setStorageSync as uni_setStorageSync
 import io.dcloud.uniapp.extapi.showToast as uni_showToast
@@ -109,7 +108,7 @@ fun tryConnectSocket(host: String, port: String, id: String): UTSPromise<SocketT
 fun initRuntimeSocketService(): UTSPromise<Boolean> {
     val hosts: String = "10.191.92.87,127.0.0.1"
     val port: String = "8090"
-    val id: String = "app-android_y6M929"
+    val id: String = "app-android_WSk4Yd"
     if (hosts == "" || port == "" || id == "") {
         return UTSPromise.resolve(false)
     }
@@ -490,14 +489,6 @@ val isDark = computed(fun(): Boolean {
     return config.theme == "dark"
 }
 )
-val addUnit = fun(value: Any): String {
-    val isNumeric = UTSAndroid.`typeof`(value) == "number" || UTSRegExp("^\\d+(\\.\\d+)?\$", "").test(value as String)
-    return if (isNumeric) {
-        "" + value + config.unit
-    } else {
-        (value as String).toString()
-    }
-}
 fun getRandomStr(length: Number = 10): String {
     val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     var result = ""
@@ -510,96 +501,6 @@ fun getRandomStr(length: Number = 10): String {
         }
     }
     return result
-}
-val hasStrValue = fun(reassignedStr: Any?): Boolean {
-    var str = reassignedStr
-    if (str == null) {
-        return false
-    }
-    if (UTSAndroid.`typeof`(str) != "string") {
-        str = (str as Number).toString()
-    }
-    return (str as String).trim().length > 0
-}
-fun getPxNum(reassignedValue: Any, totalWidth: Number = 0): Number {
-    var value = reassignedValue
-    if (UTSAndroid.`typeof`(value) == "number") {
-        if (config.unit != "rpx") {
-            return value as Number
-        }
-        value = (value as Number) + "rpx"
-    }
-    if ((value as String).endsWith("rpx")) {
-        return uni_rpx2px(parseFloat(value as String))
-    }
-    if ((value as String).endsWith("%")) {
-        return parseFloat(value as String) * 0.01 * totalWidth
-    }
-    return parseFloat(value as String)
-}
-open class UseNamespace (
-    open var b: (blockSuffix: String) -> String,
-    open var e: (element: String?) -> String,
-    open var m: (modifier: String?) -> String,
-    open var `is`: (name: String, state: Boolean?) -> String,
-    open var theme: () -> String,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("UseNamespace", "uni_modules/rice-ui/libs/use/useNamespace/index.uts", 3, 13)
-    }
-}
-val createBem = fun(block: String, blockSuffix: String, element: String, modifier: String): String {
-    var cls = block
-    if (blockSuffix != "") {
-        cls += "-" + blockSuffix
-    }
-    if (element != "") {
-        cls += "__" + element
-    }
-    if (modifier != "") {
-        cls += "--" + modifier
-    }
-    return cls
-}
-fun useNamespace(block: String): UseNamespace {
-    val prefix = "rice-" + block
-    val b = fun(blockSuffix: String): String {
-        return createBem(prefix, blockSuffix, "", "")
-    }
-    val e = fun(element: String?): String {
-        return if (hasStrValue(element)) {
-            createBem(prefix, "", element!!, "")
-        } else {
-            ""
-        }
-    }
-    val m = fun(modifier: String?): String {
-        return if (hasStrValue(modifier)) {
-            createBem(prefix, "", "", modifier!!)
-        } else {
-            ""
-        }
-    }
-    val kIs = fun(name: String, state: Boolean?): String {
-        val symbol = if ((name.startsWith("-") || name.startsWith("_"))) {
-            ""
-        } else {
-            "--"
-        }
-        return if (state == true) {
-            prefix + symbol + name
-        } else {
-            ""
-        }
-    }
-    val theme = fun(): String {
-        return if (isDark.value) {
-            "rice-theme-dark rice-variables"
-        } else {
-            "rice-theme-light rice-variables"
-        }
-    }
-    return UseNamespace(b = b, e = e, m = m, `is` = kIs, theme = theme)
 }
 fun __uts_large_presetColors_fill_fill_1(__obj: UTSJSONObject): Unit {
     __obj["aliceblue"] = "9ehhb"
@@ -2034,140 +1935,6 @@ open class PickerOption (
         return UTSSourceMapPosition("PickerOption", "uni_modules/rice-ui/components/rice-picker/type.uts", 1, 13)
     }
 }
-open class FontData (
-    @JsonNotNull
-    open var name: String,
-    @JsonNotNull
-    open var code: String,
-) : UTSObject(), IUTSSourceMap {
-    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("FontData", "uni_modules/rice-ui/components/rice-icon/font.uts", 1, 13)
-    }
-}
-val fontData = _uA(
-    FontData(name = "arrow-up", code = "\ueaa4"),
-    FontData(name = "arrow-down", code = "\ueaa1"),
-    FontData(name = "arrow-left", code = "\ueaa2"),
-    FontData(name = "arrow-right", code = "\ueaa3"),
-    FontData(name = "up", code = "\ueab1"),
-    FontData(name = "down", code = "\ueaa5"),
-    FontData(name = "left", code = "\ueaa9"),
-    FontData(name = "right", code = "\ueaab"),
-    FontData(name = "back-top", code = "\ueaae"),
-    FontData(name = "back-bottom", code = "\ueaad"),
-    FontData(name = "double-right", code = "\ueaa0"),
-    FontData(name = "double-left", code = "\ueaa7"),
-    FontData(name = "minus", code = "\uea7e"),
-    FontData(name = "plus", code = "\uea7d"),
-    FontData(name = "search", code = "\uea8c"),
-    FontData(name = "search-fill", code = "\uea89"),
-    FontData(name = "scan", code = "\uea67"),
-    FontData(name = "qr", code = "\ue6d8"),
-    FontData(name = "sort", code = "\ue6e2"),
-    FontData(name = "sort-menu", code = "\ueaac"),
-    FontData(name = "bars", code = "\ue69f"),
-    FontData(name = "remind-disabled", code = "\uea95"),
-    FontData(name = "remind", code = "\uea96"),
-    FontData(name = "volume", code = "\uea7c"),
-    FontData(name = "volume-fill", code = "\uea6f"),
-    FontData(name = "volume-up", code = "\uea78"),
-    FontData(name = "volume-up-fill", code = "\uea70"),
-    FontData(name = "volume-down", code = "\uea79"),
-    FontData(name = "volume-down-fill", code = "\uea73"),
-    FontData(name = "volume-mute", code = "\uea7a"),
-    FontData(name = "volume-mute-fill", code = "\uea72"),
-    FontData(name = "voice", code = "\uea77"),
-    FontData(name = "voice-off", code = "\uea7b"),
-    FontData(name = "play", code = "\uea76"),
-    FontData(name = "play-fill", code = "\uea71"),
-    FontData(name = "pause", code = "\uea75"),
-    FontData(name = "pause-fill", code = "\uea6e"),
-    FontData(name = "headset", code = "\uea74"),
-    FontData(name = "headset-fill", code = "\uea6d"),
-    FontData(name = "user", code = "\ueb30"),
-    FontData(name = "peoples", code = "\ueb2f"),
-    FontData(name = "peoples-fill", code = "\ueb2c"),
-    FontData(name = "trophy", code = "\ueb35"),
-    FontData(name = "trophy-fill", code = "\ueb33"),
-    FontData(name = "add", code = "\uea84"),
-    FontData(name = "add-fill", code = "\uea7f"),
-    FontData(name = "reduce", code = "\uea87"),
-    FontData(name = "reduce-fill", code = "\uea81"),
-    FontData(name = "checked-circle", code = "\uea86"),
-    FontData(name = "checked-circle-fill", code = "\uea80"),
-    FontData(name = "help", code = "\uea8a"),
-    FontData(name = "help-fill", code = "\uea82"),
-    FontData(name = "info", code = "\uea88"),
-    FontData(name = "info-fill", code = "\uea83"),
-    FontData(name = "cross", code = "\uea85"),
-    FontData(name = "checked", code = "\ue659"),
-    FontData(name = "camera", code = "\uea8f"),
-    FontData(name = "camera-fill", code = "\uea8b"),
-    FontData(name = "app", code = "\uea91"),
-    FontData(name = "app-fill", code = "\uea8d"),
-    FontData(name = "like", code = "\uea90"),
-    FontData(name = "like-fill", code = "\uea8e"),
-    FontData(name = "eyes", code = "\uea92"),
-    FontData(name = "eyes-close", code = "\uea94"),
-    FontData(name = "sleep", code = "\uea93"),
-    FontData(name = "sun", code = "\ueafe"),
-    FontData(name = "menu-fold", code = "\uea9e"),
-    FontData(name = "menu-unfold", code = "\uea9f"),
-    FontData(name = "upload", code = "\ueab2"),
-    FontData(name = "download", code = "\ueaa6"),
-    FontData(name = "full-screen", code = "\ueaa8"),
-    FontData(name = "off-screen", code = "\ueaaa"),
-    FontData(name = "switch", code = "\ueaaf"),
-    FontData(name = "revoke", code = "\ueab0"),
-    FontData(name = "comments", code = "\ueac3"),
-    FontData(name = "comments-fill", code = "\ueac2"),
-    FontData(name = "phone-call", code = "\ueaba"),
-    FontData(name = "phone-call-fill", code = "\ueab4"),
-    FontData(name = "phone-in", code = "\ueabc"),
-    FontData(name = "phone-in-fill", code = "\ueab5"),
-    FontData(name = "phone-out", code = "\ueabb"),
-    FontData(name = "phone-out-fill", code = "\ueab6"),
-    FontData(name = "phone", code = "\ueabd"),
-    FontData(name = "phone-fill", code = "\ueab7"),
-    FontData(name = "phone-missed", code = "\ueabe"),
-    FontData(name = "phone-missed-fill", code = "\ueab8"),
-    FontData(name = "location", code = "\ueac0"),
-    FontData(name = "location-fill", code = "\ueabf"),
-    FontData(name = "bluetooth", code = "\ueacb"),
-    FontData(name = "calendar", code = "\uead4"),
-    FontData(name = "calendar-fill", code = "\uead2"),
-    FontData(name = "clear", code = "\ueb34"),
-    FontData(name = "clear-fill", code = "\ueb32"),
-    FontData(name = "share", code = "\uea4e"),
-    FontData(name = "share-fill", code = "\uea3d"),
-    FontData(name = "edit", code = "\uea48"),
-    FontData(name = "delete", code = "\uea45"),
-    FontData(name = "delete-fill", code = "\uea37"),
-    FontData(name = "shopping", code = "\uea68"),
-    FontData(name = "shopping-fill", code = "\uea62"),
-    FontData(name = "wallet", code = "\uea69"),
-    FontData(name = "bag", code = "\uea6a"),
-    FontData(name = "set", code = "\ue6dc"),
-    FontData(name = "set-fill", code = "\ue6db"),
-    FontData(name = "replay", code = "\ue6dd"),
-    FontData(name = "home", code = "\ue6e9"),
-    FontData(name = "home-fill", code = "\ue6e8"),
-    FontData(name = "chat", code = "\ue6aa"),
-    FontData(name = "chat-fill", code = "\ue6a3"),
-    FontData(name = "good", code = "\ue6c3"),
-    FontData(name = "good-fill", code = "\ue6c2"),
-    FontData(name = "gift", code = "\ue6d4"),
-    FontData(name = "gift-fill", code = "\ue6d3"),
-    FontData(name = "loading", code = "\ue670"),
-    FontData(name = "photo", code = "\ue6cf"),
-    FontData(name = "photo-fail", code = "\ue6cd"),
-    FontData(name = "star", code = "\ue6ec"),
-    FontData(name = "star-fill", code = "\ue6ed"),
-    FontData(name = "trend", code = "\uea6b"),
-    FontData(name = "trend-fill", code = "\uea63"),
-    FontData(name = "file-success-fill", code = "\uea25"),
-    FontData(name = "file-success", code = "\uea2d")
-) as UTSArray<FontData>
 val formInjectKey = "FormKey-" + getRandomStr()
 val formDataInjectKey = "FormDataKey-" + getRandomStr()
 val formDisabledInjectKey = "FormDisabledContextKey-" + getRandomStr()
@@ -2192,19 +1959,22 @@ open class GenApp : BaseApp {
             var firstBackTime: Number = 0
             onLaunch(fun(_options){
                 console.log("App Launch", " at App.uvue:9")
-                checkSystemInfo()
+                setTimeout(fun(){
+                    checkSystemInfo()
+                }
+                , 500)
             }
             )
             onAppShow(fun(_options){
-                console.log("App Show", " at App.uvue:14")
+                console.log("App Show", " at App.uvue:16")
             }
             )
             onAppHide(fun(){
-                console.log("App Hide", " at App.uvue:25")
+                console.log("App Hide", " at App.uvue:27")
             }
             )
             onLastPageBackPress(fun(){
-                console.log("App LastPageBackPress", " at App.uvue:30")
+                console.log("App LastPageBackPress", " at App.uvue:32")
                 if (firstBackTime == 0) {
                     uni_showToast(ShowToastOptions(title = "再按一次退出应用", position = "bottom"))
                     firstBackTime = Date.now()
@@ -2218,7 +1988,7 @@ open class GenApp : BaseApp {
             }
             )
             onExit(fun(){
-                console.log("App Exit", " at App.uvue:47")
+                console.log("App Exit", " at App.uvue:49")
             }
             )
             return fun(): Any? {
@@ -2232,7 +2002,7 @@ open class GenApp : BaseApp {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#e6f7ff", "--rice-primary-color-7" to "#0b68d4", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "#fff", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#fff", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#111c2b", "--rice-primary-color-7" to "#3d98e8", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#11231b", "--rice-success-color-7" to "#27bc6a", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#281f15", "--rice-warning-color-7" to "#dcae5e", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#2a1a1b", "--rice-error-color-7" to "#e88e8c", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "#242424", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "theme-light" to _pS(_uM("--navbar-background" to "#f5f5f5", "--search-background" to "transparent", "--search-input-background" to "rgba(0, 0, 0, 0.04)", "--primary-color" to "#845ec2", "--primary-color-1" to "#b7abc2", "--primary-color-7" to "#782ec2", "--success-color" to "#4d8076", "--success-color-1" to "#4d8076", "--success-color-7" to "#4d8076", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color-1" to "#02070F", "--text-color-2" to "#666", "--text-color-3" to "#999", "--text-color-4" to "#111", "--background-color-1" to "rgba(0, 0, 0, 0.50)", "--background-color-2" to "#F5F5F5", "--background-color-3" to "#FFF", "--background-color-4" to "rgba(0, 0, 0, 0.04)", "--background-color-5" to "#FFF", "--cell-active-color" to "#f2f3f5")), "theme-dark" to _pS(_uM("--navbar-background" to "#181818", "--search-background" to "transparent", "--search-input-background" to "#333", "--primary-color" to "#6235c2", "--primary-color-1" to "#a391c2", "--primary-color-7" to "#aa97c2", "--success-color" to "#0d8063", "--success-color-1" to "#e6ffee", "--success-color-7" to "#009c50", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color-1" to "#F5F5F5", "--text-color-2" to "#CCC", "--text-color-3" to "#999", "--text-color-4" to "#F5F5F5", "--background-color-1" to "#111", "--background-color-2" to "#222", "--background-color-3" to "rgba(255, 255, 255, 0.13)", "--background-color-4" to "#333", "--background-color-5" to "rgba(255, 255, 255, 0.13)", "--cell-active-color" to "#f2f3f5")), "icon" to _pS(_uM("fontFamily" to "vant-icon", "color" to "var(--text-color-1)")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "justify-between" to _pS(_uM("justifyContent" to "space-between")), "justify-around" to _pS(_uM("justifyContent" to "space-around")), "@FONT-FACE" to _uM("0" to _uM("fontFamily" to "vant-icon", "src" to "url('/static/vant-icon.ttf')")))
+                return _uM("rice-safe-area-top" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-top)")), "rice-safe-area-bottom" to _pS(_uM("paddingBottom" to "var(--uni-safe-area-inset-bottom)")), "rice-theme-light" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#e6f7ff", "--rice-primary-color-7" to "#0b68d4", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#e6ffee", "--rice-success-color-7" to "#009c50", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#fffbe8", "--rice-warning-color-7" to "#bf7e28", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#fff2f0", "--rice-error-color-7" to "#cf5155", "--rice-text-color" to "#323233", "--rice-text-color-2" to "#969799", "--rice-text-color-3" to "#c8c9cc", "--rice-text-color-white" to "#fff", "--rice-border-color" to "#ebedf0", "--rice-background" to "#f7f8fa", "--rice-background-2" to "#fff", "--rice-hover-color" to "#f2f3f5", "--rice-button-default-border" to "#eaecf1", "--rice-button-default-background" to "#fff", "--rice-button-default-hover-background" to "#f1f1f1", "--rice-button-info-background" to "#e1e1e1", "--rice-button-info-hover-background" to "#c1c1c1", "--rice-tag-default-border" to "#dcdfe6", "--rice-divider-line-color" to "#d6d7d9", "--rice-image-placeholder-background" to "#f7f8fa", "--rice-progress-background" to "#ebedf0", "--rice-skeleton-background" to "#f2f3f5", "--rice-checkbox-disabled-background" to "#ebedf0", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#c8c9cc", "--rice-radio-disabled-background" to "#ebedf0", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#c8c9cc", "--rice-switch-background" to "#dcdcdc", "--rice-stepper-background" to "#f2f3f5", "--rice-input-border-color" to "#dcdfe6", "--rice-input-disabled-background" to "#f5f7fa", "--rice-input-disabled-text-color" to "#c0c4cc", "--rice-textarea-background" to "#fff", "--rice-textarea-border-color" to "#dcdfe6", "--rice-textarea-disabled-background" to "#f5f7fa", "--rice-textarea-disabled-text-color" to "#c0c4cc", "--rice-search-background" to "#fff", "--rice-search-input-background" to "#f7f8fa", "--rice-signature-border-color" to "#dadada", "--rice-signature-background" to "#fff", "--rice-overlay-background" to "rgba(0, 0, 0, .7)", "--rice-action-sheet-background" to "#f3f3f3", "--rice-action-sheet-menu-background" to "#fff", "--rice-action-sheet-hover-background" to "#f2f3f5", "--rice-action-sheet-cancel-text-color" to "#646566", "--rice-action-sheet-menu-disabled-text-color" to "#c8c9cc", "--rice-dialog-message-text-color" to "#969799", "--rice-navbar-background" to "#fff", "--rice-tabs-disabled-text-color" to "#c8c9cc", "--rice-cell-background" to "#fff", "--rice-collapse-background" to "#fff", "--rice-grid-background" to "#fff", "--rice-picker-background" to "#fff", "--rice-picker-loading-background" to "rgba(255, 255, 255, .8)", "--rice-picker-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-back-top-background" to "#fff", "--rice-tabs-background" to "#fff", "--rice-dialog-background" to "#fff", "--rice-slider-inactive-background" to "#dcdcdc", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#cdd0d6", "--rice-calendar-background" to "#fff", "--rice-calendar-info-text" to "#969799", "--rice-calendar-disabled-text" to "#c8c9cc", "--rice-cascader-background" to "#fff", "--rice-cascader-disabled-text-color" to "rgba(0, 0, 0, .26)", "--rice-code-input-background" to "#f2f2f2", "--rice-scroll-x-indicator-background" to "#f1f1f1", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#e7e7e7", "--rice-uploader-background" to "#f7f8fa")), "rice-theme-dark" to _pS(_uM("--rice-primary-color" to "#1989fa", "--rice-primary-color-1" to "#111c2b", "--rice-primary-color-7" to "#3d98e8", "--rice-success-color" to "#07c160", "--rice-success-color-1" to "#11231b", "--rice-success-color-7" to "#27bc6a", "--rice-warning-color" to "#e6a23c", "--rice-warning-color-1" to "#281f15", "--rice-warning-color-7" to "#dcae5e", "--rice-error-color" to "#f56c6c", "--rice-error-color-1" to "#2a1a1b", "--rice-error-color-7" to "#e88e8c", "--rice-border-color" to "#3a3a3c", "--rice-text-color" to "#f5f5f5", "--rice-text-color-2" to "#707070", "--rice-text-color-3" to "#4d4d4d", "--rice-text-color-white" to "#f5f5f5", "--rice-background" to "#181818", "--rice-background-2" to "#242424", "--rice-hover-color" to "#3a3a3c", "--rice-button-default-border" to "#383838", "--rice-button-default-background" to "#383838", "--rice-button-default-hover-background" to "#4b4b4b", "--rice-button-info-background" to "#2b2b2b", "--rice-button-info-hover-background" to "#3b3b3b", "--rice-tag-default-border" to "#a5a5a5", "--rice-divider-line-color" to "#3a3a3c", "--rice-image-placeholder-background" to "#262727", "--rice-progress-background" to "#363637", "--rice-skeleton-background" to "#3a3a3c", "--rice-checkbox-disabled-background" to "#3a3a3c", "--rice-checkbox-border-color" to "#c8c9cc", "--rice-checkbox-disabled-border-color" to "#c8c9cc", "--rice-checkbox-label-disabled-color" to "#4d4d4d", "--rice-radio-disabled-background" to "#3a3a3c", "--rice-radio-border-color" to "#c8c9cc", "--rice-radio-disabled-border-color" to "#c8c9cc", "--rice-radio-label-disabled-color" to "#4d4d4d", "--rice-switch-background" to "#3a3a3a", "--rice-stepper-background" to "#3a3a3c", "--rice-input-border-color" to "#4c4d4f", "--rice-input-disabled-background" to "#262727", "--rice-input-disabled-text-color" to "#8d9095", "--rice-textarea-background" to "#242424", "--rice-textarea-border-color" to "#4c4d4f", "--rice-textarea-disabled-background" to "#262727", "--rice-textarea-disabled-text-color" to "#8d9095", "--rice-search-input-background" to "#181818", "--rice-search-background" to "#242424", "--rice-signature-background" to "#242424", "--rice-signature-border-color" to "#dadada", "--rice-cell-background" to "#242424", "--rice-collapse-background" to "#242424", "--rice-grid-background" to "#242424", "--rice-overlay-background" to "rgba(0, 0, 0, .6)", "--rice-action-sheet-background" to "#181818", "--rice-action-sheet-menu-background" to "#242424", "--rice-action-sheet-hover-background" to "#3a3a3c", "--rice-action-sheet-cancel-text-color" to "#a6acaf", "--rice-action-sheet-menu-disabled-text-color" to "#4d4d4d", "--rice-dialog-message-text-color" to "rgba(255, 255, 255, .55)", "--rice-navbar-background" to "#181818", "--rice-tabs-disabled-text-color" to "#4d4d4d", "--rice-picker-background" to "#181818", "--rice-picker-loading-background" to "rgba(0, 0, 0, .7)", "--rice-picker-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-back-top-background" to "#242424", "--rice-tabs-background" to "#242424", "--rice-dialog-background" to "#242424", "--rice-slider-inactive-background" to "#383838", "--rice-rate-color" to "#ee0a24", "--rice-rate-void-color" to "#636466", "--rice-calendar-background" to "#242424", "--rice-calendar-info-text" to "#cdcbcb", "--rice-calendar-disabled-text" to "#646566", "--rice-cascader-background" to "#242424", "--rice-cascader-disabled-text-color" to "rgba(255, 255, 255, .35)", "--rice-code-input-background" to "#242424", "--rice-scroll-x-indicator-background" to "#262727", "--rice-form-error-color" to "#ee0a24", "--rice-form-item-border" to "#3a3a3c", "--rice-uploader-background" to "#262727")), "rice-variables" to _pS(_uM("--rice-black" to "#000", "--rice-white" to "#fff", "--rice-padding-base" to "4px", "--rice-padding-xs" to "8px", "--rice-padding-sm" to "12px", "--rice-padding-md" to "16px", "--rice-padding-lg" to "24px", "--rice-font-size-mi" to "10px", "--rice-font-size-xs" to "12px", "--rice-font-size-sm" to "14px", "--rice-font-size-basic" to "15px", "--rice-font-size-md" to "16px", "--rice-font-size-lg" to "18px", "--rice-radius-xs" to "2px", "--rice-radius-sm" to "4px", "--rice-radius-md" to "8px", "--rice-radius-lg" to "12px")), "theme-light" to _pS(_uM("--navbar-background" to "#f5f5f5", "--search-background" to "transparent", "--search-input-background" to "rgba(0, 0, 0, 0.04)", "--primary-color" to "#1989fa", "--success-color" to "#07c160", "--warning-color" to "#ff976a", "--error-color" to "#ee0a24", "--text-color-1" to "#02070F", "--text-color-2" to "#666", "--text-color-3" to "#999", "--text-color-4" to "#111", "--background-color-1" to "rgba(0, 0, 0, 0.50)", "--background-color-2" to "#FFF", "--cell-active-color" to "#f2f3f5")), "theme-dark" to _pS(_uM("--navbar-background" to "#181818", "--search-background" to "transparent", "--search-input-background" to "#333", "--primary-color" to "#1989fa", "--success-color" to "#07c160", "--warning-color" to "#ff976a", "--error-color" to "#ee0a24", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color-1" to "#F5F5F5", "--text-color-2" to "#CCC", "--text-color-3" to "#999", "--text-color-4" to "#F5F5F5", "--background-color-1" to "#111", "--background-color-2" to "rgba(255, 255, 255, 0.13)", "--cell-active-color" to "#3a3a3c")), "icon" to _pS(_uM("fontFamily" to "vant-icon", "color" to "var(--text-color-1)")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "justify-between" to _pS(_uM("justifyContent" to "space-between")), "justify-around" to _pS(_uM("justifyContent" to "space-around")), "@FONT-FACE" to _uM("0" to _uM("fontFamily" to "vant-icon", "src" to "url('/static/vant-icon.ttf')")))
             }
     }
 }
@@ -2288,26 +2058,6 @@ val GenPagesBookcaseIndexClass = CreateVueComponent(GenPagesBookcaseIndex::class
 }
 , fun(instance, renderer): GenPagesBookcaseIndex {
     return GenPagesBookcaseIndex(instance, renderer)
-}
-)
-val GenUniModulesRiceUiComponentsRiceIconRiceIconClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceIconRiceIcon::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceIconRiceIcon.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceIconRiceIcon.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceIconRiceIcon.inject, props = GenUniModulesRiceUiComponentsRiceIconRiceIcon.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceIconRiceIcon.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceIconRiceIcon.emits, components = GenUniModulesRiceUiComponentsRiceIconRiceIcon.components, styles = GenUniModulesRiceUiComponentsRiceIconRiceIcon.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceIconRiceIcon.setup(props as GenUniModulesRiceUiComponentsRiceIconRiceIcon)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceIconRiceIcon {
-    return GenUniModulesRiceUiComponentsRiceIconRiceIcon(instance)
-}
-)
-val GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass = CreateVueComponent(GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(type = "component", name = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.name, inheritAttrs = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.inheritAttrs, inject = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.inject, props = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.props, propsNeedCastKeys = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.propsNeedCastKeys, emits = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.emits, components = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.components, styles = GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.styles, setup = fun(props: ComponentPublicInstance): Any? {
-        return GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar.setup(props as GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar)
-    }
-    )
-}
-, fun(instance, renderer): GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar {
-    return GenUniModulesRiceUiComponentsRiceNavbarRiceNavbar(instance)
 }
 )
 val GenPagesLibraryIndexClass = CreateVueComponent(GenPagesLibraryIndex::class.java, fun(): VueComponentOptions {
@@ -2556,14 +2306,26 @@ val discussListFun = fun(): UTSArray<DiscussItem> {
     }
     return aa
 }
+val GenPagesDiscussContentClass = CreateVueComponent(GenPagesDiscussContent::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = "", inheritAttrs = GenPagesDiscussContent.inheritAttrs, inject = GenPagesDiscussContent.inject, props = GenPagesDiscussContent.props, propsNeedCastKeys = GenPagesDiscussContent.propsNeedCastKeys, emits = GenPagesDiscussContent.emits, components = GenPagesDiscussContent.components, styles = GenPagesDiscussContent.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesDiscussContent.setup(props as GenPagesDiscussContent)
+    }
+    )
+}
+, fun(instance, renderer): GenPagesDiscussContent {
+    return GenPagesDiscussContent(instance)
+}
+)
 open class BadgeItem (
     @JsonNotNull
     open var name: String,
+    @JsonNotNull
+    open var isRender: Boolean = false,
     open var isDot: Boolean? = null,
     open var dotNum: Number? = null,
 ) : UTSReactiveObject(), IUTSSourceMap {
     override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("BadgeItem", "pages/discuss/index.uvue", 67, 7)
+        return UTSSourceMapPosition("BadgeItem", "pages/discuss/index.uvue", 36, 7)
     }
     override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
         return BadgeItemReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
@@ -2574,7 +2336,7 @@ class BadgeItemReactiveObject : BadgeItem, IUTSReactive<BadgeItem> {
     override var __v_isReadonly: Boolean
     override var __v_isShallow: Boolean
     override var __v_skip: Boolean
-    constructor(__v_raw: BadgeItem, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(name = __v_raw.name, isDot = __v_raw.isDot, dotNum = __v_raw.dotNum) {
+    constructor(__v_raw: BadgeItem, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(name = __v_raw.name, isRender = __v_raw.isRender, isDot = __v_raw.isDot, dotNum = __v_raw.dotNum) {
         this.__v_raw = __v_raw
         this.__v_isReadonly = __v_isReadonly
         this.__v_isShallow = __v_isShallow
@@ -2594,6 +2356,18 @@ class BadgeItemReactiveObject : BadgeItem, IUTSReactive<BadgeItem> {
             val oldValue = __v_raw.name
             __v_raw.name = value
             _tRS(__v_raw, "name", oldValue, value)
+        }
+    override var isRender: Boolean
+        get() {
+            return _tRG(__v_raw, "isRender", __v_raw.isRender, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("isRender")) {
+                return
+            }
+            val oldValue = __v_raw.isRender
+            __v_raw.isRender = value
+            _tRS(__v_raw, "isRender", oldValue, value)
         }
     override var isDot: Boolean?
         get() {
@@ -2800,7 +2574,7 @@ open class UniAppConfig : io.dcloud.uniapp.appframe.AppConfig {
     override var appid: String = "__UNI__194B5B1"
     override var versionName: String = "1.0.0"
     override var versionCode: String = "100"
-    override var uniCompilerVersion: String = "5.12"
+    override var uniCompilerVersion: String = "5.13"
     constructor() : super() {}
 }
 fun definePageRoutes() {
@@ -2808,10 +2582,10 @@ fun definePageRoutes() {
     __uniRoutes.push(UniPageRoute(path = "pages/library/index", component = GenPagesLibraryIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/discuss/index", component = GenPagesDiscussIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/mine/index", component = GenPagesMineIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
-    __uniRoutes.push(UniPageRoute(path = "pages/search/index", component = GenPagesSearchIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "搜索")))
-    __uniRoutes.push(UniPageRoute(path = "pages/setting/index", component = GenPagesSettingIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "设置")))
+    __uniRoutes.push(UniPageRoute(path = "pages/search/index", component = GenPagesSearchIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
+    __uniRoutes.push(UniPageRoute(path = "pages/setting/index", component = GenPagesSettingIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/feedback/index", component = GenPagesFeedbackIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
-    __uniRoutes.push(UniPageRoute(path = "pages/explanation/index", component = GenPagesExplanationIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "声明")))
+    __uniRoutes.push(UniPageRoute(path = "pages/explanation/index", component = GenPagesExplanationIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
 }
 val __uniTabBar: Map<String, Any?>? = _uM("color" to "@tabBarColor", "selectedColor" to "@tabBarSelectedColor", "borderStyle" to "@tabBarBorderStyle", "backgroundColor" to "@tabBarBackgroundColor", "list" to _uA(
     _uM("pagePath" to "pages/bookcase/index", "iconPath" to "@tabBarIconPath1", "selectedIconPath" to "@tabBarSelectedIconPath1", "text" to "书架"),

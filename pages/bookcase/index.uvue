@@ -147,7 +147,7 @@
 					line-height: 8px;
 					background-color: yellowgreen;
 					color: #fff;
-					border-radius: $uni-border-radius-base;
+					border-radius: $uni-border-radius-4;
 				}
 			}
 

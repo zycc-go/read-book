@@ -18,7 +18,7 @@ export class UniAppConfig extends io.dcloud.uniapp.appframe.AppConfig {
     override appid: string = "__UNI__194B5B1"
     override versionName: string = "1.0.0"
     override versionCode: string = "100"
-    override uniCompilerVersion: string = "5.12"
+    override uniCompilerVersion: string = "5.13"
     
     constructor() { super() }
 }
@@ -36,10 +36,10 @@ __uniRoutes.push({ path: "pages/bookcase/index", component: GenPagesBookcaseInde
 __uniRoutes.push({ path: "pages/library/index", component: GenPagesLibraryIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/discuss/index", component: GenPagesDiscussIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/mine/index", component: GenPagesMineIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
-__uniRoutes.push({ path: "pages/search/index", component: GenPagesSearchIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText","搜索"]]) } as UniPageRoute)
-__uniRoutes.push({ path: "pages/setting/index", component: GenPagesSettingIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText","设置"]]) } as UniPageRoute)
+__uniRoutes.push({ path: "pages/search/index", component: GenPagesSearchIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
+__uniRoutes.push({ path: "pages/setting/index", component: GenPagesSettingIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/feedback/index", component: GenPagesFeedbackIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
-__uniRoutes.push({ path: "pages/explanation/index", component: GenPagesExplanationIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText","声明"]]) } as UniPageRoute)
+__uniRoutes.push({ path: "pages/explanation/index", component: GenPagesExplanationIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 }
 const __uniTabBar: Map<string, any | null> | null = _uM([["color","@tabBarColor"],["selectedColor","@tabBarSelectedColor"],["borderStyle","@tabBarBorderStyle"],["backgroundColor","@tabBarBackgroundColor"],["list",[_uM([["pagePath","pages/bookcase/index"],["iconPath","@tabBarIconPath1"],["selectedIconPath","@tabBarSelectedIconPath1"],["text","书架"]]),_uM([["pagePath","pages/library/index"],["iconPath","@tabBarIconPath2"],["selectedIconPath","@tabBarSelectedIconPath2"],["text","书库"]]),_uM([["pagePath","pages/discuss/index"],["iconPath","@tabBarIconPath3"],["selectedIconPath","@tabBarSelectedIconPath3"],["text","讨论"]]),_uM([["pagePath","pages/mine/index"],["iconPath","@tabBarIconPath4"],["selectedIconPath","@tabBarSelectedIconPath4"],["text","我的"]])]]])
 const __uniLaunchPage: Map<string, any | null> = _uM([["url","pages/bookcase/index"],["style",_uM([["navigationBarTitleText",""]])]])

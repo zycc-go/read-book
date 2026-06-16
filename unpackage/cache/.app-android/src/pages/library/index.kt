@@ -20,12 +20,19 @@ open class GenPagesLibraryIndex : BasePage {
             val __ins = getCurrentInstance()!!
             val _ctx = __ins.proxy as GenPagesLibraryIndex
             val _cache = __ins.renderCache
-            val title = ref("library")
+            val style = computed(fun(): UTSJSONObject {
+                return _uO("paddingTop" to (state.statusBarHeight + state.navbarHeight + "px"), "paddingBottom" to (state.safeAreaInsetsHeight + "px"))
+            }
+            )
+            val content = ref<String>("")
             return fun(): Any? {
-                val _component_rice_navbar = resolveEasyComponent("rice-navbar", GenUniModulesRiceUiComponentsRiceNavbarRiceNavbarClass)
-                return _cE("view", null, _uA(
-                    _cV(_component_rice_navbar, _uM("left-arrow" to false, "bg-color" to "#f8f8f8"))
-                ))
+                return _cE("view", _uM("class" to _nC(_uA(
+                    "theme-" + unref(state).appTheme,
+                    "page"
+                )), "style" to _nS(unref(style))), _uA(
+                    _cV(unref(GenComponnetsMyNavbarClass), _uM("leftArrow" to false, "title" to "书库")),
+                    _cE("view", _uM("class" to "card"), " 下面是很多的分类。。。 ")
+                ), 6)
             }
         }
         val styles: Map<String, Map<String, Map<String, Any>>> by lazy {
@@ -35,7 +42,7 @@ open class GenPagesLibraryIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("logo" to _pS(_uM("height" to 100, "width" to 100, "marginTop" to 100, "marginRight" to "auto", "marginBottom" to 25, "marginLeft" to "auto")), "title" to _pS(_uM("fontSize" to 18, "color" to "#8f8f94", "textAlign" to "center")))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16)), "textarea-instance" to _uM(".card " to _uM("minHeight" to 140, "width" to "100%", "paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16, "borderTopLeftRadius" to 8, "borderTopRightRadius" to 8, "borderBottomRightRadius" to 8, "borderBottomLeftRadius" to 8, "fontSize" to 14, "color" to "var(--text-color-1)", "lineHeight" to "24px", "backgroundColor" to "var(--background-color-2)")), "btn" to _uM(".card " to _uM("marginTop" to 12)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

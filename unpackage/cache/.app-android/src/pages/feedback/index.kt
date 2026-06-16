@@ -64,7 +64,7 @@ open class GenPagesFeedbackIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 15, "paddingBottom" to 12, "paddingLeft" to 15)), "textarea-instance" to _uM(".card " to _uM("minHeight" to 140, "width" to "100%", "paddingTop" to 12, "paddingRight" to 12, "paddingBottom" to 12, "paddingLeft" to 12, "borderTopLeftRadius" to 8, "borderTopRightRadius" to 8, "borderBottomRightRadius" to 8, "borderBottomLeftRadius" to 8, "fontSize" to 14, "color" to "var(--text-color-1)", "lineHeight" to "24px", "backgroundColor" to "var(--background-color-3)")), "btn" to _uM(".card " to _uM("marginTop" to 12)))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "height" to "100%", "width" to "100%")), "card" to _pS(_uM("paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16)), "textarea-instance" to _uM(".card " to _uM("minHeight" to 140, "width" to "100%", "paddingTop" to 12, "paddingRight" to 16, "paddingBottom" to 12, "paddingLeft" to 16, "borderTopLeftRadius" to 8, "borderTopRightRadius" to 8, "borderBottomRightRadius" to 8, "borderBottomLeftRadius" to 8, "fontSize" to 14, "color" to "var(--text-color-1)", "lineHeight" to "24px", "backgroundColor" to "var(--background-color-2)")), "btn" to _uM(".card " to _uM("marginTop" to 12)))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

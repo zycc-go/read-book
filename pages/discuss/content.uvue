@@ -1,0 +1,159 @@
+<template>
+	<list-view style="flex:1" :refresher-enabled="true" :refresher-triggered="refresherTriggered"
+		@refresherrefresh="onRefresherrefresh">
+		<list-item v-for="(item, index) in discussListC" :key="item.id"
+			:class="{ 'item-card': true, 'item-card-first': index == 0 }">
+			<view class="item-top">
+				<MyAvatar />
+				<view class="item-text">
+					<text class="item-tit">{{ item.name }}</text>
+				</view>
+			</view>
+			<text class="item-content">{{ item.content }}</text>
+			<view class="item-bottom">
+				<view class="item-hand" @click="onHandle(item, 'good')">
+					<text
+						:class="{ 'icon': true, 'icon-active': item.isGood }">{{ item.isGood ? '\ue8C3' : '\ue8AD' }}</text>
+					<text
+						:class="{'item-hand-num':true, 'item-hand-num-active': item.isGood}">&nbsp;{{ item.goodNum }}</text>
+				</view>
+				<view class="item-hand" @click="onHandle(item, 'like')">
+					<text
+						:class="{ 'icon': true, 'icon-active': item.isLike }">{{ item.isLike ? '\ue6d4' : '\ue6d7' }}</text>
+					<text
+						:class="{'item-hand-num':true, 'item-hand-num-active': item.isLike}">&nbsp;{{ item.likeNum }}</text>
+				</view>
+				<view class="item-hand">
+					<text class="icon">{{ '\ue6B3' }}</text>
+					<text class="item-hand-num">&nbsp;{{ item.viewNum }}</text>
+				</view>
+				<view class="item-hand" @click="onHandle(item, 'share')">
+					<text class="icon">{{ '\ue716' }}</text>
+					<text class="item-hand-num">&nbsp;{{ item.shareNum }}</text>
+				</view>
+			</view>
+		</list-item>
+	</list-view>
+</template>
+
+<script setup lang="uts">
+	import MyAvatar from '@/componnets/MyAvatar.uvue'
+	import { discussListFun, type DiscussItem } from '@/data/discuss'
+
+	type ContentPropsType = {
+		isRender : boolean
+	}
+
+	const props = defineProps<ContentPropsType>()
+
+	const emit = defineEmits(['changeRender'])
+
+	const scrollTop = ref<number>(0)
+
+	const refresherTriggered = ref<boolean>(false)
+
+	const loadinghandle = ref<boolean>(false)
+
+	const discussListC = ref<DiscussItem[]>([])
+
+	const onHandle = (item : DiscussItem, val : string) => {
+		if (!loadinghandle.value) {
+			uni.showToast({ title: val, icon: 'none' })
+			loadinghandle.value = true
+			setTimeout(() => {
+				loadinghandle.value = false
+				const index = discussListC.value.findIndex(discuss => discuss.id == item.id)
+				const keyIs = `is${val.charAt(0).toUpperCase() + val.slice(1)}`
+				const keyNum = `${val}Num`
+				if (['good', 'like'].includes(val)) {
+					if (discussListC.value[index][keyIs] as boolean) {
+						discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as number - 1
+					} else {
+						discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as number + 1
+					}
+					discussListC.value[index][keyIs] = !(discussListC.value[index][keyIs] as boolean)
+				} else {
+					discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as number + 1
+				}
+				uni.hideToast()
+			}, 1000)
+		}
+	}
+
+	const onRefresherrefresh = () => {
+		refresherTriggered.value = true
+		setTimeout(() => {
+			discussListC.value = discussListFun()
+			refresherTriggered.value = false
+			emit('changeRender')
+		}, 2000)
+	}
+
+	watchEffect(() => {
+		if (props.isRender) {
+			onRefresherrefresh()
+		}
+	})
+
+	onPageScroll((options : OnPageScrollOptions) => {
+		scrollTop.value = options.scrollTop
+	})
+</script>
+
+<style lang="scss" scoped>
+	.item-card-first {
+		// padding-top: 0 $uni-spacing-col-12 $uni-spacing-row-16;
+	}
+
+	.item-card {
+		margin: 0 $uni-spacing-col-12 $uni-spacing-row-16;
+		padding: $uni-spacing-col-12 $uni-spacing-row-16;
+		background-color: var(--background-color-2);
+		border-radius: $uni-border-radius-8;
+
+		.item-top {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			.item-text {
+				margin-left: $uni-spacing-row-4;
+
+				.item-tit {
+					color: var(--text-color-1);
+				}
+			}
+		}
+
+		.item-content {
+			padding: $uni-spacing-col-12 0;
+			color: var(--text-color-2);
+		}
+
+		.item-bottom {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+		}
+
+		.item-hand {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			flex: 1;
+
+			.item-hand-num {
+				font-size: $uni-font-size-12;
+				color: var(--text-color-2);
+			}
+
+			.icon-active,
+			.item-hand-num-active {
+				color: var(--error-color);
+			}
+
+		}
+	}
+</style>

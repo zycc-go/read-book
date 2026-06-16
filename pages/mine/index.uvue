@@ -108,7 +108,7 @@
 		}
 
 		.h-right {
-			margin-left: $uni-spacing-row-base;
+			margin-left: $uni-spacing-row-12;
 			display: flex;
 			justify-content: center;
 			overflow: visible;
@@ -120,8 +120,8 @@
 		}
 
 		.h-text2 {
-			margin-top: $uni-spacing-col-sm;
-			font-size: $uni-font-size-base;
+			margin-top: $uni-spacing-col-4;
+			font-size: $uni-font-size-14;
 			color: var(--text-color-2);
 		}
 	}

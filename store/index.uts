@@ -94,7 +94,7 @@ export const checkSystemInfo = () => {
 	const appBaseInfo: GetAppBaseInfoResult = uni.getAppBaseInfo();
 	const deviceInfo: GetDeviceInfoResult = uni.getDeviceInfo();
 	const windowInfo = uni.getWindowInfo();
-		console.log('windowInfo',windowInfo)
+	console.log('windowInfo',windowInfo)
 	state.uniPlatform = appBaseInfo.uniPlatform ?? '';
 	state.statusBarHeight = windowInfo.statusBarHeight;
 	state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom;

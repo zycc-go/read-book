@@ -1,13 +1,16 @@
 import _easycom_uni_fab_button from '@/uni_modules/uni-fab-button/components/uni-fab-button/uni-fab-button.uvue'
 import MyAvatar from '@/componnets/MyAvatar.uvue'
-	import { state, setAppTheme } from '@/store/index.uts'
+	import Content from './content.uvue'
+	import { state } from '@/store/index.uts'
 	import { discussListFun, type DiscussItem } from '@/data/discuss'
 
-	type BadgeItem = { __$originalPosition?: UTSSourceMapPosition<"BadgeItem", "pages/discuss/index.uvue", 67, 7>;
+	type BadgeItem = { __$originalPosition?: UTSSourceMapPosition<"BadgeItem", "pages/discuss/index.uvue", 36, 7>;
 		name : string;
+		isRender : boolean;
 		isDot ?: boolean;
 		dotNum ?: number;
 	}
+
 	
 const __sfc__ = defineComponent({
   __name: 'index',
@@ -16,61 +19,41 @@ const __ins = getCurrentInstance()!;
 const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
 const _cache = __ins.renderCache;
 
-	const title = ref('discuss')
-
 	const scrollTop = ref<number>(0)
 
 	const refresherTriggered = ref<boolean>(false)
 
-	const discussListC = ref<DiscussItem[]>(discussListFun())
+	const discussListC = ref<DiscussItem[]>([])
 
 	const loadinghandle = ref<boolean>(false)
 
 	const activeIndex2 = ref(0)
 
 	const listBadge = ref<BadgeItem[]>([
-		{ name: '推荐', isDot: true },
-		{ name: '关注', dotNum: 10 },
-		{ name: '我的收藏', dotNum: 999 },
-		{ name: 'AI' }])
+		{ name: '推荐', isRender: true, isDot: true },
+		{ name: '关注', isRender: false, dotNum: 10 },
+		{ name: '我的收藏', isRender: false, dotNum: 999 },
+		{ name: 'AI', isRender: false }])
 
 	const activeTab = ref<number>(0)
 
-	const onRefresherrefresh = () => {
-		refresherTriggered.value = true
-		setTimeout(() => {
-			discussListC.value = discussListFun()
-			refresherTriggered.value = false
-		}, 2000)
-	}
-
-	const onChangeTab = (item : BadgeItem, index : number) => {
-		activeTab.value = index
-		onRefresherrefresh()
-	}
-
-	const onHandle = (item : DiscussItem, val : string) => {
-		if (!loadinghandle.value) {
-			uni.showToast({ title: val, icon: 'none' })
-			loadinghandle.value = true
-			setTimeout(() => {
-				loadinghandle.value = false
-				const index = discussListC.value.findIndex(discuss => discuss.id === item.id)
-				const keyIs = `is${val.charAt(0).toUpperCase() + val.slice(1)}`
-				const keyNum = `${val}Num`
-				if (['good', 'like'].includes(val)) {
-					if (discussListC.value[index][keyIs] as boolean) {
-						discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as number - 1
-					} else {
-						discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as number + 1
-					}
-					discussListC.value[index][keyIs] = !(discussListC.value[index][keyIs] as boolean)
-				} else {
-					discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as number + 1
-				}
-				uni.hideToast()
-			}, 2000)
+	const onClickTab = (item : BadgeItem, index : number) => {
+		if (activeTab.value === index) {
+			listBadge.value[index].isRender = true
+			return
 		}
+		activeTab.value = index
+		if (!listBadge.value[index].isRender) {
+			listBadge.value[index].isRender = true
+		}
+	}
+
+	const onChangeSwiper = (event : UniSwiperChangeEvent) => {
+		activeTab.value = event.detail.current
+	}
+
+	const onChangeRender = (index : number) => {
+		listBadge.value[index].isRender = false
 	}
 
 	onPageScroll((options : OnPageScrollOptions) => {
@@ -90,9 +73,11 @@ const _component_uni_fab_button = resolveEasyComponent("uni-fab-button",_easycom
         return _cE("view", _uM({
           class: "tab",
           key: item.name,
-          onClick: () => {onChangeTab(item, index)}
+          onClick: () => {onClickTab(item, index)}
         }), [
-          _cE("text", _uM({ class: "item-text" }), _tD(item.name), 1 /* TEXT */),
+          _cE("text", _uM({
+            class: _nC(_uM({ 'item-text': true, 'item-text-active': unref(activeTab) === index }))
+          }), _tD(item.name), 3 /* TEXT, CLASS */),
           unref(activeTab) === index
             ? _cE("view", _uM({
                 key: 0,
@@ -102,74 +87,24 @@ const _component_uni_fab_button = resolveEasyComponent("uni-fab-button",_easycom
         ], 8 /* PROPS */, ["onClick"])
       }), 128 /* KEYED_FRAGMENT */)
     ]),
-    _cE("scroll-view", _uM({
-      direction: "vertical",
+    _cE("swiper", _uM({
       style: _nS(_uM({"flex":"1"})),
-      "refresher-enabled": true,
-      "enable-passive": true,
-      "refresher-triggered": unref(refresherTriggered),
-      onRefresherrefresh: onRefresherrefresh
+      duration: 200,
+      current: unref(activeTab),
+      onChange: onChangeSwiper
     }), [
-      _cE("view", _uM({ class: "card" }), [
-        _cE(Fragment, null, RenderHelpers.renderList(unref(discussListC), (item, index, __index, _cached): any => {
-          return _cE("view", _uM({
-            key: item.id,
-            class: _nC(['item', index > 0 ? 'item-index' : ''])
-          }), [
-            _cE("view", _uM({ class: "item-top" }), [
-              _cV(unref(MyAvatar)),
-              _cE("view", _uM({ class: "item-text" }), [
-                _cE("text", _uM({ class: "item-tit" }), _tD(item.name), 1 /* TEXT */)
-              ])
-            ]),
-            _cE("text", _uM({ class: "item-content" }), _tD(item.content), 1 /* TEXT */),
-            _cE("view", _uM({ class: "item-bottom" }), [
-              _cE("view", _uM({
-                class: "item-hand",
-                onClick: () => {onHandle(item, 'good')}
-              }), [
-                isTrue(item.isGood)
-                  ? _cE("text", _uM({
-                      key: 0,
-                      class: "icon"
-                    }), _tD('\ue8AD'))
-                  : _cE("text", _uM({
-                      key: 1,
-                      class: "icon"
-                    }), _tD('\ue8C3')),
-                _cE("text", _uM({ class: "item-hand-num" }), " " + _tD(item.goodNum), 1 /* TEXT */)
-              ], 8 /* PROPS */, ["onClick"]),
-              _cE("view", _uM({
-                class: "item-hand",
-                onClick: () => {onHandle(item, 'like')}
-              }), [
-                isTrue(item.isLike)
-                  ? _cE("text", _uM({
-                      key: 0,
-                      class: "icon"
-                    }), _tD('\ue6d4'))
-                  : _cE("text", _uM({
-                      key: 1,
-                      class: "icon"
-                    }), _tD('\ue6d7')),
-                _cE("text", _uM({ class: "item-hand-num" }), " " + _tD(item.likeNum), 1 /* TEXT */)
-              ], 8 /* PROPS */, ["onClick"]),
-              _cE("view", _uM({ class: "item-hand" }), [
-                _cE("text", _uM({ class: "icon" }), _tD('\ue6B3')),
-                _cE("text", _uM({ class: "item-hand-num" }), " " + _tD(item.viewNum), 1 /* TEXT */)
-              ]),
-              _cE("view", _uM({
-                class: "item-hand",
-                onClick: () => {onHandle(item, 'share')}
-              }), [
-                _cE("text", _uM({ class: "icon" }), _tD('\ue716')),
-                _cE("text", _uM({ class: "item-hand-num" }), " " + _tD(item.shareNum), 1 /* TEXT */)
-              ], 8 /* PROPS */, ["onClick"])
-            ])
-          ], 2 /* CLASS */)
-        }), 128 /* KEYED_FRAGMENT */)
-      ])
-    ], 44 /* STYLE, PROPS, NEED_HYDRATION */, ["refresher-triggered"]),
+      _cE(Fragment, null, RenderHelpers.renderList(unref(listBadge), (item, index, __index, _cached): any => {
+        return _cE("swiper-item", _uM({
+          key: item.name
+        }), [
+          _cV(unref(Content), _uM({
+            id: item.name,
+            isRender: item.isRender,
+            onChangeRender: () => {onChangeRender(index)}
+          }), null, 8 /* PROPS */, ["id", "isRender", "onChangeRender"])
+        ])
+      }), 128 /* KEYED_FRAGMENT */)
+    ], 44 /* STYLE, PROPS, NEED_HYDRATION */, ["current"]),
     _cV(_component_uni_fab_button, _uM({ class: "fab-btn" }))
   ], 6 /* CLASS, STYLE */)
 }
@@ -177,4 +112,4 @@ const _component_uni_fab_button = resolveEasyComponent("uni-fab-button",_easycom
 
 })
 export default __sfc__
-const GenPagesDiscussIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--rice-navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["tabs", _pS(_uM([["height", 44], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["paddingTop", 0], ["paddingRight", 4], ["paddingBottom", 0], ["paddingLeft", 4]]))], ["tab", _uM([[".tabs ", _uM([["paddingTop", 0], ["paddingRight", 12], ["paddingBottom", 0], ["paddingLeft", 12], ["position", "relative"], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["height", "100%"]])]])], ["tab-indicator", _uM([[".tabs ", _uM([["width", 20], ["height", 3], ["position", "absolute"], ["bottom", 4], ["left", "50%"], ["transform", "translateX(-50%)"], ["zIndex", 1], ["borderTopLeftRadius", 100], ["borderTopRightRadius", 100], ["borderBottomRightRadius", 100], ["borderBottomLeftRadius", 100], ["backgroundColor", "var(--rice-primary-color)"]])]])], ["item-text", _uM([[".tabs ", _uM([["color", "var(--text-color-1)"]])], [".card .item .item-top ", _uM([["marginLeft", 5]])]])], ["card", _pS(_uM([["paddingTop", 0], ["paddingRight", 16], ["paddingBottom", 12], ["paddingLeft", 16]]))], ["item-index", _uM([[".card ", _uM([["marginTop", 8]])]])], ["item", _uM([[".card ", _uM([["paddingTop", 12], ["paddingRight", 16], ["paddingBottom", 12], ["paddingLeft", 16], ["backgroundColor", "var(--background-color-3)"], ["borderTopLeftRadius", 6], ["borderTopRightRadius", 6], ["borderBottomRightRadius", 6], ["borderBottomLeftRadius", 6]])]])], ["item-top", _uM([[".card .item ", _uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"]])]])], ["item-tit", _uM([[".card .item .item-top .item-text ", _uM([["color", "var(--text-color-1)"]])]])], ["item-content", _uM([[".card .item ", _uM([["paddingTop", 12], ["paddingRight", 0], ["paddingBottom", 12], ["paddingLeft", 0], ["color", "var(--text-color-2)"]])]])], ["item-bottom", _uM([[".card .item ", _uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "space-around"]])]])], ["item-hand", _uM([[".card .item ", _uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "center"], ["flexGrow", 1], ["flexShrink", 1], ["flexBasis", "0%"]])]])], ["item-hand-num", _uM([[".card .item .item-hand ", _uM([["color", "var(--text-color-1)"], ["fontSize", 12]])]])], ["fab-btn", _pS(_uM([["position", "absolute"], ["right", 16], ["bottom", 16]]))]])]
+const GenPagesDiscussIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--navbar-background)"], ["height", "100%"], ["width", "100%"]]))], ["tabs", _pS(_uM([["height", 44], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["paddingTop", 0], ["paddingRight", 4], ["paddingBottom", 0], ["paddingLeft", 4]]))], ["tab", _uM([[".tabs ", _uM([["paddingTop", 0], ["paddingRight", 12], ["paddingBottom", 0], ["paddingLeft", 12], ["position", "relative"], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["height", "100%"]])]])], ["tab-indicator", _uM([[".tabs ", _uM([["width", 20], ["height", 3], ["position", "absolute"], ["bottom", 6], ["left", "50%"], ["transform", "translateX(-50%)"], ["zIndex", 1], ["borderTopLeftRadius", 100], ["borderTopRightRadius", 100], ["borderBottomRightRadius", 100], ["borderBottomLeftRadius", 100], ["backgroundColor", "var(--primary-color)"]])]])], ["item-text", _uM([[".tabs ", _uM([["color", "var(--text-color-1)"]])]])], ["item-text-active", _uM([[".tabs ", _uM([["color", "var(--primary-color)"]])]])], ["fab-btn", _pS(_uM([["position", "absolute"], ["right", 16], ["bottom", 16]]))]])]

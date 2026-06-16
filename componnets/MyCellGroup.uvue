@@ -20,7 +20,7 @@
 
 <style lang="scss" scoped>
 	.my-cell-group {
-		background-color: var(--background-color-3);
+		background-color: var(--background-color-2);
 
 		.text {
 			color: var(--text-color-1);

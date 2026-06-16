@@ -49,17 +49,17 @@
 	}
 
 	.card {
-		padding: $uni-spacing-col-lg $uni-spacing-row-lg;
+		padding: $uni-spacing-col-12 $uni-spacing-row-16;
 
 		.textarea-instance {
 			min-height: 140px;
 			width: 100%;
-			padding: $uni-spacing-col-12 $uni-spacing-row-12;
+			padding: $uni-spacing-col-12 $uni-spacing-row-16;
 			border-radius: $uni-border-radius-8;
-			font-size: $uni-font-size-base;
+			font-size: $uni-font-size-14;
 			color: var(--text-color-1);
 			line-height: $uni-line-height-24;
-			background-color: var(--background-color-3);
+			background-color: var(--background-color-2);
 		}
 
 		.btn {

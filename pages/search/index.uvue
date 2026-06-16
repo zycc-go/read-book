@@ -173,7 +173,7 @@
 			padding: 16rpx 32rpx;
 			margin: 4rpx 0;
 			flex-direction: row;
-			background-color: var(--background-color-3);
+			background-color: var(--background-color-2);
 			border-radius: $uni-border-radius-16;
 		}
 
@@ -188,7 +188,7 @@
 
 
 	.card {
-		padding: 0 $uni-spacing-row-lg;
+		padding: 0 $uni-spacing-row-16;
 
 		.card-title-box {
 			display: flex;
@@ -223,8 +223,8 @@
 
 		.tag-box {
 			padding: $uni-spacing-col-4 $uni-spacing-row-8;
-			border-radius: $uni-border-radius-base;
-			background-color: var(--background-color-5);
+			border-radius: $uni-border-radius-4;
+			background-color: var(--background-color-2);
 			display: flex;
 			flex-direction: row;
 			align-items: center;
@@ -244,7 +244,7 @@
 		align-items: center;
 		justify-content: center;
 		margin: $uni-spacing-col-12 $uni-spacing-row-16;
-		background-color: var(--background-color-3);
+		background-color: var(--background-color-2);
 		border-radius: $uni-border-radius-8;
 
 		.text {

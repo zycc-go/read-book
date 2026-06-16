@@ -48,7 +48,7 @@
 		width: 100%;
 
 		.card {
-			padding: 0 $uni-spacing-row-lg;
+			padding: 0 $uni-spacing-row-16;
 
 			.text {
 				color: var(--text-color-2);

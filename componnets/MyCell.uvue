@@ -42,7 +42,7 @@
 <style lang="scss" scoped>
 	.my-cell {
 		padding: $uni-spacing-col-12 $uni-spacing-row-16;
-		background-color: var(--background-color-3);
+		background-color: var(--background-color-2);
 
 		.text {
 			line-height: $uni-line-height-24;

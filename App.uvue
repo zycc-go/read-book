@@ -7,7 +7,9 @@
 
 	onLaunch(() => {
 		console.log('App Launch')
-		checkSystemInfo();
+		setTimeout(() => {
+			checkSystemInfo();
+		}, 500)
 	})
 
 	onAppShow(() => {
@@ -53,8 +55,9 @@
 	@import "@/uni_modules/rice-ui/libs/style/index.css";
 	@import "@/static/css/theme.css";
 	@import "@/static/css/reset.css";
+
 	@font-face {
-	    font-family: vant-icon;
-	    src: url('/static/vant-icon.ttf');
+		font-family: vant-icon;
+		src: url('/static/vant-icon.ttf');
 	}
 </style>

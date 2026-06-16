@@ -1,47 +1,17 @@
 <template>
 	<view :class="[`theme-${state.appTheme}`, 'page']" :style="{ paddingTop:`${state.statusBarHeight}px`}">
 		<view class="tabs">
-			<view class="tab" v-for="(item, index) in listBadge" :key="item.name" @click="onChangeTab(item, index)">
-				<text class="item-text">{{ item.name }}</text>
+			<view class="tab" v-for="(item, index) in listBadge" :key="item.name" @click="onClickTab(item, index)">
+				<text :class="{ 'item-text': true, 'item-text-active': activeTab === index }">{{ item.name }}</text>
 				<view class="tab-indicator" v-if="activeTab === index"></view>
 			</view>
 		</view>
 
-		<scroll-view direction="vertical" style="flex: 1" :refresher-enabled="true" :enable-passive="true"
-			:refresher-triggered="refresherTriggered" @refresherrefresh="onRefresherrefresh">
-			<view class="card">
-				<view v-for="(item, index) in discussListC" :key="item.id"
-					:class="['item', index > 0 ? 'item-index' : '']">
-					<view class="item-top">
-						<MyAvatar />
-						<view class="item-text">
-							<text class="item-tit">{{ item.name }}</text>
-						</view>
-					</view>
-					<text class="item-content">{{ item.content }}</text>
-					<view class="item-bottom">
-						<view class="item-hand" @click="onHandle(item, 'good')">
-							<text class="icon" v-if="item.isGood">{{ '\ue8AD' }}</text>
-							<text class="icon" v-else>{{ '\ue8C3' }}</text>
-							<text class="item-hand-num">&nbsp;{{ item.goodNum }}</text>
-						</view>
-						<view class="item-hand" @click="onHandle(item, 'like')">
-							<text class="icon" v-if="item.isLike">{{ '\ue6d4' }}</text>
-							<text class="icon" v-else>{{ '\ue6d7' }}</text>
-							<text class="item-hand-num">&nbsp;{{ item.likeNum }}</text>
-						</view>
-						<view class="item-hand">
-							<text class="icon">{{ '\ue6B3' }}</text>
-							<text class="item-hand-num">&nbsp;{{ item.viewNum }}</text>
-						</view>
-						<view class="item-hand" @click="onHandle(item, 'share')">
-							<text class="icon">{{ '\ue716' }}</text>
-							<text class="item-hand-num">&nbsp;{{ item.shareNum }}</text>
-						</view>
-					</view>
-				</view>
-			</view>
-		</scroll-view>
+		<swiper style="flex: 1;" :duration="200" :current="activeTab" @change="onChangeSwiper">
+			<swiper-item v-for="(item, index) in listBadge" :key="item.name">
+				<Content :id="item.name" :isRender="item.isRender" @changeRender="onChangeRender(index)" />
+			</swiper-item>
+		</swiper>
 
 		<uni-fab-button class="fab-btn"></uni-fab-button>
 	</view>
@@ -49,16 +19,15 @@
 
 <script setup lang="uts">
 	import MyAvatar from '@/componnets/MyAvatar.uvue'
-	import { state, setAppTheme } from '@/store/index.uts'
+	import Content from './content.uvue'
+	import { state } from '@/store/index.uts'
 	import { discussListFun, type DiscussItem } from '@/data/discuss'
-
-	const title = ref('discuss')
 
 	const scrollTop = ref<number>(0)
 
 	const refresherTriggered = ref<boolean>(false)
 
-	const discussListC = ref<DiscussItem[]>(discussListFun())
+	const discussListC = ref<DiscussItem[]>([])
 
 	const loadinghandle = ref<boolean>(false)
 
@@ -66,52 +35,36 @@
 
 	type BadgeItem = {
 		name : string;
+		isRender : boolean;
 		isDot ?: boolean;
 		dotNum ?: number;
 	}
+
 	const listBadge = ref<BadgeItem[]>([
-		{ name: '推荐', isDot: true },
-		{ name: '关注', dotNum: 10 },
-		{ name: '我的收藏', dotNum: 999 },
-		{ name: 'AI' }])
+		{ name: '推荐', isRender: true, isDot: true },
+		{ name: '关注', isRender: false, dotNum: 10 },
+		{ name: '我的收藏', isRender: false, dotNum: 999 },
+		{ name: 'AI', isRender: false }])
 
 	const activeTab = ref<number>(0)
 
-	const onRefresherrefresh = () => {
-		refresherTriggered.value = true
-		setTimeout(() => {
-			discussListC.value = discussListFun()
-			refresherTriggered.value = false
-		}, 2000)
-	}
-
-	const onChangeTab = (item : BadgeItem, index : number) => {
-		activeTab.value = index
-		onRefresherrefresh()
-	}
-
-	const onHandle = (item : DiscussItem, val : string) => {
-		if (!loadinghandle.value) {
-			uni.showToast({ title: val, icon: 'none' })
-			loadinghandle.value = true
-			setTimeout(() => {
-				loadinghandle.value = false
-				const index = discussListC.value.findIndex(discuss => discuss.id === item.id)
-				const keyIs = `is${val.charAt(0).toUpperCase() + val.slice(1)}`
-				const keyNum = `${val}Num`
-				if (['good', 'like'].includes(val)) {
-					if (discussListC.value[index][keyIs] as boolean) {
-						discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as number - 1
-					} else {
-						discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as number + 1
-					}
-					discussListC.value[index][keyIs] = !(discussListC.value[index][keyIs] as boolean)
-				} else {
-					discussListC.value[index][keyNum] = discussListC.value[index][keyNum] as number + 1
-				}
-				uni.hideToast()
-			}, 2000)
+	const onClickTab = (item : BadgeItem, index : number) => {
+		if (activeTab.value === index) {
+			listBadge.value[index].isRender = true
+			return
 		}
+		activeTab.value = index
+		if (!listBadge.value[index].isRender) {
+			listBadge.value[index].isRender = true
+		}
+	}
+
+	const onChangeSwiper = (event : UniSwiperChangeEvent) => {
+		activeTab.value = event.detail.current
+	}
+
+	const onChangeRender = (index : number) => {
+		listBadge.value[index].isRender = false
 	}
 
 	onPageScroll((options : OnPageScrollOptions) => {
@@ -121,7 +74,7 @@
 
 <style lang="scss" scoped>
 	.page {
-		background-color: var(--rice-navbar-background);
+		background-color: var(--navbar-background);
 		height: 100%;
 		width: 100%;
 	}
@@ -146,69 +99,20 @@
 			width: 20px;
 			height: 3px;
 			position: absolute;
-			bottom: 4px;
+			bottom: 6px;
 			left: 50%;
 			transform: translateX(-50%);
 			z-index: 1;
 			border-radius: 100px;
-			background-color: var(--rice-primary-color);
+			background-color: var(--primary-color);
 		}
 
 		.item-text {
 			color: var(--text-color-1);
 		}
-	}
 
-	.card {
-		padding: 0 $uni-spacing-row-16 $uni-spacing-col-12;
-
-		.item-index {
-			margin-top: $uni-spacing-col-8;
-		}
-
-		.item {
-			padding: $uni-spacing-col-12 $uni-spacing-row-16;
-			background-color: var(--background-color-3);
-			border-radius: $uni-border-radius-lg;
-
-			.item-top {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-
-				.item-text {
-					margin-left: $uni-spacing-row-sm;
-
-					.item-tit {
-						color: var(--text-color-1);
-					}
-				}
-			}
-
-			.item-content {
-				padding: $uni-spacing-col-12 0;
-				color: var(--text-color-2);
-			}
-
-			.item-bottom {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: space-around;
-			}
-
-			.item-hand {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: center;
-				flex: 1;
-
-				.item-hand-num {
-					color: var(--text-color-1);
-					font-size: $uni-font-size-sm;
-				}
-			}
+		.item-text-active {
+			color: var(--primary-color);
 		}
 	}
 
