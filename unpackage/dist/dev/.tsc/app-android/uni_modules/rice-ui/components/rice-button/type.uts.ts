@@ -1,5 +1,5 @@
 
-import { LoadingMode } from "../rice-loading"
+import { LoadingMode } from "../rice-loading/type.uts"
 export type ButtonType = 'primary' | 'success' | 'warning' | 'error' | 'default' | 'info'
 export type ButtonSize = 'large' | 'small' | 'mini'
 export type ButtonShape = 'round' | 'square'
@@ -14,6 +14,8 @@ export type ButtonProps = {
 	textSize ?: string | number,
 	icon ?: string | number,
 	iconSize ?: string | number,
+	iconColor ?: string,
+	iconFontFamily ?: string,
 	plainFill ?: boolean,
 	plain ?: boolean,
 	disabled ?: boolean,

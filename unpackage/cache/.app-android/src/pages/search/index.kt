@@ -70,7 +70,7 @@ open class GenPagesSearchIndex : BasePage {
                 }
                 )
                 uni_setStorage(SetStorageOptions(key = "searchRecord", data = searchRecord.value, fail = fun(err: UniError){
-                    console.log(err, " at pages/search/index.uvue:107")
+                    console.log(err, " at pages/search/index.uvue:108")
                 }
                 ))
             }
@@ -78,7 +78,7 @@ open class GenPagesSearchIndex : BasePage {
                 if (searchRecord.value.length > 0) {
                     searchRecord.value = _uA()
                     uni_setStorage(SetStorageOptions(key = "searchRecord", data = searchRecord.value, fail = fun(err: UniError){
-                        console.log(err, " at pages/search/index.uvue:119")
+                        console.log(err, " at pages/search/index.uvue:120")
                     }
                     ))
                 }
@@ -86,7 +86,7 @@ open class GenPagesSearchIndex : BasePage {
             val initData = fun(){
                 uni_showLoading(ShowLoadingOptions(title = "加载中..."))
                 uni_getStorage(GetStorageOptions(key = "searchRecord", success = fun(res: GetStorageSuccess){
-                    val data = UTSAndroid.consoleDebugError(JSON.parse<UTSArray<SearchRecordItem>>(JSON.stringify(res.data)), " at pages/search/index.uvue:130")
+                    val data = UTSAndroid.consoleDebugError(JSON.parse<UTSArray<SearchRecordItem>>(JSON.stringify(res.data)), " at pages/search/index.uvue:131")
                     searchRecord.value = data ?: _uA()
                 }
                 , complete = fun(_){
@@ -105,10 +105,10 @@ open class GenPagesSearchIndex : BasePage {
                 ))), _uA(
                     _cE("view", _uM("class" to "page-navbar", "style" to _nS(_uM("height" to ("" + unref(state).navbarHeight + "px"), "top" to ("" + unref(state).statusBarHeight + "px")))), _uA(
                         _cE("view", _uM("class" to "page-navbar-left", "onClick" to onBack), _uA(
-                            _cE("text", _uM("class" to "icon"), _tD("\ue668"))
+                            _cV(unref(GenComponnetsMyIconIndexClass), _uM("name" to "left", "size" to "24px"))
                         )),
                         _cE("view", _uM("class" to "input-wrapper"), _uA(
-                            _cE("input", _uM("focus" to "", "maxlength" to 20, "modelValue" to unref(keywords), "onInput" to _uA<Any?>(fun(`$event`: UniInputEvent){
+                            _cE("input", _uM("maxlength" to 20, "auto-focus" to true, "modelValue" to unref(keywords), "onInput" to _uA<Any?>(fun(`$event`: UniInputEvent){
                                 trySetRefValue(keywords, `$event`.detail.value)
                             }
                             , onInput)), null, 40, _uA(
@@ -123,7 +123,7 @@ open class GenPagesSearchIndex : BasePage {
                                 _cE("text", _uM("class" to "card-title"), "历史记录"),
                                 _cE("view", _uM("class" to "card-clear", "onClick" to onClearItems), _uA(
                                     _cE("text", _uM("class" to "card-clear-text"), "清空"),
-                                    _cE("text", _uM("class" to "icon"), _tD("\ue6a6"))
+                                    _cV(unref(GenComponnetsMyIconIndexClass), _uM("name" to "delete"))
                                 ))
                             ))
                         } else {
@@ -151,7 +151,7 @@ open class GenPagesSearchIndex : BasePage {
                                         }, _uA(
                                             "stop"
                                         ))), _uA(
-                                            _cE("text", _uM("class" to "icon"), _tD("\ue6a7"))
+                                            _cV(unref(GenComponnetsMyIconIndexClass), _uM("name" to "close"))
                                         ), 8, _uA(
                                             "onClick"
                                         ))

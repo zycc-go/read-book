@@ -1,8 +1,8 @@
 <template>
-	<view :class="avatarClass" :style="[avatarStyle,customStyle]" @click="handleClick">
+	<view :class="rootClass" :style="[rootStyle,customStyle]" @click="handleClick">
 		<slot>
-			<rice-icon v-if="hasStrValue(icon)" :name="icon" :size="textSize" :color="color" />
-			<text v-else-if="hasStrValue(text)" :style="textStyle">{{text}}</text>
+			<rice-icon v-if="hasStrValue(icon)" :name="icon" :size="iconSize" :color="color" />
+			<text v-else-if="hasStrValue(text)" :class="avatarTextClass" :style="textStyle">{{text}}</text>
 			<template v-else>
 				<image :src="avatarUrl" :mode="mode" :style="imageStyle" :class="imageClass" @load="onImageLoad"
 					@error="loadError"></image>
@@ -13,29 +13,14 @@
 </template>
 
 <script setup>
-	/**
-	 * @description Avatar 可以用来代表人物或对象， 支持使用图片、图标或者文字作为 Avatar。
-	 * @property {String} src 头像路径，不能为相对路径
-	 * @property {Boolean} round 是否圆形
-	 * @property {String|Number} radius 圆角
-	 * @property {String|Number} size 头像尺寸，可以指定为`large`,`mini` 或者数值
-	 * @value large
-	 * @value mini
-	 * @property {String} mode 图片裁剪、缩放的模式，与 `image` 组件 `mode`参数 一致
-	 * @property {String|Number} text 用文字代替图片，优先级高于 `src`
-	 * @property {String} icon 显示的图标，优先级高于 `src` 和 `text`
-	 * @property {String} bgColor 头像的背景颜色，一般显示文字时使用
-	 * @property {String} color 文字颜色
-	 * @property {String|Number} fontSize 文字/icon大小
-	 * @property {String} defaultUrl 加载失败时的默认头像
-	 * @property {Object} customStyle 自定义样式
-	 */
 	import { addUnit, hasStrValue } from "../../libs/utils"
 	import { useNamespace } from "../../libs/use"
 	import { AvatarProps } from './type.uts'
 
 	defineOptions({
-		name: 'rice-avatar'
+		name: 'rice-avatar',
+		styleIsolation: 'app-and-page',
+		externalClasses: ['text-class']
 	})
 
 	const base64Avatar =
@@ -48,7 +33,6 @@
 	}>()
 
 	const props = withDefaults(defineProps<AvatarProps>(), {
-		color: '#fff',
 		mode: 'scaleToFill',
 		round: true,
 		customStyle: () : UTSJSONObject => ({})
@@ -57,13 +41,22 @@
 	const isLoading = ref(true)
 	const avatarUrl = ref<string | null>(props.src)
 
-	const textSize = computed(() => {
-		if (hasStrValue(props.fontSize)) {
-			return addUnit(props.fontSize!)
-		}
-		if (props.size == 'large' || props.size == 'mini') {
-			return props.size == 'large' ? '20px' : '14px'
-		}
+	// #ifdef APP-ANDROID
+	const _radius = computed(() => {
+		if (props.radius != null) return props.radius
+		if (props.round) return '999px'
+		return '4px'
+	})
+	// #endif
+
+	// #ifndef APP-ANDROID
+	const _radius = computed(() => props.radius)
+	// #endif
+
+	const iconSize = computed(() => {
+		if (props.fontSize != null) return props.fontSize
+		if (props.size == 'large') return '20px'
+		if (props.size == 'mini') return '14px'
 		return '16px'
 	})
 
@@ -91,9 +84,7 @@
 		emit('click')
 	}
 
-
-
-	const avatarStyle = computed(() => {
+	const rootStyle = computed(() => {
 		const css = new Map<string, string>()
 		if (hasStrValue(props.size) && props.size != 'large' && props.size != 'mini') {
 			const size = addUnit(props.size!)
@@ -103,33 +94,35 @@
 		if (props.bgColor != null) {
 			css.set('background', props.bgColor)
 		}
-		if (hasStrValue(props.radius)) {
-			css.set('border-radius', addUnit(props.radius!))
+		if (_radius.value != null) {
+			css.set('border-radius', addUnit(_radius.value!))
 		}
 		return css
 	})
 
 	const imageStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.radius)) {
-			css.set('border-radius', addUnit(props.radius!))
+		if (_radius.value != null) {
+			css.set('border-radius', addUnit(_radius.value!))
 		}
 		return css
 	})
 
 	const textStyle = computed(() => {
 		const css = new Map<string, string>()
-		css.set('font-size', textSize.value)
-		css.set('color', props.color)
+		if (props.fontSize != null) {
+			css.set('font-size', addUnit(props.fontSize!))
+		}
+		if (props.color != null) css.set('color', props.color)
 		return css
 	})
 
-	const avatarClass = computed(() => {
+	const rootClass = computed<string[]>(() => {
 		const cls = [
 			ns.b(""),
-			ns.is('round', props.round && !hasStrValue(props.radius)),
+			ns.is('round', props.round && props.radius == null),
 			ns.is("text", hasStrValue(props.text) || hasStrValue(props.icon)),
-			ns.theme()
+			ns.theme(),
 		]
 		if (props.size == 'large' || props.size == 'mini') {
 			cls.push(ns.m(props.size))
@@ -137,6 +130,13 @@
 		return cls
 	})
 
+	const avatarTextClass = computed<string[]>(() => {
+		const basic : string[] = ['rice-avatar__text', props.textClass ?? '']
+		if (props.size == 'large' || props.size == 'mini') {
+			basic.push(`rice-avatar__text--${props.size}`)
+		}
+		return basic
+	})
 
 
 	const imageClass = computed(() => {
@@ -159,10 +159,14 @@
 		justify-content: center;
 		height: 48px;
 		width: 48px;
-		border-radius: var(--rice-radius-sm);
+		/* #ifndef APP-ANDROID */
+		border-radius: 4px;
+		/* #endif */
 
 		&--round {
+			/* #ifndef APP-ANDROID */
 			border-radius: 999px;
+			/* #endif */
 		}
 
 
@@ -180,16 +184,29 @@
 		&__image {
 			height: 100%;
 			width: 100%;
-			border-radius: var(--rice-radius-sm);
+			/* #ifndef APP-ANDROID */
+			border-radius: 4px;
+			/* #endif */
+		}
 
+
+		&__text {
+			color: #fff;
+			font-size: 16px;
+
+			&--large {
+				font-size: 20px;
+			}
+
+			&--mini {
+				font-size: 14px;
+			}
 		}
 
 		&--text,
 		&--loading,
 		&--error {
-			background-color: var(--rice-image-placeholder-background);
+			background-color: var(--rice-avatar-placeholder-background);
 		}
-
-
 	}
 </style>

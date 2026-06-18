@@ -5,20 +5,14 @@
 </template>
 
 <script setup>
-	/**
-	 * SwiprActions 滑动单元格
-	 * @property {Boolean} disabled 是否禁用 默认false
-	 * @property {Boolean} accordion 是否手风琴模式 默认false
-	 * @property {Boolean} autoClose 点击按钮是否自动关闭单元格
-	 * @property {Boolean} iosStyle 是否为iOS风格
-	 * @property {Object} customStyle 自定义style样式
-	 */
+
 	import { useChildren } from "../../libs/use"
 	import { swipeActionsInjectKey, swipeActionsName } from "./index.uts"
 	import { SwipeActionsProps, SwipeActionsProvide } from './type.uts';
 
 	defineOptions({
-		name: 'rice-swipe-actions'
+		name: 'rice-swipe-actions',
+		styleIsolation: "app-and-page"
 	})
 
 	const { linkChildren, childrenList } = useChildren(swipeActionsName)

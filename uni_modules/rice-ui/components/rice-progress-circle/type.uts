@@ -1,5 +1,4 @@
 
-
 export type ProgressCircleDrawParams = {
 	radius : number,
 	centerX : number,

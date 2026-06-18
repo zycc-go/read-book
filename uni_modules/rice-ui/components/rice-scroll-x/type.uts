@@ -5,6 +5,8 @@ export type ScrollXProps = {
 	indicatorBarWidth ?: string | number,
 	indicatorColor ?: string,
 	indicatorActiveColor ?: string,
+	indicatorClass ?: string,
+	indicatorActiveClass ?: string,
 	indicatorStyle ?: UTSJSONObject,
 	customStyle ?: UTSJSONObject,
 }

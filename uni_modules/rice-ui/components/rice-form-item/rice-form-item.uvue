@@ -35,31 +35,6 @@
 </template>
 
 <script setup>
-	/**
-	 * @description FormItem 表单项
-	 * @property {String} name 表单域`model`对象的属性名
-	 * @property {String} label 标签文字
-	 * @property {String|Number} labelWidth 标签的长度
-	 * @property {String} labelPosition 标签的位置
-	 * @value left 左侧（默认值）
-	 * @value right 右侧
-	 * @value top 顶部
-	 * @property {Object} labelStyle 自定义标签style，如文字大小和颜色
-	 * @property {Array<FormRules>} rules 表单校验规则
-	 * @property {Boolean} required 是否必填，如不设置，则会根据`rules`校验规则确认
-	 * @property {Boolean} showRequired 是否显示必填的符号，默认根据`rules`规则判断是否显示
-	 * @property {Boolean} showError 校验失败时是否显示错误信息
-	 * @property {String} requiredPosition 必填符号的位置
-	 * @value left 左侧（默认值）
-	 * @value right 右侧
-	 * @property {String} suffixIcon 尾部 Icon 的name值
-	 * @property {Object} suffixIconStyle  尾部 Icon 的style样式
-	 * @property {Boolean} borderBottom 是否显示表单域的下划线边框，默认true
-	 * @property {Boolean} errorBottom 校验未通过时下边框是否标红，默认false
-	 * @property {Object} contentStyle 默认区域内的自定样式
-	 * @property {Object} errorStyle 错误信息区域的自定样式
-	 * @property {Object} customStyle 自定义样式
-	 */
 	import { useNamespace } from "../../libs/use";
 	import { addUnit, hasStrValue, splitCssProperty, getParentEl, debugWarn, isSameValue } from "../../libs/utils";
 	import { formInjectKey, formDataInjectKey, FormItemContext, FormRules, FormTrigger, FormItemContextProvide } from "../rice-form"
@@ -67,7 +42,8 @@
 	import { FormItemProps, FormItemState } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-form-item'
+		name: 'rice-form-item',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace('form-item')
@@ -404,7 +380,7 @@
 			left: 0;
 			right: 0;
 			border-bottom: 1px solid $color;
-			transform: scaleY(0.5);
+			transform: scale(1, 0.5);
 		}
 	}
 
@@ -432,7 +408,7 @@
 				/* #ifndef APP */
 				flex: 0 1 auto;
 				/* #endif */
-				font-size: var(--rice-font-size-basic);
+				font-size: 15px;
 				color: var(--rice-text-color);
 			}
 
@@ -462,7 +438,7 @@
 
 			&__text {
 				color: var(--rice-form-error-color);
-				font-size: var(--rice-font-size-xs);
+				font-size: 12px;
 				/* #ifndef APP */
 				word-break: break-all;
 				/* #endif */
@@ -471,7 +447,7 @@
 
 		&--required {
 			color: var(--rice-form-error-color);
-			font-size: var(--rice-font-size-basic);
+			font-size: 15px;
 		}
 
 		&--border {

@@ -5,49 +5,12 @@
 		:close-on-click-overlay="closeOnClickOverlay" :title="title" :confirm-button-text="confirmButtonText"
 		:cancel-button-text="cancelButtonText" :font-size="fontSize" :visible-option-num="visibleOptionNum"
 		:option-height="optionHeight" :empty-text="emptyText" :z-index="zIndex"
-		:safe-area-inset-bottom="safeAreaInsetBottom" @confirm="onConfirm" @cancel="onCancel" @change="onChange">
+		:safe-area-inset-bottom="safeAreaInsetBottom" @confirm="onConfirm" @cancel="onCancel" @change="onChange"
+		@open="onOpen" @close="onClose" @opened="onOpened" @closed="onClosed">
 	</rice-picker>
 </template>
 
 <script setup>
-	/**
-	 * @description DateTimePicker
-	 * @property {String} modelValue 绑定值，也可以所用v-model
-	 * @property {String} type 时间类型 默认 date
-	 * @value year 年
-	 * @value month 年月
-	 * @value date 年月日 (默认值)
-	 * @value minute 时分
-	 * @value time 时分秒
-	 * @value datehour 年月日时
-	 * @value dateminute 年月日时分
-	 * @value datetime 年月日时分秒
-	 * @property {String} maxDate 可选的最大时间 如 2025-03-01
-	 * @property {String} minDate 可选的最小时间 如 2025-02-01
-	 * @property {String} format 用于格式化 pick、change、confirm 事件返回的值
-	 * @property {String} toolbarPosition 顶部栏位置,默认 bottom 可选 top
-	 * @value bottom 底部
-	 * @value top 顶部
-	 * @value none 不显示
-	 * @property {String|Number} title 顶部栏标题
-	 * @property {String|Number} confirmButtonText 确定按钮文字，设置为空字符串可以隐藏
-	 * @property {String|Number} cancelButtonText 取消按钮文字，设置为空字符串可以隐藏
-	 * @property {String|Number} fontSize 选项的文字大小，默认 16px
-	 * @property {String|Number} optionHeight 每个选项的高度 ，默认50px
-	 * @property {Number} visibleOptionNum 可见的选项个数，默认 
-	 * @property {Boolean} closeOnClickOverlay  是否在点击遮罩层后关闭，默认true
-	 * @property {Boolean} closeOnClickConfirm  是否在点击确认后关闭，默认true
-	 * @property {Boolean} closeOnClickCancel  是否在点击取消后关闭，默认true
-	 * @property {Boolean} loading 是否为加载状态
-	 * @property {Boolean} safeAreaInsetBottom 是否开启底部安全区适配
-	 * @property {Number} zIndex z-index 层级，默认 999
-	 * @property {Boolean} usePopup 是否使用popup，默认 true
-	 * @property {Function} filter 选项过滤函数
-	 * @property {Function} formatter 选项格式化函数
-	 * @property {String} emptyText 空数据时的提示语 默认 暂无数据
-	 * @property {Boolean} immediateChange 是否在手指松开时立即触发 change 事件。若不开启则会在滚动动画结束后触发 change 事件。默认true，仅微信小程序支持
-	 */
-
 	import { clamp, isSameValue, hasStrValue } from '../../libs/utils';
 	import { dateuts, Dateuts } from "../../libs/plugin";
 	import { PickerOption, PickerEvent } from '../rice-picker';
@@ -55,13 +18,18 @@
 	import { DateTimePickerProps, DateTimePickerUnit, DateTimePickerExtend, DateTimePickerFormatter } from './type.uts';
 
 	defineOptions({
-		name: 'rice-datetime-picker'
+		name: 'rice-datetime-picker',
+		styleIsolation: 'app-and-page'
 	})
 
 	const emit = defineEmits<{
 		confirm : [value: string, extend: DateTimePickerExtend],
 		change : [value: string, extend: DateTimePickerExtend],
 		cancel : [value: string, extend: DateTimePickerExtend],
+		open : [],
+		close : [],
+		opened : [],
+		closed : [],
 	}>()
 
 	const props = withDefaults(defineProps<DateTimePickerProps>(), {
@@ -171,7 +139,7 @@
 		})
 		return values
 	}
-	const currentValues = ref<number[]>(initCurrentValues())
+	const currentValues = ref<number[]>(isVisible.value ? initCurrentValues() : [])
 
 
 	function getDateArr(type = 'default') {
@@ -259,6 +227,26 @@
 		return 'YYYY-MM-DD HH:mm:ss'
 	})
 
+	const normalizePickerExtend = (value : DateTimePickerExtend) : DateTimePickerExtend => {
+		const normalized = {
+			...value
+		} as DateTimePickerExtend
+
+		const hasYear = mode.value.includes('year')
+		const hasMonth = mode.value.includes('month')
+		const hasDay = mode.value.includes('day')
+
+		if (hasYear && hasMonth && hasDay) {
+			const safeMonth = clamp(normalized.month, 1, 12)
+			const monthStart = dateuts(`${normalized.year}-${safeMonth}-01 00:00:00`)
+			const maxDay = monthStart.daysInMonth()
+			normalized.month = safeMonth
+			normalized.day = clamp(normalized.day, 1, maxDay)
+		}
+
+		return normalized
+	}
+
 	const getAllValue = () => {
 		const date = currentDate.value.toObject()
 		const result = {
@@ -273,13 +261,14 @@
 		} as DateTimePickerExtend
 
 		mode.value.forEach((m, i) => {
-			if (result[m] != null) result[m] = currentValues.value[i]
+			if (result[m] != null && currentValues.value.length > 0) result[m] = currentValues.value[i]
 		})
-		const newVal = `${result.year}-${result.month}-${result.day} ${result.hour}:${result.minute}:${result.second}`
+		const normalized = normalizePickerExtend(result)
+		const newVal = `${normalized.year}-${normalized.month}-${normalized.day} ${normalized.hour}:${normalized.minute}:${normalized.second}`
 		const d = dateuts(newVal)
-		result.timeStamp = d.valueOf()
-		result.value = d.format(format.value)
-		return result
+		normalized.timeStamp = d.valueOf()
+		normalized.value = d.format(format.value)
+		return normalized
 	}
 
 	const onConfirm = () => {
@@ -292,7 +281,8 @@
 		emit('cancel', values.value, values)
 	}
 
-	const onChange = () => {
+	const onChange = async () => {
+		await nextTick()
 		const values = getAllValue()
 		emit('change', values.value, values)
 	}
@@ -309,24 +299,31 @@
 		deep: true,
 		immediate: true,
 	})
-	watch([modelValue, mode, isVisible, () => props.minDate, () => props.maxDate], async () => {
+	watch([modelValue, mode, isVisible, () : string => props.minDate, () : string => props.maxDate], async () => {
 		if (!isVisible.value) return
 		currentDate.value = getParseDate()
-		//iOS临时解决方案
-		// #ifdef APP-IOS
-		nextTick(()=>{
-			currentValues.value = initCurrentValues()
-		})
-		//#endif
-		
-		// #ifndef APP-IOS
 		currentValues.value = initCurrentValues()
-		//#endif
-		
 		updateColumns()
 	}, {
 		deep: true,
 	})
+
+
+	const onOpen = () => {
+		emit('open')
+	}
+
+	const onClose = () => {
+		emit('close')
+	}
+
+	const onOpened = () => {
+		emit('opened')
+	}
+
+	const onClosed = () => {
+		emit('closed')
+	}
 </script>
 
 <style scoped lang="scss">

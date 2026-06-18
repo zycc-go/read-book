@@ -1,26 +1,35 @@
 <template>
-	<view :class="tabsClass" :style="[tabsStyle,customStyle]" ref="tabsRef">
+	<view class="rice-tabs" :class="ns.theme()" :style="[tabsStyle,customStyle]">
 		<slot name="left"></slot>
-		<scroll-view ref="tabScrollRef" class="rice-tabs__scroll" direction="horizontal" :show-scrollbar="false"
-			:scroll-left="scrollLeft" scroll-with-animation="true">
-			<!-- #ifdef MP-WEIXIN -->
+
+		<!-- #ifdef MP -->
+		<scroll-view class="rice-tabs__scroll" ref="tabScrollRef" direction="horizontal" :show-scrollbar="false"
+			:scrollLeft="scrollLeft" :scroll-with-animation="true">
 			<view class="rice-tabs__scrollmp">
 			<!-- #endif -->
-				<view v-for="(item,index) in list" :key="item.name" :class="tabsItemClass" :data-name="item.name"
-					@click="tabsItemClick(item,index)">
-					<rice-badge v-if="item.badge!=null" :is-dot="item.badge!.isDot" :value="item.badge!.value"
-						:show-zero="item.badge!.showZero??true" :offset="[10,0]">
-						<text :style="getTextStyle(item,index)" class="rice-tabs__item__text"
-							:class="{'rice-tabs__item__active':index==modelValue,'rice-tabs__item__disabled':item.disabled}">{{item.name}}</text>
-					</rice-badge>
-					<text v-else :style="getTextStyle(item,index)" class="rice-tabs__item__text"
-						:class="{'rice-tabs__item__active':index==modelValue,'rice-tabs__item__disabled':item.disabled}">{{item.name}}</text>
-				</view>
-				<!-- 鸿蒙平台有bug，暂不支持下划线 https://issues.dcloud.net.cn/pages/issues/detail?id=20699 -->
-				<!-- #ifndef APP-HARMONY -->
-				<view ref="indicatorRef" :style="indicatorStyle" class="rice-tabs__indicator"></view>
+
+				<!-- #ifndef MP -->
+				<scroll-view class="rice-tabs__scroll" ref="tabScrollRef" direction="horizontal" :show-scrollbar="false"
+					:scroll-with-animation="true">
 				<!-- #endif -->
-			<!-- #ifdef MP-WEIXIN -->
+
+					<view v-for="(item,index) in list" :key="index" ref="tabsItemRef" class="rice-tabs__item"
+						:class="{'rice-tabs--shrink':props.shrink}" :style="getItemStyle(item,index)" @click="tabClick(item,index)">
+						<rice-badge v-if="item.badge!=null" :is-dot="item.badge!.isDot" :value="item.badge!.value"
+							:show-zero="item.badge!.showZero??true" :offset="[10,0]">
+							<text class="rice-tabs__item__text" :class="getTextClass(item,index)"
+								:style="getTextStyle(item,index)">{{item.name}}</text>
+						</rice-badge>
+						<text v-else class="rice-tabs__item__text" :class="getTextClass(item,index)"
+							:style="getTextStyle(item,index)">{{item.name}}</text>
+						<view v-if="lineMode=='zoom'" class="rice-tabs__item__line"
+							:style="[getActiveZoomStyle(index),indicatorStyle]"></view>
+					</view>
+
+					<view v-if="lineMode=='slide'" ref="indicatorRef" :style="indicatorStyle" class="rice-tabs__indicator"
+						:class="{'rice-tabs__indicator--animate':!initAnimate}"></view>
+
+			<!-- #ifdef MP -->
 			</view>
 			<!-- #endif -->
 		</scroll-view>
@@ -29,219 +38,224 @@
 </template>
 
 <script setup>
-	/**
-	 * @description Tabs
-	 * @property {Array} list 标签数组
-	 * @property {String} bgColor 背景颜色
-	 * @property {String|Number} height 高度
-	 * @property {Boolean} shrink 是否开启收缩布局，开启后内容会向左收缩，默认false
-	 * @property {String} titleActiveColor 选中时的文字颜色
-	 * @property {String} titleInactiveColor 未中时的文字颜色
-	 * @property {String} lineColor 滑块颜色
-	 * @property {String|Number} lineWidth 滑块宽度，默认20px,设置为 0 就不显示滑块，设置为 '100%' 就是和内容区的宽度一致
-	 * @property {String|Number} lineHeight 滑块高度，默认3px
-	 * @property {Object} itemStyle 菜单item的样式
-	 * @property {Object} activeStyle 菜单选中时的样式
-	 * @property {Object} inactiveStyle 菜单未选中时的样式  
-	 * @property {Object} customStyle 自定义样式
-	 */
-	import { addUnit, clamp, getPxNum, getRandomStr, hasStrValue, splitCssProperty } from "../../libs/utils"
-	import { useCssVar, useNamespace } from "../../libs/use"
-	import { TabsProps, TabsOptions, TabsClickTab, TabsChange } from './type.uts';
+	import { addUnit, getPxNum } from "../../libs/utils"
+	import { useNamespace } from "../../libs/use"
+	import { TabsProps, TabsOptions, TabsItemRect, TabsClickTab, TabsChange } from './type.uts';
 
 	defineOptions({
-		name: 'rice-tabs'
+		name: 'rice-tabs',
+		styleIsolation: 'app-and-page',
+		externalClasses: ['active-text-class', 'inactive-textClass', 'disabled-text-class', 'text-class']
 	})
 
 	const emit = defineEmits<{
 		clickTab : [TabsClickTab],
 		change : [TabsChange]
 	}>()
+
 	const ns = useNamespace('tabs')
+
 	const props = withDefaults(defineProps<TabsProps>(), {
 		list: () : TabsOptions[] => ([] as TabsOptions[]),
+		lineMode: 'slide',
 		shrink: false,
 		lineWidth: '20px',
+		initAnimate: true,
 		itemStyle: () : UTSJSONObject => ({}),
-		activeStyle: () : UTSJSONObject => ({}),
-		inactiveStyle: () : UTSJSONObject => ({}),
 		customStyle: () : UTSJSONObject => ({}),
 	})
 
 	const modelValue = defineModel({
 		type: Number,
 		default: 0
-
 	})
-	let lastValue = 0
-	const instance = getCurrentInstance()
+
 	const scrollLeft = ref(0)
-	const id = ref(getRandomStr())
-	const tabScrollRef = shallowRef<UniElement | null>(null)
+	let isFirstMove = ref(true)
 	const indicatorRef = shallowRef<UniElement | null>(null)
-	const tabsNodeInfo = shallowRef<NodeInfo[]>([])
+	const tabScrollRef = shallowRef<UniElement | null>(null)
+	const tabsItemRef = ref<UniElement[]>([])
+	const tabsItemRect = ref<TabsItemRect[]>([])
 
-	function updateTabIndicator(moveTo ?: number) {
-		if (moveTo == null) moveTo = 0
-		const tabLen = tabsNodeInfo.value.length
-		if (moveTo < 0 || moveTo >= tabLen) return
-		const moveToRect = tabsNodeInfo.value[moveTo]!
-		const moveToWidth = moveToRect.width ?? 0
-		if (tabLen <= 0 || moveTo >= tabLen) return
-		const offsetLeft = tabsNodeInfo.value.slice(0, moveTo).reduce((cur, pre) => {
-			return cur + pre.width!
-		}, 0)
-		let lineWidth = getPxNum(props.lineWidth!, moveToWidth)
-		//滑块的宽度
-		indicatorRef.value?.style.setProperty('width', lineWidth + 'px')
-		let x = offsetLeft + (moveToWidth - lineWidth) / 2
-		indicatorRef.value?.style.setProperty('transform', `translateX(${x}px)`)
-		tabScrollRef.value?.getBoundingClientRectAsync()?.then((res : DOMRect) => {
-			scrollLeft.value = x - res.width / 2
-		})
+	const cacheTabItemsSize = async () => {
+		tabsItemRect.value = []
+		// #ifdef MP
+		let totalWidth = 0
+		// #endif
+		for (let i = 0; i < tabsItemRef.value.length; i++) {
+			const element = tabsItemRef.value[i]
 
+			// #ifdef MP
+			const rect = await element.getBoundingClientRectAsync()!
+			const x = i == 0 ? 0 : totalWidth
+			const w = rect.width
+			totalWidth += w
+			// #endif
+
+			// #ifndef MP
+			const x = element.offsetLeft
+			const w = element.offsetWidth
+			// #endif
+
+			tabsItemRect.value.push({
+				x,
+				w
+			} as TabsItemRect)
+		}
 	}
 
-	const resize = async () => {
+	const updateTabIndicator = async (currentIndex : number, moveToIndex : number, percentage : number) => {
+		if (tabsItemRect.value.length == 0 || moveToIndex >= tabsItemRect.value.length) return
+		const currentSize = tabsItemRect.value[currentIndex]
+		const moveToSize = tabsItemRect.value[moveToIndex]
+		const indicatorLineX = moveToSize.x
+		const indicatorLineW = getPxNum(props.lineWidth!, moveToSize.w)
+		const x = indicatorLineX + (moveToSize.w - indicatorLineW) / 2
+
+
+		if (!props.initAnimate) {
+			indicatorRef.value?.style.setProperty('opacity', isFirstMove.value ? 0 : 1)
+			indicatorRef.value?.style.setProperty('transition-duration', isFirstMove.value ? '0ms' : '300ms')
+		}
+
+		indicatorRef.value?.style.setProperty('width', indicatorLineW + 'px')
+		indicatorRef.value?.style?.setProperty('transform', `translateX(${x}px)`)
+
+		const rect = await tabScrollRef.value!.getBoundingClientRectAsync()!
+		// #ifndef MP
+		tabScrollRef.value!.scrollLeft = x - rect.width / 2
+		// #endif
+		// #ifdef MP
+		scrollLeft.value = x - rect.width / 2
+		// #endif
 		await nextTick()
-		uni.createSelectorQuery().in(instance).selectAll(`.rice-tabs__item--${id.value}`).boundingClientRect(res => {
-			const nodeInfoArr = res as NodeInfo[]
-			tabsNodeInfo.value = nodeInfoArr
-			updateTabIndicator(modelValue.value)
-		}).exec()
+		indicatorRef.value?.style.setProperty('opacity', 1)
+		isFirstMove.value = false
+
 	}
 
+	/**
+	 * 点击tab
+	 */
 	//@ts-ignore
-	const tabsItemClick = (tab : TabsOptions, index : number) => {
-
+	const tabClick = (tab : TabsOptions, index : number) => {
 		emit('clickTab', {
 			index,
 			name: tab.name,
 			value: tab.value,
 			disabled: tab.disabled ?? false
 		} as TabsClickTab)
+
 		if (modelValue.value == index || tab.disabled == true) return
+		updateTabIndicator(modelValue.value, index, 1)
+
 		modelValue.value = index
-		lastValue = index
 		emit('change', {
 			index,
 			name: tab.name,
 			value: tab.value,
 			disabled: tab.disabled ?? false
 		} as TabsChange)
-		updateTabIndicator(index)
+
+
 	}
 
-	watch(modelValue, (newVal : number) => {
-		if (lastValue != newVal) {
-			lastValue = newVal
-			updateTabIndicator(newVal)
+	const getActiveZoomStyle = (index : number) => {
+		const css = new Map<string, string>()
+		let width = '0px'
+		if (index == modelValue.value) {
+			width = addUnit(props.lineWidth ?? '20px')
 		}
-	})
+		css.set('width', width)
+		return css
+	}
 
-	watch(() : (any | null)[] => [props.lineWidth, props.lineHeight, props.list], async () => {
-		id.value = getRandomStr()
+
+	const resize = async () => {
 		await nextTick()
-		// #ifdef APP-HARMONY
-		timer = setTimeout(() => {
-			resize()
-		}, 200)
-		// #endif
-		// #ifndef APP-HARMONY
-		resize()
-		// #endif
-	}, {
-		deep: true,
-	})
+		await cacheTabItemsSize()
+		updateTabIndicator(modelValue.value, modelValue.value, 1)
+	}
+
 
 	const tabsStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (props.height != null) css.set('height', addUnit(props.height!))
-		if (hasStrValue(props.bgColor)) css.set('background-color', props.bgColor!)
+		if (props.height != null) {
+			css.set('height', addUnit(props.height!))
+		}
+		if (props.bgColor != null) {
+			css.set('background-color', props.bgColor!)
+		}
 		return css
 	})
 
-	// #ifdef APP-HARMONY
-	const tabsRef = ref<UniElement | null>(null)
-	const disabledTextColor = useCssVar('--rice-tabs-disabled-text-color', tabsRef)
-	// #endif
-
-	const getTextStyle = (tab : TabsOptions, index : number) => {
-		const textCss = splitCssProperty(props.itemStyle).textCssProperty
-		if (modelValue.value == index) {
-			const activeTextStyle = splitCssProperty(props.activeStyle).textCssProperty
-			if (hasStrValue(props.titleActiveColor)) {
-				activeTextStyle['color'] = props.titleActiveColor!
-			}
-			return UTSJSONObject.assign(textCss, activeTextStyle)
-		}
-		const inactiveTextStyle = splitCssProperty(props.inactiveStyle).textCssProperty
-		if (tab.disabled == true && hasStrValue(inactiveTextStyle['color'])) {
-			// #ifdef APP-HARMONY
-			inactiveTextStyle['color'] = disabledTextColor.value
-			// #endif
-			// #ifndef APP-HARMONY
-			inactiveTextStyle['color'] = null
-			// #endif
-		}
-		if (hasStrValue(props.titleInactiveColor) && tab.disabled != true) {
-			inactiveTextStyle['color'] = props.titleInactiveColor!
-		}
-		return UTSJSONObject.assign(textCss, inactiveTextStyle)
-	}
 
 	const indicatorStyle = computed(() => {
 		const css = new Map<string, string>()
 		if (props.lineHeight != null) css.set('height', addUnit(props.lineHeight!))
-		if (hasStrValue(props.lineColor)) css.set('background-color', props.lineColor!)
+		if (props.lineColor != null) css.set('background-color', props.lineColor!)
 		return css
 	})
 
-	const tabsClass = computed(() => {
-		return [
-			ns.b(""),
-			ns.theme()
-		]
+	const getItemStyle = (tab : TabsOptions, index : number) => {
+		const basic : UTSJSONObject[] = [props.itemStyle]
+		if (tab.disabled == true) return basic
+		const isSelected = index == modelValue.value
+		if (isSelected && props.activeStyle != null) {
+			basic.push(props.activeStyle!)
+		}
+		if (!isSelected && props.inactiveStyle != null) {
+			basic.push(props.inactiveStyle!)
+		}
+		return basic
+	}
+
+	const getTextClass = (tab : TabsOptions, index : number) => {
+		const basic = [] as any[]
+		const isSelected = index == modelValue.value
+		if (props.textClass != null) {
+			basic.push(props.textClass!)
+		}
+
+		if (isSelected) {
+			basic.push('rice-tabs__item__active')
+			basic.push((props.activeTextClass ?? "") as string)
+		} else {
+			basic.push((props.inactiveTextClass ?? "") as string)
+		}
+		if (tab.disabled == true) {
+			basic.push('rice-tabs__item__disabled')
+			basic.push((props.disabledTextClass ?? "") as string)
+		}
+		return basic
+	}
+
+	const getTextStyle = (tab : TabsOptions, index : number) => {
+		const css = new Map<string, string>()
+		const isSelected = index == modelValue.value
+		if (isSelected && props.titleActiveColor != null) {
+			css.set('color', props.titleActiveColor!)
+		}
+		if (!isSelected && props.titleInactiveColor != null) {
+			css.set('color', props.titleInactiveColor!)
+		}
+		return css
+	}
+
+	watch(modelValue, async (newVal : number, oldVal : number) => {
+		updateTabIndicator(oldVal, newVal, 1)
 	})
 
-	const tabsItemClass = computed(() => {
-		return [
-			ns.e("item"),
-			ns.is("shrink", props.shrink),
-			// #ifndef APP-HARMONY
-			ns.e(`item--${id.value}`),
-			// #endif
-		]
+	watch(() : (any | null)[] => [props.lineWidth, props.lineHeight, props.list], async () => {
+		await nextTick()
+		resize()
 	})
-
-	// #ifdef APP-HARMONY || APP-IOS
-	let timer : number | null = null
-	// #endif
 
 	onMounted(() => {
-		// #ifdef APP-HARMONY 
-		timer = setTimeout(() => {
+		setTimeout(() => {
 			resize()
-		}, 200)
-		// #endif
-
-		// #ifdef APP-IOS
-		timer = setTimeout(() => {
-			resize()
-		}, 50)
-		// #endif
-
-		// #ifndef APP-HARMONY || APP-IOS
-		resize()
-		// #endif
-
+		}, 100)
 	})
-
-	// #ifdef APP-HARMONY || APP-IOS
-	onUnmounted(() => {
-		if (timer != null) clearTimeout(timer!)
-	})
-	// #endif
 
 	defineExpose({
 		resize
@@ -255,7 +269,7 @@
 		background-color: var(--rice-tabs-background);
 
 		&__scroll {
-			/* #ifndef MP-WEIXIN */
+			/* #ifndef MP */
 			position: relative;
 			/* #endif */
 			flex-direction: row;
@@ -263,8 +277,7 @@
 			flex: 1;
 		}
 
-
-		/* #ifdef MP-WEIXIN */
+		/* #ifdef MP */
 		&__scrollmp {
 			position: relative;
 			flex: 1;
@@ -276,22 +289,26 @@
 
 		/* #endif */
 
-
 		&__item {
 			position: relative;
 			flex-direction: row;
 			align-items: center;
 			justify-content: center;
 			padding: 0 12px;
-			flex: 1 0 auto;
+			flex-grow: 1;
+			flex-shrink: 0;
 			overflow: visible;
 			/* #ifdef WEB */
 			cursor: pointer;
 
 			/* #endif */
+			/* #ifdef MP */
+			height: 100%;
+
+			/* #endif */
 			&__text {
 				transition: color .3s;
-				font-size: var(--rice-font-size-basic);
+				font-size: 15px;
 				color: var(--rice-text-color-2);
 			}
 
@@ -306,11 +323,30 @@
 				/* #endif */
 			}
 
+			&__line {
+				position: absolute;
+				z-index: 1;
+				bottom: 2px;
+				left: 50%;
+				border-radius: 100px;
+				transform: translateX(-50%);
+				transition-property: width;
+				transition-duration: 250ms;
+				width: 0px;
+				height: 3px;
+				background-color: var(--rice-primary-color);
+			}
+
 		}
 
 		&--shrink {
 			padding: 0 8px;
+			/* #ifndef VUE3-VAPOR */
 			flex: none;
+			/* #endif */
+			/* #ifdef VUE3-VAPOR */
+			flex-grow: 0;
+			/* #endif */
 		}
 
 		&__indicator {
@@ -320,10 +356,14 @@
 			left: 0px;
 			border-radius: 100px;
 			transition-property: transform, width;
-			transition-duration: 300ms;
+			transition-duration: 250ms;
 			width: 20px;
 			height: 3px;
 			background-color: var(--rice-primary-color);
+
+			&--animate {
+				opacity: 0;
+			}
 		}
 
 	}

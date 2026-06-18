@@ -1,27 +1,14 @@
 <template>
-	<text :class="countToClass" :style="[countToStyle,customStyle]">{{displayValue}}</text>
+	<text class="rice-count-to" :class="ns.theme()" :style="[countToStyle,customStyle]">{{displayValue}}</text>
 </template>
 
 <script setup>
-	/**
-	 * @description CountTo 用于将数字滚动到一个特定的值
-	 * @property {String | Number} startVal	开始的数值，默认从0增长到endVal
-	 * @property {String | Number}	endVal	要滚动到的目标值，默认0
-	 * @property {Number}	duration	滚动到目标数值的动画时间，单位毫秒，默认1000
-	 * @property {Boolean} autoplay	设置数值后是否自动开始滚动,默认true
-	 * @property {Boolean} restart	若第一次滚动结束后每次滚动都需要从初始值（startVal）开始，而非延续上次结束值（endVal），请将此参数设为 true，默认为false
-	 * @property {Number}	decimals	要显示的小数位数
-	 * @property {String}	color	字体颜色
-	 * @property {String | Number}	fontSize	字体大小,默认16px
-	 * @property {Boolean}	bold 字体是否加粗，默认false
-	 * @property {String}	separator	千位分隔符
-	 * @property {Object}	customStyle	自定义样式
-	 */
 	import { useNamespace } from "../../libs/use"
-	import { addUnit, hasStrValue, str2num } from "../../libs/utils"
+	import { addUnit, hasStrValue, toNum } from "../../libs/utils"
 	import { CountToProps, StartCountFn } from './type.uts';
 	defineOptions({
-		name: 'rice-count-to'
+		name: 'rice-count-to',
+		styleIsolation: "app-and-page"
 	})
 	const ns = useNamespace('count-to')
 
@@ -40,7 +27,7 @@
 
 
 	const formatNum = (value ?: string | number) => {
-		value = value == null ? 0 : str2num(value!)
+		value = value == null ? 0 : toNum(value!)
 		const num = value.toFixed(props.decimals ?? 0)
 		const x = num.split('.')
 		let x1 = x[0]
@@ -63,11 +50,11 @@
 	let currentVal = 0
 	let duration = props.duration
 	let timer : number | null = 0
-	let lastEndVal = str2num(props.endVal)
-	
-	const startVal = computed(() => str2num(props.startVal))
+	let lastEndVal = toNum(props.endVal)
+
+	const startVal = computed(() => toNum(props.startVal))
 	const isCountDown = computed(() => {
-		return startVal.value > str2num(props.endVal)
+		return startVal.value > toNum(props.endVal)
 	})
 
 	const clearTimer = () => {
@@ -88,7 +75,7 @@
 
 	startCount = (timestamp : number) => {
 
-		const endVal = str2num(props.endVal)
+		const endVal = toNum(props.endVal)
 		if (startTime == 0) startTime = timestamp
 		const progress = timestamp - startTime
 		remainTime = duration - progress
@@ -97,7 +84,7 @@
 		currentVal = isCountDown.value
 			? localStartVal - (localStartVal - endVal) * (progress / duration)
 			: localStartVal + (endVal - localStartVal) * (progress / duration)
-		
+
 		//递增
 		if (localStartVal < endVal) {
 			currentVal = Math.min(currentVal, endVal)
@@ -145,7 +132,7 @@
 		clearTimer()
 		startTime = 0
 		displayValue.value = formatNum(props.startVal)
-		lastEndVal = str2num(props.endVal)
+		lastEndVal = toNum(props.endVal)
 	}
 
 	function handleRestart() {
@@ -162,7 +149,7 @@
 		if (props.restart) {
 			handleRestart()
 		} else {
-			const newNum = str2num(newVal)
+			const newNum = toNum(newVal)
 			if (newNum != lastEndVal) {
 				if (props.autoplay) {
 					handleStart(currentVal)
@@ -172,16 +159,11 @@
 		}
 	})
 
-	const countToClass = computed(() => {
-		return [
-			ns.b(""),
-			ns.theme(),
-		]
-	})
+
 
 	const countToStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.color)) css.set('color', props.color!)
+		if (props.color != null) css.set('color', props.color!)
 		if (props.fontSize != null) css.set('font-size', addUnit(props.fontSize!))
 		if (props.bold == true) css.set('font-weight', 'bold')
 		return css
@@ -207,7 +189,7 @@
 
 <style scoped lang="scss">
 	.rice-count-to {
-		font-size: var(--rice-font-size-md);
+		font-size: 16px;
 		color: var(--rice-text-color);
 	}
 </style>

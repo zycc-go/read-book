@@ -12,6 +12,7 @@ import io.dcloud.uts.Map
 import io.dcloud.uts.Set
 import io.dcloud.uts.UTSAndroid
 import kotlin.properties.Delegates
+import io.dcloud.uniapp.extapi.navigateTo as uni_navigateTo
 open class GenPagesDiscussIndex : BasePage {
     constructor(__ins: ComponentInternalInstance, __renderer: String?) : super(__ins, __renderer) {}
     companion object {
@@ -20,33 +21,20 @@ open class GenPagesDiscussIndex : BasePage {
             val __ins = getCurrentInstance()!!
             val _ctx = __ins.proxy as GenPagesDiscussIndex
             val _cache = __ins.renderCache
-            val scrollTop = ref<Number>(0)
-            val refresherTriggered = ref<Boolean>(false)
-            val discussListC = ref(_uA<DiscussItem>())
-            val loadinghandle = ref<Boolean>(false)
-            val activeIndex2 = ref(0)
-            val listBadge = ref(_uA<BadgeItem>(BadgeItem(name = "推荐", isRender = true, isDot = true), BadgeItem(name = "关注", isRender = false, dotNum = 10), BadgeItem(name = "我的收藏", isRender = false, dotNum = 999), BadgeItem(name = "AI", isRender = false)))
+            val listBadge = ref(_uA<BadgeItem>(BadgeItem(name = "推荐", type = "1", isDot = true), BadgeItem(name = "关注", type = "2", dotNum = 10), BadgeItem(name = "我的收藏", type = "3", dotNum = 999), BadgeItem(name = "AI")))
             val activeTab = ref<Number>(0)
             val onClickTab = fun(item: BadgeItem, index: Number){
-                if (activeTab.value === index) {
-                    listBadge.value[index].isRender = true
-                    return
-                }
+                console.log("onClickTab", " at pages/discuss/index.uvue:47")
                 activeTab.value = index
-                if (!listBadge.value[index].isRender) {
-                    listBadge.value[index].isRender = true
-                }
             }
             val onChangeSwiper = fun(event: UniSwiperChangeEvent){
+                console.log("onChangeSwiper", " at pages/discuss/index.uvue:52")
                 activeTab.value = event.detail.current
             }
-            val onChangeRender = fun(index: Number){
-                listBadge.value[index].isRender = false
+            val onToPageIssue = fun(){
+                uni_navigateTo(NavigateToOptions(url = "/pages/discuss-issue/index"))
             }
-            onPageScroll(fun(options: OnPageScrollOptions){
-                scrollTop.value = options.scrollTop
-            }
-            )
+            onMounted(fun(){})
             return fun(): Any? {
                 val _component_uni_fab_button = resolveEasyComponent("uni-fab-button", GenUniModulesUniFabButtonComponentsUniFabButtonUniFabButtonClass)
                 return _cE("view", _uM("class" to _nC(_uA(
@@ -71,24 +59,28 @@ open class GenPagesDiscussIndex : BasePage {
                         }
                         ), 128)
                     )),
-                    _cE("swiper", _uM("style" to _nS(_uM("flex" to "1")), "duration" to 200, "current" to unref(activeTab), "onChange" to onChangeSwiper), _uA(
-                        _cE(Fragment, null, RenderHelpers.renderList(unref(listBadge), fun(item, index, __index, _cached): Any {
+                    _cE("swiper", _uM("style" to _nS(_uM("flex" to "1")), "current" to unref(activeTab), "onChange" to onChangeSwiper), _uA(
+                        _cE(Fragment, null, RenderHelpers.renderList(unref(listBadge).slice(0, 3), fun(item, index, __index, _cached): Any {
                             return _cE("swiper-item", _uM("key" to item.name), _uA(
-                                _cV(unref(GenPagesDiscussContentClass), _uM("id" to item.name, "isRender" to item.isRender, "onChangeRender" to fun(){
-                                    onChangeRender(index)
-                                }
-                                ), null, 8, _uA(
-                                    "id",
-                                    "isRender",
-                                    "onChangeRender"
+                                _cV(unref(GenPagesDiscussItemContentClass), _uM("currentIndex" to unref(activeTab), "tabIndex" to index, "type" to item.type), null, 8, _uA(
+                                    "currentIndex",
+                                    "tabIndex",
+                                    "type"
                                 ))
                             ))
                         }
-                        ), 128)
+                        ), 128),
+                        _cE("swiper-item", null, _uA(
+                            _cV(unref(GenPagesDiscussItemAichatClass))
+                        ))
                     ), 44, _uA(
                         "current"
                     )),
-                    _cV(_component_uni_fab_button, _uM("class" to "fab-btn"))
+                    if (unref(activeTab) < 3) {
+                        _cV(_component_uni_fab_button, _uM("key" to 0, "class" to "fab-btn", "onClick" to onToPageIssue))
+                    } else {
+                        _cC("v-if", true)
+                    }
                 ), 6)
             }
         }

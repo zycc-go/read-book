@@ -23,17 +23,27 @@ export type TabsChange = {
 	disabled : boolean,
 }
 
+export type TabsItemRect = {
+	x : number,
+	w : number
+}
 
 export type TabsProps = {
 	list : TabsOptions[],
 	shrink ?: boolean,
+	lineMode ?: 'slide' | 'zoom',
 	titleActiveColor ?: string,
 	titleInactiveColor ?: string,
+	initAnimate ?: boolean,
 	bgColor ?: string,
 	height ?: string | number,
 	lineColor ?: string,
 	lineWidth ?: string | number,
 	lineHeight ?: string | number,
+	textClass ?: string,
+	activeTextClass ?: string,
+	inactiveTextClass ?: string,
+	disabledTextClass ?: string,
 	itemStyle ?: UTSJSONObject,
 	activeStyle ?: UTSJSONObject,
 	inactiveStyle ?: UTSJSONObject,

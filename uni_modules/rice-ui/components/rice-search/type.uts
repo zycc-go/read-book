@@ -26,5 +26,7 @@ export type SearchProps = {
 	leftIconColor ?: string,
 	rightIconSize ?: string | number,
 	rightIconColor ?: string,
+	wrapperClass ?: string,
+	inputClass ?: string,
 	customStyle ?: UTSJSONObject,
 }

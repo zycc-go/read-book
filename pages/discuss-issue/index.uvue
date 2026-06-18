@@ -1,0 +1,130 @@
+<template>
+	<view :class="[`theme-${state.appTheme}`, 'page']" :style="style">
+		<my-navbar :leftArrow="true">
+			<template #right>
+				<view class="nav-right">
+					<my-icon class="nav-icon" name="search-line" size="20px" @click="onSearch"></my-icon>
+					<my-icon class="nav-icon" name="more-vertical" size="20px" @click="onShowMenu"></my-icon>
+				</view>
+			</template>
+		</my-navbar>
+		
+		<view>/pages/discuss-issue/index</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import MyNavbar from '@/componnets/MyNavbar/index.uvue'
+	import MyIcon from '@/componnets/MyIcon/index.uvue';
+	import { state, checkWindowInfo } from '@/store/index.uts'
+	import { bookList, type BookItem } from '@/data/book'
+
+	const style = computed(() => {
+		return {
+			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+			paddingBottom: state.safeAreaInsetsHeight + 'px',
+		};
+	})
+
+	const onShowMenu = () => {
+		uni.showToast({ title: '还没有哦', icon: "none" })
+	}
+
+	const onSearch = () => {
+		uni.navigateTo({
+			url: '/pages/search/index'
+		})
+	}
+
+	const onBookClick = (book : BookItem) => {
+		uni.navigateTo({
+			url: `/pages/library/index?bookId=${book.id}`
+		})
+	}
+
+	onReady(() => {
+		checkWindowInfo()
+	})
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		background-color: var(--navbar-background);
+		height: 100%;
+		width: 100%;
+	}
+
+	.read-time {
+		font-size: $uni-font-size-14;
+		color: var(--text-color-2);
+		padding-left: $uni-spacing-row-16;
+	}
+
+	.nav-right {
+		display: flex;
+		flex-direction: row;
+		margin-right: $uni-spacing-row-16;
+
+		.nav-icon {
+			font-size: $uni-font-size-24;
+			margin-left: $uni-spacing-row-12;
+		}
+	}
+
+	.book-list {
+		padding: $uni-spacing-col-12 $uni-spacing-row-16;
+
+		.book-li-top {
+			margin-top: $uni-spacing-row-16;
+		}
+
+		.book-li {
+			display: flex;
+			flex-direction: row;
+
+			.book-li-avatar {
+				width: 60px;
+				height: 80px;
+			}
+
+			.book-li-content {
+				margin-left: $uni-spacing-row-12;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+
+				.book-li-row {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					height: 18px;
+				}
+
+				.book-title {
+					font-size: $uni-font-size-16;
+					color: var(--text-color-1);
+				}
+
+				.book-sub {
+					font-size: $uni-font-size-12;
+					color: var(--text-color-2);
+				}
+
+				.book-sub-dot {
+					padding: 2px 4px;
+					font-size: 8px;
+					line-height: 8px;
+					background-color: yellowgreen;
+					color: #fff;
+					border-radius: $uni-border-radius-4;
+				}
+			}
+
+			.book-li-more {
+				position: absolute;
+				right: 0;
+				top: 0;
+			}
+		}
+	}
+</style>

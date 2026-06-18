@@ -35,12 +35,16 @@ open class GenPagesBookcaseIndex : BasePage {
             val onBookClick = fun(book: BookItem){
                 uni_navigateTo(NavigateToOptions(url = "/pages/library/index?bookId=" + book.id))
             }
+            onReady(fun(){
+                checkWindowInfo()
+            }
+            )
             return fun(): Any? {
                 return _cE("view", _uM("class" to _nC(_uA(
                     "theme-" + unref(state).appTheme,
                     "page"
                 )), "style" to _nS(unref(style))), _uA(
-                    _cV(unref(GenComponnetsMyNavbarClass), null, _uM("left" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cV(unref(GenComponnetsMyNavbarIndexClass), null, _uM("left" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
                             _cE("text", _uM("class" to "read-time"), "今天阅读了30分钟")
                         )
@@ -48,8 +52,8 @@ open class GenPagesBookcaseIndex : BasePage {
                     ), "right" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
                             _cE("view", _uM("class" to "nav-right"), _uA(
-                                _cE("text", _uM("class" to "icon nav-icon", "onClick" to onSearch), _tD("\ue710")),
-                                _cE("text", _uM("class" to "icon nav-icon", "onClick" to onShowMenu), _tD("\ue6a9"))
+                                _cV(unref(GenComponnetsMyIconIndexClass), _uM("class" to "nav-icon", "name" to "search-line", "size" to "20px", "onClick" to onSearch)),
+                                _cV(unref(GenComponnetsMyIconIndexClass), _uM("class" to "nav-icon", "name" to "more-vertical", "size" to "20px", "onClick" to onShowMenu))
                             ))
                         )
                     }
@@ -90,7 +94,7 @@ open class GenPagesBookcaseIndex : BasePage {
                                                     _cE("text", _uM("class" to "book-sub"), " " + _tD(item?.readChapter), 1)
                                                 ))
                                             )),
-                                            _cE("text", _uM("class" to "icon book-li-more"), _tD("\ue6d1"))
+                                            _cV(unref(GenComponnetsMyIconIndexClass), _uM("class" to "book-li-more", "name" to "more", "size" to "20px"))
                                         ), 10, _uA(
                                             "onClick"
                                         ))

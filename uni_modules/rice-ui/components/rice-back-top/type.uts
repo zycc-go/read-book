@@ -17,5 +17,6 @@ export type BackTopProps = {
 	bgColor ?: string,
 	zoom ?: boolean,
 	zIndex ?: number,
+	disabledPageScroll ?: boolean,
 	customStyle ?: UTSJSONObject,
 }

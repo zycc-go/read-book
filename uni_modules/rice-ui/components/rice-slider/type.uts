@@ -1,10 +1,15 @@
+export type SliderValue = number | number[]
+
 export type SliderInitData = {
 	dragging : 'first' | 'second' | 'none',
+	moveReady : boolean,
 	firstValue : number,
 	secondValue : number,
-	startValue : number | number[],
+	startValue : SliderValue,
 	sliderWidth : number,
 	sliderHeight : number,
+	trackLeft : number,
+	trackTop : number,
 	trackWidth : number,
 	trackHeight : number,
 }
@@ -25,7 +30,9 @@ export type SliderProps = {
 	buttonSize ?: string | number,
 	buttonColor ?: string,
 	buttonBorderColor ?: string,
+	buttonClass ?: string,
 	activeColor ?: string,
 	inactiveColor ?: string,
+	clickChange ?: boolean,
 	customStyle ?: UTSJSONObject
 }

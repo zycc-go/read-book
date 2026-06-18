@@ -1,0 +1,83 @@
+<template>
+	<view :class="{ 'my-cell': true, 'my-cell-clickable': arrowR }" @touchstart="onTouchstart" @touchend="onTouchend">
+		<view class="flex justify-between items-center">
+			<view class="my-cell-title">
+				<text class="text">{{ props.title }}</text>
+			</view>
+			<view class="my-cell-value">
+				<text class="text">{{ props.value }}</text>
+				<my-icon v-if="arrow" name="right" />
+			</view>
+			<slot name='rightIcon' />
+		</view>
+		<view class="my-cell-label">
+			<text class="text">{{ props.label }}</text>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import MyIcon from '@/componnets/MyIcon/index.uvue';
+	import { PropsType } from './type.uts'
+
+	defineOptions({
+		styleIsolation: 'app'
+	})
+
+	const props = withDefaults(defineProps<PropsType>(), {
+		title: '',
+		value: '',
+		label: '',
+		arrow: false,
+	})
+
+	const arrow = computed(() => props.arrow ?? false)
+
+	const arrowR = ref<boolean>(false)
+
+	const onTouchstart = () => {
+		arrowR.value = arrow.value
+	}
+
+	const onTouchend = () => {
+		arrowR.value = false
+	}
+</script>
+
+<style lang="scss" scoped>
+	.my-cell {
+		padding: $uni-spacing-col-12 $uni-spacing-row-16;
+		background-color: var(--background-color-2);
+
+		.text {
+			line-height: $uni-line-height-24;
+		}
+
+		.my-cell-title {
+			.text {
+				color: var(--text-color-1);
+			}
+		}
+
+		.my-cell-value {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			.text {
+				color: var(--text-color-3);
+			}
+		}
+
+		.my-cell-label {
+			.text {
+				color: var(--text-color-3);
+				font-size: $uni-font-size-14;
+			}
+		}
+	}
+
+	.my-cell-clickable {
+		background-color: var(--cell-active-color);
+	}
+</style>

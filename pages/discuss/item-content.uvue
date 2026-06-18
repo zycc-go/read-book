@@ -1,0 +1,230 @@
+<template>
+	<list-view style="flex:1" :refresher-enabled="true" :refresher-threshold="refresherThreshold"
+		:scroll-with-animation="true" @refresherpulling="onRefresherpulling" :refresher-triggered="refresherTriggered"
+		@refresherrefresh="onRefresherrefresh">
+		<list-item v-for="(item, index) in discussData" :key="item.id" @click="onToPageDetail(item)">
+			<view :class="{ 'item-card': true, 'item-card-first': index == 0 }">
+				<view class="item-top">
+					<MyAvatar />
+					<view class="item-text">
+						<text class="item-tit">{{ item.name }}</text>
+					</view>
+				</view>
+				<text class="item-content">{{ item.content }}</text>
+				<view class="item-bottom">
+					<view class="item-hand" @click="onHandle(item, 'good')">
+						<my-icon v-if="item.isGood" name="thumb-up-fill" color="var(--error-color)" />
+						<my-icon v-else name="thumb-up" />
+						<text
+							:class="{'item-hand-num':true, 'item-hand-num-active': item.isGood}">&nbsp;{{ item.goodNum }}</text>
+					</view>
+					<view class="item-hand" @click="onHandle(item, 'like')">
+						<my-icon v-if="item.isLike" name="heart-fill" color="var(--error-color)" />
+						<my-icon v-else name="heart" />
+						<text
+							:class="{'item-hand-num':true, 'item-hand-num-active': item.isLike}">&nbsp;{{ item.likeNum }}</text>
+					</view>
+					<view class="item-hand">
+						<my-icon name="eye" />
+						<text class="item-hand-num">&nbsp;{{ item.viewNum }}</text>
+					</view>
+					<view class="item-hand" @click="onHandle(item, 'share')">
+						<my-icon name="reply" />
+						<text class="item-hand-num">&nbsp;{{ item.shareNum }}</text>
+					</view>
+				</view>
+			</view>
+		</list-item>
+
+		<!-- 自定义下拉刷新元素 -->
+		<!-- <list-item slot="refresher">
+			<view class="custom-refresher">
+				<loading />
+				<view class="custom-refresher-view">
+					<text class="custom-refresher-text">{{ refresherText[refresherStatus] }}</text>
+				</view>
+			</view>
+		</list-item> -->
+	</list-view>
+</template>
+
+<script setup lang="uts">
+	import MyAvatar from '@/componnets/MyAvatar/index.uvue'
+	import MyIcon from '@/componnets/MyIcon/index.uvue';
+	import { discussListFun, type DiscussItem } from '@/data/discuss'
+
+	defineOptions({
+		styleIsolation: 'app'
+	})
+
+	type Props = {
+		currentIndex : number
+		tabIndex : number
+		type : string
+	}
+
+	const props = withDefaults(defineProps<Props>(), {
+		currentIndex: 0,
+		tabIndex: 0,
+		type: ''
+	})
+
+	const scrollTop = ref<number>(0)
+	const refresherTriggered = ref<boolean>(false) // 下拉状态
+	const firstLoaded = ref<boolean>(false) // 第一次显示
+	const isLoading = ref<boolean>(false) // 加载状态
+	const isFinised = ref<boolean>(false) // 结束状态
+	const currentPage = ref<number>(0) // 页码
+	const discussData = ref<DiscussItem[]>([]) // 数据
+
+	const refresherText = ref(['继续下拉刷新', '释放立即刷新', '刷新中', ""])
+	const refresherThreshold = ref<number>(50) // 下拉距离
+	const refresherStatus = ref<number>(0) // 下拉状态
+
+	const onHandle = (item : DiscussItem, val : string) => {
+		if (!isLoading.value) {
+			uni.showToast({ title: val, icon: 'none' })
+			isLoading.value = true
+			setTimeout(() => {
+				isLoading.value = false
+				const index = discussData.value.findIndex(discuss => discuss.id == item.id)
+				const keyIs = `is${val.charAt(0).toUpperCase() + val.slice(1)}`
+				const keyNum = `${val}Num`
+				if (['good', 'like'].includes(val)) {
+					if (discussData.value[index][keyIs] as boolean) {
+						discussData.value[index][keyNum] = discussData.value[index][keyNum] as number - 1
+					} else {
+						discussData.value[index][keyNum] = discussData.value[index][keyNum] as number + 1
+					}
+					discussData.value[index][keyIs] = !(discussData.value[index][keyIs] as boolean)
+				} else {
+					discussData.value[index][keyNum] = discussData.value[index][keyNum] as number + 1
+				}
+				uni.hideToast()
+			}, 1000)
+		}
+	}
+
+	const getData = async () => {
+		if (discussData.value.length == 0) {
+			uni.showLoading({ title: '加载中…', mask: true })
+		}
+		// type
+		const data = await new Promise((resolve) => {
+			setTimeout(() => {
+				resolve(true)
+				discussData.value = discussListFun()
+			}, 1000)
+		})
+		uni.hideLoading()
+		firstLoaded.value = true
+		isLoading.value = false
+		await nextTick()
+		refresherTriggered.value = false
+	}
+
+	const onRefresherpulling = (e : UniRefresherEvent) => {
+		if (e.detail.dy > refresherThreshold.value) {
+			refresherStatus.value = 1
+		} else {
+			refresherStatus.value = 0
+		}
+	}
+
+	const onRefresherrefresh = () => {
+		refresherStatus.value = 2
+		refresherTriggered.value = true
+		currentPage.value = 1
+		getData()
+	}
+
+	watch(() : number => props.currentIndex, async (newVal : number) => {
+		if (newVal == props.tabIndex) {
+			if (!firstLoaded.value) {
+				await nextTick()
+				getData()
+			}
+		}
+	}, {
+		immediate: true
+	})
+
+	const onToPageDetail = (item : DiscussItem) => {
+		uni.navigateTo({
+			url: `/pages/discuss-detail/index?id=${item.id}`
+		})
+	}
+
+	onPageScroll((options : OnPageScrollOptions) => {
+		scrollTop.value = options.scrollTop
+	})
+</script>
+
+<style lang="scss" scoped>
+	.custom-refresher {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		height: 40px;
+
+		.custom-refresher-view {
+			margin-left: $uni-spacing-col-8;
+		}
+
+		.custom-refresher-text {
+			margin-left: var(--text-color-2);
+		}
+	}
+
+	.item-card {
+		margin: 0 $uni-spacing-col-12 $uni-spacing-row-16;
+		padding: $uni-spacing-col-12 $uni-spacing-row-16;
+		background-color: var(--background-color-2);
+		border-radius: $uni-border-radius-8;
+
+		.item-top {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			.item-text {
+				margin-left: $uni-spacing-row-4;
+
+				.item-tit {
+					color: var(--text-color-1);
+				}
+			}
+		}
+
+		.item-content {
+			padding: $uni-spacing-col-12 0;
+			color: var(--text-color-2);
+		}
+
+		.item-bottom {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+		}
+
+		.item-hand {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			flex: 1;
+
+			.item-hand-num {
+				font-size: $uni-font-size-12;
+				color: var(--text-color-2);
+			}
+
+			.item-hand-num-active {
+				color: var(--error-color);
+			}
+
+		}
+	}
+</style>

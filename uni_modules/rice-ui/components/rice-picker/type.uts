@@ -18,14 +18,15 @@ export type PickerEvent = {
 	selectedIndex : number[],
 }
 
-export type PickerOptionDefault = PickerOption[]
 
-export type PickerOptionMultiple = PickerOption[][]
-
-export type PickerOptions = PickerOptionDefault | PickerOptionMultiple
+export type PickerCascadeState = {
+	columns : PickerOption[][],
+	selectedIndex : number[],
+	selectedValues : PickerModelValue[],
+}
 
 export type PickerProps = {
-	columns ?:PickerOption[][],
+	columns ?: PickerOption[][],
 	toolbarPosition ?: 'top' | 'bottom' | 'none',
 	title ?: string,
 	confirmButtonText ?: string,

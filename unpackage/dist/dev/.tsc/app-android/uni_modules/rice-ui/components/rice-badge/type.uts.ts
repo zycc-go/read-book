@@ -11,5 +11,6 @@ export type BadgeProps = {
 	position ?: 'top-right' | 'top-left' | 'bottom-left' | 'bottom-right',
 	offset ?: Array<number | string>,
 	absolute ?: boolean,
+	textClass ?: string,
 	badgeStyle ?: UTSJSONObject,
 }

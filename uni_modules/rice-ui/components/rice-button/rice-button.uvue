@@ -2,8 +2,8 @@
 	<view :class="buttonClass" :style="[btnStyle,customStyle]" :hover-stay-time="100" :hover-class="hoverClass"
 		ref="buttonRef" @click.stop="emitClick">
 		<!-- :mode="loadingType" -->
-		<rice-loading v-if="loading" :color="iconColor" :size="_loadingSize" :mode="loadingMode" />
-		<rice-icon v-if="icon" :name="icon" :color="iconColor" :size="_iconSize" />
+		<rice-loading v-if="loading" :color="_iconColor" :size="_loadingSize" :mode="loadingMode" />
+		<rice-icon v-if="icon" :name="icon" :color="_iconColor" :size="_iconSize" :font-family="iconFontFamily"/>
 		<slot>
 			<text v-if="hasStrValue(text)" :class="textClass" :style="textStyle">{{btnText}}</text>
 		</slot>
@@ -18,55 +18,6 @@
 </template>
 
 <script setup>
-	/**
-	 * @description rice-button
-	 * @property {String} type 类型
-	 * @value primary 主要按钮
-	 * @value success 成功按钮
-	 * @value warning 警告按钮
-	 * @value error 危险按钮
-	 * @value default 默认按钮
-	 * @value info 信息按钮
-	 * @property {String} size 尺寸  large | small | mini
-	 * @value large 大尺寸
-	 * @value small 小尺寸
-	 * @value mini 超小尺寸
-	 * @property {String|Number} text 文字
-	 * @property {String} color 按钮颜色
-	 * @property {String} darkColor 暗黑模式下按钮颜色
-	 * @property {String} textColor 文字颜色
-	 * @property {String|Number} textSize 文字大小
-	 * @property {Boolean} plainFill 是否为带背景颜色的朴素按钮
-	 * @property {Boolean} plain 是否为朴素按钮
-	 * @property {String} icon 图标
-	 * @property {String} iconSize 图标大小
-	 * @property {String} iconColor 图标/loading颜色
-	 * @property {Boolean} loading 是否加载状态 
-	 * @property {String} loadingSize 加载图标大小
-	 * @property {String} loadingText 加载状态提示文字，会替换掉按钮的文字
-	 * @property {String} loadingMode 加载图标类型
-	 * @value snow 雪花
-	 * @value circle 圆形
-	 * @value semicircle 半圆
-	 * @value circular circular
-	 * @property {Boolean} disabled  是否禁用
-	 * @property {String} shape 按钮形状  round 圆形 square 方形
-	 * @value round 圆形
-	 * @value square 方形
-	 * @property {String|Number} height 按钮高度  默认42px
-	 * @property {String|Number} width 按钮宽度
-	 * @property {String} openType 开放能力
-	 * @property {String} formType 用于 form 组件，点击分别会触发 form 组件的 submit/reset 事件
-	 * @property {String} lang 指定返回用户信息的语言，zh_CN 简体中文，zh_TW 繁体中文，en 英文。
-	 * @property {String} sessionFrom 会话来源
-	 * @property {String} sendMessageTitle 会话内消息卡片标题
-	 * @property {String} sendMessagePath 会话内消息卡片点击跳转应用路径
-	 * @property {String} sendMessageImg 会话内消息卡片图片
-	 * @property {Boolean} showMessageCard 显示会话内消息卡片
-	 * @property {String} appParameter 打开 APP 时，向 APP 传递的参数
-	 * @property {String} to 页面跳转地址
-	 * @property {Object} customStyle 自定义样式;
-	 */
 	import { addUnit, debugWarn, hasStrValue, isGradientColor, isThemeColor } from '../../libs/utils';
 	import { Coloruts } from "../../libs/plugin";
 	import { useNamespace } from '../../libs/use';
@@ -75,7 +26,8 @@
 	import { iconSizeTypes, loadingSizeTypes } from "./utils"
 
 	defineOptions({
-		name: 'rice-button'
+		name: 'rice-button',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace('button')
@@ -139,11 +91,14 @@
 
 	//图标、loading的颜色
 	const themeColor = ref("")
-	const iconColor = computed<string>(() => {
+	const _iconColor = computed<string>(() => {
+		if (hasStrValue(props.iconColor)) {
+			return props.iconColor!
+		}
 		const textColor = getTextColor()
 		if (textColor != "") return textColor
 		// #ifdef APP
-		const baseColor = isDark.value ? '#f5f5f5' : '#323233'
+		const baseColor = 'var(--rice-text-color)'
 		if (isPlain.value || buttonType.value == 'info' || buttonType.value == 'default') return themeColor.value == "" ? baseColor : themeColor.value
 		return '#f5f5f5'
 		// #endif
@@ -159,6 +114,7 @@
 
 	const btnStyle = computed(() => {
 		const css = new Map<string, any>()
+
 		//自定义颜色
 		if (hasStrValue(buttonColor.value)) {
 			const color = buttonColor.value!
@@ -187,7 +143,7 @@
 	})
 
 
-	const buttonClass = computed(() => {
+	const buttonClass = computed<string[]>(() => {
 
 		const basic = [
 			ns.b(''),
@@ -309,20 +265,20 @@
 		height: 42px;
 		padding: 0 15px;
 		box-sizing: border-box;
-		border: 1px solid var(--rice-button-default-border);
 		opacity: 1;
+		border: 1px solid var(--rice-button-default-border);
 		/* #ifndef APP */
 		color: var(--rice-text-color-white);
 
 		/* #endif */
-		
+
 		/* #ifdef WEB */
 		cursor: pointer;
 		/* #endif */
-		
+
 		&__text {
 			color: var(--rice-text-color-white);
-			font-size: var(--rice-font-size-sm);
+			font-size: 14px;
 		}
 
 		&--square {

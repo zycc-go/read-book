@@ -283,6 +283,7 @@ export class Lunar {
         * @eg:let cnMonth = calendar.toChinaMonth(12) ;//cnMonth='腊月'
         */
     toChinaMonth(m: number, leap: boolean = false): string {
+        m = Math.max(1, m);
         return leap ? (N_STR_3[4] + N_STR_3[m] + N_STR_3[0]) : (N_STR_3[m] + N_STR_3[0]);
     }
     /**
@@ -367,7 +368,7 @@ export class Lunar {
         * @param m  solar month
         * @param d  solar day
         * @return JSON object
-        * @eg:__f__('log','at uni_modules/rice-ui/components/rice-calendar/lunar.uts:195',calendar.solar2lunar(1987,11,01));
+        * @eg:__f__('log','at uni_modules/rice-ui/components/rice-calendar/lunar.uts:196',calendar.solar2lunar(1987,11,01));
         */
     solar2lunar(y: number, m: number, d: number): LunarInfoType {
         let moonDay = this.solar_date(y, m, d);

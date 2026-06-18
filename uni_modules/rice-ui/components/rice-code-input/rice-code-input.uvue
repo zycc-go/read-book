@@ -1,44 +1,29 @@
 <template>
-	<view :class="codeInputClass" :style="[codeInputStyle,customStyle]">
-		<view v-for="(_,index) in maxlength" :key="index" :style="[boxStyle,getBoxStyle(index)]" :class="boxClass">
+	<view class="rice-code-input" :class="ns.theme()" :style="[codeInputStyle,customStyle]">
+		<view v-for="(_,index) in maxlength" :key="index" :style="[boxStyle,getBoxStyle(index)]" :class="boxClass"
+			@click="boxClick">
 			<view v-if="dot&&displayValue.length>index" class="rice-code-input__box__dot"></view>
 			<text v-else class="rice-code-input__box__text" :style="textStyle">{{getCodeNum(index)}}</text>
+			<!-- #ifndef VUE3-VAPOR  && APP-HARMONY && uniVersion<5.12 -->
 			<view v-show="showCursor&&index==displayValue.length&&isFocus" class="rice-code-input__box__line" ref="boxLineRef"
 				:style="boxLineStyle"></view>
+			<!-- #endif -->
 		</view>
 		<input class="rice-code-input__input" type="number" :disabled="disabledKeyboard" :value="displayValue"
-			:style="inputStyle" :focus="focus" :maxlength="maxlength" :adjust-position="adjustPosition" @input="onInput"
-			@focus="onFocus" @blur="onBlur"></input>
+			:style="inputStyle" :focus="isFocus" :maxlength="maxlength" :adjust-position="adjustPosition"
+			cursor-color="transparent" @input="onInput" @focus="onFocus" @blur="onBlur"></input>
 	</view>
 </template>
 
 <script setup>
-	/**
- * @description CodeInput 验证码输入框
- * @property {String} modelValue 双向绑定的值
- * @property {Number} maxlength 输入字符的个数，默认4
- * @property {Boolean} dot 是否使用原点代替
- * @property {String} mode 模式选择
- * @value box 输入框（默认值）
- * @value line 下划线
- * @property {String} bgColor 输入框背景色，传transparent可设置为透明色
- * @property {String} borderColor 输入框边框颜色，传transparent可设置为透明色
- * @property {Boolean} showCursor 是否显示输入框中间的竖线，默认true
- * @property {String} cursorColor 输入框中间竖线的颜色
- * @property {String|Number} space 输入框之间的间距
- * @property {String}  justifyContent 等同于css属性 `justify-content` 的值
- * @property {String|Number} size 输入框大小，宽高一致
- * @property {String|Number} fontSize 文字大小
- * @property {String} color 文字颜色
- * @property {Boolean} bold 文字是否加粗
- * @property {Boolean} focus 是否获得焦点
- * @property {Boolean} disabledKeyboard 点击输入框禁止唤起系统键盘，一般用于自定义键盘，目前RiceUI还没有自定义键盘组件，后续支持
- * @property {Boolean} adjustPosition 键盘弹起时，是否自动上推页面，默认true
- * @property {Object} customStyle 自定义样式
- */
 	import { addUnit, hasStrValue, getPxNum } from "../../libs/utils";
 	import { useNamespace } from "../../libs/use";
 	import { CodeInputProps } from "./type.uts"
+
+	defineOptions({
+		name: 'rice-code-input',
+		styleIsolation: 'app-and-page'
+	})
 
 	const ns = useNamespace('code-input')
 	const emit = defineEmits<{
@@ -65,7 +50,8 @@
 
 	const displayValue = ref("")
 	const isFocus = ref(props.focus)
-
+	
+	//@ts-ignore
 	const getCodeNum = (index : number) => displayValue.value.charAt(index)
 
 	watch(modelValue, (newVal : string | null) => {
@@ -84,9 +70,12 @@
 
 
 	// #ifdef APP
+
 	const boxLineRef = shallowRef<UniElement[]>([])
 
 	const startAmination = (value : string) => {
+
+		// #ifndef VUE3-VAPOR && APP-HARMONY && uniVersion<5.12
 		const len = value.length
 		if (len < boxLineRef.value.length) {
 			boxLineRef.value[len].animate([{
@@ -97,15 +86,13 @@
 				opacity: '0',
 			}], {
 				duration: 1000,
-				// #ifndef APP-HARMONY
 				iterations: Infinity
-				// #endif
-				// #ifdef APP-HARMONY
-				iterations: 99999
-				// #endif
 			})
 		}
+		// #endif
+
 	}
+
 
 	// #endif
 
@@ -138,12 +125,16 @@
 		emit('blur', e)
 	}
 
-	const codeInputClass = computed(() => {
-		return [
-			ns.b(""),
-			ns.theme(),
-		]
+	watch(() : boolean => props.focus, () => {
+		isFocus.value = props.focus
 	})
+
+	const boxClick = () => {
+		// #ifdef VUE3-VAPOR
+		isFocus.value = true
+		// #endif
+	}
+
 
 	const codeInputStyle = computed(() => {
 		const css = new Map<string, string>()
@@ -168,7 +159,7 @@
 		return css
 	})
 
-
+	//@ts-ignore
 	const getBoxStyle = (index : number) => {
 		const css = new Map<string, string>()
 		const space = getPxNum(props.space)
@@ -245,7 +236,7 @@
 			border: 1px solid var(--rice-code-input-background);
 
 			&__text {
-				font-size: var(--rice-font-size-md);
+				font-size: 16px;
 				color: var(--rice-text-color);
 			}
 
@@ -288,10 +279,16 @@
 		&__input {
 			position: absolute;
 			z-index: 2;
+			//#ifndef VUE3-VAPOR
 			left: -750rpx;
+			//#endif
+			//#ifdef VUE3-VAPOR
+			left: -100px;
+			font-size: 0;
+			//#endif
 			right: 0;
 			top: 0;
-			height: 42px;
+			bottom: 0;
 			background-color: transparent;
 			text-align: left;
 		}

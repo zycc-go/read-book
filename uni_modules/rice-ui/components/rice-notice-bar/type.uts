@@ -19,5 +19,6 @@ export type NoticeBarProps = {
 	closeable ?: boolean,
 	scrollable ?: boolean,
 	wrapable ?: boolean,
+	textClass ?: string,
 	customStyle ?: UTSJSONObject
 }

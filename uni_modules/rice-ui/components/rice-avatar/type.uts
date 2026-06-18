@@ -9,6 +9,7 @@ export type AvatarProps = {
 	bgColor ?: string,
 	color ?: string,
 	fontSize ?: string | number,
+	textClass ?: string,
 	defaultUrl ?: string,
 	customStyle ?: UTSJSONObject,
 }

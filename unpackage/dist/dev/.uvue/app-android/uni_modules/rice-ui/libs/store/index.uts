@@ -1,2 +1,2 @@
-export * from "./useConfigStore";
+export * from "./useConfig";
 //# sourceMappingURL=index.uts.map

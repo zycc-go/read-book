@@ -22,5 +22,6 @@ export type SignatureProps = {
 	contentBgColor ?: string,
 	clearButtonText ?: string,
 	confirmButtonText ?: string,
+	revokeButtonText ?: string,
 	customStyle ?: UTSJSONObject
 }

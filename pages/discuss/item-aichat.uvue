@@ -1,0 +1,10 @@
+<template>
+	<web-view id="web-view" class="uni-flex-item" src='https://www.dcloud.io'>
+	</web-view>
+</template>
+
+<script setup lang="uts">
+</script>
+
+<style lang="scss" scoped>
+</style>

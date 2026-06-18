@@ -6,5 +6,4 @@ export type IconProps = {
 	fontFamily ?: string,
 	stop ?: boolean,
 	customStyle ?: UTSJSONObject,
-	customClass ?: string,
 }

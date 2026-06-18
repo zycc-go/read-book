@@ -1,5 +1,5 @@
 <template>
-	<view v-if="realShow" :class="tagClass" :style="[tagStyle,customStyle]" ref="tagRef" @click="handleClick"
+	<view v-if="realShow" :class="tagClass" :style="[tagStyle,customStyle]" @click="handleClick"
 		@transitionend="onTransitionend">
 		<slot>
 			<rice-icon v-if="hasStrValue(icon)" :name="icon" :color="iconColor" :size="`${iconSize}px`"
@@ -7,54 +7,23 @@
 			<text :class="textClass" :style="textStyle">{{text}}</text>
 		</slot>
 
-		<!-- #ifndef APP -->
 		<view v-if="closeable" @click.stop="handleClose">
 			<rice-icon name="cross" :color="iconColor" :size="`${iconSize-2}px`" :custom-style="{marginLeft:'4px'}" />
 		</view>
-		<!-- #endif -->
-
-		<!-- #ifdef APP -->
-		<rice-icon v-if="closeable" name="cross" :color="iconColor" :size="`${iconSize-2}px`"
-			:custom-style="{marginLeft:'4px'}" @click="handleClose" />
-		<!-- #endif -->
-
 
 	</view>
 </template>
 
 <script setup>
-	/**
-	 * @description Tag 标签
-	 * @property {String} type 类型 
-	 * @value primary 主要的
-	 * @value success 成功的
-	 * @value warning 警告
-	 * @value error 错误
-	 * @property {String} size 尺寸  'large' | 'small' 
-	 * @value large 大尺寸
-	 * @value small 小尺寸
-	 * @property {String} color 背景颜色
-	 * @property {String} text 文字
-	 * @property {String} icon 图标名称，等同于Icon的name值
-	 * @property {String} textColor 文字颜色
-	 * @property {String|Number} textSize 文字大小
-	 * @property {Boolean} show 是否显示
-	 * @property {Boolean} plain 是否为朴素按钮
-	 * @property {Boolean} plainFill 是否为带背景颜色的朴素按钮
-	 * @property {Boolean} round 是否圆角
-	 * @property {Boolean} mark 是否为标记样式（半圆角）
-	 * @property {Boolean} closeable 是否可关闭
-	 * @property {Object} customStyle 自定义样式
-	 */
-
 	import { useNamespace } from '../../libs/use';
 	import { isDark } from "../../libs/store";
 	import { Coloruts } from "../../libs/plugin";
-	import { addUnit, hasStrValue, splitCssProperty, isGradientColor, isThemeColor } from '../../libs/utils';
+	import { addUnit, hasStrValue, isGradientColor, isThemeColor } from '../../libs/utils';
 	import { TagProps, TagType } from './type.uts';
 
 	defineOptions({
-		name: 'rice-tag'
+		name: 'rice-tag',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace('tag')
@@ -98,7 +67,7 @@
 
 	const getTextColor = () : string => {
 		if (props.textColor != null) return props.textColor!
-		if (hasStrValue(props.color)) {
+		if (props.color != null) {
 			return (isPlain.value && !isGradientColor(props.color!))
 				? props.color!
 				: '#f5f5f5'
@@ -113,20 +82,18 @@
 		return 16
 	})
 
-	const themeColor = ref("")
+
 	const iconColor = computed<string>(() => {
 		const textColor = getTextColor()
+
 		if (textColor != "") return textColor
+		const baseColor = 'var(--rice-text-color)'
+		const themeColor = `var(--rice-${props.type}-color)`
 
-		// #ifdef APP
-		const baseColor = isDark.value ? '#f5f5f5' : '#323233'
-		if (isPlain.value) return themeColor.value == "" ? baseColor : themeColor.value
+		if (isPlain.value) return isThemeColor(props.type) ? themeColor : baseColor
+
 		return isThemeColor(props.type) ? '#f5f5f5' : baseColor
-		// #endif
 
-		// #ifndef APP
-		return "inherit"
-		// #endif
 	})
 
 
@@ -136,7 +103,8 @@
 
 	const tagStyle = computed(() => {
 		const css = new Map<string, any>()
-		if (hasStrValue(props.color)) {
+
+		if (props.color != null) {
 			const color = props.color!
 			if (isGradientColor(color)) {
 				css.set('background', color)
@@ -152,17 +120,12 @@
 			}
 		}
 
-		// #ifndef APP
-		const textColor = getTextColor()
-		if (textColor != "") css.set('color', textColor)
-		// #endif
-
 		css.set('opacity', props.show ? 1 : 0)
 
 		return css
 	})
 
-	const tagClass = computed(() => {
+	const tagClass = computed<string[]>(() => {
 		const basic = [
 			ns.b(""),
 			ns.theme(),
@@ -198,23 +161,6 @@
 		}
 		return basic
 	})
-
-	// #ifdef APP
-	const tagRef = shallowRef<UniElement | null>(null)
-	const getCssVar = async () => {
-		await nextTick()
-		themeColor.value = tagRef.value?.style.getPropertyValue(`--rice-${props.type}-color`) ?? ""
-	}
-
-
-	watch([() : TagType | null => props.type, () : boolean => isDark.value], () => {
-		getCssVar()
-	})
-
-	onMounted(() => {
-		getCssVar()
-	})
-	// #endif
 </script>
 
 <style scoped lang="scss">
@@ -231,11 +177,12 @@
 		transition-duration: .3s;
 		opacity: 1;
 		border: 1px solid var(--rice-tag-default-border);
+
 		/* #ifndef APP */
 		color: var(--rice-text-color);
 		width: fit-content;
 		/* #endif */
-		
+
 		// #ifdef WEB
 		cursor: pointer;
 		//#endif
@@ -244,7 +191,7 @@
 			/* #ifdef APP */
 			color: var(--rice-text-color);
 			/* #endif */
-			font-size: var(--rice-font-size-sm);
+			font-size: 14px;
 		}
 
 		&--round {

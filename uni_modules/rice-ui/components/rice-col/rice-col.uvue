@@ -5,18 +5,14 @@
 </template>
 
 <script setup>
-	/**
-	 * @description rice-row
-	 * @property {Number} span 栅格占据的列数,24等分
-	 * @property {Number} offset 栅格左侧的间隔格数
-	 * @property {Object} customStyle 自定义样式
-	 */
+
 	import { addUnit } from '../../libs/utils';
 	import { RowProvide, rowInjectKey } from '../rice-row';
 	import { ColProps } from './type.uts';
 
 	defineOptions({
-		name: 'rice-col'
+		name: 'rice-col',
+		styleIsolation: 'app-and-page'
 	})
 
 	const props = withDefaults(defineProps<ColProps>(), {

@@ -1,5 +1,5 @@
 import { isDark } from "../../store"
-import { hasStrValue } from "../../utils"
+
 
 export type UseNamespace = {
 	b : (blockSuffix : string) => string,
@@ -27,6 +27,7 @@ const createBem = (block : string, blockSuffix : string, element : string, modif
 	return cls
 }
 
+
 export function useNamespace(block : string) {
 
 	//eg:rice-block
@@ -36,10 +37,10 @@ export function useNamespace(block : string) {
 	const b = (blockSuffix : string) => createBem(prefix, blockSuffix, "", "")
 
 	//rice-button__text
-	const e = (element ?: string) => hasStrValue(element) ? createBem(prefix, '', element!, '') : ""
+	const e = (element ?: string) => (element != null && element != '') ? createBem(prefix, '', element!, '') : ""
 
 	//rice-button--disabled
-	const m = (modifier ?: string) => hasStrValue(modifier) ? createBem(prefix, '', '', modifier!) : ""
+	const m = (modifier ?: string) => (modifier != null && modifier != '') ? createBem(prefix, '', '', modifier!) : ""
 
 	//rice-button--disabled
 

@@ -1,0 +1,80 @@
+<template>
+	<view class="navbar-status">
+		<view :style="{height: statusBarHeight}"></view>
+
+		<view class="my-navbar" :style="{ height: navbarHeight}">
+			<view class="my-navbar-left" @click="onToBack">
+				<slot name='left' />
+				<my-icon v-if="leftArrow" name="left" :size="24" />
+			</view>
+			<text class="my-navbar-title"> {{ props.title }} </text>
+			<view class="my-navbar-right">
+				<slot name='right' />
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import MyIcon from '@/componnets/MyIcon/index.uvue';
+	import { state, setAppTheme } from '@/store/index.uts'
+	import { PropsType } from './type.uts'
+
+	defineOptions({
+		styleIsolation: 'app'
+	})
+
+	const props = withDefaults(defineProps<PropsType>(), {
+		title: '',
+		leftArrow: false,
+		height: 44
+	})
+
+	const leftArrow = computed(() => props.leftArrow ?? false)
+
+	const navbarHeight = computed(() => (typeof (props.height) == 'number' ? props.height : state.navbarHeight) + 'px')
+
+	const statusBarHeight = computed(() => state.statusBarHeight + 'px')
+
+	const onToBack = () => {
+		uni.navigateBack()
+	}
+</script>
+
+<style lang="scss" scoped>
+	.navbar-status {
+		position: fixed;
+		width: 100%;
+	}
+
+	.my-navbar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		position: relative;
+		z-index: 99;
+		background-color: var(--navbar-background);
+
+		.my-navbar-left {
+			min-width: $uni-font-size-40;
+			min-height: $uni-font-size-40;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.my-navbar-title {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: var(--text-color-1);
+		}
+
+		.my-navbar-right {
+			overflow: visible;
+		}
+	}
+</style>

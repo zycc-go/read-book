@@ -47,14 +47,15 @@
 //下边框线
 @mixin hairline-bottom($color:var(--rice-border-color),$left:0,$right:0) {
 
-	/* #ifdef APP-ANDROID || APP-IOS */
-	border-bottom:1rpx solid $color;
+	/* #ifdef APP-ANDROID */
+	border-bottom:0.5px solid $color;
 	/* #endif */
 	
-	/* #ifdef APP-HARMONY */
-	border-bottom: 1px solid $color;
+	/* #ifdef APP-IOS ||APP-HARMONY */
+	border-bottom:1px solid $color;
 	/* #endif */
 	
+		
 	/* #ifndef APP */
 	position: relative;
 	&::after{
@@ -72,15 +73,12 @@
 //上下边框
 
 @mixin hairline-top-bottom($color:var(--rice-border-color),$left:0,$right:0)  {
-	/* #ifdef APP-ANDROID || APP-IOS */
-	border-bottom: 1rpx solid $color;
-	border-top:1rpx solid $color;
+	/* #ifdef APP */
+	border-bottom: 0.5px solid $color;
+	border-top:0.5px solid $color;
 	/* #endif */
 	
-	/* #ifdef APP-HARMONY */
-	border-bottom: 1px solid $color;
-	border-top: 1px solid $color;
-	/* #endif */
+
 	
 	/* #ifndef APP */
 	position: relative;

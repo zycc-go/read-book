@@ -54,27 +54,29 @@ open class GenPagesMineIndex : BasePage {
                     "theme-" + unref(state).appTheme,
                     "page"
                 )), "style" to _nS(unref(style))), _uA(
-                    _cV(unref(GenComponnetsMyNavbarClass), null, _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cV(unref(GenComponnetsMyNavbarIndexClass), null, _uM("right" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
                             _cE("view", _uM("class" to "nav-right"), _uA(
                                 if (unref(state).appTheme == "dark") {
-                                    _cE("text", _uM("key" to 0, "class" to "icon nav-icon", "onClick" to fun(){
+                                    _cV(unref(GenComponnetsMyIconIndexClass), _uM("key" to 0, "name" to "sun", "size" to 24, "onClick" to fun(){
                                         onSetTheme("light")
-                                    }), _tD("\ue8C4"), 8, _uA(
+                                    }), null, 8, _uA(
                                         "onClick"
                                     ))
                                 } else {
-                                    _cE("text", _uM("key" to 1, "class" to "icon nav-icon", "onClick" to fun(){
+                                    _cV(unref(GenComponnetsMyIconIndexClass), _uM("key" to 1, "name" to "moon", "size" to 24, "onClick" to fun(){
                                         onSetTheme("dark")
                                     }
-                                    ), _tD("\ue8C5"), 8, _uA(
+                                    ), null, 8, _uA(
                                         "onClick"
                                     ))
                                 }
                                 ,
                                 _cV(_component_uni_badge_view, _uM("text" to "5"), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
                                     return _uA(
-                                        _cE("text", _uM("class" to "icon nav-icon"), _tD("\ue8C7"))
+                                        _cV(unref(GenComponnetsMyIconIndexClass), _uM("name" to "notification", "size" to 24, "style" to _nS(_uM("margin-left" to "8px"))), null, 8, _uA(
+                                            "style"
+                                        ))
                                     )
                                 }
                                 ), "_" to 1))
@@ -84,7 +86,7 @@ open class GenPagesMineIndex : BasePage {
                     ), "_" to 1)),
                     _cE("view", _uM("class" to "header"), _uA(
                         _cE("view", _uM("class" to "header-avatar"), _uA(
-                            _cV(unref(GenComponnetsMyAvatarClass), _uM("src" to "/static/image/avatar.jpg", "mode" to "aspectFit", "style" to _nS(_uM("width" to "100%", "height" to "100%"))), null, 8, _uA(
+                            _cV(unref(GenComponnetsMyAvatarIndexClass), _uM("src" to "/static/image/avatar.jpg", "mode" to "aspectFit", "style" to _nS(_uM("width" to "100%", "height" to "100%"))), null, 8, _uA(
                                 "style"
                             ))
                         )),
@@ -93,12 +95,12 @@ open class GenPagesMineIndex : BasePage {
                             _cE("text", _uM("class" to "h-text2"), "等级")
                         ))
                     )),
-                    _cV(unref(GenComponnetsMyCellGroupClass), _uM("inset" to true), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cV(unref(GenComponnetsMyCellGroupIndexClass), _uM("inset" to true), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
-                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "活动", "arrow" to true)),
-                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "设置", "arrow" to true, "onClick" to onToSetting)),
-                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "反馈", "arrow" to true, "onClick" to onToFeedback)),
-                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "关于", "arrow" to true, "onClick" to onToAbout))
+                            _cV(unref(GenComponnetsMyCellIndexClass), _uM("title" to "活动", "arrow" to true)),
+                            _cV(unref(GenComponnetsMyCellIndexClass), _uM("title" to "设置", "arrow" to true, "onClick" to onToSetting)),
+                            _cV(unref(GenComponnetsMyCellIndexClass), _uM("title" to "反馈", "arrow" to true, "onClick" to onToFeedback)),
+                            _cV(unref(GenComponnetsMyCellIndexClass), _uM("title" to "关于", "arrow" to true, "onClick" to onToAbout))
                         )
                     }
                     ), "_" to 1))

@@ -1,58 +1,38 @@
 <template>
 	<view :class="cellClass" :style="customStyle" :hover-stay-time="100" :hover-class="hoverClass" @click="handleClick">
 		<slot name="leftIcon" v-if="hasLeftIcon">
-			<rice-icon :name="icon" :custom-style="{marginRight:'2px',lineHeight:1.6}" :size="iconSize" />
+			<rice-icon :name="icon" :custom-style="{marginRight:'2px'}" :size="iconSize" />
 		</slot>
-		<view :class="ns.e('title')" :style="splitCssProperty(titleStyle).rectCssProperty">
+		<view class="rice-cell__title" :style="titleStyle">
 			<slot name="title">
-				<text class="rice-cell__title__text" :style="splitCssProperty(titleStyle).textCssProperty">{{title}}</text>
+				<text class="rice-cell__title__text" :style="titleTextStyle" :class="title">{{title}}</text>
 			</slot>
 			<slot name="label" v-if="hasLabel">
-				<text :class="ns.e('label')" :style="labelStyle">{{label}}</text>
+				<text class="rice-cell__label" :style="labelStyle">{{label}}</text>
 			</slot>
 		</view>
-		<view v-if="hasValue" :class="ns.e('value')" :style="splitCssProperty(valueStyle).rectCssProperty">
+		<view v-if="hasValue" class="rice-cell__value" :style="valueStyle">
 			<slot name="value">
-				<text class="rice-cell__value__text" :style="splitCssProperty(valueStyle).textCssProperty">{{value}}</text>
+				<text class="rice-cell__value__text" :style="valueTextStyle">{{value}}</text>
 			</slot>
 		</view>
 		<slot name="rightIcon" v-if="$slots['rightIcon']!=null||showArrow">
 			<rice-icon :name="`arrow-${arrowDirection}`" :size="iconSize" />
 		</slot>
+		<!-- #ifndef APP-ANDROID -->
+		<view v-if="border" class="rice-cell--border"></view>
+		<!-- #endif -->
 	</view>
 </template>
 
 <script setup>
-	/**
-	 * @description rice-cell
-	 * @property {String|Number} title 左侧标题
-	 * @property {String|Number} value 右侧内容
-	 * @property {String|Number} label 标题下方的描述信息
-	 * @property {String} size 单元格大小，可选 `large` `medium`
-	 * @value large 大尺寸
-	 * @value medium 中等尺寸
-	 * @property {String} icon 左侧图标的名称或图片链接
-	 * @property {String} url 点击跳转的页面地址
-	 * @property {Boolean} border 是否显示下边框
-	 * @property {Boolean} clickable 是否开启点击反馈
-	 * @property {Boolean} arrow 是否显示右侧箭头
-	 * @property {String} arrowDirection 右侧箭头方向
-	 * @value up 上箭头
-	 * @value down 下箭头
-	 * @value left 左箭头
-	 * @value right 右箭头
-	 * @property {Boolean} center 内容是否垂直居中
-	 * @property {Object} titleStyle 自定义标题样式
-	 * @property {Object} valueStyle 自定义value样式
-	 * @property {Object} labelStyle 自定义label样式
-	 * @property {Object} customStyle 自定义样式
-	 */
 	import { useNamespace } from "../../libs/use"
-	import { hasStrValue, splitCssProperty, addUnit, debugWarn } from "../../libs/utils"
+	import { hasStrValue, addUnit, debugWarn } from "../../libs/utils"
 	import { CellProps } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-cell'
+		name: 'rice-cell',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace('cell')
@@ -68,7 +48,9 @@
 		arrow: null,
 		center: false,
 		titleStyle: () : UTSJSONObject => ({}),
+		titleTextStyle: () : UTSJSONObject => ({}),
 		valueStyle: () : UTSJSONObject => ({}),
+		valueTextStyle: () : UTSJSONObject => ({}),
 		labelStyle: () : UTSJSONObject => ({}),
 		customStyle: () : UTSJSONObject => ({}),
 	})
@@ -81,7 +63,7 @@
 
 	const iconSize = computed(() => props.size == 'large' ? '17px' : '16px')
 
-	const handleClick = (e : UniPointerEvent) => {
+	const handleClick = () => {
 		if (hasStrValue(props.url)) {
 			uni.navigateTo({
 				url: props.url!,
@@ -100,7 +82,9 @@
 			ns.theme(),
 			ns.m(props.size),
 			ns.is('center', props.center),
+			// #ifdef APP-ANDROID
 			ns.is('border', props.border),
+			// #endif
 		]
 	})
 
@@ -114,8 +98,9 @@
 		--rice-cell-title-size: 15px;
 		--rice-cell-value-size: 15px;
 		--rice-cell-label-size: 13px;
+		position: relative;
 		flex-direction: row;
-		padding: 14px var(--rice-padding-md);
+		padding: 14px 16px;
 		background-color: var(--rice-cell-background);
 		width: 100%;
 		/* #ifdef WEB */
@@ -132,7 +117,7 @@
 			--rice-cell-title-size: 17px;
 			--rice-cell-value-size: 17px;
 			--rice-cell-label-size: 15px;
-			padding: var(--rice-font-size-lg);
+			padding: 18px;
 		}
 
 		&__title {
@@ -140,7 +125,6 @@
 			padding-right: 2px;
 
 			&__text {
-				line-height: 1.6;
 				color: var(--rice-text-color);
 				font-size: var(--rice-cell-title-size);
 				/* #ifndef APP */
@@ -159,13 +143,12 @@
 
 			/* #endif */
 			&__text {
-				line-height: 1.6;
 				color: var(--rice-text-color-2);
 				font-size: var(--rice-cell-value-size);
 				text-align: right;
 				/* #ifndef APP */
 				word-wrap: break-word;
-				
+
 				/* #endif */
 			}
 		}
@@ -184,7 +167,18 @@
 		}
 
 		&--border {
+			/* #ifdef APP-ANDROID */
 			@include hairline-bottom;
+			/* #endif */
+			/* #ifndef APP-ANDROID */
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			height: 1px;
+			width: 100%;
+			transform: scale(1, 0.5);
+			background-color: var(--rice-border-color);
+			/* #endif */
 		}
 
 		&--hover {

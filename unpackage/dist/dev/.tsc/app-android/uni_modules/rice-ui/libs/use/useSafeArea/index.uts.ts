@@ -1,53 +1,45 @@
-import { Ref } from "vue"
-export type UseSafeArea = {
-	safeBottom : Ref<number>,
-	safeTop : Ref<number>,
-	statusBarHeight : Ref<number>,
+
+
+export type SafeAreaInsets = {
+	top : number,
+	bottom : number,
+	statusBarHeight : number,
 }
+//全局存储
+
+export const safeAreaInsets = ref<SafeAreaInsets>({
+	top: 0,
+	bottom: 0,
+
+	statusBarHeight: 25,
+
+
+
+
+})
 
 export function useSafeArea() {
 
-	const safeBottom = ref(0)
-	const safeTop = ref(0)
-	const statusBarHeight = ref(0)
+	let timer : number | null = null
 
-	const getWindowInfo = async () => {
-		await nextTick()
+	const getWindowInfo = () => {
 
 		const windowInfo = uni.getWindowInfo()
-		const areaInfo = windowInfo.safeArea
-		if (areaInfo.bottom > 0) {
-			safeBottom.value = windowInfo.screenHeight - areaInfo.bottom
-		}
-		if (areaInfo.top > 0) {
-			safeTop.value = areaInfo.top
-		}
-		statusBarHeight.value = windowInfo.statusBarHeight
-
+		safeAreaInsets.value.bottom = windowInfo.safeAreaInsets.bottom
+		safeAreaInsets.value.top = windowInfo.safeAreaInsets.top
+		safeAreaInsets.value.statusBarHeight = windowInfo.statusBarHeight
 
 	}
 
-
-
-	let timer : number | null = null
 	onMounted(() => {
 		if (timer != null) clearTimeout(timer!)
 		timer = setTimeout(() => {
 			getWindowInfo()
-
 		}, 200)
 	})
-
-
 
 	onUnmounted(() => {
 		if (timer != null) clearTimeout(timer!)
 	})
-
-	return {
-		safeTop,
-		safeBottom,
-		statusBarHeight,
-	} as UseSafeArea
 
 }

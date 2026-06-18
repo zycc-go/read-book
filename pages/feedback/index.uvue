@@ -12,7 +12,7 @@
 
 <script setup lang="uts">
 	import { state } from '@/store/index.uts'
-	import MyNavbar from '@/componnets/MyNavbar.uvue';
+	import MyNavbar from '@/componnets/MyNavbar/index.uvue';
 
 	const style = computed(() => {
 		return {

@@ -5,7 +5,7 @@ export type GridItemProps = {
 	icon ?: string,
 	iconColor ?: string,
 	iconSize ?: string | number,
+	iconFontFamily ?: string,
 	to ?: string,
-	bgColor ?: string,
 	customStyle ?: UTSJSONObject,
 }

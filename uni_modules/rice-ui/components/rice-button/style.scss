@@ -4,19 +4,19 @@ $button-size: (
   'large':(
 		height:50px,
     padding:0 20px,
-    fontSize:var(--rice-font-size-md),
+    fontSize:14px,
   ),
 	
   'small':(
 		height:32px,
     padding:0 10px,
-    fontSize:var(--rice-font-size-xs),
+    fontSize:12px,
 
   ),
   'mini':(
 		height:26px,
     padding:0 4px,
-    fontSize:var(--rice-font-size-mi),
+    fontSize:10px,
   ),
 );
 

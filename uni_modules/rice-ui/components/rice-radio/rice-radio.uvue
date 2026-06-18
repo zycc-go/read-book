@@ -20,27 +20,7 @@
 </template>
 
 <script setup>
-	/**
-	 * @description Radio
-	 * @property {String|Number|Boolean} modelValue 选中项绑定的值
-	 * @property {String|Number|Boolean} value 选中状态的值
-	 * @property {String} label label文字
-	 * @property {Boolean} disabled 是否禁用
-	 * @property {Boolean} readonly 是否只读
-	 * @property {String} checkedColor 选中状态下的颜色,如设置此值，将会覆盖radio-group的checkedColor值
-	 * @property {String|Number} iconSize icon的大小,如设置此值，将会覆盖radio-group的iconSize值
-	 * @property {String|Number} labelSize label文字的大小,如设置此值，将会覆盖radio-group的labelSize值
-	 * @property {String} labelColor label文字的颜色,如设置此值，将会覆盖radio-group的labelColor值
-	 * @property {String} shape 形状，如设置此值，将会覆盖radio-group的shape值
-	 * @value square 方形
-	 * @value round 圆形 （默认值）
-	 * @property {String} iconPosition 勾选图标的对齐方式，默认 left-左边，可选right-右边,如设置此值，将会覆盖radio-group的iconPosition
-	 * @value left 左边
-	 * @value right 右边
-	 * @property {Boolean} spaceBetween 两端对齐,如设置此值，将会覆盖radio-group的spaceBetween
-	 * @property {Object} customStyle 自定义style
-	 */
-	import { useCssVar, useNamespace } from '../../libs/use';
+	import { useNamespace } from '../../libs/use';
 	import { addUnit, hasStrValue, isSameValue, debugWarn } from '../../libs/utils';
 	import { isDark } from "../../libs/store";
 	import { formDisabledInjectKey, formReadonlyInjectKey } from "../rice-form"
@@ -48,7 +28,8 @@
 	import { RadioProps } from './type.uts';
 
 	defineOptions({
-		name: 'rice-radio'
+		name: 'rice-radio',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace('radio')
@@ -90,12 +71,6 @@
 
 	const checkboxRef = shallowRef<UniElement | null>(null)
 
-	// #ifdef APP
-	const borderColor = useCssVar('--rice-radio-border-color', checkboxRef)
-	const disabledBorderColor = useCssVar('--rice-radio-disabled-border-color', checkboxRef)
-	// #endif
-
-
 	const iconBoxStyle = computed(() => {
 		const css = new Map<string, string>()
 		const size = props.iconSize ?? radioGroup?.iconSize.value
@@ -114,7 +89,7 @@
 			}
 			// #ifdef APP
 			else {
-				css.set('border', `1px solid ${isDisabled.value ? disabledBorderColor.value : borderColor.value}`)
+				css.set('border', `1px solid ${isDisabled.value ? 'var(--rice-radio-disabled-border-color)' : 'var(--rice-radio-border-color)'}`)
 			}
 			// #endif
 
@@ -225,7 +200,10 @@
 		}
 
 		&__label {
+
+			//#ifndef VUE3-VAPOR
 			flex: 0 1 auto;
+			//#endif
 
 			&--left {
 				padding-left: 8px;
@@ -236,7 +214,7 @@
 			}
 
 			&__text {
-				font-size: var(--rice-font-size-basic);
+				font-size: 15px;
 				color: var(--rice-text-color);
 
 				&--disabled {
@@ -249,8 +227,11 @@
 		}
 
 		&--row {
-			margin-right: var(--rice-padding-sm);
+			margin-right: 12px;
+
+			//#ifndef VUE3-VAPOR
 			flex: 0 1 auto;
+			//#endif
 		}
 
 		&--space-between {

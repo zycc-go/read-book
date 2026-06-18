@@ -1,48 +1,36 @@
 <template>
-	<view :class="progressCircleCalss" :style="[progressCircleSize,customStyle]">
-		<!-- #ifdef APP-ANDROID ||APP-IOS -->
-		<view class="rice-progress-circle__canvas" :style="progressCircleSize" ref="drawIns"></view>
-		<!-- #endif -->
-		<!-- #ifndef APP-ANDROID || APP-IOS -->
+	<view class="rice-progress-circle" :class="ns.theme()" :style="[progressCircleSize,customStyle]">
+
+		<!-- #ifdef VUE3-VAPOR || WEB || MP || APP-HARMONY -->
 		<canvas class="rice-progress-circle__canvas" :style="progressCircleSize" :id="canvasId" type="2d"></canvas>
 		<!-- #endif -->
+
+		<!-- #ifdef (APP-ANDROID ||APP-IOS) && !VUE3-VAPOR -->
+		<view class="rice-progress-circle__canvas" :style="progressCircleSize" ref="drawIns"></view>
+		<!-- #endif -->
+
 		<view v-if="showText||$slots['default']!=null" class="rice-progress-circle__content" :style="contentStyle">
 			<slot>
-				<text v-if="showText" class="rice-progress-circle__text" :style="contentTextStyle">{{formatText}}</text>
+				<text class="rice-progress-circle__text" :style="textStyle">{{formatText}}</text>
 			</slot>
 		</view>
 	</view>
 </template>
 
 <script setup>
-	/**
-	 * @description ProgressCircle 圆形进度条
-	 * @property {Number|String} percentage 进度百分比 0-100
-	 * @property {String} type 类型
-	 * @value circle 360°圆
-	 * @value dashboard 仪表盘
-	 * @property {Number|String} size 整个圆环的尺寸，宽/高一致
-	 * @property {Number} strokeWidth 进度条宽度，单位px
-	 * @property {Number} duration 动画时长，单位ms
-	 * @property {Boolean} showText 是否显示文字，默认true
-	 * @property {String} textColor 文字颜色
-	 * @property {Number|String} textSize 文字大小
-	 * @property {Function} format 自定义文字格式
-	 * @property {String|Function} color 激活的进度条颜色
-	 * @property {String} inactiveColor 未激活的进度条颜色
-	 * @property {Number} gapAngle type为dashboard时，底部开口大小，默认60
-	 * @property {Object} customStyle 自定义样式
-	 */
-
 	import { useNamespace } from '../../libs/use';
 	import { isDark } from "../../libs/store"
-	import { addUnit, clamp, getRandomStr, toNum, hasStrValue, getPxNum } from "../../libs/utils"
+	import { addUnit, clamp, toNum, getRandomStr, getPxNum } from '../../libs/utils';
 	import { ProgressCircleProps, ProgressCircleDrawParams } from './type.uts';
+
 	defineOptions({
-		name: 'rice-progress-circle'
+		name: 'rice-progress-circle',
+		styleIsolation: 'app-and-page'
 	})
+
 	const ns = useNamespace('progress-circle')
 	const canvasId = 'rice-progress-circle-' + getRandomStr()
+
 	const props = withDefaults(defineProps<ProgressCircleProps>(), {
 		percentage: 0,
 		type: 'circle',
@@ -51,27 +39,35 @@
 		showText: true,
 		gapAngle: 60,
 		duration: 350,
-		format: (percentage : number) : string => `${percentage}%`,
 		customStyle: () => ({})
 	})
 
+	//百分比转换
+	const percent = computed<number>(() => toNum(props.percentage))
+
+	//显示的文字
+	const formatText = computed(() => {
+		if (typeof props.format == 'function') {
+			return props.format!(percent.value)
+		}
+		return `${percent.value}%`
+	})
+
 	const currentProgress = ref(0)
-	// #ifndef APP-ANDROID || APP-IOS
+	//  #ifdef VUE3-VAPOR || WEB || MP || APP-HARMONY
 	const drawCtx = ref<CanvasRenderingContext2D | null>(null)
 	// #endif
 
-	// #ifdef APP-ANDROID || APP-IOS
+	// #ifdef (APP-ANDROID ||APP-IOS) && !VUE3-VAPOR
 	const drawIns = shallowRef<UniElement | null>(null)
 	// #endif
 
-
 	//激活时的背景色
-	const activeColor = computed<string>(() => hasStrValue(props.color) ? props.color! : '#1989fa')
+	const activeColor = computed<string>(() => props.color ?? '#1989fa')
+
 	//非激活时的背景色
 	const inActiveColor = computed<string>(() => {
-		if (hasStrValue(props.inactiveColor)) {
-			return props.inactiveColor!
-		}
+		if (props.inactiveColor != null) props.inactiveColor!
 		return isDark.value ? '#363637' : '#ebedf0'
 	})
 
@@ -109,20 +105,20 @@
 	})
 
 	/**
-	 * 鸿蒙平台 DrawableContext 的lineCap值设置为round时无效，
-	 * 为了全端样式统一，鸿蒙平台和web/小程序平台一致，使用canvas实现
-	 * Android和iOS平台使用 DrawableContext 实现
-	 */
+		 * 鸿蒙平台 DrawableContext 的lineCap值设置为round时无效，
+		 * 为了全端样式统一，鸿蒙平台和web/小程序平台一致，使用canvas实现
+		 * Android和iOS平台使用 DrawableContext 实现
+		 */
 	const drawProgress = () => {
 		const { radius, centerX, centerY, startAngle, endAngle, progressAngle } = drawParams.value;
 
-		// #ifdef APP-ANDROID || APP-IOS
+		// #ifdef (APP-ANDROID ||APP-IOS) && !VUE3-VAPOR
 		if (drawIns.value == null) return
 		const ctx = drawIns.value.getDrawableContext()!
 		ctx.reset()
 		// #endif
 
-		// #ifndef APP-ANDROID || APP-IOS
+		// #ifdef VUE3-VAPOR || WEB || MP || APP-HARMONY
 		const ctx = drawCtx.value
 		if (ctx == null) return
 		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
@@ -144,7 +140,7 @@
 		ctx.lineCap = 'round'
 		ctx.stroke();
 
-		// #ifdef APP-ANDROID || APP-IOS
+		// #ifdef (APP-ANDROID ||APP-IOS) && !VUE3-VAPOR 
 		ctx.update()
 		// #endif
 
@@ -198,12 +194,12 @@
 		// #endif
 
 		// Android和iOS平台使用 DrawableContext 实现
-		// #ifdef APP-ANDROID || APP-IOS
+		// #ifdef (APP-ANDROID ||APP-IOS) && !VUE3-VAPOR 
 		updateProgress()
 		// #endif
 
 		//其他平台使用canvas实现（鸿蒙平台由于DrawableContext 的lineCap值无效，所以也改用canvas实现）
-		// #ifndef APP-ANDROID || APP-IOS
+		// #ifdef VUE3-VAPOR || WEB || MP || APP-HARMONY
 		uni.createCanvasContextAsync({
 			id: canvasId,
 			component: getCurrentInstance()?.proxy,
@@ -222,21 +218,6 @@
 		// #endif
 	}
 
-	/**
-	 * 格式化文本值
-	 */
-	const formatText = computed(() => {
-		if (typeof props.format == 'function') {
-			return props.format!(toNum(props.percentage))
-		}
-		return `${props.percentage}%`
-	})
-
-	//样式
-	const progressCircleCalss = computed(() => {
-		return [ns.b(""), ns.theme()]
-	})
-
 	const progressCircleSize = computed(() => {
 		const css = new Map<string, string>()
 		css.set('height', addUnit(props.size))
@@ -252,9 +233,10 @@
 		return css
 	})
 
-	const contentTextStyle = computed(() => {
+	//文字样式
+	const textStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (props.textSize != null) css.set('font-size', addUnit(props.textSize))
+		if (props.textSize != null) css.set('font-size', addUnit(props.textSize!))
 		if (props.textColor != null) css.set('color', props.textColor)
 		return css
 	})
@@ -297,7 +279,7 @@
 
 		&__text {
 			color: var(--rice-text-color-2);
-			font-size: var(--rice-font-size-md);
+			font-size: 14px;
 			text-align: center;
 			/* #ifndef APP */
 			word-break: break-all;

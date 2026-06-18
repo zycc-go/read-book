@@ -1,6 +1,5 @@
 import { BeforeChangeInterceptor } from "../../libs/types"
 
-// export type PopupPosition = 'top' | 'bottom' | 'left' | 'right' | 'center'
 
 export type PopupProps = {
 	duration ?: number,
@@ -18,7 +17,15 @@ export type PopupProps = {
 	bgColor ?: string,
 	safeAreaInsetTop ?: boolean,
 	safeAreaInsetBottom ?: boolean,
+	closeOnSlideDown ?: boolean,
+	slideDownThreshold ?: number,
+	showDragBar ?: boolean,
+	dragWrapClass ?: string,
+	dragBarClass ?: string,
+	lockScroll ?: boolean,
+	scrollId ?: string,
 	beforeClose ?: BeforeChangeInterceptor,
 	marginTop ?: string | number,
+	popupClass ?: string,
 	customStyle ?: UTSJSONObject,
 }

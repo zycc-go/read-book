@@ -1,3 +1,14 @@
-<template></template>
+<template>
+	<text></text>
+</template>
+<script setup>
+	
+	defineOptions({
+		name: 'rice-ui',
+		styleIsolation: 'app-and-page',
+	})
+	
+</script>
 
-<script setup></script>
+<style scoped lang="scss">
+</style>

@@ -1,5 +1,5 @@
 <template>
-	<view :class="gridClass" :style="customStyle">
+	<view :class="rootClass" :style="customStyle">
 		<slot></slot>
 	</view>
 </template>
@@ -23,7 +23,8 @@
 	import { GridProps, GridProvice } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-grid'
+		name: 'rice-grid',
+		styleIsolation: "app-and-page"
 	})
 
 	const ns = useNamespace('grid')
@@ -45,7 +46,7 @@
 
 
 
-	const gridClass = computed(() => {
+	const rootClass = computed(() => {
 		return [
 			ns.b(""),
 			ns.theme(),

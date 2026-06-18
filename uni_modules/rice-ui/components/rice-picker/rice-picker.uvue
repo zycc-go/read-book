@@ -1,106 +1,100 @@
 <template>
 	<rice-overlay v-if="usePopup" v-model:show="show" :z-index="zIndex-1" :close-on-click-overlay="closeOnClickOverlay"
-		:duration="duration"></rice-overlay>
-	<view ref="pickerRef" :class="pickerClass" :style="pickerStyle">
-		<slot name="top">
-			<view v-if="hasTopBar" class="rice-picker__top">
-				<text v-if="toolbarPosition=='top'" class="rice-picker__cancel" @click="cancel">{{cancelButtonText}}</text>
-				<text v-if="hasStrValue(title)" class="rice-picker__title">{{title}}</text>
-				<text v-if="toolbarPosition=='top'" class="rice-picker__confirm" @click="confirm">{{confirmButtonText}}</text>
+		:duration="300" />
+	<template v-if="showPicker">
+		<view class="rice-picker" :class="rootClass" :style="rootStyle" ref="pickerRef">
+			<!-- 顶部 -->
+			<slot name="top">
+				<view v-if="hasTopBar" class="rice-picker__top">
+					<text v-if="toolbarPosition=='top'" class="rice-picker__cancel" @click="cancel">{{cancelButtonText}}</text>
+					<text v-if="hasStrValue(title)" class="rice-picker__title">{{title}}</text>
+					<text v-if="toolbarPosition=='top'" class="rice-picker__confirm" @click="confirm">{{confirmButtonText}}</text>
+				</view>
+			</slot>
+			<template v-if="hasOptions">
+				<picker-view :style="pickerViewStyle" :indicator-style="indicatorStyle" :mask-top-style="maskTopStyle"
+					:mask-bottom-style="maskBottomStyle" :mask-style="maskStyle" :immediate-change="immediateChange"
+					:value="selectedIndex" @change="onPickerChange" @touchstart="onTouchstart">
+
+					<picker-view-column v-for="(item,index) in currentColumns" :key="index">
+
+						<!-- #ifdef APP-ANDROID && !VUE3-VAPOR -->
+						<view ref="columnItemRef" :style="getColumnHeight(item)" android-layer-type="hardware"></view>
+						<!-- #endif -->
+
+						<!-- #ifdef APP-IOS || APP-HARMONY || VUE3-VAPOR -->
+						<text flatten v-for="option in item" :key="option.value" :style="getOptionTextStyle(option,index)"
+							class="rice-picker__text">{{option.text}}</text>
+						<!-- #endif -->
+
+						<!-- #ifdef WEB || MP -->
+						<view v-for="option in item" :key="option.value" :style="getOptionTextStyle(option,index)"
+							class="rice-picker__text">{{option.text}}</view>
+						<!-- #endif -->
+
+					</picker-view-column>
+				</picker-view>
+			</template>
+			<view v-if="!hasOptions" class="rice-picker__empty" :style="pickerViewStyle">
+				<slot name="empty">
+					<text v-if="!loading" class="rice-picker__empty__text">{{emptyText}}</text>
+				</slot>
 			</view>
-		</slot>
-		<picker-view v-if="hasOptions" :value="selectedIndex" :style="pickerViewStyle" :indicator-style="indicatorStyle"
-			:mask-top-style="maskTopStyle" :mask-bottom-style="maskBottomStyle" :mask-style="maskStyle"
-			:immediate-change="immediateChange" @change="onPickerChange">
-			<picker-view-column v-for="(item,index) in currentColumns" :key="index">
-				<!-- #ifdef APP-ANDROID  -->
-				<view ref="columnItemRef" :style="getColumnHeight(item)" android-layer-type="hardware">
-				</view>
+			<!-- loading -->
+			<view v-if="loading" class="rice-picker__loading" :style="pickerViewStyle">
+				<!-- iOS、Android使用官方的loading， 利用渲染线程加速，完全不受主线程繁忙影响 -->
+				<!-- #ifdef APP && uniVersion>=5.0  -->
+				<loading ios-spinner class="rice-picker--loading" />
 				<!-- #endif -->
-
-				<!-- #ifndef APP-ANDROID -->
-				<view v-for="option in item" :key="option.value" class="rice-picker__option" :style="columnItemStyle">
-					<text class="rice-picker__option__text" :style="getTextStyle(option,index)">{{option.text}}</text>
-				</view>
+				<!-- #ifndef APP || uniVersion<5.0 -->
+				<rice-loading />
 				<!-- #endif -->
-
-			</picker-view-column>
-		</picker-view>
-
-		<view v-else class="rice-picker__empty" :style="pickerViewStyle">
-			<slot name="empty">
-				<text v-if="!loading" class="rice-picker__empty__text">{{emptyText}}</text>
+			</view>
+			<!-- footer -->
+			<slot name="bottom">
+				<view v-if="toolbarPosition=='bottom'" class="rice-picker__bottom">
+					<rice-button v-if="hasCancel" :width="hasConfirm?'120px':'185px'" :text="cancelButtonText"
+						:color="isDark?'#2b2b2b':'#f2f2f2'" :style="{marginRight:hasConfirm?'15px':'0px'}"
+						:text-color="cancelButtonTextColor" @click="cancel"></rice-button>
+					<rice-button v-if="hasConfirm" :width="hasCancel?'120px':'185px'" :text="confirmButtonText" type="primary"
+						@click="confirm" />
+				</view>
 			</slot>
 		</view>
-
-		<!-- loading -->
-		<view v-if="loading" class="rice-picker__loading">
-			<rice-loading />
-		</view>
-
-		<!-- empty -->
-
-		<slot name="bottom">
-			<view v-if="toolbarPosition=='bottom'" class="rice-picker__bottom">
-				<rice-button v-if="hasCancel" :width="hasConfirm?'120px':'185px'" :text="cancelButtonText"
-					:color="isDark?'#2b2b2b':'#f2f2f2'" :custom-style="{marginRight:hasConfirm?'15px':'0px'}"
-					:text-color="cancelButtonTextColor" @click="cancel"></rice-button>
-				<rice-button v-if="hasConfirm" :width="hasCancel?'120px':'185px'" :text="confirmButtonText" type="primary"
-					@click="confirm" />
-			</view>
-		</slot>
-	</view>
+	</template>
 </template>
 
 <script setup>
-	/**
-	 * @description Picker,级联选择的数据嵌套深度需要保持一致，如果部分选项没有子选项，需要使用空数组进行占位。
-	 * @property {Array} modelValue 绑定的数据
-	 * @property {Array} columns 数据，二维数组格式 ,默认[[]] ,单列：[[]] 多列:[[],[]]，联动:[[{value:x,children:{}}]]
-	 * @property {String} toolbarPosition 顶部栏位置
-	 * @value top 顶部 
-	 * @value bottom 底部（默认值）
-	 * @value none 不显示
-	 * @property {String} title 顶部栏标题
-	 * @property {String} confirmButtonText 确定按钮文字，设置为空字符串可以隐藏
-	 * @property {String} cancelButtonText 取消按钮文字，设置为空字符串可以隐藏
-	 * @property {String|Number} fontSize 选项的文字大小，默认 16px
-	 * @property {String|Number} optionHeight 每个选项的高度 ，默认50px
-	 * @property {Number} visibleOptionNum 可见的选项个数，默认 5
-	 * @property {Boolean} closeOnClickOverlay  是否在点击遮罩层后关闭，默认true
-	 * @property {Boolean} closeOnClickConfirm  是否在点击确认按钮后关闭，默认true
-	 * @property {Boolean} closeOnClickCancel  是否在点击取消按钮后关闭，默认true
-	 * @property {Boolean} loading 是否为加载状态
-	 * @property {Boolean} safeAreaInsetBottom 是否开启底部安全区适配
-	 * @property {Boolean} usePopup 是否使用popup 默认 true
-	 * @property {Boolean} immediateChange 是否在手指松开时立即触发 change 事件。若不开启则会在滚动动画结束后触发 change 事件。默认true，仅微信小程序支持
-	 * @property {Boolean} zIndex z-index 层级 默认 10099
-	 * @property {String} emptyText 空数据时的提示语 默认 暂无数据
-	 */
-	import { useCssVar, useNamespace, useSafeArea } from "../../libs/use";
+	import { useNamespace, usePopup as usePopupBottom, useSafeArea, safeAreaInsets } from "../../libs/use";
 	import { isDark } from "../../libs/store";
 	import { addUnit, getPxNum, hasStrValue, isSameValue } from "../../libs/utils"
+	import { PickerProps, PickerOption, PickerColumnType, PickerModelValue, PickerEvent, PickerCascadeState } from "./type.uts"
+	import { getColumnsType, isSameValueArr, isSameIndexArray, getFirstEnabledIndex } from "./utils.uts"
 	import { usePickerStyle } from "./style"
-	import { getColumnsType, formatCascadeColumns, isOptionExist, getOptionByIndex, findOptionByValue, getFirstEnabledOption, getColumnsByValue } from "./utils"
-	import { PickerProps, PickerOption, PickerColumnType, PickerModelValue, PickerEvent, PickerOptions } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-picker'
+		name: 'rice-picker',
+		styleIsolation: 'app-and-page'
 	})
 
+	useSafeArea()
 	const ns = useNamespace('picker')
-	const { safeBottom } = useSafeArea()
-
 	const slots = useSlots()
+
 	const emit = defineEmits<{
 		change : [event: PickerEvent],
 		confirm : [event: PickerEvent],
 		cancel : [event: PickerEvent],
+		open : [],
+		close : [],
+		opened : [],
+		closed : [],
 	}>()
+
+	const { maskTopStyle, maskBottomStyle, maskStyle } = usePickerStyle()
 
 	const props = withDefaults(defineProps<PickerProps>(), {
 		toolbarPosition: 'bottom',
-		fontSize: '16px',
 		optionHeight: '50px',
 		visibleOptionNum: 5,
 		confirmButtonText: '确定',
@@ -108,12 +102,7 @@
 		closeOnClickOverlay: true,
 		closeOnClickConfirm: true,
 		closeOnClickCancel: true,
-		//#ifdef WEB
 		zIndex: 999,
-		//#endif
-		//#ifndef WEB
-		zIndex: 10099,
-		//#endif
 		usePopup: true,
 		loading: false,
 		safeAreaInsetBottom: null,
@@ -132,68 +121,244 @@
 		default: false
 	})
 
-	const indicatorHeight = computed(() => getPxNum(props.optionHeight))
-	const { maskTopStyle, maskBottomStyle, maskStyle } = usePickerStyle()
+	const pickerRef = shallowRef<UniElement | null>(null)
+	const { realShow } = usePopupBottom(pickerRef, {
+		show,
+		duration: 300,
+		position: 'bottom',
+		opacity: false,
+	})
+	//是否显示
+	const isShow = computed(() => props.usePopup ? realShow.value : true)
 
-	const currentColumns = ref<PickerOption[][]>([])
-	const columnsType = computed<PickerColumnType>(() => getColumnsType(props.columns))
-	// #ifndef APP-ANDROID
-	const selectedValues = ref<PickerModelValue[]>(modelValue.value?.slice(0) ?? [])
-	// #endif
-	// #ifdef APP-ANDROID
-	const selectedValues = ref<PickerModelValue[]>(modelValue.value!.slice(0))
-	// #endif
-	const hasTopBar = computed(() => props.toolbarPosition == 'top' || hasStrValue(props.title))
-	const isSafeAreaInsetBottom = computed<boolean>(() => props.safeAreaInsetBottom ?? props.usePopup)
+	//显示过一次后就不再销毁
+	const initShow = ref(false)
+	const showPicker = computed(() => initShow.value ? initShow.value : isShow.value)
+
+	//当前选择器的类型
+	const columnType = computed(() => getColumnsType(props.columns))
+	const cascadeColumns = ref<PickerOption[][]>([])
+	const selectedValue = ref<PickerModelValue[]>([])
+	const selectedIndex = ref<number[]>([])
+	const preSelectedIndex = ref<number[]>([])
+	// picker 的数据
+	const currentColumns = computed<PickerOption[][]>(() => columnType.value == 'cascade' ? cascadeColumns.value : props.columns)
+	//每个选项的高度
+	const indicatorHeight = computed(() => getPxNum(props.optionHeight))
 	const hasConfirm = computed<boolean>(() => hasStrValue(props.confirmButtonText))
 	const hasCancel = computed<boolean>(() => hasStrValue(props.cancelButtonText))
-	const isVisible = computed<boolean>(() => props.usePopup ? show.value : true)
+
+	//是否有数据
 	const hasOptions = computed(() => currentColumns.value.some(option => option.length > 0))
-	const realShow = ref(false)
-	const pickerRef = shallowRef<UniElement | null>(null)
-	const duration = ref(300)
-	let openTimer : number | null = null
-	let closeTimer : number | null = null
 
-	// #ifdef APP
-	const primaryColor = useCssVar('--rice-primary-color', pickerRef)
-	// #endif
 
-	const cancelButtonTextColor = computed(() => {
-		// #ifdef APP
-		return isDark.value ? '#f5f5f5' : primaryColor.value
-		// #endif
-		// #ifndef APP
-		return isDark.value ? '#f5f5f5' : 'inherit'
-		// #endif
-	})
-
-	const getTextStyle = (option : PickerOption, index : number) => {
-		const css = new Map<string, string | number>()
-		const selected = getColumnsByValue(selectedValues.value, index)
-		const isSelected = isSameValue(selected, option.value)
-		if (option.disabled == true && isSelected) {
-			css.set('color', isDark.value ? 'rgba(255, 255, 255, .35)' : 'rgba(0, 0, 0, .26)')
-		} else {
-			css.set('color', isDark.value ? '#f5f5f5' : '#323233')
+	const getDefaultPlainValues = () : PickerModelValue[] => {
+		const values = [] as PickerModelValue[]
+		for (let i = 0; i < props.columns.length; i++) {
+			const column = props.columns[i]
+			if (column.length == 0) {
+				continue
+			}
+			values.push(column[getFirstEnabledIndex(column)].value)
 		}
-		// #ifndef APP-ANDROID
-		if (isSelected) css.set('font-weight', 'bold')
-		css.set('font-size', addUnit(props.fontSize!))
-		// #endif
-		// #ifdef APP-ANDROID
-		const fontSize = getPxNum(props.fontSize)
-		css.set('font-size', isSelected ? fontSize + 1 : fontSize)
-		// #endif
-		return css
+		return values
+	}
+
+	const getDefaultCascadeIndexes = () : number[] => {
+		const indexes = [] as number[]
+		let children = props.columns.length > 0 ? props.columns[0] : null
+		while (children != null && children.length > 0) {
+			const currentIndex = getFirstEnabledIndex(children)
+			indexes.push(currentIndex)
+			children = children[currentIndex].children ?? null
+		}
+		return indexes
+	}
+
+	let getCascadeMaxDepth : ((options : PickerOption[]) => number) | null = null
+	getCascadeMaxDepth = (options : PickerOption[]) : number => {
+		let maxDepth = 0
+		for (let i = 0; i < options.length; i++) {
+			const option = options[i]
+			const nextDepth = option.children != null && option.children!.length > 0 ? getCascadeMaxDepth!(option.children!) : 0
+			const currentDepth = nextDepth + 1
+			if (currentDepth > maxDepth) {
+				maxDepth = currentDepth
+			}
+		}
+		return maxDepth
+	}
+
+	const getCascadeValuesByIndex = (indexes : number[]) : PickerModelValue[] => {
+		const values = [] as PickerModelValue[]
+		let children = props.columns.length > 0 ? props.columns[0] : null
+		let depth = 0
+
+		while (children != null && children.length > 0) {
+			const rawIndex = depth < indexes.length ? indexes[depth] : 0
+			let currentIndex = rawIndex
+			if (currentIndex < 0 || currentIndex >= children.length) {
+				currentIndex = 0
+			}
+			const currentOption = children[currentIndex]
+			if (currentOption != null) {
+				values.push(currentOption.value)
+				children = currentOption.children ?? null
+			}
+			depth++
+		}
+
+		return values
+	}
+
+	const getPlainState = (values : PickerModelValue[]) : PickerCascadeState => {
+		const indexes = [] as number[]
+		const selectedValues = [] as PickerModelValue[]
+		for (let i = 0; i < props.columns.length; i++) {
+			const column = props.columns[i]
+			if (column.length == 0) {
+				continue
+			}
+			const currentValue = i < values.length ? values[i] : null
+			const matchedIndex = currentValue == null ? -1 : column.findIndex(option => isSameValue(option.value, currentValue))
+			const currentIndex = matchedIndex > -1 ? matchedIndex : 0
+			indexes.push(currentIndex)
+			selectedValues.push(column[currentIndex].value)
+		}
+		return {
+			columns: props.columns,
+			selectedIndex: indexes,
+			selectedValues,
+		} as PickerCascadeState
+	}
+
+	const getPlainSelectedOptions = (indexes : number[]) : PickerOption[] => {
+		const options = [] as PickerOption[]
+		for (let i = 0; i < props.columns.length; i++) {
+			const column = props.columns[i]
+			if (column.length == 0) {
+				continue
+			}
+			const rawIndex = i < indexes.length ? indexes[i] : 0
+			let currentIndex = rawIndex
+			if (currentIndex < 0 || currentIndex >= column.length) {
+				currentIndex = 0
+			}
+			options.push(column[currentIndex])
+		}
+		return options
+	}
+
+	const getCascadeSelectedOptions = (indexes : number[]) : PickerOption[] => {
+		const options = [] as PickerOption[]
+		let children = props.columns.length > 0 ? props.columns[0] : null
+		let depth = 0
+		while (children != null && children.length > 0) {
+			const rawIndex = depth < indexes.length ? indexes[depth] : 0
+			let currentIndex = rawIndex
+			if (currentIndex < 0 || currentIndex >= children.length) {
+				currentIndex = 0
+			}
+			const currentOption = children[currentIndex]
+			if (currentOption != null) {
+				options.push(currentOption)
+				children = currentOption.children ?? null
+			}
+			depth++
+		}
+		return options
+	}
+
+	const getPickerEvent = (indexes : number[], values : PickerModelValue[]) : PickerEvent => {
+		const selectedOptions = columnType.value == 'cascade'
+			? getCascadeSelectedOptions(indexes)
+			: getPlainSelectedOptions(indexes)
+		return {
+			selectedValues: [...values],
+			selectedOptions,
+			selectedIndex: [...indexes],
+		} as PickerEvent
+	}
+
+	const getCascadeState = (values : PickerModelValue[]) : PickerCascadeState => {
+		const columns = [] as PickerOption[][]
+		const indexes = [] as number[]
+		const selectedValues = [] as PickerModelValue[]
+		let children = props.columns.length > 0 ? props.columns[0] : null
+		const maxDepth = children != null ? getCascadeMaxDepth!(children) : 0
+		let depth = 0
+
+		while (children != null && children.length > 0) {
+			columns.push(children)
+			const currentValue = depth < values.length ? values[depth] : null
+			const matchedIndex = currentValue == null ? -1 : children.findIndex(option => isSameValue(option.value, currentValue))
+			const currentIndex = matchedIndex > -1 ? matchedIndex : 0
+			const currentOption = children[currentIndex]
+			indexes.push(currentIndex)
+			selectedValues.push(currentOption.value)
+			children = currentOption.children ?? null
+			depth++
+		}
+
+		while (depth < maxDepth) {
+			columns.push([{
+				text: '',
+				value: '',
+				disabled: true,
+			}] as PickerOption[])
+			indexes.push(0)
+			depth++
+		}
+
+		return {
+			columns,
+			selectedIndex: indexes,
+			selectedValues,
+		} as PickerCascadeState
+	}
+
+	const isTouch = ref(false)
+	const onTouchstart = (e : UniTouchEvent) => {
+		isTouch.value = true
 	}
 
 
+	const shouldInitWithDefaultValue = (values : PickerModelValue[]) : boolean => {
+		return values.length == 0
+	}
 
-	// #ifdef APP-ANDROID
+	// #ifdef APP-IOS || APP-HARMONY
+	let sleepTimer : number | null = null
+	//ios和鸿蒙平台初始化时picker-view的change会乱触发，导致联动失败，使用延时解决
+	const sleep = () : Promise<Boolean> => {
+
+		// #ifdef APP-IOS
+		let timenum = 350
+		// #endif
+		// #ifdef APP-HARMONY
+		let timenum = 150
+		// #endif
+
+		return new Promise((resolve) => {
+			if (sleepTimer != null) clearTimeout(sleepTimer!)
+			sleepTimer = setTimeout(() => {
+				resolve(true)
+			}, timenum)
+		})
+	}
+	// #endif
+
+
+
+	/**
+	 * 安卓平台使用draw 实现
+	 */
+	// #ifdef APP-ANDROID && !VUE3-VAPOR
 
 	const columnItemRef = shallowRef<UniElement[]>([])
 	let renderTimer : number | null = null
+
+	const textColor = ref('#323232')
 
 	const getColumnHeight = (item : PickerOption[]) => {
 		const css = new Map<string, string>()
@@ -202,7 +367,10 @@
 	}
 
 	const updateColumnItem = () => {
-		if (!isVisible.value) return
+		if (!isShow.value) return
+		const defaultColor = isDark.value ? '#f5f5f5' : '#323232'
+		textColor.value = pickerRef.value?.style.getPropertyValue('--rice-text-color') ?? defaultColor
+
 		for (let i = 0; i < columnItemRef.value.length; i++) {
 			const dom = columnItemRef.value[i]
 			const column = currentColumns.value.length <= i
@@ -216,11 +384,18 @@
 			const rect = dom.getBoundingClientRect()
 			const x = rect.width / 2
 			for (let j = 0; j < column.length; j++) {
-				const style = getTextStyle(column[j], i)
-				const fontSize = style.get('font-size') as number
+				const fontSize = props.fontSize != null ? getPxNum(props.fontSize!) : 16
 				const y = oneHeight * j + fontSize + (oneHeight - fontSize) * 0.4
-				ctx.fillStyle = style.get('color') as string
+				ctx.fillStyle = textColor.value
 				ctx.font = fontSize + 'px'
+				//获取当前选中的项，防止Android数组越界
+				if (i < selectedValue.value.length) {
+					const selected = selectedValue.value[i]
+					//当前选中项
+					if (selected === column[j].value) {
+						ctx.font = fontSize + 1 + 'px'
+					}
+				}
 				let text = column[j].text
 				if (typeof text == 'number') text = text.toString()
 				ctx.fillText(text, x, y)
@@ -230,46 +405,60 @@
 	}
 
 
-	watch(isDark, () => {
+	watch(isDark, async () => {
+		await nextTick()
 		updateColumnItem()
 	})
 
 	// #endif
 
 
-	function updateSelectedValue(newVal : PickerModelValue[], updateModelValue = true) {
-		if (!isSameValue(newVal, selectedValues.value)) {
-			selectedValues.value = newVal.slice(0)
+
+	const syncCascadeState = async (values : PickerModelValue[], syncModel : boolean, fromPickerChange : boolean) => {
+		const sourceValues = shouldInitWithDefaultValue(values) ? getCascadeValuesByIndex(getDefaultCascadeIndexes()) : values
+		const state = getCascadeState(sourceValues)
+
+		cascadeColumns.value = state.columns
+		// #ifdef (APP-IOS || APP-HARMONY) && !VUE3-VAPOR
+
+		if (selectedIndex.value.length == 0) {
+			await nextTick()
+			await sleep()
 		}
-		if (updateModelValue && !isSameValue(newVal, modelValue.value)) {
-			modelValue.value = newVal.slice(0)
+
+		// #endif
+		selectedIndex.value = state.selectedIndex
+		selectedValue.value = state.selectedValues
+		preSelectedIndex.value = [...state.selectedIndex]
+		if (syncModel && !isSameValueArr(modelValue.value!, state.selectedValues) && isShow.value) {
+			modelValue.value = [...state.selectedValues]
 		}
+
+		// #ifdef APP-ANDROID && !VUE3-VAPOR
+		await nextTick()
+		if (renderTimer != null) clearTimeout(renderTimer!)
+		renderTimer = setTimeout(() => updateColumnItem(), 50)
+		// #endif
+
+
 	}
 
-
-	const setCurrentColumns = async () => {
-		if (!isVisible.value) return
-		const newValues = selectedValues.value.slice()
-		const columns = props.columns
-		currentColumns.value = columnsType.value == 'cascade'
-			? formatCascadeColumns(columns, newValues)
-			: columns
-		for (let i = 0; i < currentColumns.value.length; i++) {
-			const options = currentColumns.value[i]
-			const value = getColumnsByValue(newValues, i)
-			const isExit = isOptionExist(options, value)
-			if (!isExit) {
-				const newVal = (getFirstEnabledOption(options)?.value) as PickerModelValue
-				if (i >= newValues.length) {
-					newValues.push(newVal)
-				} else {
-					newValues[i] = newVal
-				}
-			}
+	const syncPlainState = async (values : PickerModelValue[], syncModel : boolean, fromPickerChange : boolean) => {
+		const sourceValues = shouldInitWithDefaultValue(values) ? getDefaultPlainValues() : values
+		const state = getPlainState(sourceValues)
+		// #ifdef (APP-IOS || APP-HARMONY) && !VUE3-VAPOR
+		if (selectedIndex.value.length == 0) {
+			await sleep()
 		}
-		updateSelectedValue(newValues)
+		// #endif
+		selectedIndex.value = state.selectedIndex
+		selectedValue.value = state.selectedValues
+		preSelectedIndex.value = [...state.selectedIndex]
+		if (syncModel && !isSameValueArr(modelValue.value!, state.selectedValues) && isShow.value) {
+			modelValue.value = [...state.selectedValues]
+		}
 
-		// #ifdef APP-ANDROID
+		// #ifdef APP-ANDROID && !VUE3-VAPOR
 		await nextTick()
 		if (renderTimer != null) clearTimeout(renderTimer!)
 		renderTimer = setTimeout(() => updateColumnItem(), 50)
@@ -277,126 +466,156 @@
 
 	}
 
+	/**
+	 * 初始化数据
+	 */
+	const init = async () => {
+		if (props.columns.length == 0) {
+			return
+		}
+		if (columnType.value == 'cascade') {
+			syncCascadeState(modelValue.value!, true, false)
+		} else {
+			syncPlainState(modelValue.value!, true, false)
+		}
+	}
 
-
-	const selectedIndex = computed(() => {
-		return currentColumns.value.map((option, optionIndex) => {
-			const value = getColumnsByValue(selectedValues.value, optionIndex)
-			return option.findIndex(v => isSameValue(v.value, value))
-		})
+	watch(() : PickerOption[][] => props.columns, () => {
+		init()
+	}, {
+		deep: true,
+		// #ifdef VUE3-VAPOR
+		immediate: true
+		// #endif
 	})
 
-	const getSelectedOptions = () => {
-		const list = currentColumns.value.map((options, optionsIndex) => {
-			return findOptionByValue(options, selectedValues.value[optionsIndex]) ?? ({ text: '', value: '' } as PickerOption)
-		})
-		return list
-	}
-
-	const getEventParmas = () => {
-		return {
-			selectedValues: selectedValues.value.slice(0),
-			selectedOptions: getSelectedOptions(),
-			selectedIndex: selectedIndex.value.slice(0),
-		} as PickerEvent
-	}
-
-	const onPickerChange = (e : UniPickerViewChangeEvent) => {
-		const values = e.detail.value
-		if (isSameValue(selectedIndex.value, values)) return
-		const currentValues = selectedValues.value.slice(0)
-		values.forEach((value, index) => {
-			const options = currentColumns.value.length <= index
-				? [] as PickerOption[]
-				: currentColumns.value[index]
-			const option = getOptionByIndex(options, value)
-			const optionValue = option?.value as PickerModelValue
-			if (currentValues.length <= index) {
-				currentValues.push(optionValue)
-			} else {
-				currentValues[index] = optionValue
-			}
-		})
-		updateSelectedValue(currentValues)
-		if (columnsType.value == 'cascade') {
-			setCurrentColumns()
+	watch(() : PickerModelValue[] => modelValue.value!, (value : PickerModelValue[]) => {
+		if (columnType.value == 'cascade') {
+			syncCascadeState(value, false, false)
+		} else {
+			syncPlainState(value, false, false)
 		}
-		nextTick(() => {
-			emit('change', getEventParmas())
-		})
+	}, {
+		deep: true,
+	})
+
+	watch(isShow, async (newVal : boolean) => {
+		if (newVal) {
+			init()
+			initShow.value = true
+		}
+	}, {
+		immediate: true
+	})
+
+	const emitChangeEvent = (indexes : number[], values : PickerModelValue[]) => {
+		emit('change', getPickerEvent(indexes, values))
 	}
 
 	const confirm = () => {
 		if (props.closeOnClickConfirm && props.usePopup) {
 			show.value = false
 		}
-		emit('confirm', getEventParmas())
+		emit('confirm', getPickerEvent(selectedIndex.value, selectedValue.value))
 	}
 
 	const cancel = () => {
 		if (props.closeOnClickCancel && props.usePopup) {
 			show.value = false
 		}
-		emit('cancel', getEventParmas())
+		emit('cancel', getPickerEvent(selectedIndex.value, selectedValue.value))
 	}
 
-	const open = async () => {
-		realShow.value = true
-		setCurrentColumns()
-		await nextTick()
-		if (openTimer != null) clearTimeout(openTimer!)
-		openTimer = setTimeout(() => {
-			pickerRef.value?.style.setProperty('transition-duration', `${duration.value}ms`)
-			pickerRef.value?.style.setProperty('transform', 'translate(0px, 0px)')
-		}, 30)
+
+	/**
+	 * onPickerChange
+	 */
+	const onPickerChange = (e : UniPickerViewChangeEvent) => {
+		const values = e.detail.value
+		// #ifdef APP-IOS || APP-HARMONY
+		if (!isTouch.value) {
+			return
+		}
+		// #endif
+
+		for (let i = 0; i < values.length; i++) {
+			if (isNaN(values[i])) return
+		}
+		if (isSameIndexArray(values, selectedIndex.value)) {
+			return
+		}
+		//防止Android端数组越界:java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+		while (preSelectedIndex.value.length < values.length) {
+			preSelectedIndex.value.push(0)
+		}
+		if (columnType.value == 'cascade') {
+			let changedColumn = -1
+			for (let i = 0; i < values.length; i++) {
+				if (preSelectedIndex.value[i] !== values[i]) {
+					changedColumn = i
+					break
+				}
+			}
+
+			const nextIndexes = [] as number[]
+			for (let i = 0; i < values.length; i++) {
+				const useDefaultIndex = changedColumn > -1 && i > changedColumn
+				nextIndexes.push(useDefaultIndex ? 0 : values[i])
+			}
+			const nextValues = getCascadeValuesByIndex(nextIndexes)
+			syncCascadeState(nextValues, true, true)
+			emitChangeEvent(nextIndexes, nextValues)
+			return
+		}
+
+		const nextValues = [] as PickerModelValue[]
+		for (let i = 0; i < props.columns.length; i++) {
+			const column = props.columns[i]
+			if (column.length == 0) {
+				continue
+			}
+			const rawIndex = i < values.length ? values[i] : 0
+			let currentIndex = rawIndex
+			if (currentIndex < 0 || currentIndex >= column.length) {
+				currentIndex = 0
+			}
+			nextValues.push(column[currentIndex].value)
+		}
+		syncPlainState(nextValues, true, true)
+		emitChangeEvent(values, nextValues)
+		preSelectedIndex.value = [...values]
 	}
 
-	const close = () => {
-		pickerRef.value?.style.setProperty('transform', 'translate(0px, 100%)')
-		if (closeTimer != null) clearTimeout(closeTimer!)
-		closeTimer = setTimeout(() => {
-			realShow.value = false
-		}, duration.value)
-	}
+	//是否有顶部区域
+	const hasTopBar = computed(() => props.toolbarPosition == 'top' || hasStrValue(props.title))
 
-	watch(show, (newVal : boolean) => {
-		if (props.usePopup == false) return
-		if (newVal && !realShow.value) {
-			open()
+	// 根节点class
+	const rootClass = computed(() => {
+		return [
+			ns.theme(),
+			ns.is('popup', props.usePopup),
+			ns.is('padding-top', slots['top'] == null && !hasTopBar.value)
+		]
+	})
+
+	const rootStyle = computed(() => {
+		const css = new Map<string, string | number>()
+		if (props.usePopup) {
+			css.set('z-index', props.zIndex)
 		}
-		if (!newVal && realShow.value) {
-			close()
+		// #ifndef WEB
+		const isSafeAreaInsetBottom = props.safeAreaInsetBottom ?? props.usePopup
+		if (isSafeAreaInsetBottom) {
+			css.set('padding-bottom', safeAreaInsets.value.bottom + 'px')
 		}
-	}, {
-		immediate: true,
-	})
-
-	watch(() : PickerOption[][] => props.columns, async () => {
-		await nextTick()
-		setCurrentColumns()
-	}, {
-		deep: true,
-		immediate: true
-	})
-
-	watch(modelValue, (newVal : PickerModelValue[]) => {
-		if (!isSameValue(newVal, selectedValues.value))
-			updateSelectedValue(newVal, false)
-	}, {
-		deep: true,
-	})
-
-	watch(selectedValues, async (newVal : PickerModelValue[], oldVal : PickerModelValue[]) => {
-		if (!isSameValue(newVal, oldVal)) {
-			await nextTick()
-			setCurrentColumns()
-		}
-	}, {
-		deep: true,
+		// #endif
+		return css
 	})
 
 
-
+	/**
+	 * picker 样式
+	 */
 	const pickerViewStyle = computed(() => {
 		const css = new Map<string, string>()
 		const height = indicatorHeight.value * props.visibleOptionNum
@@ -404,64 +623,56 @@
 		return css
 	})
 
-	const pickerStyle = computed(() => {
-		const css = new Map<string, string | number>()
-		if (props.usePopup) {
-			css.set('z-index', props.zIndex)
-		}
-		// #ifndef WEB
-		if (isSafeAreaInsetBottom.value) {
-			css.set('padding-bottom', safeBottom.value + 'px')
-		}
-		// #endif
-		return css
-	})
-
-	const pickerClass = computed(() => {
-		return [
-			ns.b(''),
-			ns.theme(),
-			ns.is('popup', props.usePopup == true),
-			ns.is('padding-top', slots['top'] == null && !hasTopBar.value),
-			//#ifdef WEB
-			ns.is('rice-safe-area-bottom', isSafeAreaInsetBottom.value)
-			//#endif
-		]
-	})
-
 	const indicatorBorderColor = computed(() => isDark.value ? '#3a3a3c' : '#e5e5e5')
-
 	const indicatorStyle = computed<string>(() => {
 		const base = `height:${indicatorHeight.value}px;background-color: transparent;`
-
 		// #ifndef WEB
 		return base + `border-top:1rpx solid ${indicatorBorderColor.value};border-bottom:1rpx solid ${indicatorBorderColor.value}`
 		// #endif
-
 		// #ifdef WEB
 		return base
 		// #endif
 	})
 
 
-	// #ifndef APP-ANDROID
+	//#ifdef VUE3-VAPOR || APP-IOS || APP-HARMONY || WEB || MP
 
-	const columnItemStyle = computed(() => {
+	const getOptionTextStyle = (option : PickerOption, index : number) => {
 		const css = new Map<string, string>()
+
 		css.set('height', `${indicatorHeight.value}px`)
+		css.set('line-height', `${indicatorHeight.value}px`)
+		if (props.fontSize != null) {
+			css.set('font-size', addUnit(props.fontSize!))
+		}
+
+		//获取当前选中的项，防止Android数组越界
+		if (index < selectedValue.value.length) {
+			const selected = selectedValue.value[index]
+			if (selected === option.value) {
+				css.set('font-weight', 'bold')
+				if (option.disabled == true) {
+					css.set('color', 'var(--rice-picker-disabled-text-color)')
+				}
+			}
+		}
+
 		return css
-	})
-
-
+	}
 	// #endif
 
 
+	const cancelButtonTextColor = computed(() => isDark.value ? '#f5f5f5' : 'var(--rice-primary-color)')
+
 	onUnmounted(() => {
-		if (openTimer != null) clearTimeout(openTimer!)
-		if (closeTimer != null) clearTimeout(closeTimer!)
-		// #ifdef APP-ANDROID
+		// #ifdef APP-IOS || APP-HARMONY
+		if (sleepTimer != null) clearTimeout(sleepTimer!)
+		// #endif
+
+		// #ifdef APP-ANDROID && !VUE3-VAPOR
 		if (renderTimer != null) clearTimeout(renderTimer!)
 		// #endif
+
 	})
 </script>
 
@@ -469,7 +680,6 @@
 	.rice-picker {
 		position: relative;
 		background-color: var(--rice-picker-background);
-		box-sizing: border-box;
 
 		&--popup {
 			position: fixed;
@@ -481,33 +691,14 @@
 			transform: translateY(100%);
 		}
 
-		&--padding-top {
-			padding-top: var(--rice-padding-md);
-		}
-
-		&__option {
-			flex-direction: row;
-			align-items: center;
-			justify-content: center;
-
-			&__text {
-				color: var(--rice-text-color);
-				font-size: var(--rice-font-size-md);
-			}
-
-			&--disabled {
-				color: var(--rice-picker-disabled-text-color);
-			}
-		}
-
 		&__top {
 			position: relative;
 			flex-direction: row;
 			height: 48px;
 			align-items: center;
 			justify-content: space-between;
-
 		}
+
 
 		&__title {
 			position: absolute;
@@ -522,15 +713,32 @@
 			/* #endif */
 			text-overflow: ellipsis;
 			white-space: nowrap;
-			font-size: var(--rice-font-size-md);
-			color:var(--rice-text-color);
+			font-size: 16px;
+			color: var(--rice-text-color);
 			font-weight: bold;
+		}
+
+		&__text {
+			width: 100%;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			text-align: center;
+			color: var(--rice-text-color);
+			font-size: 16px;
+
+			&--disabled {
+				color: var(--rice-picker-disabled-text-color);
+			}
+		}
+
+		&--padding-top {
+			padding-top: 16px;
 		}
 
 		&__cancel,
 		&__confirm {
 			padding: 5px 16px;
-			font-size: var(--rice-font-size-basic);
+			font-size: 15px;
 		}
 
 		&__cancel {
@@ -541,31 +749,31 @@
 			color: var(--rice-primary-color);
 		}
 
-
 		&__bottom {
 			flex-direction: row;
 			align-items: center;
 			justify-content: center;
-			padding: var(--rice-padding-md);
-
-			/* #ifndef APP */
-			color: var(--rice-primary-color);
-
-			/* #endif */
-			:deep(.rice-button__text) {
-				font-weight: bold;
-			}
+			padding: 16px;
 		}
 
 		&__empty {
-			padding: 0 var(--rice-padding-md);
+			padding: 0 16px;
 			box-sizing: border-box;
 			align-items: center;
 			justify-content: center;
+			/* #ifdef VUE3-VAPOR */
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 8;
+			background-color: var(--rice-picker-loading-background);
+			/* #endif */
 
 			&__text {
 				text-align: center;
-				color: var(--rice-font-size-basic);
+				font-size: 15px;
 				color: var(--rice-text-color-2);
 			}
 		}
@@ -582,7 +790,14 @@
 			background-color: var(--rice-picker-loading-background);
 		}
 
-
+		&--loading {
+			width: 24px;
+			height: 24px;
+			border-color: #1989fa;
+			/* #ifdef APP-IOS */
+			color: #1989fa;
+			/* #endif */
+		}
 
 		/* #ifdef WEB */
 		.uni-picker-view-indicator::before,
@@ -593,5 +808,6 @@
 		}
 
 		/* #endif */
+
 	}
 </style>

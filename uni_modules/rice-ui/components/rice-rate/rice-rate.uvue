@@ -1,43 +1,24 @@
 <template>
 	<view :class="rateClass" :style="customStyle" ref="rateRef" @touchmove="onTouchmove" @touchstart="onTouchstart">
 		<view v-for="(item,index) in rateList" :key="index" class="rice-rate__item" :style="getRateItemStyle(index)"
-			ref="rateItemRef" :class="item.status=='full'?'rice-rate__item--full--mp':'rice-rate__item--void--mp'"
-			@click="handleClick($event as UniPointerEvent,index+1)">
-			<rice-icon :name="item.status=='full'?icon:voidIcon" :size="size"
-				:custom-class="item.status=='full'?'rice-rate__item--full':'rice-rate__item--void'"
-				:color="getIconColor(item)"></rice-icon>
+			ref="rateItemRef" @click="handleClick($event as UniPointerEvent,index+1)">
+			<rice-icon :name="item.status=='full'?icon:voidIcon" :size="size" :color="getIconColor(item)"></rice-icon>
 			<rice-icon v-if="allowHalf&&item.value==0.5" :size="size" :name="icon" :custom-style="getHalfIconStyle(item)"
-				custom-class="rice-rate__item--full" :color="color"></rice-icon>
+				:color="iconFullColor"></rice-icon>
 		</view>
 	</view>
 </template>
 
 <script setup>
-	/**
-	 * @description Rate
-	 * @property {Number} modelValue 当前分值
-	 * @property {Number} count 图标总数
-	 * @property {String} icon 选中时的图标名称或图片链接，等同于 Icon 组件的 name 属性
-	 * @property {String} voidIcon 未选中时的图标名称或图片链接，等同于 Icon 组件的 name 属性
-	 * @property {Number|String} size 图标大小
-	 * @property {Number|String} gutter 图标间距
-	 * @property {String} color 选中时的颜色 
-	 * @property {String} voidColor 未选中时的颜色 
-	 * @property {Boolean} allowHalf 是否允许半选，默认false
-	 * @property {Boolean} clearable  值为true是，再次点击相同的值时，可以将值重置为 0
-	 * @property {Boolean} readonly 是否只读
-	 * @property {Boolean} disabled 是否禁用
-	 * @property {Boolean} touchable 是否可以通过滑动手势选择评分，默认true
-	 * @property {Object} customStyle 自定义样式
-	 */
+
 	import { useCssVar, useNamespace, useTouch } from "../../libs/use"
-	import { isDark } from "../../libs/store"
 	import { addUnit, clamp, getPxNum, hasStrValue } from "../../libs/utils"
 	import { formDisabledInjectKey, formReadonlyInjectKey } from "../rice-form"
 	import { RateProps, RateStatus } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-rate'
+		name: 'rice-rate',
+		styleIsolation: 'app-and-page'
 	})
 	const ns = useNamespace('rate')
 	const emit = defineEmits<{
@@ -50,9 +31,6 @@
 		voidIcon: 'star',
 		size: '22px',
 		gutter: '4px',
-		// #ifdef MP
-		color: '#ee0a24',
-		// #endif
 		allowHalf: false,
 		clearable: false,
 		readonly: false,
@@ -183,14 +161,13 @@
 		e.preventDefault()
 	}
 
-	const getIconColor = (item : RateStatus) : string | null => {
-		// #ifdef MP
-		return item.status == 'full' ? props.color ?? 'inherit' : props.voidColor ?? 'inherit'
-		// #endif
+	//选中的颜色
+	const iconFullColor = computed<string>(() => props.color ?? 'var(--rice-rate-color)')
 
-		// #ifndef MP
-		return item.status == 'full' ? props.color : props.voidColor
-		// #endif
+	const getIconColor = (item : RateStatus) : string => {
+		return item.status == 'full'
+			? iconFullColor.value
+			: (props.voidColor ?? 'var(--rice-rate-void-color)')
 	}
 
 	const getRateItemStyle = (index : number) => {
@@ -250,28 +227,6 @@
 		/* #endif */
 		&__item {
 			position: relative;
-
-			&--full {
-				color: var(--rice-rate-color);
-			}
-
-			&--void {
-				color: var(--rice-rate-void-color);
-			}
-
-			/* #ifdef MP */
-			// 微信小程序在 rice-icon 上面添加class 没效果
-			&--full--mp {
-				color: var(--rice-rate-color);
-			}
-
-			&--void--mp {
-				color: var(--rice-rate-void-color);
-			}
-
-			/* #endif */
-
-
 		}
 
 		&--disabled {

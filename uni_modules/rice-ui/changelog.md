@@ -1,55 +1,41 @@
-## 1.0.20（2025-12-26）
-- 修复小程序端 Dialog 使用 Api调用时回调函数缺少参数的bug
-## 1.0.19（2025-11-23）
-- [新增] 新增 ProgressCircle 圆环进度条组件 [文档](https://riceui.cn/components/progress-circle.html)
-- [提示] picker相关组件在HBuilderx4.80+以上版本的[问题见](https://riceui.cn/components/picker.html)
-## 1.0.18（2025-10-29）
-- [新增] 新增 Uploader 上传组件 [文档](https://riceui.cn/components/uploader.html)
-## 1.0.17（2025-10-24）
-- [优化] 优化 Calendar 日历组件 date数据 变化时日历面板自动切换到对应的年月
-- [修复] 修复 Calendar 日历组件 动态改变 min-date 和 max-date 不生效的问题
-## 1.0.16（2025-10-22）
-- [修复] 修复 Input 组件 showPassword 参数无效的问题
-- [修复] iOS平台 修复 Tabs 组件 在某些情况下初始化时滚动位置不正确的问题
-## 1.0.15（2025-10-14）
-- [修复] 鸿蒙平台 修复 Calendar 组件 切换月份时部分情况下日期不显示的问题（HBuilderx需升级至4.81版本）
-## 1.0.14（2025-10-14）
-- [修复] 鸿蒙平台 修复 Calendar 组件 切换月份时部分情况下最后一行不显示的问题
-- [修复] 微信小程序平台 修复 API showDialog 点确定或者取消都执行 confirm 方法的问题
-- [修复] 微信小程序平台 修复 API showActionSheet select 方法回调参数不正确的问题
-- [修复] 微信小程序平台 修复 API showActionSheet cancel 方法不能正确执行的问题
-## 1.0.13（2025-10-11）
-- [新增] 新增 Form 表单组件 [文档](https://riceui.cn/components/form.html)
-- [优化] 优化 SwipeActions 组件
-## 1.0.12（2025-09-20）
-- [更新] 适配 HBuilder X 4.81 版本
-- [优化] 优化Cell、Collapse 样式
-## 1.0.11（2025-09-16）
-- [新增] 新增 ScrollX 横向滚动列表组件， [文档](https://riceui.cn/components/scroll-x.html)
-# 更新日志
-## 1.0.10（2025-09-11）
-- [新增] 新增 CodeInput 验证码输入框组件， [文档](https://riceui.cn/components/code-input.html)
-## 1.0.9（2025-09-08）
-- [新增] 新增 Cascader 级联选择器组件， [文档](https://riceui.cn/components/cascader.html)
-- [新增] Calendar 日历组件新增 `closeable` 、`closeIcon`、`closeOnClickClose` 等属性，[文档](https://riceui.cn/components/calendar.html)
-## 1.0.8（2025-09-03）
-- [新增] 新增 CountTo 数字滚动组件 [文档](https://riceui.cn/components/count-to.html)
-- [修复] 修复Col组件customStyle不生效的问题
-## 1.0.7（2025-09-01）
-- [修复] 修复鸿蒙端 Slider 组件在部分情况下不显示的问题 [文档](https://riceui.cn/components/slider.html)
-## 1.0.6（2025-09-01）
-- [功能] 更新日历组件的demo示例 [文档](https://riceui.cn/)
-## 1.0.5（2025-09-01）
-- [优化] Calendar 日历组件新增部分事件和props参数，[文档](https://riceui.cn/components/calendar.html)
-## 1.0.4（2025-08-31）
-- [功能] 新增 Calendar 日历组件，APP端使用draw api 实现，拥有高性能， 支持单选、多选、日期区间选择，[文档](https://riceui.cn/components/calendar.html)
-## 1.0.3（2025-08-29）
-- [功能] 新增 Rate 评分组件，[文档](https://riceui.cn/components/rate.html)
-- [优化] 优化代码逻辑
-## 1.0.2（2025-08-28）
-- [优化] Button 组件新增 info 类型
-## 1.0.1（2025-08-27）
-- [功能] 新增 Slider 组件 [文档](https://riceui.cn/components/slider.html)
-- [功能] 上传了示例demo，可自行下载使用真机运行
-## 1.0.0（2025-08-25）
-- 1.0.0版本正式发布,功能会不断的进行迭代，欢迎使用
+## 1.1.8（2026-06-12）
+- 蒸汽模式APP体验： [鸿蒙](https://appgallery.huawei.com/app/detail?id=com.rice.xui)、[iOS](https://apps.apple.com/cn/app/riceui/id6742657989)
+- [新增] Calendar 日历组件库新增 周日历，显示月份背景，补齐前后月日期等属性 [文档](https://riceui.cn/components/calendar.html)
+- [新增] Signature 签名组件新增 撤销上一步操作的功能 [文档](https://riceui.cn/components/signature.html)
+- [新增] Slider 新增 click-change 属性，支持点击直接跳到对应位置 [文档](https://riceui.cn/components/slider.html)
+- [提示] RiceUI组件库在**鸿蒙蒸汽模式中** HBuilderx 需要5.08以上的版本，**iOS的蒸汽模式** HBuilderx 需要5.11以上的版本，非蒸汽模式推荐在5.0以上的版本中使用
+## 1.1.6（2026-06-08）
+- 蒸汽模式APP体验： [鸿蒙](https://appgallery.huawei.com/app/detail?id=com.rice.xui)、[iOS](https://apps.apple.com/cn/app/riceui/id6742657989), 好用的话麻烦给个五星好评~
+- [新增] 瀑布流组件 [文档](https://riceui.cn/components/waterflow.html)
+- [新增] 颜色选择器组件 [文档](https://riceui.cn/components/color-picker.html)
+- [新增] Popup 组件新增下滑关闭等功能 [文档](https://riceui.cn/components/popup.html)
+- [新增] Button、ActionSheet、GridItem 新增 iconFontFamily 属性，支持自定义图标 [文档](https://riceui.cn/components/icon.html#自定义图标)
+- [新增] 调整 QRCode 二维码生成策略 [文档](https://riceui.cn/components/qrcode.html)
+- [新增] BackTop 组件 新增 disabledPageScroll 属性[文档](https://riceui.cn/components/back-top.html)
+- [修复] 鸿蒙蒸汽模式下 Picker 组件里面的选项偶发不显示的问题
+- [提示] RiceUI组件库在**鸿蒙蒸汽模式中** HBuilderx 需要5.08以上的版本，**iOS的蒸汽模式** HBuilderx 需要5.11以上的版本，非蒸汽模式推荐在5.0以上的版本中使用
+## 1.1.4（2026-06-02）
+- [新增] 新增 Subsection 分段器组件  [文档](https://riceui.cn/components/subsection.html)
+- [修复] 小程序平台 Navbar 组件 获取状态栏高度的时机
+## 1.1.3（2026-05-30）
+- [新增] 支持iOS蒸汽模式，HBuilder X 需要 5.11 以上的版本 [官方蒸汽模式的文档](https://doc.dcloud.net.cn/uni-app-x/app-vapor.html) （鸿蒙平台的蒸汽模式已于1.1.0版本支持）
+- [修复] 鸿蒙平台修复 Popup 组件 position 为 center 时，弹出动画不流畅的问题
+- [修复] 鸿蒙平台修复 Input 组件 type 为 number 时，无法调起数字键盘的问题
+- [修复] 1.1.2 版本引起 CodeInput 组件某些情况下不能弹出键盘的问题
+- [修复] Android平台修复 Avatar 组件自定义 radius 圆角值 无效的问题
+## 1.1.2（2026-05-24）
+- [新增]  QRCode 二维码组件 [文档](https://riceui.cn/components/qrcode.html)
+## 1.1.0（2026-05-22）
+- [新增] 支持鸿蒙蒸汽模式，HBuilder X 需要 5.08 以上的版本 [官方蒸汽模式的文档](https://doc.dcloud.net.cn/uni-app-x/app-harmony/harmony-vapor.html)
+- [新增] 新增 TimeFormat 时间格式化组件 [文档](https://riceui.cn/components/time-format.html)
+- [新增] Search 组件新增 wrapper-class、 input-class 属性 [文档](https://riceui.cn/components/search.html)
+- [修复] 修复 DateTimePicker 组件月份切换异常问题：当从 31 天切换至天数小于 30 天的月份时，选择器滚动位置计算错误、显示错位的问题。
+- [修改] Cell 组件 新增 title-text-style 和 value-text-style; 
+  <br/> value-style 和 title-style 不再支持设置字体样式 [文档](https://riceui.cn/components/cell.html)
+- [修改] Collapse 组件 新增 title-text-style 、content-text-style 和 value-text-style ;
+  <br/> value-style 、content-style 和 title-style 不再支持设置字体样式 [文档](https://riceui.cn/components/cell.html)
+-  [修改] Tabs 组件 新增 line-mode 、init-animate、 text-class 、 active-text-class 、
+   inactive-text-class 和 disabled-text-class 属性 ; 
+   <br/> item-style 、 active-style 和 inactive-style 不再支持设置字体样式 [文档](https://riceui.cn/components/tabs.html)
+- [修改] Cascader 组件修改判断逻辑：当配置项 options 最末层级的 children 为空数组或不存在时，将触发 finish 事件  [文档](https://riceui.cn/components/cascader.html)
+- [修改] 重构了 Slider 组件,组件内部相应的class类名也已变更 [文档](https://riceui.cn/components/slider.html)

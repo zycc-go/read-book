@@ -9,36 +9,13 @@
 </template>
 
 <script setup>
-	/**
-	 * @description BackTop
-	 * @property {Number} scrollTop 页面的滚动距离，通过onPageScroll生命周期获取，仅支持小程序
-	 * @property {Number} offset 滚动条滑动多少距离时显示组件，默认400px
-	 * @property {String} mode 样式类型
-	 * @value round 圆形（默认值）
-	 * @value half-round 半圆
-	 * @property {String} parentId scroll-view 或 list 组件的 id
-	 * @property {String|Number} right 距离页面右侧的距离，默认 20px
-	 * @property {String|Number} bottom 距离页面底部的距离，组件内部会自动避开底部tabbar和安全区域，默认 100px
-	 * @property {Number} duration 滚动到顶部所需的时间，单位ms，默认100ms
-	 * @property {String} icon 按钮内部的图标，设置为空字符串就不显示图标，默认值back-top
-	 * @property {String|Number} iconSize 图标的大小
-	 * @property {String} textColor 图标/文字的颜色
-	 * @property {String} text 按钮内部的文字,优先级低于icon，图标和文字同时只能显示一个(使用自定义插槽除外)
-	 * @property {String} textSize 按钮内部文字的大小，默认13px
-	 * @property {String|Number} width 宽度，默认45px
-	 * @property {String|Number} height 高度，默认45px
-	 * @property {String|Number} radius 圆角值，默认和width一致
-	 * @property {Boolean} zoom 是否启用缩放动画
-	 * @property {String} bgColor 按钮背景颜色
-	 * @property {Number} zIndex z-index的值,默认998
-	 * @property {Object} customStyle 自定义按钮样式
-	 */
 	import { useNamespace } from "../../libs/use"
 	import { addUnit, hasStrValue } from "../../libs/utils"
 	import { BackTopProps } from './type.uts'
 
 	defineOptions({
-		name: 'rice-back-top'
+		name: 'rice-back-top',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace('back-top')
@@ -51,11 +28,14 @@
 		duration: 300,
 		icon: 'back-top',
 		zoom: true,
+		disabledPageScroll: false,
+		scrollTop: null,
 		customStyle: () : UTSJSONObject => ({})
 	})
 
 	// #ifndef MP
-	const _scrollTop = ref(0)
+	const pageScrollTop = ref(0)
+	const _scrollTop = computed(() => props.disabledPageScroll ? (props.scrollTop ?? 0) : pageScrollTop.value)
 	// #endif
 
 	// #ifdef MP
@@ -72,6 +52,11 @@
 	// #endif
 
 	const backToTop = (e : UniPointerEvent) => {
+
+		if (props.disabledPageScroll) {
+			emit('click', e)
+			return
+		}
 
 		// #ifdef APP
 		if (hasStrValue(props.parentId)) {
@@ -104,11 +89,14 @@
 	// #ifndef MP
 	//小程序自定义组件不支持页面的 onPageScroll 生命周期，需要手动传递scrollTop
 	onPageScroll((e) => {
+
 		// #ifdef APP-HARMONY
 		//鸿蒙平台不这样写的话一进入到页面就会有动画
 		init.value = true
 		// #endif
-		_scrollTop.value = e.scrollTop
+
+		pageScrollTop.value = e.scrollTop
+
 	})
 	// #endif
 
@@ -124,7 +112,7 @@
 		if (props.zIndex != null) css.set('z-index', props.zIndex!)
 		if (props.bottom != null) css.set('bottom', addUnit(props.bottom!))
 		if (props.right != null) css.set('right', addUnit(props.right!))
-		if (hasStrValue(props.bgColor)) {
+		if (props.bgColor != null) {
 			css.set('background', props.bgColor!)
 			css.set('border-color', props.bgColor!)
 		}
@@ -146,17 +134,11 @@
 		return css
 	})
 
-	const _textColor = computed(() => {
-		if (hasStrValue(props.textColor)) return props.textColor!
-		// #ifdef MP-WEIXIN
-		return 'inherit'
-		// #endif
-		return ""
-	})
+	const _textColor = computed(() => props.textColor ?? 'var(--rice-text-color)')
 
 	const textStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.textColor)) css.set('color', props.textColor!)
+		if (props.textColor != null) css.set('color', props.textColor!)
 		if (props.textSize != null) css.set('font-size', addUnit(props.textSize!))
 		return css
 	})
@@ -260,8 +242,5 @@
 			font-size: 10px;
 		}
 
-		:deep(.rice-icon) {
-			color: var(--rice-text-color);
-		}
 	}
 </style>

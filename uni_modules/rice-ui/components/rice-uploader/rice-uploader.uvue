@@ -46,60 +46,7 @@
 </template>
 
 <script setup>
-	/**
-	 * @description Uploader 文件上传
-	 * @property {Array<UploaderFileItem>} modelValue 上传的文件列表
-	 * @property {String} action  上传地址
-	 * @property {String} accept 上传文件的类型
-	 * @value media 媒体
-	 * @value image 图片(默认值)
-	 * @value video 视频
-	 * @property {Boolean} autoUpload 是否自动上传，值为false时，可手动上传文件,默认true
-	 * @property {String} name 文件对应的 key , 开发者在服务器端通过这个 key 可以获取到文件二进制内容
-	 * @property {UTSJSONObject} header HTTP 请求 Header, header 中不能设置 Referer
-	 * @property {UTSJSONObject} formData HTTP 请求中其他额外的 form data
-	 * @property {String} timeout 超时时间，单位 ms，120000
-	 * @property {Number} maxCount 最大可上传数量 
-	 * @property {Number} maxDuration 拍摄视频最长拍摄时间，单位秒。最长支持 60 秒，mode为 video时有效
-	 * @property {Boolean} showFileList 是否显示已上传文件列表
-	 * @property {Boolean} preview 点击图片时是否开启图片预览，点击其他文件类型时(如video)，预览功能需自行实现
-	 * @property {String}	imageMode 图片裁剪、缩放的模式，等同于官方`image`组件的`mode`，默认 `scaleToFill`
-	 * @property {String}	objectFit 当视频大小与 video 容器大小不一致时，视频的表现形式。，等同于官方`video`组件的`objectFit`，默认 `contain`
-	 * @property {String} uploadIcon 上传区域的icon
-	 * @property {UTSJSONObject} uploadIconStyle 上传区域Icon 的style
-	 * @property {String}	uploadText 上传区域的提示文字
-	 * @property {String}	loadingText 上传时的提示文字，默认 上传中…
-	 * @property {String}	uploadFailText 上传失败时的提示文字，默认 上传失败
-	 * @property {Boolean} showPercent 上传时是否显示进度,如80%,会覆盖loadingText设置的文字，默认false
-	 * @property {Boolean} showSuccess 上传成功后是否显示成功的icon，默认true
-	 * @property {Boolean} deletable 是否显示删除按钮，正在上传时恒不显示，默认true
-	 * @property {String} deleteIcon 删除图标的name值
-	 * @property {UTSJSONObject} deleteStyle 删除图标的style
-	 * @property {String|Number} width 上传区域的宽度,默认80px
-	 * @property {String|Number} height 上传区域的高度,默认80px
-	 * @property {String} bgColor 上传区域的背景颜色
-	 * @property {Boolean} disabled 是否禁用
-	 * @property {Boolean} readonly 是否只读
-	 * @property {String} camera 摄像切换 
-	 * @value front 前置摄像头
-	 * @value back 后置摄像头
-	 * @property {String} pageOrientation 屏幕方向。
-	 * @value auto 自动（默认值）
-	 * @value portrait 竖屏显示
-	 * @value landscape 横屏显示
-	 * @property {Array<string>} sizeType original 原图，compressed 压缩图，默认二者都有
-	 * @property {Array<string>} sourceType album 从相册选图，camera 使用相机，默认二者都有
-	 * @property {Array<string>} extension 根据文件拓展名过滤，每一项都不能是空字符串。默认不过滤。仅H5支持
-	 * @property {ChooseImageCropOptions} crop 图像裁剪参数，设置后 sizeType 失效。[见官方文档](https://doc.dcloud.net.cn/uni-app-x/api/choose-image.html)
-	 * @property {Number} successCode 文件上传成功时，开发者服务器返回的 HTTP 状态码
-	 * @property {(files : UploaderFileItem[]) => Promise<any> | any} beforeRead 文件读取前的回调函数，可以对文件进行过滤或压缩，返回值为 false 时会过滤该文件。支持返回一个 Promise 对象，Promise 对象 resolve(false) 或 reject 时过滤
-	 * @property {(files : UploaderFileItem[]) => void} afterRead 文件读取完成后的回调函数
-	 * @property {(files : UploaderFileItem) => Promise<any> | any} beforeUpload 文件上传前的回调函数，返回 false 可终止文件上传，支持返回Promise，Promise 对象 resolve(false) 或 reject 时终止文件上传
-	 * @property {(file : UploaderFileItem, index : number) => Promise<boolean|null> | boolean|null} beforeRemove 文件删除之前的回调函数，返回 false 可停止删除，支持返回Promise，Promise 对象 resolve(false) 或 reject 时停止删除
-	 * @property {(response : UploaderSuccess, file : UploaderFileItem) => boolean | null} onSuccess 文件上传成功时的函数，可以在此函数中判断文件是否真的上传成功，返回false表示文件上传失败
-	 * @property {(response : UploaderFail, file : UploaderFileItem) => void} onFail 文件上传失败时的函数
-	 * @property {Object} customStyle 自定义style
-	 */
+	
 	import { useNamespace } from "../../libs/use"
 	import { addUnit, hasStrValue, isSameValue, splitCssProperty } from "../../libs/utils"
 	import { formDisabledInjectKey, formReadonlyInjectKey } from "../rice-form"
@@ -110,7 +57,8 @@
 	import { UploaderProps, UploaderFileItem, UploaderComplete, UploaderSuccess, UploaderFail } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-uploader'
+		name: 'rice-uploader',
+		styleIsolation: 'app-and-page'
 	})
 	const ns = useNamespace("uploader")
 	const emit = defineEmits<{
@@ -232,7 +180,7 @@
 				return Promise.resolve(null)
 			}
 		}
-		return new Promise((resolve, reject) => {
+		return new Promise<UploaderSuccess | null>((resolve, reject) => {
 			//上传失败
 			const uploadFail = (errCode : number, errMsg : string, data : string) => {
 				file.status = 'failed'
@@ -657,7 +605,7 @@
 		width: 80px;
 		border-radius: 4px;
 		background-color: var(--rice-uploader-background);
-		margin: 0 var(--rice-padding-xs) var(--rice-padding-xs) 0;
+		margin: 0 8px 8px 0;
 	}
 
 	.rice-uploader {
@@ -693,11 +641,8 @@
 			}
 
 			&__text {
-				/* #ifndef APP */
-				white-space: nowrap;
 				width: 100%;
-				/* #endif */
-				lines: 1;
+				white-space: nowrap;
 				text-overflow: ellipsis;
 				color: var(--rice-text-color-2);
 				font-size: 12px;

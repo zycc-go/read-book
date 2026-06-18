@@ -47,7 +47,7 @@ open class GenPagesFeedbackIndex : BasePage {
                     "theme-" + unref(state).appTheme,
                     "page"
                 )), "style" to _nS(unref(style))), _uA(
-                    _cV(unref(GenComponnetsMyNavbarClass), _uM("leftArrow" to "", "title" to "反馈")),
+                    _cV(unref(GenComponnetsMyNavbarIndexClass), _uM("leftArrow" to "", "title" to "反馈")),
                     _cE("view", _uM("class" to "card"), _uA(
                         _cE("textarea", _uM("class" to "textarea-instance", "placeholder" to "请输入内容", "maxlength" to 500, "auto-focus" to true, "auto-height" to true, "value" to unref(content), "onInput" to onInput), null, 40, _uA(
                             "value"

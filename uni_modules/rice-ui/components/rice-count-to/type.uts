@@ -6,11 +6,12 @@ export type CountToProps = {
 	endVal ?: string | number,
 	duration ?: number,
 	autoplay ?: boolean,
-	restart?:boolean,
+	restart ?: boolean,
 	decimals ?: number,
 	color ?: string,
 	fontSize ?: string | number,
 	bold ?: boolean,
 	separator ?: string,
+	textClass ?: string,
 	customStyle ?: UTSJSONObject,
 }

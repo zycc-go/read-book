@@ -5,29 +5,7 @@
 </template>
 
 <script setup>
-	/**
-	 * @description Form 表单，用于表单校验
-	 * @property {Any} model 表单数据对象
-	 * @property {Map<string, FormRules[]>} rules 表单校验规则
-	 * @property {String|Number} labelWidth 标签的宽度
-	 * @property {String} labelPosition 标签的位置
-	 * @value left 左侧（默认值）
-	 * @value right 右侧
-	 * @value top 顶部
-	 * @property {Object} labelStyle 自定义标签style，如文字大小和颜色
-	 * @property {Boolean} showRequired 是否显示必填的符号，默认根据rules规则显示
-	 * @property {String} requiredPosition 必填符号的位置
-	 * @value left 左侧（默认值）
-	 * @value right 右侧
-	 * @property {Boolean} showError 校验失败时是否显示错误信息
-	 * @property {Boolean} borderBottom 是否显示表单域的下划线边框，默认true
-	 * @property {Boolean} errorBottom 校验未通过时下边框是否标红，默认false
-	 * @property {Boolean} scrollToError 是否自动滚动到第一个校验不通过的字段，当前仅APP端支持，默认false
-	 * @property {String} disabled 是否禁用此表单中的所有组件
-	 * @property {String} readonly 是否只读此表单中的所有组件
-	 * @property {Object} errorStyle 错误信息区域的自定样式
-	 * @property {Object} customStyle 自定义样式
-	 */
+
 	import { useNamespace } from "../../libs/use";
 	import { hasStrValue, debugWarn } from "../../libs/utils";
 	import { formInjectKey, formDataInjectKey, formDisabledInjectKey, formReadonlyInjectKey } from "./index"
@@ -36,7 +14,8 @@
 	import { FormProps, FormItemContext, FormItemContextProvide, FormRules, FormValidateErrors } from "./type.uts";
 
 	defineOptions({
-		name: 'rice-form'
+		name: 'rice-form',
+		styleIsolation: 'app-and-page'
 	})
 	const ns = useNamespace('form')
 	const props = withDefaults(defineProps<FormProps>(), {

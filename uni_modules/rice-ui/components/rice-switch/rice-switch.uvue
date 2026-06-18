@@ -18,30 +18,6 @@
 </template>
 
 <script setup>
-	/**
-	 * @description Switch
-	 * @property {String|Number|Boolean} modelValue 	开关选中状态
-	 * @property {String|Number|Boolean} activeValue 	打开时对应的值 默认true
-	 * @property {String|Number|Boolean} inactiveValue 关闭时对应的值 默认false
-	 * @property {Boolean} loading 是否处于加载状态
-	 * @property {Boolean} disabled 是否禁用
-	 * @property {Boolean} readonly 是否只读
-	 * @property {String|Number} width 宽度，单位支持 px rpx
-	 * @property {String|Number} iconSize icon 图标大小，单位支持 px rpx
-	 * @property {String|Number} textSize 字体大小，单位支持 px rpx
-	 * @property {String} activeColor 打开时的背景颜色
-	 * @property {String} inactiveColor 关闭时的背景颜色
-	 * @property {String} activeText 打开时的文字描述
-	 * @property {String} inactiveText 关闭时的文字描述
-	 * @property {String} activeIcon 打开时显示的图标，设置此项会忽略`active-text` 
-	 * @property {String} inactiveIcon 关闭时显示的图标，设置此项会忽略`inactive-text`
-	 * @property {String} promptPosition 图标或文本显示的位置
-	 * @value inball 小球内
-	 * @value outball 小球外 (默认值)
-	 * @property {Function} beforeChange switch 状态改变前的钩子， 返回 false 或者返回 Promise 且被 reject 则停止切换
-	 * @property {Boolean} vibrate 打开时是否开启震动效果，目前仅小程序支持
-	 * @property {Object} customStyle 自定义style
-	 */
 	import { useCssVar, useNamespace } from "../../libs/use"
 	import { BeforeChangeInterceptor } from "../../libs/types"
 	import { addUnit, callInterceptor, isSameValue, hasStrValue, getPxNum } from "../../libs/utils"
@@ -49,7 +25,8 @@
 	import { SwitchProps, SwitchValueType } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-switch'
+		name: 'rice-switch',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace('switch')
@@ -127,11 +104,12 @@
 	const switchColor = computed<string>(() => {
 
 		// #ifdef APP
-		//app 端 transtion不支持使用var css变量
+		//app 端 transtion不支持使用var css变量.
 		if (isChecked.value) {
 			return props.activeColor ?? primaryColor.value
 		}
 		return props.inactiveColor ?? switchBgColor.value
+
 		// #endif
 
 		// #ifndef APP
@@ -279,7 +257,7 @@
 			width: 22px;
 			border-radius: 200px;
 			transition: transform $duration;
-			/* #ifndef APP-HARMONY */
+			/* #ifndef APP-HARMONY || APP-IOS */
 			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 
 			/* #endif */

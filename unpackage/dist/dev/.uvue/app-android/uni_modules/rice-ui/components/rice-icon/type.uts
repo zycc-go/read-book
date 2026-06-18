@@ -6,6 +6,5 @@ export type IconProps = {
     fontFamily?: string;
     stop?: boolean;
     customStyle?: UTSJSONObject;
-    customClass?: string;
 };
 //# sourceMappingURL=type.uts.map

@@ -92,6 +92,7 @@ export class Lunar {
 		* @eg:let cnMonth = calendar.toChinaMonth(12) ;//cnMonth='腊月'
 		*/
 	toChinaMonth(m : number, leap : boolean = false) : string { // 月 => \u6708
+		m = Math.max(1, m)
 		return leap ? (N_STR_3[4] + N_STR_3[m] + N_STR_3[0]) : (N_STR_3[m] + N_STR_3[0]);
 	}
 
@@ -147,27 +148,27 @@ export class Lunar {
 	// 某年份农历各月天数
 	lunarMonthDays(year : number) : number[] {
 
-		 let monthDays = this.lunarMonthDaysMap.get(year)
-			if (monthDays != null) {
-					return monthDays
-			}
+		let monthDays = this.lunarMonthDaysMap.get(year)
+		if (monthDays != null) {
+			return monthDays
+		}
 
-			monthDays = [];
+		monthDays = [];
 
-			let lunarYear = lunarYears[year - 1900];
+		let lunarYear = lunarYears[year - 1900];
 
-			for (let i = 15; i >= 4; i--) {
-					let monthDay = (lunarYear >> i & 0x1) != 0 ? 30 : 29;
-					monthDays.push(monthDay);
-			}
+		for (let i = 15; i >= 4; i--) {
+			let monthDay = (lunarYear >> i & 0x1) != 0 ? 30 : 29;
+			monthDays.push(monthDay);
+		}
 
-			// 添加闰月
-			let leapM = this.leapMonth(year);
+		// 添加闰月
+		let leapM = this.leapMonth(year);
 
-			if (leapM > 0) monthDays.splice(leapM, 0, this.leapDays(year));
-			this.lunarMonthDaysMap.set(year, monthDays)
+		if (leapM > 0) monthDays.splice(leapM, 0, this.leapDays(year));
+		this.lunarMonthDaysMap.set(year, monthDays)
 
-			return monthDays;
+		return monthDays;
 	}
 
 
@@ -192,7 +193,7 @@ export class Lunar {
 		* @param m  solar month
 		* @param d  solar day
 		* @return JSON object
-		* @eg:__f__('log','at uni_modules/rice-ui/components/rice-calendar/lunar.uts:195',calendar.solar2lunar(1987,11,01));
+		* @eg:__f__('log','at uni_modules/rice-ui/components/rice-calendar/lunar.uts:196',calendar.solar2lunar(1987,11,01));
 		*/
 	solar2lunar(y : number, m : number, d : number) : LunarInfoType { // 参数区间1900.1.31~2100.12.31
 		let moonDay = this.solar_date(y, m, d);

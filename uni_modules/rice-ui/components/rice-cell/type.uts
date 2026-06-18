@@ -11,7 +11,9 @@ export type CellProps = {
 	arrowDirection ?: 'up' | 'down' | 'left' | 'right',
 	center ?: boolean,
 	titleStyle ?: UTSJSONObject,
+	titleTextStyle ?: UTSJSONObject,
 	valueStyle ?: UTSJSONObject,
+	valueTextStyle ?: UTSJSONObject,
 	labelStyle ?: UTSJSONObject,
 	customStyle ?: UTSJSONObject,
 }

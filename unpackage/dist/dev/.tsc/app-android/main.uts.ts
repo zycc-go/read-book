@@ -8,6 +8,7 @@ export function createApp() {
 	}
 }
 export function main(app: IApp) {
+    enableStyleIsolation();
     definePageRoutes();
     defineAppConfig();
     (createApp()['app'] as VueApp).mount(app, GenUniApp());
@@ -26,20 +27,28 @@ export class UniAppConfig extends io.dcloud.uniapp.appframe.AppConfig {
 import GenPagesBookcaseIndexClass from './pages/bookcase/index.uvue'
 import GenPagesLibraryIndexClass from './pages/library/index.uvue'
 import GenPagesDiscussIndexClass from './pages/discuss/index.uvue'
+import GenPagesDiscussDetailIndexClass from './pages/discuss-detail/index.uvue'
+import GenPagesDiscussIssueIndexClass from './pages/discuss-issue/index.uvue'
 import GenPagesMineIndexClass from './pages/mine/index.uvue'
 import GenPagesSearchIndexClass from './pages/search/index.uvue'
 import GenPagesSettingIndexClass from './pages/setting/index.uvue'
 import GenPagesFeedbackIndexClass from './pages/feedback/index.uvue'
 import GenPagesExplanationIndexClass from './pages/explanation/index.uvue'
+import GenUniModulesRiceUiPagesActionSheetActionSheetClass from './uni_modules/rice-ui/pages/action-sheet/action-sheet.uvue'
+import GenUniModulesRiceUiPagesDialogDialogClass from './uni_modules/rice-ui/pages/dialog/dialog.uvue'
 function definePageRoutes() {
 __uniRoutes.push({ path: "pages/bookcase/index", component: GenPagesBookcaseIndexClass, meta: { isQuit: true } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/library/index", component: GenPagesLibraryIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/discuss/index", component: GenPagesDiscussIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
+__uniRoutes.push({ path: "pages/discuss-detail/index", component: GenPagesDiscussDetailIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
+__uniRoutes.push({ path: "pages/discuss-issue/index", component: GenPagesDiscussIssueIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/mine/index", component: GenPagesMineIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/search/index", component: GenPagesSearchIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/setting/index", component: GenPagesSettingIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/feedback/index", component: GenPagesFeedbackIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/explanation/index", component: GenPagesExplanationIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
+__uniRoutes.push({ path: "uni_modules/rice-ui/pages/action-sheet/action-sheet", component: GenUniModulesRiceUiPagesActionSheetActionSheetClass, meta: { isQuit: false } as UniPageMeta, style: _uM() } as UniPageRoute)
+__uniRoutes.push({ path: "uni_modules/rice-ui/pages/dialog/dialog", component: GenUniModulesRiceUiPagesDialogDialogClass, meta: { isQuit: false } as UniPageMeta, style: _uM() } as UniPageRoute)
 }
 const __uniTabBar: Map<string, any | null> | null = _uM([["color","@tabBarColor"],["selectedColor","@tabBarSelectedColor"],["borderStyle","@tabBarBorderStyle"],["backgroundColor","@tabBarBackgroundColor"],["list",[_uM([["pagePath","pages/bookcase/index"],["iconPath","@tabBarIconPath1"],["selectedIconPath","@tabBarSelectedIconPath1"],["text","书架"]]),_uM([["pagePath","pages/library/index"],["iconPath","@tabBarIconPath2"],["selectedIconPath","@tabBarSelectedIconPath2"],["text","书库"]]),_uM([["pagePath","pages/discuss/index"],["iconPath","@tabBarIconPath3"],["selectedIconPath","@tabBarSelectedIconPath3"],["text","讨论"]]),_uM([["pagePath","pages/mine/index"],["iconPath","@tabBarIconPath4"],["selectedIconPath","@tabBarSelectedIconPath4"],["text","我的"]])]]])
 const __uniLaunchPage: Map<string, any | null> = _uM([["url","pages/bookcase/index"],["style",_uM([["navigationBarTitleText",""]])]])

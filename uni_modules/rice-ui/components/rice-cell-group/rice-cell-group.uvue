@@ -1,5 +1,5 @@
 <template>
-	<text v-if="hasStrValue(title)" class="rice-cell-group__title" :class="cellGroupTitleClass"
+	<text v-if="hasStrValue(title)" class="rice-cell-group__title" :class="ns.theme()"
 		:style="titleStyle">{{title}}</text>
 	<view :class="cellGroupClass" :style="[cellGroupStyle,customStyle]">
 		<slot />
@@ -7,20 +7,13 @@
 </template>
 
 <script setup>
-	/**
-	 * @description rice-cell-group 单元格为列表中的单个展示项。
-	 * @property {String|Number} title 分组标题
-	 * @property {Boolean} border 是否显示上下边框，默认false
-	 * @property {String|Number} radius 圆角值
-	 * @property {Object} titleStyle 标题文字样式 
-	 * @property {Object} customStyle 自定义样式
-	 */
 	import { hasStrValue, addUnit } from "../../libs/utils"
 	import { useNamespace } from "../../libs/use"
 	import { CellGroupProps } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-cell-group'
+		name: 'rice-cell-group',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace("cell-group")
@@ -47,11 +40,7 @@
 		]
 	})
 
-	const cellGroupTitleClass = computed(() => {
-		return [
-			ns.theme(),
-		]
-	})
+
 </script>
 
 <style scoped lang="scss">
@@ -61,9 +50,9 @@
 		background-color: var(--rice-cell-background);
 
 		&__title {
-			padding: var(--rice-padding-md);
+			padding: 16px;
 			color: var(--rice-text-color-2);
-			font-size: var(--rice-font-size-basic);
+			font-size: 15px;
 
 		}
 

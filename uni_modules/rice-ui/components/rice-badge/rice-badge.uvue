@@ -1,9 +1,9 @@
 <template>
-	<view v-if="!single" :class="ns.b('')">
+	<view v-if="!single" class="rice-badge">
 		<slot />
 		<view v-if="showBadge" :class="contentClass" :style="[contentStyle,badgeStyle]">
 			<slot name="content">
-				<text v-if="hasStrValue(formatValue)" class="rice-badge__content__text"
+				<text v-if="hasStrValue(formatValue)" class="rice-badge__content__text" :class="textClass"
 					:style="textStyle">{{formatValue}}</text>
 			</slot>
 		</view>
@@ -11,45 +11,25 @@
 	<!-- 单独使用，去掉一层多余的嵌套 -->
 	<view v-else :class="[ns.b(''),contentClass]" :style="[contentStyle,badgeStyle]">
 		<slot name="content">
-			<text v-if="hasStrValue(formatValue)" class="rice-badge__content__text" :style="textStyle">{{formatValue}}</text>
+			<text v-if="hasStrValue(formatValue)" class="rice-badge__content__text" :class="textClass"
+				:style="textStyle">{{formatValue}}</text>
 		</slot>
 	</view>
 </template>
 
 <script setup>
-	/**
-	 * @description Badge 徽标 按钮和图标上的数字或状态标记
-	 * @property {String|Number} value 显示值，`is-dot` 为 false时生效；为`0`时且 `show-zero` 为 `false` 时隐藏
-	 * @property {Number} max 最大值，大于 `max` 时显示为 `${max}+`。只有`value` 为数字类型时才起作用
-	 * @property {Boolean} isDot 是否显示小圆点  默认false
-	 * @property {Boolean} hidden 是否隐藏 `Badge` 默认 false
-	 * @property {String} type 主题类型 默认 error
-	 * @value primary 主要色
-	 * @value success 成功色
-	 * @value warning 警告色
-	 * @value error 错误色
-	 * @property {Boolean} showZero 数值为0时是否显示`Badge`
-	 * @property {String} bgColor 背景颜色，优先级高级 `type`
-	 * @property {String} color 文字颜色
-	 * @property {String|Number} fontSize 文字大小
-	 * @property {String} position `Badge` 的位置，默认 `top-right`
-	 * @value top-right 右上
-	 * @value top-left 左上
-	 * @value bottom-left 左下
-	 * @value bottom-right 右下
-	 * @property {Array} offset 偏移量，数组的两项分别对应水平向右和垂直向下的偏移量
-	 * @property {Boolean} absolute 是否绝对定位
-	 * @property {Object} badgeStyle 自定义`Badge`样式
-	 */
+	import { BadgeProps } from './type.uts';
+	import { useNamespace } from "../../libs/use"
+	import { addUnit, hasStrValue } from "../../libs/utils"
 
-	import { useNamespace } from '../../libs/use';
-	import { hasStrValue, addUnit } from '../../libs/utils';
-	import { BadgeProps } from "./type.uts"
 	defineOptions({
-		name: 'rice-badge'
+		name: "rice-badge",
+		styleIsolation: "app-and-page",
+		externalClasses: ["text-class"]
 	})
 
 	const ns = useNamespace('badge')
+
 	const slots = defineSlots<{
 		default() : any,
 		content() : any,
@@ -61,6 +41,7 @@
 		isDot: false,
 		type: 'error',
 		position: 'top-right',
+		textClass: "",
 		offset: () : Array<number | string> => ([]),
 		badgeStyle: () : UTSJSONObject => ({})
 	})
@@ -68,6 +49,17 @@
 	const single = computed(() => slots['default'] == null)
 	const isAbsolute = computed(() => !single.value || props.absolute == true)
 
+	//是否显示徽标
+	// #ifndef APP-ANDROID
+	const isNumZero = computed(() => props.value === 0)
+	// #endif
+
+	// #ifdef APP-ANDROID
+	const isNumZero = computed(() => props.value == 0)
+	// #endif
+	const showBadge = computed(() => !props.hidden && (props.isDot || props.showZero || !isNumZero.value))
+
+	//徽标的内容
 	const formatValue = computed(() => {
 		if (props.isDot) return ""
 		if (typeof props.value == 'number' && typeof props.max == 'number') {
@@ -77,23 +69,30 @@
 	})
 
 
-	// #ifndef APP-ANDROID
-	const isNumZero = computed(() => props.value === 0)
-	// #endif
+	//内容的class
 
-	// #ifdef APP-ANDROID
-	const isNumZero = computed(() => props.value == 0)
-	// #endif
+	const contentClass = computed(() => {
+		return [
+			ns.e("content"),
+			ns.m(props.type),
+			ns.is("fixed", isAbsolute.value),
+			ns.is("dot", props.isDot),
+			ns.m(isAbsolute.value ? props.position : ''),
+			ns.theme(),
+		]
+	})
 
-	const showBadge = computed(() => !props.hidden && (props.isDot || props.showZero || !isNumZero.value))
-
+	/**
+	 * 获取数值单位
+	 */
 	const getOffsetUumString = (val : string) => {
 		return val.startsWith('-') ? addUnit(val.replace('-', '')) : `-${addUnit(val)}`;
 	}
 
+	//内容的style
 	const contentStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.bgColor)) {
+		if (props.bgColor != null) {
 			css.set('background-color', props.bgColor!)
 		}
 		if (props.offset.length > 0) {
@@ -121,33 +120,21 @@
 		return css
 	})
 
+	//文字的style
 	const textStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.color)) {
+		if (props.color != null) {
 			css.set('color', props.color!)
 		}
-		if (hasStrValue(props.fontSize)) {
+		if (props.fontSize != null) {
 			css.set('font-size', addUnit(props.fontSize!))
 		}
 		return css
 	})
-
-
-
-	const contentClass = computed(() => {
-		return [
-			ns.e("content"),
-			ns.m(props.type),
-			ns.is("fixed", isAbsolute.value),
-			ns.is("dot", props.isDot),
-			ns.m(isAbsolute.value ? props.position : ''),
-			ns.theme(),
-		]
-	})
 </script>
 
 <style scoped lang="scss">
-	@import "../../libs/style/let.scss";
+	@import "../../libs/style/theme.scss";
 
 	.rice-badge {
 		position: relative;
@@ -167,7 +154,7 @@
 			background-color: var(--rice-error-color);
 
 			&__text {
-				font-size: var(--rice-font-size-xs);
+				font-size: 12px;
 				color: #fff;
 				white-space: nowrap;
 			}
@@ -216,6 +203,5 @@
 				background-color: $color;
 			}
 		}
-
 	}
 </style>

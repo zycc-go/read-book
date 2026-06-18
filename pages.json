@@ -1,7 +1,6 @@
 {
 	//pages数组中第一项表示应用启动页，参考：https://doc.dcloud.net.cn/uni-app-x/collocation/pagesjson.html
-	"pages": [
-		{
+	"pages": [{
 			// 书架
 			"path": "pages/bookcase/index",
 			"style": {
@@ -18,6 +17,20 @@
 		{
 			// 讨论
 			"path": "pages/discuss/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			// 讨论详情
+			"path": "pages/discuss-detail/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			// 讨论发布
+			"path": "pages/discuss-issue/index",
 			"style": {
 				"navigationBarTitleText": ""
 			}
@@ -56,6 +69,10 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
+		}, {
+			"path": "uni_modules/rice-ui/pages/action-sheet/action-sheet"
+		}, {
+			"path": "uni_modules/rice-ui/pages/dialog/dialog"
 		}
 	],
 	"tabBar": {

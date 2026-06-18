@@ -1,8 +1,8 @@
 import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts';
-import MyNavbar from '@/componnets/MyNavbar.uvue';
-import MyCell from '@/componnets/MyCell.uvue';
-import MyCellGroup from '@/componnets/MyCellGroup.uvue';
-import MySwitch from '@/componnets/MySwitch.uvue';
+import MyNavbar from '@/componnets/MyNavbar/index.uvue';
+import MyCell from '@/componnets/MyCell/index.uvue';
+import MyCellGroup from '@/componnets/MyCellGroup/index.uvue';
+import MySwitch from '@/componnets/MySwitch/index.uvue';
 const __sfc__ = defineComponent({
     __name: 'index',
     setup(__props) {

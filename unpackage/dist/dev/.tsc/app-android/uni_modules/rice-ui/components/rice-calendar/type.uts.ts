@@ -16,6 +16,7 @@ export type CalendarData = {
 	bottomInfoColor ?: string,
 	badge ?: boolean,
 	disabled ?: boolean,
+	isCurrentMonth ?: boolean,
 }
 
 export type GridItem = {
@@ -30,6 +31,16 @@ export type CalendarFormatter = (day : CalendarData) => CalendarData
 
 export type CalendarMode = 'single' | 'multiple' | 'range'
 export type CalendarSwitchMode = 'month' | 'year-month' | 'none'
+
+export type CalendarSwitchPanelType = 'prev-week' | 'next-week' | 'prev-month' | 'next-month' | 'prev-year' | 'next-year'
+export type CalendarPanelChangeResult = {
+	firstDate : string, //月日历返回当前面板所属月份的第一天；周日历返回当前周内属于当前月的第一天
+	lastDate : string, //月日历返回当前面板所属月份的最后一天；周日历返回当前周内属于当前月的最后一天
+	panelDate : string, //面板上面显示的值，即getPanelYearMonthByDate返回的值
+	prevMonthFirstDate:string, //当前面板上个月的第一条数据,_showFullDate为false或没有就返回空字符串
+	nextMonthLastDate:string, //当前面板下个月的最后一条数据,_showFullDate为false或没有就返回空字符串
+	week : number,//当前的周数，weeklyCalendar 为true时有效
+}
 
 export type CalendarProps = {
 	mode ?: CalendarMode,
@@ -60,5 +71,9 @@ export type CalendarProps = {
 	closeOnClickOverlay ?: boolean,
 	safeAreaInsetBottom ?: boolean,
 	zIndex ?: number,
+	weeklyCalendar ?: boolean,
+	showWeeklyText ?: boolean,
+	showFullDate ?: boolean,
+	showMonthMark ?: boolean,
 	customStyle ?: UTSJSONObject,
 }

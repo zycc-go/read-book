@@ -1,18 +1,19 @@
 {
   "id": "rice-ui",
-  "displayName": "RiceUI 基于uniappx 的UI框架【支持APP 鸿蒙 小程序 H5】",
-  "version": "1.0.20",
-  "description": "RiceUI 框架基于 uniappx setup 模式开发，支持Android，iOS，鸿蒙next，微信小程序和H5，免费开源，无需付费",
+  "displayName": "RiceUI、uniappx UI框架【已支持鸿蒙、iOS的蒸汽模式】(2025 插件大赛二等奖)",
+  "version": "1.1.8",
+  "description": "RiceUI 框架基于 uniappx 组合式模式开发，支持Android，iOS，鸿蒙next，蒸汽模式，微信小程序和H5，免费开源，无需付费",
   "keywords": [
     "rice-ui",
     "鸿蒙",
     "uniappx",
-    "ui"
+    "ui",
+    "蒸汽模式"
 ],
   "repository": "https://gitee.com/riceui/rice-ui",
 "engines": {
     "uni-app": "",
-    "uni-app-x": "^4.71"
+    "uni-app-x": "^5.03"
   },
   "dcloudext": {
     "type": "component-vue",

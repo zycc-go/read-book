@@ -6,8 +6,8 @@
 			</template>
 			<template #right>
 				<view class="nav-right">
-					<text class="icon nav-icon" @click="onSearch">{{ "\ue710" }}</text>
-					<text class="icon nav-icon" @click="onShowMenu">{{ "\ue6a9" }}</text>
+					<my-icon class="nav-icon" name="search-line" size="20px" @click="onSearch"></my-icon>
+					<my-icon class="nav-icon" name="more-vertical" size="20px" @click="onShowMenu"></my-icon>
 				</view>
 			</template>
 		</my-navbar>
@@ -40,7 +40,7 @@
 								<text class="book-sub">&nbsp;{{ item?.readChapter }}</text>
 							</view>
 						</view>
-						<text class="icon book-li-more">{{ "\ue6d1" }}</text>
+						<my-icon class="book-li-more" name="more" size="20px"></my-icon>
 					</view>
 				</view>
 			</view>
@@ -49,8 +49,9 @@
 </template>
 
 <script setup lang="uts">
-	import MyNavbar from '@/componnets/MyNavbar.uvue'
-	import { state, setAppTheme } from '@/store/index.uts'
+	import MyNavbar from '@/componnets/MyNavbar/index.uvue'
+	import MyIcon from '@/componnets/MyIcon/index.uvue';
+	import { state, checkWindowInfo } from '@/store/index.uts'
 	import { bookList, type BookItem } from '@/data/book'
 
 	const style = computed(() => {
@@ -75,6 +76,10 @@
 			url: `/pages/library/index?bookId=${book.id}`
 		})
 	}
+
+	onReady(() => {
+		checkWindowInfo()
+	})
 </script>
 
 <style lang="scss" scoped>
@@ -111,7 +116,6 @@
 		.book-li {
 			display: flex;
 			flex-direction: row;
-
 
 			.book-li-avatar {
 				width: 60px;

@@ -3,11 +3,10 @@
 		<my-navbar>
 			<template #right>
 				<view class="nav-right">
-					<text class="icon nav-icon" v-if="state.appTheme == 'dark'"
-						@click="onSetTheme('light')">{{ '\ue8C4' }}</text>
-					<text class="icon nav-icon" v-else @click="onSetTheme('dark')">{{ '\ue8C5' }}</text>
+					<my-icon name="sun" :size="24" v-if="state.appTheme == 'dark'" @click="onSetTheme('light')" />
+					<my-icon name="moon" :size="24" v-else @click="onSetTheme('dark')" />
 					<uni-badge-view text="5">
-						<text class="icon nav-icon">{{ '\ue8C7' }}</text>
+						<my-icon name="notification" :size="24" style="margin-left: 8px;"/>
 					</uni-badge-view>
 				</view>
 			</template>
@@ -23,7 +22,7 @@
 			</view>
 		</view>
 
-		<my-cell-group :inset="true" >
+		<my-cell-group :inset="true">
 			<my-cell title="活动" :arrow="true" />
 			<my-cell title="设置" :arrow="true" @click="onToSetting" />
 			<my-cell title="反馈" :arrow="true" @click="onToFeedback" />
@@ -33,12 +32,13 @@
 </template>
 
 <script setup lang="uts">
-	import MyNavbar from '@/componnets/MyNavbar.uvue';
-	import MyAvatar from '@/componnets/MyAvatar.uvue';
-	import MyCell from '@/componnets/MyCell.uvue';
-	import MyCellGroup from '@/componnets/MyCellGroup.uvue';
+	import MyNavbar from '@/componnets/MyNavbar/index.uvue';
+	import MyAvatar from '@/componnets/MyAvatar/index.uvue';
+	import MyCell from '@/componnets/MyCell/index.uvue';
+	import MyCellGroup from '@/componnets/MyCellGroup/index.uvue';
+	import MyIcon from '@/componnets/MyIcon/index.uvue';
 	import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts';
-	
+
 	const style = computed(() => {
 		return {
 			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',

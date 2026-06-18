@@ -30,7 +30,7 @@ open class GenPagesLibraryIndex : BasePage {
                     "theme-" + unref(state).appTheme,
                     "page"
                 )), "style" to _nS(unref(style))), _uA(
-                    _cV(unref(GenComponnetsMyNavbarClass), _uM("leftArrow" to false, "title" to "书库")),
+                    _cV(unref(GenComponnetsMyNavbarIndexClass), _uM("leftArrow" to false, "title" to "书库")),
                     _cE("view", _uM("class" to "card"), " 下面是很多的分类。。。 ")
                 ), 6)
             }

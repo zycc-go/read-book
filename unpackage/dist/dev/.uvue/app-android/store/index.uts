@@ -35,6 +35,8 @@ type State = {
     appTheme: 'light' | 'dark';
     // 系统主题
     osTheme: 'light' | 'dark';
+    // 单位
+    unit: 'px' | 'rpx';
     // 是否无网环境
     netless: boolean;
     // 登录用户信息
@@ -50,6 +52,7 @@ export const state = reactive({
     leftWinActive: '/pages/bookcase/index',
     appTheme: 'light',
     osTheme: 'light',
+    unit: 'px',
     isFollowSystem: false,
     netless: false,
     userInfo: null,
@@ -78,15 +81,17 @@ export const setIsFollowSystem = (value: boolean) => {
     state.isFollowSystem = value;
     uni.setStorageSync('isFollowSystem', value);
 };
+// 获取设置窗口信息
+export const checkWindowInfo = () => {
+    const windowInfo = uni.getWindowInfo();
+    state.statusBarHeight = windowInfo.statusBarHeight;
+    state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom;
+};
 // 检查系统
 export const checkSystemInfo = () => {
     const appBaseInfo: GetAppBaseInfoResult = uni.getAppBaseInfo();
     const deviceInfo: GetDeviceInfoResult = uni.getDeviceInfo();
-    const windowInfo = uni.getWindowInfo();
-    __f__('log', 'at store/index.uts:97', 'windowInfo', windowInfo);
     state.uniPlatform = appBaseInfo.uniPlatform ?? '';
-    state.statusBarHeight = windowInfo.statusBarHeight;
-    state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom;
     if (appBaseInfo.uniPlatform === 'app') {
         try {
             const isFollowSystem = uni.getStorageSync('isFollowSystem') === '' ? false : (uni.getStorageSync('isFollowSystem') as boolean);
@@ -106,7 +111,7 @@ export const checkSystemInfo = () => {
             }
         }
         catch (e: any) {
-            __f__('log', 'at store/index.uts:118', `${e} 失败`);
+            __f__('log', 'at store/index.uts:124', `${e} 失败`);
         }
     }
 };

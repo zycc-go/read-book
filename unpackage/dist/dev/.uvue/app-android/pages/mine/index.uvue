@@ -1,8 +1,9 @@
 import _easycom_uni_badge_view from '@/uni_modules/uni-badge-view/components/uni-badge-view/uni-badge-view.uvue';
-import MyNavbar from '@/componnets/MyNavbar.uvue';
-import MyAvatar from '@/componnets/MyAvatar.uvue';
-import MyCell from '@/componnets/MyCell.uvue';
-import MyCellGroup from '@/componnets/MyCellGroup.uvue';
+import MyNavbar from '@/componnets/MyNavbar/index.uvue';
+import MyAvatar from '@/componnets/MyAvatar/index.uvue';
+import MyCell from '@/componnets/MyCell/index.uvue';
+import MyCellGroup from '@/componnets/MyCellGroup/index.uvue';
+import MyIcon from '@/componnets/MyIcon/index.uvue';
 import { state, setAppTheme, setIsFollowSystem } from '@/store/index.uts';
 const __sfc__ = defineComponent({
     __name: 'index',
@@ -53,19 +54,25 @@ const __sfc__ = defineComponent({
                     right: withSlotCtx((): any[] => [
                         _cE("view", _uM({ class: "nav-right" }), [
                             unref(state).appTheme == 'dark'
-                                ? _cE("text", _uM({
+                                ? _cV(unref(MyIcon), _uM({
                                     key: 0,
-                                    class: "icon nav-icon",
+                                    name: "sun",
+                                    size: 24,
                                     onClick: () => { onSetTheme('light'); }
-                                }), _tD('\ue8C4'), 8 /* PROPS */, ["onClick"])
-                                : _cE("text", _uM({
+                                }), null, 8 /* PROPS */, ["onClick"])
+                                : _cV(unref(MyIcon), _uM({
                                     key: 1,
-                                    class: "icon nav-icon",
+                                    name: "moon",
+                                    size: 24,
                                     onClick: () => { onSetTheme('dark'); }
-                                }), _tD('\ue8C5'), 8 /* PROPS */, ["onClick"]),
+                                }), null, 8 /* PROPS */, ["onClick"]),
                             _cV(_component_uni_badge_view, _uM({ text: "5" }), _uM({
                                 default: withSlotCtx((): any[] => [
-                                    _cE("text", _uM({ class: "icon nav-icon" }), _tD('\ue8C7'))
+                                    _cV(unref(MyIcon), _uM({
+                                        name: "notification",
+                                        size: 24,
+                                        style: _nS(_uM({ "margin-left": "8px" }))
+                                    }), null, 8 /* PROPS */, ["style"])
                                 ]),
                                 _: 1 /* STABLE */
                             }))

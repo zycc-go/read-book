@@ -1,5 +1,6 @@
-import MyNavbar from '@/componnets/MyNavbar.uvue'
-	import { state, setAppTheme } from '@/store/index.uts'
+import MyNavbar from '@/componnets/MyNavbar/index.uvue'
+	import MyIcon from '@/componnets/MyIcon/index.uvue';
+	import { state, checkWindowInfo } from '@/store/index.uts'
 	import { bookList, type BookItem } from '@/data/book'
 
 	
@@ -33,6 +34,10 @@ const _cache = __ins.renderCache;
 		})
 	}
 
+	onReady(() => {
+		checkWindowInfo()
+	})
+
 return (): any | null => {
 
   return _cE("view", _uM({
@@ -45,14 +50,18 @@ return (): any | null => {
       ]),
       right: withSlotCtx((): any[] => [
         _cE("view", _uM({ class: "nav-right" }), [
-          _cE("text", _uM({
-            class: "icon nav-icon",
+          _cV(unref(MyIcon), _uM({
+            class: "nav-icon",
+            name: "search-line",
+            size: "20px",
             onClick: onSearch
-          }), _tD("\ue710")),
-          _cE("text", _uM({
-            class: "icon nav-icon",
+          })),
+          _cV(unref(MyIcon), _uM({
+            class: "nav-icon",
+            name: "more-vertical",
+            size: "20px",
             onClick: onShowMenu
-          }), _tD("\ue6a9"))
+          }))
         ])
       ]),
       _: 1 /* STABLE */
@@ -100,7 +109,11 @@ return (): any | null => {
                       _cE("text", _uM({ class: "book-sub" }), " " + _tD(item?.readChapter), 1 /* TEXT */)
                     ])
                   ]),
-                  _cE("text", _uM({ class: "icon book-li-more" }), _tD("\ue6d1"))
+                  _cV(unref(MyIcon), _uM({
+                    class: "book-li-more",
+                    name: "more",
+                    size: "20px"
+                  }))
                 ], 10 /* CLASS, PROPS */, ["onClick"])
               }), 128 /* KEYED_FRAGMENT */)
             ])

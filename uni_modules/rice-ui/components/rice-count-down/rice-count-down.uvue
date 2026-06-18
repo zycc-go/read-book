@@ -1,29 +1,21 @@
 <template>
-	<view :class="[ns.b(''),ns.theme()]" :style="customStyle">
+	<view class="rice-count-down" :class="ns.theme()" :style="customStyle">
 		<slot :current="current">
-			<text :class="ns.e('text')" :style="textStyle">{{timeValue}}</text>
+			<text class="rice-count-down__text" :class="textClass" :style="textStyle">{{timeValue}}</text>
 		</slot>
 	</view>
 </template>
 
 <script setup>
-	/**
-	 * @description CountDown 用于实时展示倒计时数值。
-	 * @property {Number} time 倒计时时长，单位毫秒，
-	 * @property {String} format 时间格式，默认 `HH:mm:ss`
-	 * @property {Boolean} autoStart 是否自动开始倒计时，默认true
-	 * @property {Boolean} millisecond 是否开启毫秒级渲染，默认 false
-	 * @property {String|Number} fontSize 字体大小
-	 * @property {String} color 字体颜色
-	 * @property {Object} customStyle 自定义样式
-	 */
-	import { useCountDown, useNamespace, CurrentTime } from '../../libs/use';
-	import { addUnit, padZero, hasStrValue } from "../../libs/utils"
+	import { useCountDown, useNamespace, CurrentTime, UseCountDownOptions } from '../../libs/use';
+	import { addUnit, padZero } from "../../libs/utils"
 	import { formatTime } from "./utils"
 	import { CountDownProps } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-count-down'
+		name: 'rice-count-down',
+		styleIsolation: "app-and-page",
+		externalClasses: ['text-class']
 	})
 
 	defineSlots<{
@@ -41,6 +33,7 @@
 		format: 'HH:mm:ss',
 		autoStart: true,
 		millisecond: false,
+		textClass: "",
 		customStyle: () : UTSJSONObject => ({})
 	})
 
@@ -49,7 +42,7 @@
 		millisecond: props.millisecond,
 		onChange: (current : CurrentTime) => emit('change', current),
 		onFinish: () => emit('finish')
-	})
+	} as UseCountDownOptions)
 
 	const timeValue = computed(() => formatTime(props.format, current.value))
 
@@ -68,12 +61,9 @@
 
 	const textStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.fontSize)) {
-			css.set('font-size', addUnit(props.fontSize!))
-		}
-		if (hasStrValue(props.color)) {
-			css.set('color', props.color!)
-		}
+		if (props.fontSize != null) css.set('font-size', addUnit(props.fontSize!))
+		if (props.color != null) css.set('color', props.color!)
+
 		return css
 	})
 
@@ -88,7 +78,7 @@
 <style scoped lang="scss">
 	.rice-count-down {
 		&__text {
-			font-size: var(--rice-font-size-basic);
+			font-size: 15px;
 			color: var(--rice-text-color);
 		}
 	}

@@ -1,6 +1,6 @@
 <template>
 	<view v-if="fixed&&placeholder" class="rice-navbar--placeholder" :style="{height:navbarHeight}"></view>
-	<view :class="navbarClass" :style="navbarStyle">
+	<view :class="[navbarCustomClass,navbarClass]" :style="navbarStyle">
 		<view v-if="hasLeft" class="rice-navbar__aside rice-navbar__left"
 			:class="{'rice-navbar__aside--safearea-top':safeAreaInsetTop}" @click.stop="clickLeft">
 			<slot name="left">
@@ -8,9 +8,10 @@
 				<text v-if="hasStrValue(leftText)" :style="leftTextStyle" class="rice-navbar__aside__text">{{leftText}}</text>
 			</slot>
 		</view>
-		<view class="rice-navbar__center" :class="{'rice-navbar__center--has-right':hasRight&&safeAreaInsetTop}" :style="centerStyle">
+		<view class="rice-navbar__center" :class="{'rice-navbar__center--has-right':hasRight&&safeAreaInsetTop}"
+			:style="centerStyle">
 			<slot name="title">
-				<text class="rice-navbar__title" :style="titleTextStyle">{{title}}</text>
+				<text class="rice-navbar__title" :class="titleTextClass" :style="titleTextStyle">{{title}}</text>
 			</slot>
 		</view>
 		<view v-if="hasRight" class="rice-navbar__aside rice-navbar__right"
@@ -25,37 +26,15 @@
 </template>
 
 <script setup>
-	/**
- * @description Navbar
- * @property {String} title 导航栏标题
- * @property {String|Number} titleSize 标题文字的大小,默认16px
-	 @property {String|Number} titleColor 标题文字的颜色
- * @property {String|Number} titleWidth 标题栏最大宽度，超出会显示省略号,默认70%
- * @property {Boolean} fixed 是否固定在顶部，默认true
- * @property {Boolean} placeholder 固定在顶部时，是否生成一个等高的元素防止塌陷，默认true
- * @property {Boolean} border 导航栏底部是否显示下边框，默认true
- * @property {Boolean} leftArrow 是否显示返回箭头，默认true
- * @property {String} leftIcon 左侧返回图标的名称，默认 arrow-left
- * @property {String} leftIconSize 左侧返回图标的大小
- * @property {String} leftIconColor 左侧返回图标的颜色
- * @property {String} leftText 左侧文案
- * @property {String} leftTextColor 左侧文案颜色
- * @property {String} rightText 右侧文案
- * @property {String} rightTextColor 右侧文案颜色
- * @property {Number} zIndex 层级，默认999
- * @property {String} bgColor 背景色，支持渐变色
- * @property {Boolean} safeAreaInsetTop 是否开启顶部安全区适配,默认true
- * @property {String|Number} height 导航栏高度，不包含状态栏，safeAreaInsetTop为true时内部会自动加上状态栏的高度，默认44px
- * @property {Boolean} autoBack 点击左侧箭头区域，是否自动返回上一页，默认true
- * @property {Object} customStyle 自定义样式
- */
 	import { addUnit, getPxNum, hasStrValue } from "../../libs/utils"
-	import { useNamespace } from "../../libs/use"
+	import { useNamespace, useSafeArea, safeAreaInsets } from "../../libs/use"
 	import { isDark } from "../../libs/store"
 	import { NavbarProps } from "./type.uts"
 
 	defineOptions({
-		name: 'rice-navbar'
+		name: 'rice-navbar',
+		styleIsolation: "app-and-page",
+		externalClasses: ['title-text-class', 'navbar-class']
 	})
 	const slot = defineSlots()
 	const emit = defineEmits<{
@@ -63,6 +42,7 @@
 		clickRight : [],
 	}>()
 	const ns = useNamespace('navbar')
+	useSafeArea()
 
 	const props = withDefaults(defineProps<NavbarProps>(), {
 		fixed: true,
@@ -74,12 +54,13 @@
 		autoBack: true,
 		height: '44px',
 		leftIconSize: '20px',
+		navbarClass: "",
+		titleTextClass: "",
 		customStyle: () : UTSJSONObject => ({})
 	})
 
 	const hasLeft = computed(() => slot['left'] != null || props.leftArrow || hasStrValue(props.leftText))
 	const hasRight = computed(() => slot['right'] != null || hasStrValue(props.rightText))
-	const statusBarHeight = ref(0)
 
 	const clickLeft = (e : UniPointerEvent) => {
 		if (slot['left'] != null) return
@@ -94,14 +75,11 @@
 		emit('clickRight')
 	}
 
-	const arrowColor = computed<string>(() => {
-		if (hasStrValue(props.leftIconColor)) return props.leftIconColor!
-		return !isDark.value ? '#323233' : '#f5f5f5'
-	})
+	const arrowColor = computed<string>(() => props.leftIconColor ?? 'var(--rice-text-color)')
 
 	const navbarHeight = computed(() => {
 		let height = getPxNum(props.height)
-		if (props.safeAreaInsetTop) height += statusBarHeight.value
+		if (props.safeAreaInsetTop) height += safeAreaInsets.value.statusBarHeight
 		return height + 'px'
 	})
 
@@ -113,7 +91,7 @@
 
 	const navbarStyle = computed(() => {
 		const css = new Map<string, string | number>()
-		if (hasStrValue(props.bgColor)) css.set('background', props.bgColor!)
+		if (props.bgColor != null) css.set('background', props.bgColor!)
 		if (props.fixed && props.zIndex != null) css.set('z-index', props.zIndex!)
 		css.set('height', addUnit(props.height!))
 		return css
@@ -121,24 +99,24 @@
 
 	const leftTextStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.leftTextColor)) css.set('color', props.leftTextColor!)
+		if (props.leftTextColor != null) css.set('color', props.leftTextColor!)
 		return css
 	})
 
 	const rightTextStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.rightTextColor)) css.set('color', props.rightTextColor!)
+		if (props.rightTextColor != null) css.set('color', props.rightTextColor!)
 		return css
 	})
 
 	const titleTextStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.titleColor)) css.set('color', props.titleColor!)
+		if (props.titleColor != null) css.set('color', props.titleColor!)
 		if (props.titleSize != null) css.set('font-size', addUnit(props.titleSize!))
 		return css
 	})
 
-	const navbarClass = computed(() => {
+	const navbarCustomClass = computed(() => {
 		return [
 			ns.b(""),
 			ns.theme(),
@@ -156,13 +134,12 @@
 	// #endif
 
 	onMounted(() => {
-		const windowInfo = uni.getWindowInfo()
 		// #ifdef MP
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
-		mpMenuInfo.value.top = menuButtonInfo.top - (menuButtonInfo.top - windowInfo.statusBarHeight)
+		const statusBarHeight = uni.getWindowInfo().statusBarHeight
+		mpMenuInfo.value.top = menuButtonInfo.top - (menuButtonInfo.top - statusBarHeight)
 		mpMenuInfo.value.right = menuButtonInfo.width - 30
 		// #endif
-		statusBarHeight.value = windowInfo.statusBarHeight
 	})
 </script>
 
@@ -234,7 +211,7 @@
 			}
 
 			&__text {
-				font-size: var(--rice-font-size-sm);
+				font-size: 14px;
 				color: var(--rice-text-color)
 			}
 
@@ -264,7 +241,7 @@
 
 		&__title {
 			width: 100%;
-			font-size: var(--rice-font-size-md);
+			font-size: 15px;
 			color: var(--rice-text-color);
 			font-weight: bold;
 			text-align: center;

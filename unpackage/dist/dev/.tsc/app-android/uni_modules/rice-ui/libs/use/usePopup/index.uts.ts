@@ -1,6 +1,5 @@
-import type { Ref } from "vue"
-import { callInterceptor } from "../../utils"
 import { BeforeChangeInterceptor } from "../../types"
+import { callInterceptor } from "../../utils"
 
 export type UsePopup = {
 	realShow : Ref<boolean>,
@@ -9,14 +8,19 @@ export type UsePopup = {
 
 export type UsePopupOptions = {
 	show : Ref<boolean>,
-	position ?: Ref<string>,
-	duration ?: Ref<number>,
-	opacity ?: Ref<boolean>,
-	zoom ?: Ref<boolean>,
-	beforeClose ?: Ref<BeforeChangeInterceptor | null>
+	position ?: Ref<string> | string,
+	duration ?: Ref<number> | number,
+	opacity ?: Ref<boolean> | boolean,
+	zoom ?: Ref<boolean> | boolean,
+	zoomScale ?: number,
+	beforeClose ?: Ref<BeforeChangeInterceptor | null> | null,
 }
 
+
 export function usePopup(target : Ref<UniElement | null>, options : UsePopupOptions) {
+
+	const { show } = options
+
 	const instance = getCurrentInstance()!
 
 	const realShow = ref(false)
@@ -25,6 +29,11 @@ export function usePopup(target : Ref<UniElement | null>, options : UsePopupOpti
 	let openTimer : number | null = null
 	let openedTimer : number | null = null
 	let closeTimer : number | null = null
+
+	const position = computed(() => toValue(options.position ?? 'bottom'))
+	const duration = computed(() => toValue(options.duration ?? 300))
+	const isOpacity = computed(() => toValue(options.opacity ?? false))
+	const isZoom = computed(() => toValue(options.zoom ?? true))
 
 	const handleOpenTimer = () => {
 		if (openTimer != null) clearTimeout(openTimer!)
@@ -35,61 +44,76 @@ export function usePopup(target : Ref<UniElement | null>, options : UsePopupOpti
 		if (closeTimer != null) clearTimeout(closeTimer!)
 	}
 
+
+	/**
+	 * 打开popup
+	 */
 	const open = async () => {
-		const duration = options.duration?.value ?? 300
+		if (realShow.value) return
 		realShow.value = true
-		const position = options.position?.value ?? 'bottom'
 		await nextTick()
 		instance.emit('open')
 		handleOpenTimer()
 		openTimer = setTimeout(() => {
-			target.value?.style.setProperty('transition-duration', duration + 'ms')
+			target.value?.style.setProperty('transition-duration', `${duration.value}ms`)
 			target.value?.style.setProperty('opacity', '1')
-			if (position != 'center') {
-				target.value?.style.setProperty('transform', 'translate(0px, 0px)')
-			} else {
+			if (position.value == 'center') {
 				target.value?.style.setProperty('transform', 'translate(-50%, -50%) scale(1)')
+			} else {
+
+
+
+
+				target.value?.style.setProperty('transform', 'translate(0, 0)')
+
 			}
 			openedTimer = setTimeout(() => {
 				instance.emit('opened')
-			}, duration)
-		}, 30)
+			}, duration.value)
 
+		}, 50)
 
 	}
 
+	/**
+	 * 关闭popup
+	 */
 	const close = () => {
 		if (!realShow.value) return
-		const duration = options.duration?.value ?? 300
 		instance.emit('close')
-		const position = options.position?.value ?? 'bottom'
-		const opacity = options.opacity?.value == true ? '0' : '1'
+
+		const opacity = isOpacity.value ? '0' : '1'
 		target.value?.style.setProperty('opacity', opacity)
-		if (position == 'top') {
+
+		if (position.value == 'top') {
 			target.value?.style.setProperty('transform', 'translate(0, -100%)')
-		} else if (position == 'bottom') {
+		} else if (position.value == 'bottom') {
 			target.value?.style.setProperty('transform', 'translate(0px, 100%)')
-		} else if (position == 'left') {
+		} else if (position.value == 'left') {
 			target.value?.style.setProperty('transform', 'translate(-100%, 0)')
-		} else if (position == 'right') {
+		} else if (position.value == 'right') {
 			target.value?.style.setProperty('transform', 'translate(100%, 0)')
 		} else {
-
-			const scale = options.zoom?.value == true ? 0.6 : 1
+			const scale = isZoom.value == true ? (options.zoomScale ?? 0.6) : 1
 			target.value?.style.setProperty('transform', `translate(-50%, -50%) scale(${scale})`)
 		}
 		handleCloseTimer()
 		closeTimer = setTimeout(() => {
 			realShow.value = false
 			instance.emit('closed')
-		}, duration)
-
+		}, duration.value)
 	}
 
+
+	/**
+	 * 执行关闭
+	 */
 	const doClose = () => {
-		if (!options.show.value || closing.value) return
+		if (!show.value || closing.value) return
 		closing.value = true
 		const beforeClose = options.beforeClose?.value
+
+		//异步关闭
 		if (typeof beforeClose == 'function') {
 			callInterceptor(beforeClose as BeforeChangeInterceptor, {
 				done() {
@@ -105,7 +129,7 @@ export function usePopup(target : Ref<UniElement | null>, options : UsePopupOpti
 		}
 	}
 
-	watch(() : boolean => options.show.value, (newVal : boolean) => {
+	watch(show, (newVal : boolean) => {
 		if (newVal && !realShow.value) {
 			open()
 		}
@@ -115,7 +139,7 @@ export function usePopup(target : Ref<UniElement | null>, options : UsePopupOpti
 	})
 
 	onMounted(() => {
-		if (options.show.value) {
+		if (show.value) {
 			realShow.value = true
 			open()
 		}
@@ -126,9 +150,10 @@ export function usePopup(target : Ref<UniElement | null>, options : UsePopupOpti
 		handleCloseTimer()
 	})
 
+
 	return {
 		realShow,
-		doClose,
+		doClose
 	} as UsePopup
 
 }

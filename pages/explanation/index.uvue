@@ -1,6 +1,6 @@
 <template>
 	<view :class="[`theme-${state.appTheme}`, 'page']" :style="style">
-		<my-navbar leftArrow title="声明" />
+		<my-navbar :leftArrow="true" title="声明" />
 
 		<scroll-view style="flex:1" direction="vertical" scroll-with-animation="true">
 			<view class="card">
@@ -31,7 +31,7 @@
 
 <script setup lang="uts">
 	import { state } from '@/store/index.uts';
-	import MyNavbar from '@/componnets/MyNavbar.uvue';
+	import MyNavbar from '@/componnets/MyNavbar/index.uvue';
 
 	const style = computed(() => {
 		return {

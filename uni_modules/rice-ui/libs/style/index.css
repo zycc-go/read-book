@@ -1,2 +1,2 @@
-@import "./basic.scss";
 @import "./variables.css";
+@import "./mixins/safearea.scss"

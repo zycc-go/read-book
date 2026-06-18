@@ -1,18 +1,18 @@
 @use 'sass:map';
-@import "../../libs/style/let.scss";
+@import "../../libs/style/theme.scss";
 
 
 $tag-size: (
   'large':(
 		height:30px,
     padding:0 14px,
-    fontSize:var(--rice-font-size-basic),
+    fontSize:15px,
   ),
 	
   'small':(
 		height:22px,
     padding:0 6px,
-    fontSize:var(--rice-font-size-xs),
+    fontSize:12px,
   ),
 );
 
@@ -60,14 +60,10 @@ $tag-types: (
 		&--#{$theme} {
 			background-color: $color;
 			border: 1px solid $color;
-			/* #ifndef APP */
-			color: var(--rice-text-color-white);
-			/* #endif */
+
 		}
 		&--#{$theme}__text {
-			/* #ifdef APP */
 			color: var(--rice-text-color-white);
-			/* #endif */
 		}
 		&--#{$theme}--plain__text {
 			color:  $color;

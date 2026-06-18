@@ -10,7 +10,7 @@
 				:hover-stay-time="100" :hover-class="item.disabled==true?'none':'rice-action-sheet--hover'"
 				@click="handleSelect(item,index)">
 				<rice-icon v-if="hasStrValue(item.icon)" :color="getIconColor(item)" :name="item.icon" :size="item.iconSize"
-					:custom-style="{marginRight:'6px'}" />
+					:font-family="item.iconFontFamily" :custom-style="{marginRight:'6px'}" />
 				<text :class="getMenuTextClass(item)" :style="getMenuTextStyle(item)">{{item.name}}</text>
 				<text v-if="hasStrValue(item.subname)" :class="getMenuSubnameClass(item)">{{item.subname}}</text>
 			</view>
@@ -24,33 +24,16 @@
 </template>
 
 <script setup>
-	/**
-	 * @description ActionSheet
-	 * @property {Array} actions 面板选项列表
-	 * @property {String} title 面板标题
-	 * @property {Boolean} showCancel 是否显示取消按钮
-	 * @property {String} cancelText 取消按钮文字
-	 * @property {Number} duration 动画时长，单位ms，默认300ms
-	 * @property {Number} zIndex z-index的值
-	 * @property {Boolean} opacity 是否使用渐变过渡
-	 * @property {Boolean} overlay 是否显示遮罩
-	 * @property {String} overlayBgColor 遮罩层的背景色
-	 * @property {Boolean} closeOnClickAction 点击选项后是否关闭
-	 * @property {Boolean} closeOnClickOverlay 点击遮罩是否关闭
-	 * @property {String|Number} radius 圆角值
-	 * @property {Boolean} safeAreaInsetBottom 是否开启底部安全区
-	 * @property {Boolean} useDialogPage 是否使用dialogPage，仅APP支持
-	 * @property {Object} customStyle 自定义样式
-	 */
 	import { addUnit, hasStrValue } from "../../libs/utils"
 	import { ActionSheetProps, ActionSheetAction } from "./index.uts"
 	import { showActionSheet } from "./index.uts"
-	import { useCssVar, useNamespace, useSafeArea, usePopup } from "../../libs/use"
+	import { useCssVar, useNamespace, useSafeArea, safeAreaInsets } from "../../libs/use"
 	defineOptions({
-		name: 'rice-action-sheet'
+		name: 'rice-action-sheet',
+		styleIsolation: 'app-and-page'
 	})
 	const ns = useNamespace('action-sheet')
-	const { safeBottom } = useSafeArea()
+	useSafeArea()
 	const emit = defineEmits<{
 		select : [action: ActionSheetAction, index: number],
 		cancel : [],
@@ -306,7 +289,7 @@
 		css.set('border-top-right-radius', addUnit(props.radius))
 		// #ifndef WEB
 		if (props.safeAreaInsetBottom) {
-			css.set('padding-bottom', safeBottom.value + 'px')
+			css.set('padding-bottom', safeAreaInsets.value.bottom + 'px')
 		}
 		// #endif
 		return css
@@ -341,11 +324,10 @@
 
 <style scoped lang="scss">
 	@import "../../libs/style/mixins/hairline";
-	@import "../../libs/style/mixins/ellipsis";
 
 	@mixin common {
 		width: 100%;
-		padding: var(--rice-padding-md);
+		padding: 16px;
 		background-color: var(--rice-action-sheet-menu-background);
 		flex-direction: row;
 		align-items: center;
@@ -359,7 +341,6 @@
 		/* #endif */
 	}
 
-	$lineHeight: 1.4;
 
 	.rice-action-sheet {
 		position: fixed;
@@ -384,12 +365,14 @@
 
 			/* #endif */
 			&__text {
-				@include ellipsis;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
 				width: 100%;
 				text-align: center;
-				font-size: var(--rice-font-size-basic);
+				font-size: 15px;
 				color: var(--rice-text-color-2);
-				line-height: $lineHeight;
+
 			}
 		}
 
@@ -405,7 +388,6 @@
 			/* #endif */
 			&__text {
 				text-align: center;
-				line-height: $lineHeight;
 				/* #ifndef APP */
 				max-width: 100%;
 				/* #endif */
@@ -425,7 +407,6 @@
 				font-size: 12px;
 				margin-top: 6px;
 				text-align: center;
-				line-height: $lineHeight;
 
 				/* #ifdef APP */
 				&--disabled {
@@ -462,7 +443,6 @@
 			@include common;
 
 			&__text {
-				line-height: $lineHeight;
 				color: var(--rice-action-sheet-cancel-text-color);
 			}
 		}

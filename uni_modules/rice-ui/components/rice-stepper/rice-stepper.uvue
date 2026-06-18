@@ -1,12 +1,11 @@
 <template>
-	<view :class="stepperClass" :style="customStyle" ref="stepperRef">
+	<view :class="stepperClass" :style="customStyle">
 		<view v-if="showMinus" :class="minusClass" :style="[btnStyle,splitCssProperty(minusBtnStyle).rectCssProperty]"
 			@click.stop="decrease">
 			<rice-icon name="minus" :size="fontSize" :color="getIconColor('minus')" />
 		</view>
-		<input v-if="showInput" :type="inputType" :inputmode="integer?'numeric':'decimal'" :class="inputClass"
-			:value="displayValue" :style="[inputBoxStyle,inputStyle]" :disabled="_disabledInput" @input="onInput"
-			@focus="onFocus" @blur="onBlur" />
+		<input v-if="showInput" :type="inputType" :class="inputClass" :value="displayValue"
+			:style="[inputBoxStyle,inputStyle]" :disabled="_disabledInput" @input="onInput" @focus="onFocus" @blur="onBlur" />
 		<view v-if="showPlus" :class="plusClass" :style="[btnStyle,splitCssProperty(plusBtnStyle).rectCssProperty]"
 			@click.stop="increase">
 			<rice-icon name="plus" :size="fontSize" :color="getIconColor('plus')" />
@@ -15,45 +14,16 @@
 </template>
 
 <script setup>
-	/**
-	 * @description Stepper
-	 * @property {Number} modelValue，绑定值
-	 * @property {Number} step 步长，默认1
-	 * @property {Number} min 最小值
-	 * @property {Number} max 最大值
-	 * @property {Boolean} autoFixed 是否自动校正超出限制范围的数值  
-	 * @property {Boolean} integer 是否只允许输入整数，默认false
-	 * @property {Number} decimalLength 固定显示的小数位数
-	 * @property {Boolean} disabled 是否禁用，默认false
-	 * @property {Boolean} readonly 是否只读，默认false
-	 * @property {Boolean} disableMinus 是否禁用减少按钮，默认false
-	 * @property {Boolean} disablePlus 是否禁用增加按钮，默认false
-	 * @property {Boolean} disableInput 是否禁用输入框，默认false
-	 * @property {Boolean} showMinus 是否显示减少按钮，默认true
-	 * @property {Boolean} showPlus 是否显示增加按钮，默认true
-	 * @property {Boolean} showInput 是否显示输入框，默认true
-	 * @property {Function} beforeChange 改变前的钩子，返回 `false` 或者返回 `Promise` 且被 `reject` 或 `resolve` 但返回值不为 `true`，则停止切换
-	 * @property {String|Number} inputWidth 输入框宽度，默认36px
-	 * @property {String|Number} buttonSize 按钮大小和输入框高度，默认30px
-	 * @property {String|Number} fontSize 按钮icon大小和输入框文字大小，默认14px 
-	 * @property {String} mode 样式风格，可选值为 `round` 默认 square
-	 * @value round 圆形
-	 * @value square 方形（默认值）
-	 * @value outline 外边线
-	 * @property {Object} plusBtnStyle 增加按钮的样式
-	 * @property {Object} minusBtnStyle 减少按钮的样式
-	 * @property {Object} inputStyle input的样式
-	 * @property {Object} customStyle 自定义style
-	 */
 	import { isDark } from '../../libs/store';
-	import { addUnit, clamp, callInterceptor, debugWarn, hasStrValue, toNum, getPrecision, isSameValue, splitCssProperty, } from "../../libs/utils"
-	import { useCssVar, useNamespace } from '../../libs/use';
+	import { addUnit, clamp, callInterceptor, debugWarn, hasStrValue, toNum, getPrecision, isSameValue, splitCssProperty } from "../../libs/utils"
+	import { useNamespace } from '../../libs/use';
 	import { formDisabledInjectKey, formReadonlyInjectKey } from "../rice-form"
 	import { BeforeChangeInterceptor } from "../../libs/types"
 	import { StepperProps, StepperCurrent } from './type.uts';
 
 	defineOptions({
-		name: 'rice-stepper'
+		name: 'rice-stepper',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace('stepper')
@@ -319,30 +289,16 @@
 		setCurrentValue(modelValue.value, 'watch')
 	})
 
-	//#ifdef APP
-	const stepperRef = shallowRef<UniElement | null>(null)
-	const primaryColor = useCssVar('--rice-primary-color', stepperRef)
-	const textColor = useCssVar('--rice-text-color', stepperRef)
-	const textColorWhite = useCssVar('--rice-text-color-white', stepperRef)
-
-	//#endif
-
 	const getIconColor = (type : string) => {
 		const textStyle = splitCssProperty(type == 'plus' ? props.plusBtnStyle : props.minusBtnStyle).textCssProperty
 		if (typeof textStyle['color'] == 'string') {
 			return textStyle['color'] as string
 		}
 
-		// #ifndef APP
-		return 'inherit'
-		// #endif
-
-		// #ifdef APP
 		if (props.mode == 'round') {
-			return type == 'minus' ? primaryColor.value : textColorWhite.value
+			return type == 'minus' ? 'var(--rice-primary-color)' : 'var(--rice-text-color-white)'
 		}
-		return textColor.value
-		// #endif
+		return 'var(--rice-text-color)'
 
 	}
 
@@ -393,11 +349,15 @@
 		]
 	})
 
-	const inputClass = computed(() => {
-		return [
-			ns.e("input"),
-			ns.e(`input--${props.mode}`)
-		]
+	const inputClass = computed<string[]>(() => {
+		const basic = [ns.e("input"), ns.e(`input--${props.mode}`)]
+		// #ifdef VUE3-VAPOR
+		//鸿蒙蒸汽模式的input不支持css变量
+		if (isDark.value) {
+			basic.push('rice-stepper__input--dark')
+		}
+		// #endif
+		return basic
 	})
 </script>
 
@@ -419,17 +379,19 @@
 
 	.rice-stepper {
 		flex-direction: row;
-		/* #ifndef APP */
-		color: var(--rice-text-color);
 
-		/* #endif */
 		&__input {
 			box-sizing: border-box;
 			text-align: center;
 			margin: 0 2px;
 			height: $size;
 			width: 36px;
+			/* #ifdef VUE3-VAPOR */
+			color: #323233; //鸿蒙蒸汽模式input的color不支持css变量
+			/* #endif */
+			/* #ifndef VUE3-VAPOR */
 			color: var(--rice-text-color);
+			/* #endif */
 			background-color: var(--rice-stepper-background);
 
 			&--round {
@@ -446,6 +408,13 @@
 				/* #endif */
 				background-color: transparent;
 			}
+
+			/* #ifdef VUE3-VAPOR */
+			&--dark {
+				color: #f5f5f5;
+			}
+
+			/* #endif */
 		}
 
 		&__minus,
@@ -474,9 +443,7 @@
 			&--round {
 				@include btnRound;
 				background-color: transparent;
-				/* #ifndef APP */
-				color: var(--rice-primary-color);
-				/* #endif */
+
 			}
 		}
 
@@ -485,9 +452,7 @@
 
 			&--round {
 				@include btnRound;
-				/* #ifndef APP */
-				color: var(--rice-text-color-white);
-				/* #endif */
+
 				background-color: var(--rice-primary-color);
 			}
 		}

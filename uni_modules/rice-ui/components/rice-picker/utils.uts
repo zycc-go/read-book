@@ -1,74 +1,49 @@
 import { PickerOption, PickerColumnType, PickerModelValue } from "./type.uts"
 import { isSameValue } from "../../libs/utils"
 
-
 /**
- * 主要是针对Android，Java中数组或集合越界会报异常，这个函数的作用是数组越界就返回null
- */
-export const getColumnsByValue = (values : PickerModelValue[], index : number) : PickerModelValue => {
-	if (index < 0 || index >= values.length) return null
-	return values[index]
-}
-
-/**
- * 当前选中的值是在在options中
- */
-export const isOptionExist = (options : PickerOption[], value : PickerModelValue) => {
-	return value != null && options.find(v => isSameValue(v.value, value)) != null
-}
-
-/**
- * 根据索引查找对应的option
- */
-export const getOptionByIndex = (options : PickerOption[], index : number) => {
-	index = Math.max(index, 0)
-	return index >= options.length ? null : options[index]
-}
-
-/**
- * 查找第一个disabled不为 true 的option
- */
-export const getFirstEnabledOption = (options : PickerOption[]) => {
-	return options.find(v => v.disabled != true) ?? getOptionByIndex(options, 0)
-}
-
-/**
- * 根据value值匹配options
- */
-export const findOptionByValue = (options : PickerOption[], value ?: string | number) => {
-	let index = options.findIndex(v => isSameValue(v.value, value))
-	return getOptionByIndex(options, index)
-}
-
-/**
- * 格式化联级的数据
+ * 判断数组的每一项是否相同
  */
 
-export const formatCascadeColumns = (columns : PickerOption[][], selectedValues : PickerModelValue[]) : PickerOption[][] => {
-	const formatted = [] as PickerOption[][]
-	let current : PickerOption | null = {
-		text: '',
-		value: '',
-		children: columns[0]
-	} as PickerOption
-	let columnIndex = 0;
-	const values = selectedValues.slice(0)
-
-	while (current != null && Array.isArray(current.children)) {
-		const options = current.children as PickerOption[]
-
-		const value = getColumnsByValue(values, columnIndex)
-		current = value == null ? null : findOptionByValue(options, value)
-		if (current == null && options.length > 0) {
-			const firstValue = getFirstEnabledOption(options)!.value
-			current = findOptionByValue(options, firstValue)
-		}
-		columnIndex++
-		formatted.push(options)
+// 为什么不把isSameValueArr 和 isSameIndexArray 合成一个函数
+// 因为 android 平台 的uts类型校验很………烦恼
+export const isSameValueArr = (left : PickerModelValue[], right : PickerModelValue[]) => {
+	if (left.length != right.length) {
+		return false
 	}
-	return formatted
-
+	for (let i = 0; i < left.length; i++) {
+		if (!isSameValue(left[i], right[i])) {
+			return false
+		}
+	}
+	return true
 }
+
+
+export const isSameIndexArray = (left : number[], right : number[]) : boolean => {
+	if (left.length != right.length) {
+		return false
+	}
+	for (let i = 0; i < left.length; i++) {
+		if (left[i] != right[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+/**
+ * 获取第一个可选中的元素
+ */
+export const getFirstEnabledIndex = (options : PickerOption[]) : number => {
+	if (options.length == 0) {
+		return 0
+	}
+	const enabledIndex = options.findIndex(option => option.disabled != true)
+	return enabledIndex > -1 ? enabledIndex : 0
+}
+
+
 
 /**
  * 获取当前columns的类型
@@ -77,11 +52,9 @@ export const formatCascadeColumns = (columns : PickerOption[][], selectedValues 
  * default示例 : [ [{}] ]   
  */
 
-
 export const getColumnsType = (columns : PickerOption[][]) : PickerColumnType => {
-
 	if (columns.length > 1) return 'multiple'
-	const firstColumn = columns.length > 0 ? columns[0] : null //示例
+	const firstColumn = columns.length > 0 ? columns[0] : null
 	if (firstColumn != null) {
 		if (Array.isArray(firstColumn![0].children)) return 'cascade'
 	}

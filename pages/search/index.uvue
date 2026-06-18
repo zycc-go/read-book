@@ -2,10 +2,10 @@
 	<view :class="[`theme-${state.appTheme}`, 'page']">
 		<view class="page-navbar" :style="{ height:`${state.navbarHeight}px`, top:`${state.statusBarHeight}px`}">
 			<view class="page-navbar-left" @tap="onBack">
-				<text class="icon">{{ "\ue668" }}</text>
+				<my-icon name="left" size="24px" />
 			</view>
 			<view class="input-wrapper">
-				<input focus :maxlength="20" v-model="keywords" @input="onInput" />
+				<input :maxlength="20" :auto-focus='true' v-model="keywords" @input="onInput" />
 			</view>
 			<text class="page-navbar-right" @tap="onClickAction">搜索</text>
 		</view>
@@ -15,7 +15,7 @@
 				<text class="card-title">历史记录</text>
 				<view class="card-clear" @tap="onClearItems">
 					<text class="card-clear-text">清空</text>
-					<text class="icon">{{ "\ue6a6" }}</text>
+					<my-icon name="delete" />
 				</view>
 			</view>
 			<view v-if="searchType === 'result'" class="card-title-box">
@@ -28,7 +28,7 @@
 				<view class="tag-box" v-for="item in searchRecord" @tap="onSearchItem(item)">
 					<text class="tag">{{ item.text }}</text>
 					<view @tap.stop="onDeleteItem(item)">
-						<text class="icon">{{ "\ue6a7" }}</text>
+						<my-icon name="close" />
 					</view>
 				</view>
 			</view>
@@ -43,6 +43,7 @@
 </template>
 
 <script setup lang="uts">
+	import MyIcon from '@/componnets/MyIcon/index.uvue';
 	import { state } from '@/store/index.uts'
 	import { getRandomDigits } from '@/utils/index.uts'
 

@@ -1,5 +1,5 @@
 <script setup lang="uts">
-	import { checkSystemInfo, state } from '@/store/index.uts'
+	import { checkSystemInfo, checkWindowInfo, state } from '@/store/index.uts'
 	import { setTheme } from "@/uni_modules/rice-ui";
 	// #ifdef APP-ANDROID || APP-HARMONY
 	let firstBackTime = 0
@@ -7,8 +7,9 @@
 
 	onLaunch(() => {
 		console.log('App Launch')
+		checkSystemInfo();
 		setTimeout(() => {
-			checkSystemInfo();
+			checkWindowInfo();
 		}, 500)
 	})
 
@@ -52,12 +53,6 @@
 </script>
 
 <style>
-	@import "@/uni_modules/rice-ui/libs/style/index.css";
 	@import "@/static/css/theme.css";
 	@import "@/static/css/reset.css";
-
-	@font-face {
-		font-family: vant-icon;
-		src: url('/static/vant-icon.ttf');
-	}
 </style>

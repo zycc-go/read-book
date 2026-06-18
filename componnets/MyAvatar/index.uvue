@@ -1,0 +1,39 @@
+<template>
+	<view class="my-avatar" :style="avatarStyle">
+		<image class="my-avatar-img" mode="aspectFill" :src="props.src"></image>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { PropsType } from './type.uts'
+
+	const props = withDefaults(defineProps<PropsType>(), {
+		src: '/static/image/logo.png',
+		mode: 'scaleToFill',
+		width: 24,
+		height: 24,
+		radius: true
+	})
+
+	const avatarStyle = computed(() => {
+		const wdithC = typeof props.width === 'number' ? props.width + 'px' : '24px'
+		const heightC = typeof props.height === 'number' ? props.height + 'px' : '24px'
+		const radiusC = props.radius ?? false
+		return { width: wdithC, height: heightC, borderRadius: radiusC ? '50%' : '' }
+	})
+</script>
+
+<style lang="scss" scoped>
+	.my-avatar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+
+		.my-avatar-img {
+			width: 100%;
+			height: 100%;
+		}
+	}
+</style>

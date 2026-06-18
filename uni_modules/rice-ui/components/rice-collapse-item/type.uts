@@ -14,7 +14,10 @@ export type CollapseItemProps = {
 	disabled ?: boolean,
 	readonly ?: boolean,
 	titleStyle ?: UTSJSONObject,
+	titleTextStyle ?: UTSJSONObject,
 	valueStyle ?: UTSJSONObject,
+	valueTextStyle ?: UTSJSONObject,
 	contentStyle ?: UTSJSONObject,
+	contentTextStyle ?: UTSJSONObject,
 	customStyle ?: UTSJSONObject
 }

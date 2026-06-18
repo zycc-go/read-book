@@ -1,0 +1,37 @@
+<template>
+	<switch class="switch-class" :checked="checked" :disabled="disabled" @change="onChange"></switch>
+</template>
+
+<script setup lang="uts">
+	import { PropsType } from './type.uts'
+
+	defineOptions({
+		name: "MySwitch"
+	})
+
+	const props = withDefaults(defineProps<PropsType>(), {
+		checked: false,
+		disabled: false
+	})
+
+	const emit = defineEmits(['change'])
+
+	const disabled = computed(() => props.disabled ?? false)
+
+	const checked = ref<boolean>(false)
+
+	watchEffect(() => {
+		checked.value = props.checked ?? false
+	})
+
+	const onChange = (event : UniSwitchChangeEvent) => {
+		checked.value = event.detail.value
+		emit('change', checked.value)
+	}
+</script>
+
+<style lang="scss" scoped>
+	.switch-class {
+		transform: scale(0.8);
+	}
+</style>

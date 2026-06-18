@@ -9,6 +9,7 @@ export type LoadingProps = {
     text?: string | number;
     textColor?: string;
     textSize?: string | number;
+    textClass?: string;
     vertical?: boolean;
     timingFunction?: LoadingTimingFunction;
     customStyle?: UTSJSONObject;

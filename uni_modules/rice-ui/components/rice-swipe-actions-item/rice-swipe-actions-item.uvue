@@ -1,5 +1,5 @@
 <template>
-	<view :class="[ns.b(''),ns.theme()]" :style="customStyle">
+	<view class="rice-swipe-actions-item" :class="ns.theme()" :style="customStyle">
 		<!-- 微信小程序使用wxs实现，减少通讯延迟 -->
 
 		<!-- #ifdef MP-WEIXIN -->
@@ -15,13 +15,19 @@
 				<!-- 左侧菜单 -->
 				<view v-if="hasLeftAction" class="rice-swipe__cell__left" ref="leftActionRef">
 					<slot name="left">
+						<!-- #ifdef VUE3-VAPOR -->
 						<view v-for="(item,index) in leftMenu" :key="index" :style="getMenuStyle(item.style)"
-							class="rice-swipe__cell__menu rice-swipe_cell__left__menu" data-riceswipe="swipe-actions"
-							@click="clickMenu('left',index)">
-							<rice-icon v-if="hasStrValue(item.icon)" :name="item.icon" :size="item.iconSize"
-								:color="item.style?.['color']" :custom-style="{marginRight:hasStrValue(item.text)?'4px':'0'}" />
-							<text :style="getMenuTextStyle(item.style)" class="rice-swipe__cell__text">{{item.text}}</text>
-						</view>
+							class="rice-swipe__cell__menu rice-swipe_cell__left__menu" @click="clickMenu('left',index)">
+						<!-- #endif -->
+							<!-- #ifndef VUE3-VAPOR -->
+							<view v-for="(item,index) in leftMenu" :key="index" :style="getMenuStyle(item.style)"
+								class="rice-swipe__cell__menu rice-swipe_cell__left__menu" data-riceswipe="swipe-actions"
+								@click="clickMenu('left',index)">
+							<!-- #endif -->
+								<rice-icon v-if="hasStrValue(item.icon)" :name="item.icon" :size="item.iconSize"
+									:color="item.style?.['color']" :custom-style="{marginRight:hasStrValue(item.text)?'4px':'0'}" />
+								<text :style="getMenuTextStyle(item.style)" class="rice-swipe__cell__text">{{item.text}}</text>
+							</view>
 					</slot>
 				</view>
 				<!-- 内容区域 -->
@@ -31,13 +37,19 @@
 				<!-- 右侧菜单 -->
 				<view v-if="hasRightAction" class="rice-swipe__cell__right" ref="rightActionRef">
 					<slot name="right">
+						<!-- #ifdef VUE3-VAPOR -->
 						<view v-for="(item,index) in rightMenu" :key="index" :style="getMenuStyle(item.style)"
-							class="rice-swipe__cell__menu rice-swipe_cell__right__menu" data-riceswipe="swipe-actions"
-							@click="clickMenu('right',index)">
-							<rice-icon v-if="hasStrValue(item.icon)" :name="item.icon" :size="item.iconSize"
-								:color="item.style?.['color']" :custom-style="{marginRight:hasStrValue(item.text)?'4px':'0'}" />
-							<text class="rice-swipe__cell__text" :style="getMenuTextStyle(item.style)">{{item.text}}</text>
-						</view>
+							class="rice-swipe__cell__menu rice-swipe_cell__right__menu" @click="clickMenu('right',index)">
+						<!-- #endif -->
+							<!-- #ifndef VUE3-VAPOR -->
+							<view v-for="(item,index) in rightMenu" :key="index" :style="getMenuStyle(item.style)"
+								class="rice-swipe__cell__menu rice-swipe_cell__right__menu" data-riceswipe="swipe-actions"
+								@click="clickMenu('right',index)">
+							<!-- #endif -->
+								<rice-icon v-if="hasStrValue(item.icon)" :name="item.icon" :size="item.iconSize"
+									:color="item.style?.['color']" :custom-style="{marginRight:hasStrValue(item.text)?'4px':'0'}" />
+								<text class="rice-swipe__cell__text" :style="getMenuTextStyle(item.style)">{{item.text}}</text>
+							</view>
 					</slot>
 				</view>
 			</view>
@@ -45,26 +57,16 @@
 </template>
 
 <script setup>
-	/**
-	 * @description SwipeActionsItem 滑动单元格
-	 * @property {String|Number} name 唯一标识符
-	 * @property {Array} leftMenu 左侧菜单项及样式
-	 * @property {Array} rightMenu 右侧菜单项及样式
-	 * @property {Boolean} iosStyle 是否ios风格的滑动
-	 * @property {Boolean} disabled 是否禁止滑动
-	 * @property {String} duration 动画过渡时间，单位ms
-	 * @property {Boolean} autoClose 是否自动关闭
-	 * @property {Object} customStyle 自定义style样式
-	 */
 	import { swipeActionsName, swipeActionsInjectKey, SwipeActionsProvide } from '../rice-swipe-actions';
 	import { useNamespace, useTouch, useParent } from "../../libs/use"
-	import { clamp, splitCssProperty, hasStrValue, callInterceptor } from "../../libs/utils"
+	import { clamp, hasStrValue, splitCssProperty } from "../../libs/utils"
 	import { SwipeActionsItemProps, SwipeActionsMenu, SwipeActionsPosition, SwipeActionsState, SwipeActionsMenuRect, SwipeActionsItemOpen, SwipeActionsItemClose, SwipeActionsItemClick } from './type.uts';
 
 	defineOptions({
-		name: 'rice-swipe-actions-item'
+		name: 'rice-swipe-actions-item',
+		styleIsolation: "app-and-page"
 	})
-	const ns = useNamespace('swipe-actions-item')
+	const ns= useNamespace('swipe-actions-item')
 	const slot = useSlots()
 	const emit = defineEmits<{
 		open : [e: SwipeActionsItemOpen],
@@ -130,7 +132,14 @@
 		children = children.filter(v => v.tagName != 'COMMENT' && v.nodeName != '#comment')
 		// #endif
 		//插槽传递过来的层级可能只有一层并且不是按钮组，需要判断一下
-		if (children.length == 1 && children[0].dataset['riceswipe'] != 'swipe-actions') {
+		// #ifdef VUE3-VAPOR
+		// 蒸汽模式不支持data-*，所以蒸汽模式只正常按钮组
+		const isSwipeActions = true
+		// #endif
+		// #ifndef VUE3-VAPOR
+		const isSwipeActions = children[0].dataset['riceswipe'] == 'swipe-actions'
+		// #endif
+		if (children.length == 1 && isSwipeActions) {
 			children = children[0].children
 			// #ifdef APP
 			children = children.filter(v => v.tagName != 'COMMENT' && v.nodeName != '#comment')
@@ -344,7 +353,7 @@
 			handleClose()
 		}
 	}
-	
+
 	//@ts-ignore
 	const clickMenu = (position : SwipeActionsPosition, index : number) => {
 		emitClick(position, index)
@@ -449,7 +458,7 @@
 		}
 
 		&__text {
-			font-size: var(--rice-font-size-sm);
+			font-size: 14px;
 
 		}
 

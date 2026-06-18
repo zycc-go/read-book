@@ -1,4 +1,5 @@
 
+
 import { DialogProps } from "./type.uts"
 import { debugWarn, getUID } from "../../libs/utils"
 // #ifdef MP
@@ -64,7 +65,7 @@ export const showDialog = (options : DialogProps) => {
 		title: options.title ?? '',
 		content: options.message ?? '',
 		showCancel: options.showCancelButton ?? true,
-		cancelText: options.cancelButtonColor ?? (isDark.value ? '#f5f5f5' : '#323233'),
+		cancelColor: options.cancelButtonColor ?? (isDark.value ? '#f5f5f5' : '#323233'),
 		cancelText: options.cancelText ?? '取消',
 		confirmText: options.confirmButtonText ?? '确认',
 		confirmColor: options.confirmButtonColor ?? '#1989fa',

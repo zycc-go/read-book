@@ -6,6 +6,6 @@ export type CountDownProps = {
 	millisecond ?: boolean,
 	fontSize ?: string | number,
 	color ?: string,
+	textClass ?: string,
 	customStyle ?: UTSJSONObject,
 }
-

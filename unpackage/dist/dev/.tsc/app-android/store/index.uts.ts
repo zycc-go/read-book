@@ -1,46 +1,48 @@
 export type UserInfo = {
-	nickName: string;
-	avatarUrl?: string;
+	nickName : string;
+	avatarUrl ?: string;
 };
 
 export interface Book {
-	id: string;
-	title: string;
-	author?: string;
-	cover?: string;
-	category?: string;
-	progress?: number;
-	hasUnread?: boolean;
-	lastChapter?: string;
-	lastReadTime?: number;
+	id : string;
+	title : string;
+	author ?: string;
+	cover ?: string;
+	category ?: string;
+	progress ?: number;
+	hasUnread ?: boolean;
+	lastChapter ?: string;
+	lastReadTime ?: number;
 }
 
 type State = {
 	// 状态栏高度
-	statusBarHeight: number;
+	statusBarHeight : number;
 	// 导航栏高度
-	navbarHeight: number;
+	navbarHeight : number;
 	// 全面屏操作条高度
-	safeAreaInsetsHeight: number;
+	safeAreaInsetsHeight : number;
 	// 平台
-	uniPlatform: string;
+	uniPlatform : string;
 	// 设备像素比
-	devicePixelRatio: number;
+	devicePixelRatio : number;
 	// 当前激活的tab页
-	active: string;
-	leftWinActive: string;
+	active : string;
+	leftWinActive : string;
 	// 是否同意隐私政策
-	agreeToPrivacy: boolean | null;
+	agreeToPrivacy : boolean | null;
 	// 是否跟随系统主题
-	isFollowSystem: boolean;
+	isFollowSystem : boolean;
 	// app主题
-	appTheme: 'light' | 'dark';
+	appTheme : 'light' | 'dark';
 	// 系统主题
-	osTheme: 'light' | 'dark';
+	osTheme : 'light' | 'dark';
+	// 单位
+	unit : 'px' | 'rpx';
 	// 是否无网环境
-	netless: boolean;
+	netless : boolean;
 	// 登录用户信息
-	userInfo: UserInfo | null;
+	userInfo : UserInfo | null;
 };
 
 export const state = reactive({
@@ -53,51 +55,55 @@ export const state = reactive({
 	leftWinActive: '/pages/bookcase/index',
 	appTheme: 'light',
 	osTheme: 'light',
+	unit: 'px',
 	isFollowSystem: false,
 	netless: false,
 	userInfo: null,
 	agreeToPrivacy: null
 } as State);
 
-export const setUserInfo = (userInfo: UserInfo | null) => {
+export const setUserInfo = (userInfo : UserInfo | null) => {
 	state.userInfo = userInfo;
 };
 
-export const setDevicePixelRatio = (devicePixelRatio: number) => {
+export const setDevicePixelRatio = (devicePixelRatio : number) => {
 	state.devicePixelRatio = devicePixelRatio;
 };
 
-export const setActive = (tabPage: string) => {
+export const setActive = (tabPage : string) => {
 	state.active = tabPage;
 };
 
-export const setLeftWinActive = (leftWinActive: string) => {
+export const setLeftWinActive = (leftWinActive : string) => {
 	state.leftWinActive = leftWinActive;
 };
 
-export const setNetless = (netless: boolean) => {
+export const setNetless = (netless : boolean) => {
 	state.netless = netless;
 };
 
-export const setAppTheme = (value: 'light' | 'dark') => {
+export const setAppTheme = (value : 'light' | 'dark') => {
 	state.appTheme = value;
 	uni.setStorageSync('appTheme', value);
 };
 
-export const setIsFollowSystem = (value: boolean) => {
+export const setIsFollowSystem = (value : boolean) => {
 	state.isFollowSystem = value;
 	uni.setStorageSync('isFollowSystem', value);
 };
 
-// 检查系统
-export const checkSystemInfo = () => {
-	const appBaseInfo: GetAppBaseInfoResult = uni.getAppBaseInfo();
-	const deviceInfo: GetDeviceInfoResult = uni.getDeviceInfo();
+// 获取设置窗口信息
+export const checkWindowInfo = () => {
 	const windowInfo = uni.getWindowInfo();
-	__f__('log','at store/index.uts:97','windowInfo',windowInfo)
-	state.uniPlatform = appBaseInfo.uniPlatform ?? '';
 	state.statusBarHeight = windowInfo.statusBarHeight;
 	state.safeAreaInsetsHeight = windowInfo.safeAreaInsets.bottom;
+};
+
+// 检查系统
+export const checkSystemInfo = () => {
+	const appBaseInfo : GetAppBaseInfoResult = uni.getAppBaseInfo();
+	const deviceInfo : GetDeviceInfoResult = uni.getDeviceInfo();
+	state.uniPlatform = appBaseInfo.uniPlatform ?? '';
 	if (appBaseInfo.uniPlatform === 'app') {
 		try {
 			const isFollowSystem = uni.getStorageSync('isFollowSystem') === '' ? false : (uni.getStorageSync('isFollowSystem') as boolean);
@@ -115,7 +121,7 @@ export const checkSystemInfo = () => {
 				uni.setAppTheme({ theme: appTheme });
 			}
 		} catch (e) {
-			__f__('log','at store/index.uts:118',`${e} 失败`);
+			__f__('log','at store/index.uts:124',`${e} 失败`);
 		}
 	}
 };

@@ -12,9 +12,11 @@ export type PickerEvent = {
     selectedOptions: PickerOption[];
     selectedIndex: number[];
 };
-export type PickerOptionDefault = PickerOption[];
-export type PickerOptionMultiple = PickerOption[][];
-export type PickerOptions = PickerOptionDefault | PickerOptionMultiple;
+export type PickerCascadeState = {
+    columns: PickerOption[][];
+    selectedIndex: number[];
+    selectedValues: PickerModelValue[];
+};
 export type PickerProps = {
     columns?: PickerOption[][];
     toolbarPosition?: 'top' | 'bottom' | 'none';

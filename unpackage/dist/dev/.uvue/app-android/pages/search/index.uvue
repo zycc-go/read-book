@@ -1,7 +1,8 @@
+import MyIcon from '@/componnets/MyIcon/index.uvue';
 import { state } from '@/store/index.uts';
 import { getRandomDigits } from '@/utils/index.uts';
 type SearchRecordItem = {
-    __$originalPosition?: UTSSourceMapPosition<"SearchRecordItem", "pages/search/index.uvue", 49, 7>;
+    __$originalPosition?: UTSSourceMapPosition<"SearchRecordItem", "pages/search/index.uvue", 50, 7>;
     id: string;
     text: string;
 };
@@ -58,7 +59,7 @@ const __sfc__ = defineComponent({
                 key: 'searchRecord',
                 data: searchRecord.value,
                 fail: (err: UniError) => {
-                    console.log(err, " at pages/search/index.uvue:107");
+                    console.log(err, " at pages/search/index.uvue:108");
                 }
             });
         };
@@ -69,7 +70,7 @@ const __sfc__ = defineComponent({
                     key: 'searchRecord',
                     data: searchRecord.value,
                     fail: (err: UniError) => {
-                        console.log(err, " at pages/search/index.uvue:119");
+                        console.log(err, " at pages/search/index.uvue:120");
                     }
                 });
             }
@@ -79,7 +80,7 @@ const __sfc__ = defineComponent({
             uni.getStorage({
                 key: 'searchRecord',
                 success: (res: GetStorageSuccess) => {
-                    const data = UTSAndroid.consoleDebugError(JSON.parse<Array<SearchRecordItem>>(JSON.stringify(res.data)), " at pages/search/index.uvue:130");
+                    const data = UTSAndroid.consoleDebugError(JSON.parse<Array<SearchRecordItem>>(JSON.stringify(res.data)), " at pages/search/index.uvue:131");
                     searchRecord.value = data ?? [];
                 },
                 complete: () => uni.hideLoading()
@@ -100,12 +101,15 @@ const __sfc__ = defineComponent({
                         class: "page-navbar-left",
                         onClick: onBack
                     }), [
-                        _cE("text", _uM({ class: "icon" }), _tD("\ue668"))
+                        _cV(unref(MyIcon), _uM({
+                            name: "left",
+                            size: "24px"
+                        }))
                     ]),
                     _cE("view", _uM({ class: "input-wrapper" }), [
                         _cE("input", _uM({
-                            focus: "",
                             maxlength: 20,
+                            "auto-focus": true,
                             modelValue: unref(keywords),
                             onInput: [($event: UniInputEvent) => { trySetRefValue(keywords, $event.detail.value); }, onInput] as Array<any | null>
                         }), null, 40 /* PROPS, NEED_HYDRATION */, ["modelValue"])
@@ -130,7 +134,7 @@ const __sfc__ = defineComponent({
                                 onClick: onClearItems
                             }), [
                                 _cE("text", _uM({ class: "card-clear-text" }), "清空"),
-                                _cE("text", _uM({ class: "icon" }), _tD("\ue6a6"))
+                                _cV(unref(MyIcon), _uM({ name: "delete" }))
                             ])
                         ])
                         : _cC("v-if", true),
@@ -162,7 +166,7 @@ const __sfc__ = defineComponent({
                                     _cE("view", _uM({
                                         onClick: withModifiers(() => { onDeleteItem(item); }, ["stop"])
                                     }), [
-                                        _cE("text", _uM({ class: "icon" }), _tD("\ue6a7"))
+                                        _cV(unref(MyIcon), _uM({ name: "close" }))
                                     ], 8 /* PROPS */, ["onClick"])
                                 ], 8 /* PROPS */, ["onClick"]);
                             }), 256 /* UNKEYED_FRAGMENT */)

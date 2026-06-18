@@ -54,20 +54,20 @@ open class GenPagesSettingIndex : BasePage {
                     "theme-" + unref(state).appTheme,
                     "page"
                 )), "style" to _nS(unref(style))), _uA(
-                    _cV(unref(GenComponnetsMyNavbarClass), _uM("leftArrow" to "", "title" to "设置")),
-                    _cV(unref(GenComponnetsMyCellGroupClass), _uM("inset" to true), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
+                    _cV(unref(GenComponnetsMyNavbarIndexClass), _uM("leftArrow" to "", "title" to "设置")),
+                    _cV(unref(GenComponnetsMyCellGroupIndexClass), _uM("inset" to true), _uM("default" to withSlotCtx(fun(): UTSArray<Any> {
                         return _uA(
-                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "深色模式"), _uM("rightIcon" to withSlotCtx(fun(): UTSArray<Any> {
+                            _cV(unref(GenComponnetsMyCellIndexClass), _uM("title" to "深色模式"), _uM("rightIcon" to withSlotCtx(fun(): UTSArray<Any> {
                                 return _uA(
-                                    _cV(unref(GenComponnetsMySwitchClass), _uM("checked" to unref(isDark), "onChange" to onChangeIsDark), null, 8, _uA(
+                                    _cV(unref(GenComponnetsMySwitchIndexClass), _uM("checked" to unref(isDark), "onChange" to onChangeIsDark), null, 8, _uA(
                                         "checked"
                                     ))
                                 )
                             }
                             ), "_" to 1)),
-                            _cV(unref(GenComponnetsMyCellClass), _uM("title" to "跟随系统设置", "label" to "开启后，自动跟随系统外观模式设置"), _uM("rightIcon" to withSlotCtx(fun(): UTSArray<Any> {
+                            _cV(unref(GenComponnetsMyCellIndexClass), _uM("title" to "跟随系统设置", "label" to "开启后，自动跟随系统外观模式设置"), _uM("rightIcon" to withSlotCtx(fun(): UTSArray<Any> {
                                 return _uA(
-                                    _cV(unref(GenComponnetsMySwitchClass), _uM("checked" to unref(isFollowSystem), "disabled" to (unref(state).uniPlatform !== "app"), "onChange" to onChangeIsFollowSystem), null, 8, _uA(
+                                    _cV(unref(GenComponnetsMySwitchIndexClass), _uM("checked" to unref(isFollowSystem), "disabled" to (unref(state).uniPlatform !== "app"), "onChange" to onChangeIsFollowSystem), null, 8, _uA(
                                         "checked",
                                         "disabled"
                                     ))

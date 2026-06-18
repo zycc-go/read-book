@@ -3,72 +3,65 @@
 		<view class="tabs">
 			<view class="tab" v-for="(item, index) in listBadge" :key="item.name" @click="onClickTab(item, index)">
 				<text :class="{ 'item-text': true, 'item-text-active': activeTab === index }">{{ item.name }}</text>
-				<view class="tab-indicator" v-if="activeTab === index"></view>
+				<view v-if="activeTab === index" class="tab-indicator"></view>
 			</view>
 		</view>
 
-		<swiper style="flex: 1;" :duration="200" :current="activeTab" @change="onChangeSwiper">
-			<swiper-item v-for="(item, index) in listBadge" :key="item.name">
-				<Content :id="item.name" :isRender="item.isRender" @changeRender="onChangeRender(index)" />
+		<swiper style="flex: 1;" :current="activeTab" @change="onChangeSwiper">
+			<swiper-item v-for="(item, index) in listBadge.slice(0,3)" :key="item.name">
+				<item-content :currentIndex="activeTab" :tabIndex="index" :type="item.type"></item-content>
+			</swiper-item>
+			<swiper-item>
+				<item-aichat></item-aichat>
 			</swiper-item>
 		</swiper>
 
-		<uni-fab-button class="fab-btn"></uni-fab-button>
+		<uni-fab-button v-if="activeTab < 3" class="fab-btn" @click="onToPageIssue"></uni-fab-button>
 	</view>
 </template>
 
 <script setup lang="uts">
-	import MyAvatar from '@/componnets/MyAvatar.uvue'
-	import Content from './content.uvue'
+	import MyAvatar from '@/componnets/MyAvatar/index.uvue'
+	import ItemContent from './item-content.uvue'
+	import ItemAichat from './item-aichat.uvue'
 	import { state } from '@/store/index.uts'
 	import { discussListFun, type DiscussItem } from '@/data/discuss'
 
-	const scrollTop = ref<number>(0)
-
-	const refresherTriggered = ref<boolean>(false)
-
-	const discussListC = ref<DiscussItem[]>([])
-
-	const loadinghandle = ref<boolean>(false)
-
-	const activeIndex2 = ref(0)
 
 	type BadgeItem = {
 		name : string;
-		isRender : boolean;
+		type ?: string;
 		isDot ?: boolean;
 		dotNum ?: number;
 	}
 
 	const listBadge = ref<BadgeItem[]>([
-		{ name: '推荐', isRender: true, isDot: true },
-		{ name: '关注', isRender: false, dotNum: 10 },
-		{ name: '我的收藏', isRender: false, dotNum: 999 },
-		{ name: 'AI', isRender: false }])
+		{ name: '推荐', type: '1', isDot: true },
+		{ name: '关注', type: '2', dotNum: 10 },
+		{ name: '我的收藏', type: '3', dotNum: 999 },
+		{ name: 'AI' }])
 
 	const activeTab = ref<number>(0)
 
 	const onClickTab = (item : BadgeItem, index : number) => {
-		if (activeTab.value === index) {
-			listBadge.value[index].isRender = true
-			return
-		}
+		console.log('onClickTab');
 		activeTab.value = index
-		if (!listBadge.value[index].isRender) {
-			listBadge.value[index].isRender = true
-		}
 	}
 
 	const onChangeSwiper = (event : UniSwiperChangeEvent) => {
+		console.log('onChangeSwiper');
 		activeTab.value = event.detail.current
 	}
 
-	const onChangeRender = (index : number) => {
-		listBadge.value[index].isRender = false
+	const onToPageIssue = () => {
+		uni.navigateTo({
+			url: `/pages/discuss-issue/index`
+		})
 	}
 
-	onPageScroll((options : OnPageScrollOptions) => {
-		scrollTop.value = options.scrollTop
+	onMounted(() => {
+		// onClickTab(listBadge.value[0], 0)
+		// listBadge.value[0].renderNum = 2
 	})
 </script>
 

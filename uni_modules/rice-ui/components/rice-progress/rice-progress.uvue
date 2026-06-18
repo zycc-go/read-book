@@ -1,42 +1,27 @@
 <template>
-	<view :class="progressClass" :style="[customStyle]">
-		<view :class="wrapperClass" :style="[wrapperStyle,radiusStyle]" ref="wrapperRef">
-			<view class="rice-progress__bar" :style="[barStyle,radiusStyle]">
+	<view class="rice-progress" :class="ns.theme()" :style="customStyle">
+		<view class="rice-progress__wrapper" :class="{'rice-progress--inside':textPosition=='inside'}" :style="wrapperStyle"
+			ref="wrapperRef">
+			<view class="rice-progress__bar" :style="barStyle">
 				<slot v-if="textPosition=='inside'">
-					<text v-if="showText" :class="textClass" :style="textStyle">{{formatText}}</text>
+					<text v-if="showText" class="rice-progress__text rice-progress__text--inside"
+						:style="textStyle">{{formatText}}</text>
 				</slot>
 			</view>
-
 		</view>
 		<slot v-if="textPosition=='right'">
 			<text v-if="showText" class="rice-progress__text" :style="textStyle">{{formatText}}</text>
 		</slot>
 	</view>
 </template>
-
 <script setup>
-	/**
-	 * @description Progress 进度条
-	 * @property {Number|String} percentage 进度百分比 0-100
-	 * @property {Number|String} strokeWidth 进度条宽度
-	 * @property {Boolean} showText 是否显示文字，默认true
-	 * @property {String} textColor 文字颜色
-	 * @property {Number|String} textSize 文字大小
-	 * @property {String} textPosition 文字位置
-	 * @value right 右侧
-	 * @value inside 进度条里面
-	 * @property {Function} format 自定义文字格式
-	 * @property {String|Array|Function} color 激活的进度条颜色
-	 * @property {String} inactiveColor 未激活的进度条颜色
-	 * @property {String|Number} radius 圆角大小
-	 * @property {Object} customStyle 自定义样式
-	 */
-	import { useNamespace } from '../../libs/use';
-	import { addUnit, clamp, toNum, isGradientColor, hasStrValue } from "../../libs/utils"
 	import { ProgressProps, ProgressColors } from './type.uts';
+	import { useNamespace } from '../../libs/use';
+	import { addUnit, clamp, toNum } from '../../libs/utils';
 
 	defineOptions({
-		name: 'rice-progress'
+		name: 'rice-progress',
+		styleIsolation: 'app-and-page'
 	})
 
 	const ns = useNamespace('progress')
@@ -46,26 +31,67 @@
 		percentage: 0,
 		showText: true,
 		textPosition: 'right',
-		format: (percentage : number) : string => `${percentage}%`,
 		customStyle: () => ({})
 	})
 
-	const percentageNum = computed<number>(() => clamp(toNum(props.percentage), 0, 100))
+	//百分比转换
+	const percent = computed<number>(() => toNum(props.percentage))
 
-	const labelPostion = computed<string>(() => {
-		if (slots['default'] != null) {
-			return props.textPosition
+	//显示的文字
+	const formatText = computed(() => {
+		if (typeof props.format == 'function') {
+			return props.format!(percent.value)
 		}
-		return props.showText ? props.textPosition : 'none'
+		return `${percent.value}%`
 	})
 
-	const showLabel = computed(() => slots['default'] != null || labelPostion.value != 'none')
+	const wrapperStyle = computed(() => {
+		const css = new Map<string, string>()
+		if (props.strokeWidth != null) css.set('height', addUnit(props.strokeWidth))
+		if (props.inactiveColor != null) css.set('background', props.inactiveColor)
+		css.set('border-radius', addUnit(props.radius ?? '100px'))
+		return css
+	})
 
 	// #ifdef APP
 	const wrapperWidth = ref(0)
+	// #endif
+
+	const barStyle = computed(() => {
+		const css = new Map<string, string>()
+
+		// #ifndef APP
+		css.set('width', `${percent.value}%`)
+		// #endif
+
+		// #ifdef APP
+		//App端 transition不支持结束属性值为百分比，需要转为px
+
+		const num = clamp(percent.value, 0, 100) / 100
+		css.set('width', `${wrapperWidth.value * num}px`)
+
+		// #endif
+
+		if (props.color != null) css.set('background', props.color)
+
+		css.set('border-radius', addUnit(props.radius ?? '100px'))
+		return css
+	})
+
+
+	const textStyle = computed(() => {
+		const css = new Map<string, string>()
+		if (props.textColor != null) css.set('color', props.textColor)
+		if (props.textSize != null) css.set('font-size', addUnit(props.textSize!))
+		return css
+	})
+
+
+	// #ifdef APP
 	const wrapperRef = shallowRef<UniElement | null>(null)
 	const obServer = ref<UniResizeObserver | null>(null)
 
+	//App端 transition不支持结束属性值为百分比，需要转为实际的宽度
 	const resizeObserver = async () => {
 		await nextTick()
 		if (wrapperRef.value == null) return
@@ -79,92 +105,8 @@
 			}
 		})
 
-		obServer.value!.observe(wrapperRef.value)
+		obServer.value!.observe(wrapperRef.value!)
 	}
-	// #endif
-
-	const formatText = computed(() => {
-		if (typeof props.format == 'function') {
-			return props.format!(toNum(props.percentage))
-		}
-		return `${props.percentage}%`
-	})
-
-
-	const wrapperStyle = computed(() => {
-		const css = new Map<string, string>()
-		if (hasStrValue(props.strokeWidth)) css.set('height', addUnit(props.strokeWidth!))
-		if (hasStrValue(props.inactiveColor)) css.set('background', props.inactiveColor!)
-		return css
-	})
-
-	const barStyle = computed(() => {
-		const css = new Map<string, string>()
-		// #ifndef APP
-		css.set('width', `${props.percentage}%`)
-		// #endif
-
-		// #ifdef APP
-		//App端 transition不支持结束属性值为百分比，需要转为px
-		const num = clamp(toNum(props.percentage), 0, 100)
-		const percent = num / 100
-		css.set('width', `${wrapperWidth.value * percent}px`)
-		// #endif
-
-		const color = props.color ?? ""
-		if (color != "") {
-			isGradientColor(color)
-				? css.set('background', color)
-				: css.set('background-color', color)
-		}
-
-		return css
-	})
-
-	const radiusStyle = computed(() => {
-		const css = new Map<string, string>()
-		const radius = hasStrValue(props.radius)
-			? addUnit(props.radius!)
-			: '100px'
-		css.set('border-radius', radius)
-		return css
-	})
-
-
-	const progressClass = computed(() => {
-		return [
-			ns.b(""),
-			ns.theme(),
-		]
-	})
-
-	const wrapperClass = computed(() => {
-		const basic = [ns.e("wrapper")]
-		if (labelPostion.value != 'none') {
-			basic.push(ns.m(labelPostion.value))
-		}
-		return basic
-
-	})
-
-	const textClass = computed(() => {
-		const basic = [ns.e("text")]
-		if (labelPostion.value != 'none') {
-			basic.push(ns.e('text--inside'))
-
-		}
-		return basic
-	})
-
-	const textStyle = computed(() => {
-		const css = new Map<string, string>()
-		if (hasStrValue(props.textColor)) css.set('color', props.textColor!)
-		if (hasStrValue(props.textSize)) css.set('font-size', addUnit(props.textSize!))
-		return css
-	})
-
-
-	// #ifdef APP
 
 	onMounted(() => {
 		resizeObserver()
@@ -175,6 +117,7 @@
 			obServer.value?.unobserve(wrapperRef.value!)
 		}
 	})
+
 	// #endif
 </script>
 
@@ -194,14 +137,14 @@
 			justify-content: flex-end;
 			align-items: center;
 			height: 100%;
+			width: 0;
 			background-color: var(--rice-primary-color);
 			transition: all .2s ease;
-			width: 0;
 		}
 
 		&__text {
 			color: var(--rice-text-color-2);
-			font-size: var(--rice-font-size-sm);
+			font-size: 14px;
 			margin-left: 8px;
 			min-width: 40px;
 

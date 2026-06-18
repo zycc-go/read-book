@@ -1,12 +1,14 @@
 import _easycom_uni_fab_button from '@/uni_modules/uni-fab-button/components/uni-fab-button/uni-fab-button.uvue'
-import MyAvatar from '@/componnets/MyAvatar.uvue'
-	import Content from './content.uvue'
+import MyAvatar from '@/componnets/MyAvatar/index.uvue'
+	import ItemContent from './item-content.uvue'
+	import ItemAichat from './item-aichat.uvue'
 	import { state } from '@/store/index.uts'
 	import { discussListFun, type DiscussItem } from '@/data/discuss'
 
-	type BadgeItem = { __$originalPosition?: UTSSourceMapPosition<"BadgeItem", "pages/discuss/index.uvue", 36, 7>;
+
+	type BadgeItem = { __$originalPosition?: UTSSourceMapPosition<"BadgeItem", "pages/discuss/index.uvue", 31, 7>;
 		name : string;
-		isRender : boolean;
+		type ?: string;
 		isDot ?: boolean;
 		dotNum ?: number;
 	}
@@ -19,45 +21,33 @@ const __ins = getCurrentInstance()!;
 const _ctx = __ins.proxy as InstanceType<typeof __sfc__>;
 const _cache = __ins.renderCache;
 
-	const scrollTop = ref<number>(0)
-
-	const refresherTriggered = ref<boolean>(false)
-
-	const discussListC = ref<DiscussItem[]>([])
-
-	const loadinghandle = ref<boolean>(false)
-
-	const activeIndex2 = ref(0)
-
 	const listBadge = ref<BadgeItem[]>([
-		{ name: '推荐', isRender: true, isDot: true },
-		{ name: '关注', isRender: false, dotNum: 10 },
-		{ name: '我的收藏', isRender: false, dotNum: 999 },
-		{ name: 'AI', isRender: false }])
+		{ name: '推荐', type: '1', isDot: true },
+		{ name: '关注', type: '2', dotNum: 10 },
+		{ name: '我的收藏', type: '3', dotNum: 999 },
+		{ name: 'AI' }])
 
 	const activeTab = ref<number>(0)
 
 	const onClickTab = (item : BadgeItem, index : number) => {
-		if (activeTab.value === index) {
-			listBadge.value[index].isRender = true
-			return
-		}
+		console.log('onClickTab', " at pages/discuss/index.uvue:47");
 		activeTab.value = index
-		if (!listBadge.value[index].isRender) {
-			listBadge.value[index].isRender = true
-		}
 	}
 
 	const onChangeSwiper = (event : UniSwiperChangeEvent) => {
+		console.log('onChangeSwiper', " at pages/discuss/index.uvue:52");
 		activeTab.value = event.detail.current
 	}
 
-	const onChangeRender = (index : number) => {
-		listBadge.value[index].isRender = false
+	const onToPageIssue = () => {
+		uni.navigateTo({
+			url: `/pages/discuss-issue/index`
+		})
 	}
 
-	onPageScroll((options : OnPageScrollOptions) => {
-		scrollTop.value = options.scrollTop
+	onMounted(() => {
+		// onClickTab(listBadge.value[0], 0)
+		// listBadge.value[0].renderNum = 2
 	})
 
 return (): any | null => {
@@ -89,23 +79,31 @@ const _component_uni_fab_button = resolveEasyComponent("uni-fab-button",_easycom
     ]),
     _cE("swiper", _uM({
       style: _nS(_uM({"flex":"1"})),
-      duration: 200,
       current: unref(activeTab),
       onChange: onChangeSwiper
     }), [
-      _cE(Fragment, null, RenderHelpers.renderList(unref(listBadge), (item, index, __index, _cached): any => {
+      _cE(Fragment, null, RenderHelpers.renderList(unref(listBadge).slice(0,3), (item, index, __index, _cached): any => {
         return _cE("swiper-item", _uM({
           key: item.name
         }), [
-          _cV(unref(Content), _uM({
-            id: item.name,
-            isRender: item.isRender,
-            onChangeRender: () => {onChangeRender(index)}
-          }), null, 8 /* PROPS */, ["id", "isRender", "onChangeRender"])
+          _cV(unref(ItemContent), _uM({
+            currentIndex: unref(activeTab),
+            tabIndex: index,
+            type: item.type
+          }), null, 8 /* PROPS */, ["currentIndex", "tabIndex", "type"])
         ])
-      }), 128 /* KEYED_FRAGMENT */)
+      }), 128 /* KEYED_FRAGMENT */),
+      _cE("swiper-item", null, [
+        _cV(unref(ItemAichat))
+      ])
     ], 44 /* STYLE, PROPS, NEED_HYDRATION */, ["current"]),
-    _cV(_component_uni_fab_button, _uM({ class: "fab-btn" }))
+    unref(activeTab) < 3
+      ? _cV(_component_uni_fab_button, _uM({
+          key: 0,
+          class: "fab-btn",
+          onClick: onToPageIssue
+        }))
+      : _cC("v-if", true)
   ], 6 /* CLASS, STYLE */)
 }
 }

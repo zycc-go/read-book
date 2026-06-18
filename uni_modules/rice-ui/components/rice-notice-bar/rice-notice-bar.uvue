@@ -1,7 +1,7 @@
 <template>
 	<view v-if="state.show" :class="noticeBarClass" :style="[noticeBarStyle,customStyle]">
 		<slot name="leftIcon">
-			<rice-icon v-if="hasStrValue(leftIcon)" :name="leftIcon" :color="iconColor" :custom-class="iconClass" size="18px"
+			<rice-icon v-if="hasStrValue(leftIcon)" :name="leftIcon" :color="iconColor" size="18px"
 				:custom-style="{width:'25px'}" @click="clickLeft" />
 		</slot>
 		<view class="rice-notice-bar__wrapper" ref="wrapperRef" @click="handleClick">
@@ -9,7 +9,7 @@
 			<!-- ios 和 HARMONY 要加一个宽度为10000px的view，不然text的宽度获取到的永远都是 wrapper 的宽度-->
 			<view :class="scrollClass">
 			<!-- #endif -->
-				<text :class="contentClass" :style="contentStyle" ref="contentRef"
+				<text :class="[contentClass,textClass]" :style="contentStyle" ref="contentRef"
 					@transitionend="onTransitionend">{{message}}</text>
 			<!-- #ifdef APP-IOS || APP-HARMONY -->
 			</view>
@@ -17,40 +17,22 @@
 		</view>
 		<slot name="rightIcon">
 			<rice-icon v-if="hasStrValue(rightIcon)" :name="rightIcon" :custom-style="{width:'25px',textAlign:'right'}"
-				:color="iconColor" size="18px" :custom-class="iconClass" @click="clickRight" />
+				:color="iconColor" size="18px" @click="clickRight" />
 		</slot>
-		<rice-icon v-if="closeable" name="cross" :custom-style="{width:'25px',textAlign:'right'}" :color="iconColor"
-			:custom-class="iconClass" size="18px" @click="handleClose" />
+		<rice-icon v-if="closeable" name="cross" :custom-style="{width:'25px',textAlign:'right',}" :color="iconColor"
+			size="18px" @click="handleClose" />
 	</view>
 </template>
 
 <script setup>
-	/**
-	 * @description NoriceBar
-	 * @property {String} type 通知类型
-	 * @value primary 主要
-	 * @value warning 警告（默认值）
-	 * @value success 成功
-	 * @value error 错误
-	 * @property {String} message 通知文本内容
-	 * @property {String} color 通知文本颜色
-	 * @property {String} fontSize 通知文本大小
-	 * @property {String} bgColor 背景颜色
-	 * @property {String} leftIcon 左侧图标名称
-	 * @property {String} rightIcon 右侧图标名称
-	 * @property {Number} delay 动画延迟时间，单位s
-	 * @property {Number} speed 滚动速度，单位ms
-	 * @property {Boolean} closeable 是否可关闭
-	 * @property {Boolean} scrollable 是否开启滚动播放，内容长度溢出时默认开启，wrapable为 true 时恒关闭
-	 * @property {Boolean} wrapable 是否开启文本换行，开启文本换行后，内容恒不会滚动
-	 * @property {Object} customStyle 自定义样式
-	 */
 	import { useNamespace } from '../../libs/use';
 	import { addUnit, hasStrValue, getRandomStr, isThemeColor } from "../../libs/utils";
 	import { NoticeBarProps, NoticeBarState } from './type.uts';
 
 	defineOptions({
-		name: 'rice-notice-bar'
+		name: 'rice-notice-bar',
+		styleIsolation: "app-and-page",
+		externalClasses: ['text-class']
 	})
 	const ns = useNamespace('notice-bar')
 
@@ -65,6 +47,7 @@
 		speed: 60,
 		scrollable: null,
 		closeable: false,
+		textClass: "",
 		customStyle: () : UTSJSONObject => ({})
 	})
 
@@ -154,7 +137,7 @@
 
 	const noticeBarStyle = computed(() => {
 		const css = new Map<string, string>()
-		if (hasStrValue(props.bgColor)) css.set('background-color', props.bgColor!)
+		if (props.bgColor != null) css.set('background-color', props.bgColor!)
 		return css
 	})
 
@@ -164,7 +147,7 @@
 			css.set('transform', `translateX(${state.offset}px)`)
 		}
 		css.set('transition-duration', `${state.duration}s`)
-		if (hasStrValue(props.color)) css.set('color', props.color!)
+		if (props.color != null) css.set('color', props.color!)
 		if (props.fontSize != null) css.set('font-size', addUnit(props.fontSize!))
 		return css
 	})
@@ -202,16 +185,8 @@
 		]
 	})
 
-	const iconColor = computed<string>(() => {
-		// #ifndef APP
-		return hasStrValue(props.color) ? props.color! : 'inherit'
-		// #endif
-		// #ifdef APP
-		return hasStrValue(props.color) ? props.color! : ''
-		// #endif
-	})
+	const iconColor = computed(() => props.color ?? `var(--rice-${noticeBarType.value}-color)`)
 
-	const iconClass = computed(() => ns.e(`content--${noticeBarType.value}`))
 
 	onMounted(() => {
 		reset()
@@ -235,7 +210,7 @@
 		min-height: 45px;
 		/* #endif */
 
-		padding: 0 var(--rice-padding-md);
+		padding: 0 16px;
 
 		&--primary {
 			background-color: var(--rice-primary-color-1);
@@ -294,8 +269,7 @@
 			transform: translateX(0px);
 			transition-property: transform;
 			transition-timing-function: linear;
-			font-size: var(--rice-font-size-basic);
-			line-height: 1.6;
+			font-size: 15px;
 
 			&--wrapable {
 				position: relative;
@@ -341,7 +315,7 @@
 			/* #ifndef APP */
 			height: auto;
 			/* #endif */
-			padding: 14px var(--rice-padding-md);
+			padding: 14px 16px;
 		}
 	}
 </style>

@@ -15,9 +15,9 @@ import kotlin.properties.Delegates
 import io.dcloud.uniapp.extapi.navigateBack as uni_navigateBack
 open class GenComponnetsMyNavbar : VueComponent {
     constructor(__ins: ComponentInternalInstance) : super(__ins) {}
-    open var title: String? by `$props`
-    open var leftArrow: Boolean? by `$props`
-    open var height: Number? by `$props`
+    open var title: String by `$props`
+    open var leftArrow: Boolean by `$props`
+    open var height: Number by `$props`
     companion object {
         @Suppress("UNUSED_PARAMETER", "UNUSED_VARIABLE")
         var setup: (__props: GenComponnetsMyNavbar) -> Any? = fun(__props): Any? {
@@ -31,7 +31,7 @@ open class GenComponnetsMyNavbar : VueComponent {
             )
             val navbarHeight = computed(fun(): String {
                 return (if (UTSAndroid.`typeof`(props.height) == "number") {
-                    props.height!!
+                    props.height
                 } else {
                     state.navbarHeight
                 }
@@ -77,9 +77,11 @@ open class GenComponnetsMyNavbar : VueComponent {
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()
         var emits: Map<String, Any?> = _uM()
-        var props = _nP(_uM("title" to _uM("type" to "String", "required" to false), "leftArrow" to _uM("type" to "Boolean", "required" to false), "height" to _uM("type" to "Number", "required" to false)))
+        var props = _nP(_uM("title" to _uM("type" to "String", "required" to true, "default" to ""), "leftArrow" to _uM("type" to "Boolean", "required" to true, "default" to false), "height" to _uM("type" to "Number", "required" to true, "default" to 44)))
         var propsNeedCastKeys = _uA(
-            "leftArrow"
+            "title",
+            "leftArrow",
+            "height"
         )
         var components: Map<String, CreateVueComponent> = _uM()
     }

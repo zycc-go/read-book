@@ -5,6 +5,27 @@ import { Lunar } from "./lunar.uts"
 
 const lunar = new Lunar()
 
+const createCalendarDay = (year : number, month : number, date : number, formatter ?: CalendarFormatter, min ?: string, max ?: string) => {
+	const lunarInfo = lunar.solar2lunar(year, month, date);
+	const day = new Date(year, month - 1, date).getDay()
+	const fullDate = `${year}-${padZero(month)}-${padZero(date)}`
+	const disabled = !(dateuts(fullDate).isBetween(min ?? '1900-01-01', max ?? '2099-12-31', 'date', '[]'))
+	let config : CalendarData = {
+		fullDate,
+		year,
+		month,
+		date,
+		day: day == 0 ? 7 : day,
+		lunarInfo,
+		disabled,
+		isToday: lunarInfo.isToday,
+	}
+	if (typeof formatter == 'function') {
+		config = formatter!(config)
+	}
+	return config
+}
+
 export const formatDate = (date : string) => {
 	const str = date.split('-');
 	const year = str.length >= 1 ? str[0] : ''
@@ -57,24 +78,7 @@ const getCurrentMonthDays = (daysInMonth : number, dateInfo : DateObject, format
 	const year = dateInfo.year
 	const month = dateInfo.month + 1
 	for (let i = 1; i <= daysInMonth; i++) {
-		const lunarInfo = lunar.solar2lunar(year, month, i);
-		const day = new Date(year, month - 1, i).getDay()
-		const fullDate = `${year}-${padZero(month)}-${padZero(i)}`
-		const disabled = !(dateuts(fullDate).isBetween(min ?? '1900-01-01', max ?? '2099-12-31', 'date', '[]'))
-		let config = {
-			fullDate,
-			year,
-			month,
-			date: i,
-			day: day == 0 ? 7 : day,
-			lunarInfo,
-			disabled,
-			isToday: lunarInfo.isToday,
-		} as CalendarData
-		if (typeof formatter == 'function') {
-			config = formatter!(config)
-		}
-		dateList.push(config)
+		dateList.push(createCalendarDay(year, month, i, formatter, min, max))
 	}
 	return dateList
 }
@@ -83,21 +87,80 @@ export const getFirstWeekDays = (firstDayOfMonth : number, firstDayOfWeek : numb
 	return 7 - (firstDayOfMonth + 7 - firstDayOfWeek) % 7
 }
 
+/**
+ * 获取上个月剩余的天数
+ */
 
-export const getMonthDays = (dates : string[], firstDayOfWeek : number, formatter ?: CalendarFormatter, min ?: string, max ?: string) => {
+export const getLastMonthDays = (year : number, month : number, count : number, formatter ?: CalendarFormatter, min ?: string, max ?: string) => {
+	const dateList : CalendarData[] = []
+	if (count <= 0) {
+		return dateList
+	}
+	const lastMonthDate = new Date(year, month - 2, 1)
+	const lastMonthYear = lastMonthDate.getFullYear()
+	const lastMonth = lastMonthDate.getMonth() + 1
+	const lastMonthTotalDays = new Date(year, month - 1, 0).getDate()
+	const startDate = lastMonthTotalDays - count + 1
+	for (let i = startDate; i <= lastMonthTotalDays; i++) {
+		dateList.push(createCalendarDay(lastMonthYear, lastMonth, i, formatter, min, max))
+	}
+	return dateList
+}
+
+/**
+ * 获取下个月的天数
+ */
+export const getNextMonthDays = (year : number, month : number, count : number, formatter ?: CalendarFormatter, min ?: string, max ?: string) => {
+	const dateList : CalendarData[] = []
+	if (count <= 0) {
+		return dateList
+	}
+	const nextMonthDate = new Date(year, month, 1)
+	const nextMonthYear = nextMonthDate.getFullYear()
+	const nextMonth = nextMonthDate.getMonth() + 1
+	for (let i = 1; i <= count; i++) {
+		dateList.push(createCalendarDay(nextMonthYear, nextMonth, i, formatter, min, max))
+	}
+	return dateList
+}
+
+const setIsCurrentMonth = (monthDays : Array<Array<CalendarData>>, currentYear : number, currentMonth : number) => {
+	for (let i = 0; i < monthDays.length; i++) {
+		const week = monthDays[i]
+		for (let j = 0; j < week.length; j++) {
+			week[j].isCurrentMonth = week[j].year == currentYear && week[j].month == currentMonth
+		}
+	}
+}
+
+export function getMonthDays(dates : string[], firstDayOfWeek : number, formatter ?: CalendarFormatter, min ?: string, max ?: string, showFullDate =false) {
 	let date = dates.length > 0 ? dates[0] : ''
 	const duts = dateuts(date)
 	const dateInfo = duts.toObject()
+	const year = dateInfo.year
+	const month = dateInfo.month + 1
 	const daysInMonth = duts.daysInMonth()
 	const currentMonthDays = getCurrentMonthDays(daysInMonth, dateInfo, formatter, min, max)
 	let monthDays = [] as Array<Array<CalendarData>>
 	const firstDayOfMonth = currentMonthDays[0].day //获取1号是周几
 	const firstWeekDays = getFirstWeekDays(firstDayOfMonth, firstDayOfWeek)
-	monthDays.push(currentMonthDays.slice(0, firstWeekDays))//第一周的天数
+	const firstWeek = currentMonthDays.slice(0, firstWeekDays)
+	if (showFullDate == true) {
+		const lastMonthDays = getLastMonthDays(year, month, 7 - firstWeekDays, formatter, min, max)
+		monthDays.push(lastMonthDays.concat(firstWeek))//第一周的天数
+	} else {
+		monthDays.push(firstWeek)
+	}
 	for (let i = firstWeekDays; i < currentMonthDays.length; i += 7) {
 		const item : CalendarData[] = currentMonthDays.slice(i, i + 7)
+		
 		monthDays.push(item)
 	}
+	const lastWeek = monthDays[monthDays.length - 1]
+	if (showFullDate == true && lastWeek.length < 7) {
+		monthDays[monthDays.length - 1] = lastWeek.concat(getNextMonthDays(year, month, 7 - lastWeek.length, formatter, min, max))
+	}
+	setIsCurrentMonth(monthDays, year, month)
 	return monthDays
 
 }

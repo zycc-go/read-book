@@ -5,97 +5,177 @@
     "compiler_version": "5.13.2026061207-alpha"
   },
   "files": {
-    "uni_modules/uni-tab-bar/components/uni-tab-bar/uni-tab-bar.kt": {
-      "md5": "490979cf0ce576fa0a5629acbdd72fa4d9aac92d",
-      "class": "GenUniModulesUniTabBarComponentsUniTabBarUniTabBar"
-    },
-    "componnets/MySwitch.kt": {
-      "md5": "d6d0953dfa04f31596d525b105d31123c2941ff5",
-      "class": "GenComponnetsMySwitch"
-    },
-    "pages/library/index.kt": {
-      "class": "GenPagesLibraryIndex",
-      "md5": "c0dd82196d10908695a8db4ec4f40c0d80ff95eb"
-    },
-    "uni_modules/uni-tab-bar/components/uni-tab-item/uni-tab-item.kt": {
-      "md5": "a349a681fc48bd73eb6931cf3935166d1b0ff759",
-      "class": "GenUniModulesUniTabBarComponentsUniTabItemUniTabItem"
-    },
-    "uni_modules/uni-fab-button/components/uni-fab-button/uni-fab-button.kt": {
-      "class": "GenUniModulesUniFabButtonComponentsUniFabButtonUniFabButton",
-      "md5": "bd2cf503f7b1d65bd67a725c5e56537dc3b57689"
-    },
-    "pages/feedback/index.kt": {
-      "class": "GenPagesFeedbackIndex",
-      "md5": "97ac6c500b4661a2252564761c5ca12d923eb867"
-    },
-    "pages/tab-bar-custom/tab-bar-custom.kt": {
-      "class": "GenPagesTabBarCustomTabBarCustom",
-      "md5": "53c4752a99df17be5bee75b1b1cf88e3fc981d8a"
-    },
-    "componnets/MyNavbar.kt": {
-      "class": "GenComponnetsMyNavbar",
-      "md5": "eb0bb92d106e4d8c134094abafb40f74df99c440"
-    },
-    "pages/explanation/index.kt": {
-      "md5": "c95fa98a7c5ebbf3aee79037acd4d99f7dba2718",
-      "class": "GenPagesExplanationIndex"
-    },
-    "uni_modules/uni-tab-bar/components/uni-tab-content/uni-tab-content.kt": {
-      "class": "GenUniModulesUniTabBarComponentsUniTabContentUniTabContent",
-      "md5": "203113187e86e24dfa967bba39aac6d6a2d58d9b"
-    },
-    "pages/search/index.kt": {
-      "class": "GenPagesSearchIndex",
-      "md5": "dc8b91a660244d79edbab7eb0e965b71473dc70c"
+    "pages/discuss-issue/index.kt": {
+      "md5": "0feb82425dbdd8a292f047e6afd1741dcc427b85",
+      "class": "GenPagesDiscussIssueIndex"
     },
     "uni_modules/uni-tab-bar/components/uni-tab/uni-tab.kt": {
       "class": "GenUniModulesUniTabBarComponentsUniTabUniTab",
       "md5": "ca80425a86db39cfe6c29c09cb305114adcc4f08"
     },
+    "componnets/MyLoading/index.kt": {
+      "md5": "d423e11dc50072a45f144c6d6014ee8791bc2f83",
+      "class": "GenComponnetsMyLoadingIndex"
+    },
     "componnets/MyCellGroup.kt": {
       "class": "GenComponnetsMyCellGroup",
-      "md5": "d28374b7245d189530feef9a2d751223752b25e9"
+      "md5": "7ed1af1b9c4a93092b2cae7f5a4cdc0381f3fcce"
+    },
+    "componnets/MyIcon/index.kt": {
+      "class": "GenComponnetsMyIconIndex",
+      "md5": "522c846f6be2ebfe4ad044e112b4cd5359796a26"
+    },
+    "pages/mine/index.kt": {
+      "md5": "778c5cb1a86ddf085e21f8fe266d1317f0e9b3ed",
+      "class": "GenPagesMineIndex"
+    },
+    "uni_modules/rice-ui/pages/dialog/dialog.kt": {
+      "md5": "a57959dff08153102be0be5d869e8dcaace46182",
+      "class": "GenUniModulesRiceUiPagesDialogDialog"
+    },
+    "uni_modules/uni-fab-button/components/uni-fab-button/uni-fab-button.kt": {
+      "class": "GenUniModulesUniFabButtonComponentsUniFabButtonUniFabButton",
+      "md5": "bd2cf503f7b1d65bd67a725c5e56537dc3b57689"
+    },
+    "pages/discuss/item-aichat.kt": {
+      "md5": "602ea96d90ac9e321a893c40b00a4dbb971dea96",
+      "class": "GenPagesDiscussItemAichat"
+    },
+    "uni_modules/rice-ui/pages/action-sheet/action-sheet.kt": {
+      "class": "GenUniModulesRiceUiPagesActionSheetActionSheet",
+      "md5": "ef2843965b4d83ddf2c3790d8ab4a630cb3beb77"
+    },
+    "uni_modules/rice-ui/components/rice-dialog/rice-dialog.kt": {
+      "md5": "da2298bee302d80b480643ebf090e9775fa022ed",
+      "class": "GenUniModulesRiceUiComponentsRiceDialogRiceDialog"
+    },
+    "pages/library/index.kt": {
+      "md5": "fbf66f25cf41292018807cfa46b0779f0fa863e7",
+      "class": "GenPagesLibraryIndex"
+    },
+    "uni_modules/rice-ui/components/rice-action-sheet/rice-action-sheet.kt": {
+      "class": "GenUniModulesRiceUiComponentsRiceActionSheetRiceActionSheet",
+      "md5": "2ccedc942a13bd4f1ce773d2b13a5fa402949a9a"
+    },
+    "componnets/MySwitch/index.kt": {
+      "class": "GenComponnetsMySwitchIndex",
+      "md5": "29cdd442bb2162bcf3edbf337cbce2e11cca5bcb"
+    },
+    "pages/explanation/index.kt": {
+      "class": "GenPagesExplanationIndex",
+      "md5": "ec1639618538f135f25fd7aee19036b9872b815d"
+    },
+    "uni_modules/rice-ui/components/rice-button/rice-button.kt": {
+      "class": "GenUniModulesRiceUiComponentsRiceButtonRiceButton",
+      "md5": "97f110ca21d31f88ef8e0e9aa778af9f88023104"
+    },
+    "pages/bookcase/index.kt": {
+      "md5": "8f6ad4a6006f82b23df00f9fc4bcab43af8a0f1c",
+      "class": "GenPagesBookcaseIndex"
+    },
+    "index.kt": {
+      "class": "",
+      "md5": "467df7c23ed0f6ed9904dc653a09d0c17255001a"
+    },
+    "componnets/MyCell.kt": {
+      "class": "GenComponnetsMyCell",
+      "md5": "75069cfe455fd915136f5772bda3acafd5283de7"
+    },
+    "componnets/MyAvatar/index.kt": {
+      "class": "GenComponnetsMyAvatarIndex",
+      "md5": "797f319d29bdc2bf19a248cf545dc6e354564961"
     },
     "uni_modules/uni-tab-bar/components/uni-tab-midbutton/uni-tab-midbutton.kt": {
       "class": "GenUniModulesUniTabBarComponentsUniTabMidbuttonUniTabMidbutton",
       "md5": "b432dfaeaf72392e40bceca12987633dc80eda54"
     },
+    "pages/search/index.kt": {
+      "md5": "8c6b14508822c84fea13858c661c0cc0635b4cbc",
+      "class": "GenPagesSearchIndex"
+    },
     "pages/discuss/index.kt": {
-      "md5": "6c16bb5b3572d13a00e264ba5b6ebf78970473a6",
+      "md5": "7ee8284b4460b0144abf325f8a7433d84b0a0c2f",
       "class": "GenPagesDiscussIndex"
     },
-    "pages/bookcase/index.kt": {
-      "md5": "1115865abe75e28c32bf08cd5c7fa1a4620cd449",
-      "class": "GenPagesBookcaseIndex"
+    "componnets/MyCell/index.kt": {
+      "md5": "8b7752cb5149b5ed6a84e1632ca1ef9f409d69ad",
+      "class": "GenComponnetsMyCellIndex"
     },
-    "index.kt": {
-      "class": "",
-      "md5": "b4b440f5929f3915cf8f09cf76e41fe68597cdfb"
+    "pages/setting/index.kt": {
+      "md5": "08a72dc696624c843d68bc3421f55f4f4a9b4510",
+      "class": "GenPagesSettingIndex"
+    },
+    "uni_modules/uni-tab-bar/components/uni-tab-bar/uni-tab-bar.kt": {
+      "class": "GenUniModulesUniTabBarComponentsUniTabBarUniTabBar",
+      "md5": "490979cf0ce576fa0a5629acbdd72fa4d9aac92d"
+    },
+    "pages/feedback/index.kt": {
+      "class": "GenPagesFeedbackIndex",
+      "md5": "af90b38d9582b6aa74a54d59ac4b16336a56407b"
+    },
+    "componnets/MySwitch.kt": {
+      "md5": "c4f1ef4a2aac00141b35e21e4b529f7ba50b4b6e",
+      "class": "GenComponnetsMySwitch"
+    },
+    "componnets/MyNavbar/index.kt": {
+      "class": "GenComponnetsMyNavbarIndex",
+      "md5": "0ef8f081e52995877058b0a8d32d5e6a7a834723"
+    },
+    "uni_modules/uni-tab-bar/components/uni-tab-item/uni-tab-item.kt": {
+      "class": "GenUniModulesUniTabBarComponentsUniTabItemUniTabItem",
+      "md5": "a349a681fc48bd73eb6931cf3935166d1b0ff759"
+    },
+    "pages/discuss/aichat.kt": {
+      "class": "GenPagesDiscussAichat",
+      "md5": "950c22bab09a84cc2c24d0d2c9f7b346ea99bba6"
+    },
+    "uni_modules/rice-ui/components/rice-loading/rice-loading.kt": {
+      "class": "GenUniModulesRiceUiComponentsRiceLoadingRiceLoading",
+      "md5": "926fa3ee355ecc29eeff96d59f3d484550b5a965"
+    },
+    "uni_modules/uni-tab-bar/components/uni-tab-content/uni-tab-content.kt": {
+      "md5": "203113187e86e24dfa967bba39aac6d6a2d58d9b",
+      "class": "GenUniModulesUniTabBarComponentsUniTabContentUniTabContent"
+    },
+    "uni_modules/rice-ui/components/rice-overlay/rice-overlay.kt": {
+      "md5": "ac19cfd9eb7489d9fdc5f5af4b284cd011e9d337",
+      "class": "GenUniModulesRiceUiComponentsRiceOverlayRiceOverlay"
+    },
+    "componnets/MyNavbar.kt": {
+      "class": "GenComponnetsMyNavbar",
+      "md5": "4cbf1961e15f90abfc48f4535b86e2abdf388eca"
+    },
+    "componnets/MyAvatar.kt": {
+      "class": "GenComponnetsMyAvatar",
+      "md5": "38cbda08cfe170eb4c58d447a157ae2562ab6a87"
+    },
+    "pages/tab-bar-custom/tab-bar-custom.kt": {
+      "class": "GenPagesTabBarCustomTabBarCustom",
+      "md5": "53c4752a99df17be5bee75b1b1cf88e3fc981d8a"
+    },
+    "pages/discuss-detail/index.kt": {
+      "md5": "8dd5cee2bc7df39998be728734bb6ab07d6dcf9c",
+      "class": "GenPagesDiscussDetailIndex"
+    },
+    "uni_modules/rice-ui/components/rice-icon/rice-icon.kt": {
+      "class": "GenUniModulesRiceUiComponentsRiceIconRiceIcon",
+      "md5": "050e6aacbec4181610689b6187f5428f633b0794"
+    },
+    "componnets/MyCellGroup/index.kt": {
+      "md5": "55993e6dec32bf4023f5a4b5c3cd63dfdc44a1a7",
+      "class": "GenComponnetsMyCellGroupIndex"
+    },
+    "pages/discuss/item-content.kt": {
+      "md5": "18a99380c99c45ef0d24e1e29ee5a1351f4cb8a2",
+      "class": "GenPagesDiscussItemContent"
+    },
+    "pages/discuss/content.kt": {
+      "md5": "680b7bd254f3e93176fd56bde3af4759ec6e6ae4",
+      "class": "GenPagesDiscussContent"
     },
     "uni_modules/uni-badge-view/components/uni-badge-view/uni-badge-view.kt": {
       "class": "GenUniModulesUniBadgeViewComponentsUniBadgeViewUniBadgeView",
       "md5": "ef4e63bdc2b75d17618ce8f282883e96a1c6645e"
-    },
-    "pages/discuss/content.kt": {
-      "md5": "2556162a0e1355b5876081d88a6b3a61aa6f0ebd",
-      "class": "GenPagesDiscussContent"
-    },
-    "componnets/MyAvatar.kt": {
-      "md5": "4468a166cea87ba27ba07ad51c73d79d646faa92",
-      "class": "GenComponnetsMyAvatar"
-    },
-    "pages/setting/index.kt": {
-      "class": "GenPagesSettingIndex",
-      "md5": "1779114ef66e1f38c6b3f8dcb9fa219719b0cf59"
-    },
-    "pages/mine/index.kt": {
-      "md5": "14905e187683f0112769b2a6611e4e2a864525cf",
-      "class": "GenPagesMineIndex"
-    },
-    "componnets/MyCell.kt": {
-      "class": "GenComponnetsMyCell",
-      "md5": "0ff0ad1794caa74434ae230d6133bf56585eb0a7"
     }
   }
 }

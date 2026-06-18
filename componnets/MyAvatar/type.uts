@@ -1,0 +1,7 @@
+export type PropsType = {
+	src : string
+	mode : string
+	width : number
+	height : number
+	radius : boolean
+}

@@ -1,10 +1,12 @@
 
 export type ActionSheetAction = {
 	name : string,
+	value ?: string | number,
 	subname ?: string,
 	color ?: string,
 	icon ?: string,
 	iconSize ?: string | number,
+	iconFontFamily ?: string,
 	disabled ?: boolean,
 }
 

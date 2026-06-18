@@ -7,6 +7,8 @@
 注意：这并不意味着您可以将RiceUI应用到非法的领域，比如涉及赌博，暴力，欺诈等方面。如因此产生纠纷或法律问题，RiceUI相关方不承担任何责任。<br/>
 [Demo 示例项目使用限制见下](#demo-使用限制)
 
+** 注意：鸿蒙蒸汽模式 需要HBuilder X  5.08 以上的版本 才能正常使用 **
+
 ## 快速开始
 
 1.在 `APP.vue` 中 引入基础样式文件
@@ -19,6 +21,20 @@
 </style>
 
 ```
+
+:::warning
+如果在HBuilderx 5.0+ 版本后使用且开启了 [样式隔离2.0策略](https://doc.dcloud.net.cn/uni-app-x/css/common/style-isolation.html) H5端 需在 `main.uts` 引入基础样式文件，而不是在 `APP.vue` 中，代码见下
+:::
+
+```js
+// #ifdef WEB
+import "@/uni_modules/rice-ui/libs/style/index.css";
+/* 自定义主题色示例 */
+// import "./style/theme.css";
+// #endif
+
+```
+
 
 2.无需通过import 引入组件，直接在项目中使用即可
 ```html
@@ -73,6 +89,8 @@ const setRiceUiTheme = () => {
 	
 </style>
 ```
+
+
 
 ## 文档地址
 
