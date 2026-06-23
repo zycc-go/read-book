@@ -3,14 +3,13 @@
 		<view :style="{height: statusBarHeight}"></view>
 
 		<view class="my-navbar" :style="{ height: navbarHeight}">
-			<view class="my-navbar-left" @click="onToBack">
-				<slot name='left' />
-				<my-icon v-if="leftArrow" name="left" :size="24" />
-			</view>
-			<text class="my-navbar-title"> {{ props.title }} </text>
-			<view class="my-navbar-right">
-				<slot name='right' />
-			</view>
+			<slot name='left'>
+				<view class="my-navbar-left" @tap="onClickLeft">
+					<my-icon v-if="leftArrow" name="left" :size="24" />
+				</view>
+			</slot>
+			<text class="my-navbar-title" v-if="props.title.length>0"> {{ props.title }}</text>
+			<slot name='right'></slot>
 		</view>
 	</view>
 </template>
@@ -18,7 +17,7 @@
 <script setup lang="uts">
 	import MyIcon from '@/componnets/MyIcon/index.uvue';
 	import { state, setAppTheme } from '@/store/index.uts'
-	import { PropsType } from './type.uts'
+	import { PropsType, EmitsType } from './type.uts'
 
 	defineOptions({
 		styleIsolation: 'app'
@@ -30,13 +29,18 @@
 		height: 44
 	})
 
-	const leftArrow = computed(() => props.leftArrow ?? false)
+	const emit = defineEmits(['clickLeft', 'clickRight'])
+
+	const slots = useSlots()
+	const leftArrow = computed(() => {
+		return props.leftArrow ?? false
+	})
 
 	const navbarHeight = computed(() => (typeof (props.height) == 'number' ? props.height : state.navbarHeight) + 'px')
 
 	const statusBarHeight = computed(() => state.statusBarHeight + 'px')
 
-	const onToBack = () => {
+	const onClickLeft = () => {
 		uni.navigateBack()
 	}
 </script>
@@ -44,6 +48,7 @@
 <style lang="scss" scoped>
 	.navbar-status {
 		position: fixed;
+		top: 0;
 		width: 100%;
 	}
 

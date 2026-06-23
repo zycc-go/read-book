@@ -1,0 +1,90 @@
+<template>
+	<button :class="'button-class-'+props.type" :hover-class="'is-hover-'+props.type" :disabled="disabled" :size="props.size"
+		:plain="props.plain" :open-type="props.openType" @tap="emit('click')"
+		:style="btnStyle">{{ props.text }}</button>
+</template>
+
+<script setup lang="uts">
+	import { PropsType, BtnStyleType } from './type.uts'
+
+	defineOptions({
+		name: "MyButton"
+	})
+
+	const props = withDefaults(defineProps<PropsType>(), {
+		disabled: false,
+		plain: false,
+		size: "default",
+		openType: "",
+		text: "",
+		type: "default",
+	})
+
+	const emit = defineEmits(['click'])
+
+	const btnStyle = ref<BtnStyleType>({})
+
+	const disabled = computed(() => props.disabled ?? false)
+</script>
+
+<style lang="scss" scoped>
+	.button-class-default {
+		color: var(--text-color-4);
+		border-color: var(--button-default-border);
+		background-color: var(--button-default-background);
+	}
+	
+	.button-class-primary {
+		color: var(--text-color-white);
+		border-color: var(--primary-color);
+		background-color: var(--primary-color);
+	}
+	
+	.button-class-success {
+		color: var(--text-color-white);
+		border-color: var(--success-color);
+		background-color: var(--success-color);
+	}
+	
+	.button-class-warning {
+		color: var(--text-color-white);
+		border-color: var(--warning-color);
+		background-color: var(--warning-color);
+	}
+	
+	.button-class-error {
+		color: var(--text-color-white);
+		border-color: var(--error-color);
+		background-color: var(--error-color);
+	}
+
+	.is-hover-default {
+		color: var(--text-color-4);
+		border-color: var(--button-default-border);
+		background-color: var(--button-default-hover-background);
+	}
+
+	.is-hover-primary {
+		color: var(--text-color-white);
+		border-color: var(--primary-color-7);
+		background-color: var(--primary-color-7);
+	}
+
+	.is-hover-success {
+		color: var(--text-color-white);
+		border-color: var(--success-color-7);
+		background-color: var(--success-color-7);
+	}
+
+	.is-hover-warning {
+		color: var(--text-color-white);
+		border-color: var(--warning-color-7);
+		background-color: var(--warning-color-7);
+	}
+
+	.is-hover-error {
+		color: var(--text-color-white);
+		border-color: var(--error-color-7);
+		background-color: var(--error-color-7);
+	}
+</style>

@@ -26,3 +26,18 @@ export const hasStrValue = (val ?: string | number | null) => {
 	}
 	return val.trim().length > 0
 }
+
+
+// 判断 URL 对应的文件是否为图片
+export const isImage = (url ?: string) => {
+	if (url == null) return false;
+	const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|webp|svg|ico)$/i;
+	return imageExtensions.test(url);
+}
+
+// 判断 URL 对应的文件是否为视频
+export const isVideo = (url ?: string) => {
+	if (url == null) return false;
+	const videoExtensions = /\.(mp4|webm|ogg|mov|avi|wmv|flv|mkv)$/i;
+	return videoExtensions.test(url);
+}

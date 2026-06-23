@@ -1,23 +1,36 @@
 <template>
 	<view :class="[`theme-${state.appTheme}`, 'page']" :style="style">
-		<my-navbar :leftArrow="true">
+		<my-navbar title="发帖子">
+			<template #left>
+				<view class="flex items-center">
+					<view class="navbar-left" @tap="uni.navigateBack()">
+						<my-icon class="navbar-left-icon" name="left" :size="24" />
+						<text>取消</text>
+					</view>
+				</view>
+			</template>
 			<template #right>
-				<view class="nav-right">
-					<my-icon class="nav-icon" name="search-line" size="20px" @click="onSearch"></my-icon>
-					<my-icon class="nav-icon" name="more-vertical" size="20px" @click="onShowMenu"></my-icon>
+				<view class="navbar-right">
+					<MyButton size="mini" text="发布" type="primary" @tap="onSubmit" />
 				</view>
 			</template>
 		</my-navbar>
-		
-		<view>/pages/discuss-issue/index</view>
+
+		<view class="card">
+			<MyUploader action="https://api.riceui.cn/app/upload" :max-count="3" :success-code="200" uploadIcon="plus"
+				@complete="onComolete" />
+			<!-- <editor class="preview-editor" placeholder="请输入" @ready="onEditorReady" @input="onEditorInput" /> -->
+		</view>
 	</view>
 </template>
 
 <script setup lang="uts">
-	import MyNavbar from '@/componnets/MyNavbar/index.uvue'
+	import { state } from '@/store/index.uts'
+	import MyNavbar from '@/componnets/MyNavbar/index.uvue';
 	import MyIcon from '@/componnets/MyIcon/index.uvue';
-	import { state, checkWindowInfo } from '@/store/index.uts'
-	import { bookList, type BookItem } from '@/data/book'
+	import MyButton from '@/componnets/MyButton/index.uvue';
+	import MyUploader from '@/componnets/MyUploader/index.uvue';
+	import { UploaderFileItem, UploaderComplete } from "@/componnets/MyUploader/type.uts"
 
 	const style = computed(() => {
 		return {
@@ -26,25 +39,36 @@
 		};
 	})
 
-	const onShowMenu = () => {
-		uni.showToast({ title: '还没有哦', icon: "none" })
+	const content = ref<string>('')
+
+	const onEditorReady = () => {
 	}
 
-	const onSearch = () => {
-		uni.navigateTo({
-			url: '/pages/search/index'
-		})
+	const onEditorInput = (event : UniInputEvent) => {
+		content.value = event.detail.value
 	}
 
-	const onBookClick = (book : BookItem) => {
-		uni.navigateTo({
-			url: `/pages/library/index?bookId=${book.id}`
-		})
+	const onComolete = (filesList : UploaderFileItem[], result : UploaderComplete) => {
+		const fail = result.failList
+		const success = result.successList
+		// console.log('filesList-->', filesList)
+		// console.log('从filesList中拿上传成功合集：', filesList.filter(v => v.status == 'success'))
+		// console.log('从result中拿上传成功合集：', success.map(v => v.file))
+		// console.log('上传失败合集：', fail)
 	}
 
-	onReady(() => {
-		checkWindowInfo()
-	})
+	const onSubmit = () => {
+		// console.log('value', content.value)
+		if (content.value.length <= 0) {
+			uni.showToast({ title: '请输入内容', icon: 'error' })
+			return
+		}
+		uni.showLoading()
+		setTimeout(() => {
+			// 这里是提交操作
+			uni.hideLoading()
+		}, 1000)
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -54,77 +78,43 @@
 		width: 100%;
 	}
 
-	.read-time {
-		font-size: $uni-font-size-14;
-		color: var(--text-color-2);
-		padding-left: $uni-spacing-row-16;
-	}
-
-	.nav-right {
+	.navbar-left {
 		display: flex;
 		flex-direction: row;
-		margin-right: $uni-spacing-row-16;
+		justify-content: center;
+		align-items: center;
 
-		.nav-icon {
-			font-size: $uni-font-size-24;
-			margin-left: $uni-spacing-row-12;
+		.navbar-left-icon {
+			padding: $uni-spacing-col-8 0 $uni-spacing-col-8 $uni-spacing-row-8;
 		}
+
 	}
 
-	.book-list {
-		padding: $uni-spacing-col-12 $uni-spacing-row-16;
+	.navbar-right {
+		margin-right: $uni-spacing-row-8;
+	}
 
-		.book-li-top {
-			margin-top: $uni-spacing-row-16;
+	.card {
+		margin: $uni-spacing-col-12 $uni-spacing-row-16;
+		min-height: 200px;
+
+		.textarea-instance {
+			min-height: 140px;
+			width: 100%;
+			padding: $uni-spacing-col-12 $uni-spacing-row-16;
+			border-radius: $uni-border-radius-8;
+			font-size: $uni-font-size-14;
+			color: var(--text-color-1);
+			line-height: $uni-line-height-24;
+			background-color: var(--background-color-2);
 		}
 
-		.book-li {
-			display: flex;
-			flex-direction: row;
+		.btn {
+			margin-top: $uni-spacing-col-12;
+		}
 
-			.book-li-avatar {
-				width: 60px;
-				height: 80px;
-			}
-
-			.book-li-content {
-				margin-left: $uni-spacing-row-12;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-
-				.book-li-row {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-					height: 18px;
-				}
-
-				.book-title {
-					font-size: $uni-font-size-16;
-					color: var(--text-color-1);
-				}
-
-				.book-sub {
-					font-size: $uni-font-size-12;
-					color: var(--text-color-2);
-				}
-
-				.book-sub-dot {
-					padding: 2px 4px;
-					font-size: 8px;
-					line-height: 8px;
-					background-color: yellowgreen;
-					color: #fff;
-					border-radius: $uni-border-radius-4;
-				}
-			}
-
-			.book-li-more {
-				position: absolute;
-				right: 0;
-				top: 0;
-			}
+		.preview-editor {
+			min-height: 200px;
 		}
 	}
 </style>

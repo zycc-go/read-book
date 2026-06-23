@@ -1,8 +1,8 @@
 <template>
-	<text v-if="!isImage" class="my-icon" :style="[iconStyle]" @click="iconClick">
+	<text v-if="!isImage" class="my-icon" :style="iconStyle" @click="iconClick">
 		<slot>{{iconCode}}</slot>
 	</text>
-	<image v-else :src="name" class="my-icon__image" :style="[imageStyle]" @click="iconClick"></image>
+	<image v-else :src="name" class="my-icon__image" :style="imageStyle" @click="iconClick"></image>
 </template>
 
 <script setup>
@@ -20,6 +20,7 @@
 	const props = withDefaults(defineProps<PropsType>(), {
 		name: "",
 		size: '16px',
+		color: 'var(--text-color-1)',
 	})
 
 	const isBase64 = () => props.name.indexOf('data:') > -1 && props.name.indexOf('base64') > -1;
@@ -67,6 +68,5 @@
 		font-family: 'wd-icons';
 		font-size: $uni-font-size-16;
 		font-style: normal;
-		color: var(--text-color-1);
 	}
 </style>

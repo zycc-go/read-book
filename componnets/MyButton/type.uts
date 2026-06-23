@@ -1,0 +1,17 @@
+export type PropsType = {
+	disabled ?: boolean
+	plain ?: boolean
+	size ?: string
+	openType ?: string
+	text ?: string
+	type ?: string
+}
+
+export type BtnStyleType = {
+	padding ?: string
+	margin ?: string
+	width ?: string
+	height ?: string
+	color ?: string
+	background ?: string
+}

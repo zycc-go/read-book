@@ -113,7 +113,7 @@ fun tryConnectSocket(host: String, port: String, id: String): UTSPromise<SocketT
 fun initRuntimeSocketService(): UTSPromise<Boolean> {
     val hosts: String = "10.191.92.87,127.0.0.1"
     val port: String = "8090"
-    val id: String = "app-android_1YTzup"
+    val id: String = "app-android_-42QtZ"
     if (hosts == "" || port == "" || id == "") {
         return UTSPromise.resolve(false)
     }
@@ -3812,7 +3812,7 @@ open class GenApp : BaseApp {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("theme-light" to _pS(_uM("--navbar-background" to "#f5f5f5", "--search-background" to "transparent", "--search-input-background" to "rgba(0, 0, 0, 0.04)", "--primary-color" to "#1989fa", "--success-color" to "#07c160", "--warning-color" to "#ff976a", "--error-color" to "#ee0a24", "--text-color-1" to "#02070F", "--text-color-2" to "#666", "--text-color-3" to "#999", "--text-color-4" to "#111", "--background-color-1" to "rgba(0, 0, 0, 0.50)", "--background-color-2" to "#FFF", "--cell-active-color" to "#f2f3f5")), "theme-dark" to _pS(_uM("--navbar-background" to "#181818", "--search-background" to "transparent", "--search-input-background" to "#333", "--primary-color" to "#1989fa", "--success-color" to "#07c160", "--warning-color" to "#ff976a", "--error-color" to "#ee0a24", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--text-color-1" to "#F5F5F5", "--text-color-2" to "#CCC", "--text-color-3" to "#999", "--text-color-4" to "#F5F5F5", "--background-color-1" to "#111", "--background-color-2" to "rgba(255, 255, 255, 0.13)", "--cell-active-color" to "#3a3a3c")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "justify-between" to _pS(_uM("justifyContent" to "space-between")), "justify-around" to _pS(_uM("justifyContent" to "space-around")))
+                return _uM("theme-light" to _pS(_uM("--navbar-background" to "#f5f5f5", "--search-background" to "transparent", "--search-input-background" to "rgba(0, 0, 0, 0.04)", "--primary-color" to "#1989fa", "--primary-color-1" to "#e6f7ff", "--primary-color-7" to "#0b68d4", "--success-color" to "#07c160", "--success-color-1" to "#e6ffee", "--success-color-7" to "#009c50", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--button-default-border" to "#eaecf1", "--button-default-background" to "#fff", "--button-default-hover-background" to "#f1f1f1", "--text-color-white" to "#f5f5f5", "--text-color-1" to "#02070F", "--text-color-2" to "#666", "--text-color-3" to "#999", "--text-color-4" to "#111", "--background-color-1" to "rgba(0, 0, 0, 0.50)", "--background-color-2" to "#FFF", "--cell-active-color" to "#f2f3f5", "--uploader-background" to "#f7f8fa")), "theme-dark" to _pS(_uM("--navbar-background" to "#181818", "--search-background" to "transparent", "--search-input-background" to "#333", "--primary-color" to "#1989fa", "--primary-color-1" to "#111c2b", "--primary-color-7" to "#3d98e8", "--success-color" to "#07c160", "--success-color-1" to "#11231b", "--success-color-7" to "#27bc6a", "--warning-color" to "#ff976a", "--warning-color-1" to "#281f15", "--warning-color-7" to "#dcae5e", "--button-default-border" to "#383838", "--button-default-background" to "#383838", "--button-default-hover-background" to "#4b4b4b", "--text-color-white" to "#f5f5f5", "--error-color" to "#ee0a24", "--error-color-1" to "#2a1a1b", "--error-color-7" to "#e88e8c", "--text-color-1" to "#F5F5F5", "--text-color-2" to "#CCC", "--text-color-3" to "#999", "--text-color-4" to "#F5F5F5", "--background-color-1" to "#111", "--background-color-2" to "rgba(255, 255, 255, 0.13)", "--cell-active-color" to "#3a3a3c", "--uploader-background" to "#262727")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "justify-between" to _pS(_uM("justifyContent" to "space-between")), "justify-around" to _pS(_uM("justifyContent" to "space-around")))
             }
     }
 }
@@ -3855,6 +3855,20 @@ val hasStrValue__1 = fun(reassignedKVal: Any?): Boolean {
         kVal = (kVal as Number).toString()
     }
     return (kVal as String).trim().length > 0
+}
+val isImage = fun(url: String?): Boolean {
+    if (url == null) {
+        return false
+    }
+    val imageExtensions = UTSRegExp("\\.(jpg|jpeg|png|gif|bmp|webp|svg|ico)\$", "i")
+    return imageExtensions.test(url)
+}
+val isVideo = fun(url: String?): Boolean {
+    if (url == null) {
+        return false
+    }
+    val videoExtensions = UTSRegExp("\\.(mp4|webm|ogg|mov|avi|wmv|flv|mkv)\$", "i")
+    return videoExtensions.test(url)
 }
 open class FontData__1 (
     @JsonNotNull
@@ -4585,6 +4599,541 @@ val GenPagesDiscussDetailIndexClass = CreateVueComponent(GenPagesDiscussDetailIn
 }
 , fun(instance, renderer): GenPagesDiscussDetailIndex {
     return GenPagesDiscussDetailIndex(instance, renderer)
+}
+)
+open class BtnStyleType (
+    open var padding: String? = null,
+    open var margin: String? = null,
+    open var width: String? = null,
+    open var height: String? = null,
+    open var color: String? = null,
+    open var background: String? = null,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("BtnStyleType", "componnets/MyButton/type.uts", 9, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return BtnStyleTypeReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class BtnStyleTypeReactiveObject : BtnStyleType, IUTSReactive<BtnStyleType> {
+    override var __v_raw: BtnStyleType
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: BtnStyleType, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(padding = __v_raw.padding, margin = __v_raw.margin, width = __v_raw.width, height = __v_raw.height, color = __v_raw.color, background = __v_raw.background) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): BtnStyleTypeReactiveObject {
+        return BtnStyleTypeReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var padding: String?
+        get() {
+            return _tRG(__v_raw, "padding", __v_raw.padding, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("padding")) {
+                return
+            }
+            val oldValue = __v_raw.padding
+            __v_raw.padding = value
+            _tRS(__v_raw, "padding", oldValue, value)
+        }
+    override var margin: String?
+        get() {
+            return _tRG(__v_raw, "margin", __v_raw.margin, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("margin")) {
+                return
+            }
+            val oldValue = __v_raw.margin
+            __v_raw.margin = value
+            _tRS(__v_raw, "margin", oldValue, value)
+        }
+    override var width: String?
+        get() {
+            return _tRG(__v_raw, "width", __v_raw.width, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("width")) {
+                return
+            }
+            val oldValue = __v_raw.width
+            __v_raw.width = value
+            _tRS(__v_raw, "width", oldValue, value)
+        }
+    override var height: String?
+        get() {
+            return _tRG(__v_raw, "height", __v_raw.height, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("height")) {
+                return
+            }
+            val oldValue = __v_raw.height
+            __v_raw.height = value
+            _tRS(__v_raw, "height", oldValue, value)
+        }
+    override var color: String?
+        get() {
+            return _tRG(__v_raw, "color", __v_raw.color, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("color")) {
+                return
+            }
+            val oldValue = __v_raw.color
+            __v_raw.color = value
+            _tRS(__v_raw, "color", oldValue, value)
+        }
+    override var background: String?
+        get() {
+            return _tRG(__v_raw, "background", __v_raw.background, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("background")) {
+                return
+            }
+            val oldValue = __v_raw.background
+            __v_raw.background = value
+            _tRS(__v_raw, "background", oldValue, value)
+        }
+}
+val GenComponnetsMyButtonIndexClass = CreateVueComponent(GenComponnetsMyButtonIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenComponnetsMyButtonIndex.name, inheritAttrs = GenComponnetsMyButtonIndex.inheritAttrs, inject = GenComponnetsMyButtonIndex.inject, props = GenComponnetsMyButtonIndex.props, propsNeedCastKeys = GenComponnetsMyButtonIndex.propsNeedCastKeys, emits = GenComponnetsMyButtonIndex.emits, components = GenComponnetsMyButtonIndex.components, styles = GenComponnetsMyButtonIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenComponnetsMyButtonIndex.setup(props as GenComponnetsMyButtonIndex)
+    }
+    )
+}
+, fun(instance, renderer): GenComponnetsMyButtonIndex {
+    return GenComponnetsMyButtonIndex(instance)
+}
+)
+typealias UploaderStatus = String
+open class UploaderFileItem (
+    @JsonNotNull
+    open var url: String,
+    open var poster: String? = null,
+    open var fileName: String? = null,
+    open var status: UploaderStatus? = null,
+    open var fileType: String? = null,
+    open var message: String? = null,
+    open var percent: Number? = null,
+    open var size: Number? = null,
+    open var duration: Number? = null,
+    open var deletable: Boolean? = null,
+    open var uid: String? = null,
+    open var name: String? = null,
+    open var action: String? = null,
+    open var formData: UTSJSONObject? = null,
+    open var header: UTSJSONObject? = null,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("UploaderFileItem", "componnets/MyUploader/type.uts", 3, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return UploaderFileItemReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class UploaderFileItemReactiveObject : UploaderFileItem, IUTSReactive<UploaderFileItem> {
+    override var __v_raw: UploaderFileItem
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: UploaderFileItem, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(url = __v_raw.url, poster = __v_raw.poster, fileName = __v_raw.fileName, status = __v_raw.status, fileType = __v_raw.fileType, message = __v_raw.message, percent = __v_raw.percent, size = __v_raw.size, duration = __v_raw.duration, deletable = __v_raw.deletable, uid = __v_raw.uid, name = __v_raw.name, action = __v_raw.action, formData = __v_raw.formData, header = __v_raw.header) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UploaderFileItemReactiveObject {
+        return UploaderFileItemReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var url: String
+        get() {
+            return _tRG(__v_raw, "url", __v_raw.url, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("url")) {
+                return
+            }
+            val oldValue = __v_raw.url
+            __v_raw.url = value
+            _tRS(__v_raw, "url", oldValue, value)
+        }
+    override var poster: String?
+        get() {
+            return _tRG(__v_raw, "poster", __v_raw.poster, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("poster")) {
+                return
+            }
+            val oldValue = __v_raw.poster
+            __v_raw.poster = value
+            _tRS(__v_raw, "poster", oldValue, value)
+        }
+    override var fileName: String?
+        get() {
+            return _tRG(__v_raw, "fileName", __v_raw.fileName, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("fileName")) {
+                return
+            }
+            val oldValue = __v_raw.fileName
+            __v_raw.fileName = value
+            _tRS(__v_raw, "fileName", oldValue, value)
+        }
+    override var status: UploaderStatus?
+        get() {
+            return _tRG(__v_raw, "status", __v_raw.status, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("status")) {
+                return
+            }
+            val oldValue = __v_raw.status
+            __v_raw.status = value
+            _tRS(__v_raw, "status", oldValue, value)
+        }
+    override var fileType: String?
+        get() {
+            return _tRG(__v_raw, "fileType", __v_raw.fileType, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("fileType")) {
+                return
+            }
+            val oldValue = __v_raw.fileType
+            __v_raw.fileType = value
+            _tRS(__v_raw, "fileType", oldValue, value)
+        }
+    override var message: String?
+        get() {
+            return _tRG(__v_raw, "message", __v_raw.message, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("message")) {
+                return
+            }
+            val oldValue = __v_raw.message
+            __v_raw.message = value
+            _tRS(__v_raw, "message", oldValue, value)
+        }
+    override var percent: Number?
+        get() {
+            return _tRG(__v_raw, "percent", __v_raw.percent, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("percent")) {
+                return
+            }
+            val oldValue = __v_raw.percent
+            __v_raw.percent = value
+            _tRS(__v_raw, "percent", oldValue, value)
+        }
+    override var size: Number?
+        get() {
+            return _tRG(__v_raw, "size", __v_raw.size, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("size")) {
+                return
+            }
+            val oldValue = __v_raw.size
+            __v_raw.size = value
+            _tRS(__v_raw, "size", oldValue, value)
+        }
+    override var duration: Number?
+        get() {
+            return _tRG(__v_raw, "duration", __v_raw.duration, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("duration")) {
+                return
+            }
+            val oldValue = __v_raw.duration
+            __v_raw.duration = value
+            _tRS(__v_raw, "duration", oldValue, value)
+        }
+    override var deletable: Boolean?
+        get() {
+            return _tRG(__v_raw, "deletable", __v_raw.deletable, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("deletable")) {
+                return
+            }
+            val oldValue = __v_raw.deletable
+            __v_raw.deletable = value
+            _tRS(__v_raw, "deletable", oldValue, value)
+        }
+    override var uid: String?
+        get() {
+            return _tRG(__v_raw, "uid", __v_raw.uid, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("uid")) {
+                return
+            }
+            val oldValue = __v_raw.uid
+            __v_raw.uid = value
+            _tRS(__v_raw, "uid", oldValue, value)
+        }
+    override var name: String?
+        get() {
+            return _tRG(__v_raw, "name", __v_raw.name, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("name")) {
+                return
+            }
+            val oldValue = __v_raw.name
+            __v_raw.name = value
+            _tRS(__v_raw, "name", oldValue, value)
+        }
+    override var action: String?
+        get() {
+            return _tRG(__v_raw, "action", __v_raw.action, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("action")) {
+                return
+            }
+            val oldValue = __v_raw.action
+            __v_raw.action = value
+            _tRS(__v_raw, "action", oldValue, value)
+        }
+    override var formData: UTSJSONObject?
+        get() {
+            return _tRG(__v_raw, "formData", __v_raw.formData, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("formData")) {
+                return
+            }
+            val oldValue = __v_raw.formData
+            __v_raw.formData = value
+            _tRS(__v_raw, "formData", oldValue, value)
+        }
+    override var header: UTSJSONObject?
+        get() {
+            return _tRG(__v_raw, "header", __v_raw.header, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("header")) {
+                return
+            }
+            val oldValue = __v_raw.header
+            __v_raw.header = value
+            _tRS(__v_raw, "header", oldValue, value)
+        }
+}
+open class UploaderSuccess (
+    @JsonNotNull
+    open var statusCode: Number,
+    @JsonNotNull
+    open var data: String,
+    @JsonNotNull
+    open var file: UploaderFileItem,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("UploaderSuccess", "componnets/MyUploader/type.uts", 20, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return UploaderSuccessReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class UploaderSuccessReactiveObject : UploaderSuccess, IUTSReactive<UploaderSuccess> {
+    override var __v_raw: UploaderSuccess
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: UploaderSuccess, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(statusCode = __v_raw.statusCode, data = __v_raw.data, file = __v_raw.file) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UploaderSuccessReactiveObject {
+        return UploaderSuccessReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var statusCode: Number
+        get() {
+            return _tRG(__v_raw, "statusCode", __v_raw.statusCode, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("statusCode")) {
+                return
+            }
+            val oldValue = __v_raw.statusCode
+            __v_raw.statusCode = value
+            _tRS(__v_raw, "statusCode", oldValue, value)
+        }
+    override var data: String
+        get() {
+            return _tRG(__v_raw, "data", __v_raw.data, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("data")) {
+                return
+            }
+            val oldValue = __v_raw.data
+            __v_raw.data = value
+            _tRS(__v_raw, "data", oldValue, value)
+        }
+    override var file: UploaderFileItem
+        get() {
+            return _tRG(__v_raw, "file", __v_raw.file, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("file")) {
+                return
+            }
+            val oldValue = __v_raw.file
+            __v_raw.file = value
+            _tRS(__v_raw, "file", oldValue, value)
+        }
+}
+open class UploaderFail (
+    @JsonNotNull
+    open var errCode: Number,
+    @JsonNotNull
+    open var statusCode: Number,
+    open var data: Any? = null,
+    @JsonNotNull
+    open var errMsg: String,
+    @JsonNotNull
+    open var file: UploaderFileItem,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("UploaderFail", "componnets/MyUploader/type.uts", 25, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return UploaderFailReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class UploaderFailReactiveObject : UploaderFail, IUTSReactive<UploaderFail> {
+    override var __v_raw: UploaderFail
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: UploaderFail, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(errCode = __v_raw.errCode, statusCode = __v_raw.statusCode, data = __v_raw.data, errMsg = __v_raw.errMsg, file = __v_raw.file) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UploaderFailReactiveObject {
+        return UploaderFailReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var errCode: Number
+        get() {
+            return _tRG(__v_raw, "errCode", __v_raw.errCode, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("errCode")) {
+                return
+            }
+            val oldValue = __v_raw.errCode
+            __v_raw.errCode = value
+            _tRS(__v_raw, "errCode", oldValue, value)
+        }
+    override var statusCode: Number
+        get() {
+            return _tRG(__v_raw, "statusCode", __v_raw.statusCode, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("statusCode")) {
+                return
+            }
+            val oldValue = __v_raw.statusCode
+            __v_raw.statusCode = value
+            _tRS(__v_raw, "statusCode", oldValue, value)
+        }
+    override var data: Any?
+        get() {
+            return _tRG(__v_raw, "data", __v_raw.data, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("data")) {
+                return
+            }
+            val oldValue = __v_raw.data
+            __v_raw.data = value
+            _tRS(__v_raw, "data", oldValue, value)
+        }
+    override var errMsg: String
+        get() {
+            return _tRG(__v_raw, "errMsg", __v_raw.errMsg, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("errMsg")) {
+                return
+            }
+            val oldValue = __v_raw.errMsg
+            __v_raw.errMsg = value
+            _tRS(__v_raw, "errMsg", oldValue, value)
+        }
+    override var file: UploaderFileItem
+        get() {
+            return _tRG(__v_raw, "file", __v_raw.file, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("file")) {
+                return
+            }
+            val oldValue = __v_raw.file
+            __v_raw.file = value
+            _tRS(__v_raw, "file", oldValue, value)
+        }
+}
+open class UploaderComplete (
+    @JsonNotNull
+    open var successList: UTSArray<UploaderSuccess>,
+    @JsonNotNull
+    open var failList: UTSArray<UploaderFail>,
+) : UTSObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("UploaderComplete", "componnets/MyUploader/type.uts", 32, 13)
+    }
+}
+var fileId: Number = 1
+val getFileId = fun(): String {
+    return "" + (Date.now() + fileId++)
+}
+val getFileExtension = fun(url: String): String {
+    val lastDotIndex = url.lastIndexOf(".")
+    if (lastDotIndex == -1 || lastDotIndex == url.length - 1) {
+        return ""
+    }
+    return url.slice(lastDotIndex + 1)
+}
+val getFileType = fun(file: UploaderFileItem): String {
+    if (file.fileType != null && file.fileType != "") {
+        return file.fileType!!
+    }
+    if (isImage(file.url)) {
+        return "image"
+    }
+    if (isVideo(file.url)) {
+        return "video"
+    }
+    return getFileExtension(file.url)
+}
+val GenComponnetsMyUploaderIndexClass = CreateVueComponent(GenComponnetsMyUploaderIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = GenComponnetsMyUploaderIndex.name, inheritAttrs = GenComponnetsMyUploaderIndex.inheritAttrs, inject = GenComponnetsMyUploaderIndex.inject, props = GenComponnetsMyUploaderIndex.props, propsNeedCastKeys = GenComponnetsMyUploaderIndex.propsNeedCastKeys, emits = GenComponnetsMyUploaderIndex.emits, components = GenComponnetsMyUploaderIndex.components, styles = GenComponnetsMyUploaderIndex.styles, styleIsolation = UniSharedDataComponentStyleIsolation.AppAndPage, setup = fun(props: ComponentPublicInstance, ctx: SetupContext): Any? {
+        return GenComponnetsMyUploaderIndex.setup(props as GenComponnetsMyUploaderIndex, ctx)
+    }
+    )
+}
+, fun(instance, renderer): GenComponnetsMyUploaderIndex {
+    return GenComponnetsMyUploaderIndex(instance)
 }
 )
 val GenPagesDiscussIssueIndexClass = CreateVueComponent(GenPagesDiscussIssueIndex::class.java, fun(): VueComponentOptions {

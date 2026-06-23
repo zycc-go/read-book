@@ -3,3 +3,9 @@ export type PropsType = {
 	leftArrow : boolean
 	height : number
 }
+
+export type EmitsType = {
+	title : string
+	leftArrow : boolean
+	height : number
+}
