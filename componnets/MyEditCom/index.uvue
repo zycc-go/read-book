@@ -1,0 +1,72 @@
+<template>
+	<view class="my-edit-com">
+		<view class="icon-items">
+			<view :class="{'icon-item':true, 'item-hover': itemHover == item.id}" v-for="item in comList" :key="item.id"
+				@touchstart="onTouchstart(item.id)" @touchend="onTouchend" @tap="emit('tapItem', item)">
+				<my-icon :name="item.icon" size="24px" color="var(--text-color-2)" />
+			</view>
+		</view>
+
+		<view class="navbar-right">
+			<MyButton size="mini" text="发布" type="primary" @tap="onSubmit" />
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import MyIcon from '@/componnets/MyIcon/index.uvue';
+	import MyButton from '@/componnets/MyButton/index.uvue';
+	import { ComItemType } from './type.uts'
+
+	const emit = defineEmits(['tap', 'submit'])
+
+	const comList : ComItemType[] = [
+		{ id: 0, icon: 'image', text: '图片' },
+		{ id: 1, icon: 'at', text: '@' },
+		{ id: 2, icon: 'share-alt', text: '链接' },
+	]
+
+	const itemHover = ref<number>(-1)
+
+	const onTouchstart = (id : number) => {
+		itemHover.value = id
+	}
+
+	const onTouchend = (event : UniTouchEvent) => {
+		itemHover.value = -1
+	}
+
+	const onSubmit = () => {
+		emit('submit')
+	}
+</script>
+
+
+<style scoped lang="scss">
+	.my-edit-com {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 $uni-spacing-row-8;
+
+		.icon-items {
+			display: flex;
+			flex-direction: row;
+
+			.icon-item {
+				width: $uni-font-size-40;
+				height: $uni-font-size-40;
+				justify-content: center;
+				align-items: center;
+				margin: 0 $uni-spacing-row-4;
+			}
+
+			.item-hover {
+				opacity: .6;
+			}
+		}
+
+	}
+</style>

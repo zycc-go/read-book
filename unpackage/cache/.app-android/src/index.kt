@@ -22,6 +22,8 @@ import io.dcloud.uniapp.extapi.getDeviceInfo as uni_getDeviceInfo
 import io.dcloud.uniapp.extapi.getFileSystemManager as uni_getFileSystemManager
 import io.dcloud.uniapp.extapi.getStorageSync as uni_getStorageSync
 import io.dcloud.uniapp.extapi.getWindowInfo as uni_getWindowInfo
+import io.dcloud.uniapp.extapi.offKeyboardHeightChange as uni_offKeyboardHeightChange
+import io.dcloud.uniapp.extapi.onKeyboardHeightChange as uni_onKeyboardHeightChange
 import io.dcloud.uniapp.extapi.openDialogPage as uni_openDialogPage
 import io.dcloud.uniapp.extapi.rpx2px as uni_rpx2px
 import io.dcloud.uniapp.extapi.setAppTheme as uni_setAppTheme
@@ -113,7 +115,7 @@ fun tryConnectSocket(host: String, port: String, id: String): UTSPromise<SocketT
 fun initRuntimeSocketService(): UTSPromise<Boolean> {
     val hosts: String = "10.191.92.87,127.0.0.1"
     val port: String = "8090"
-    val id: String = "app-android_-42QtZ"
+    val id: String = "app-android_s8gx4Y"
     if (hosts == "" || port == "" || id == "") {
         return UTSPromise.resolve(false)
     }
@@ -194,6 +196,8 @@ open class State (
     @JsonNotNull
     open var safeAreaInsetsHeight: Number,
     @JsonNotNull
+    open var keyboardHeight: Number,
+    @JsonNotNull
     open var uniPlatform: String,
     @JsonNotNull
     open var devicePixelRatio: Number,
@@ -226,7 +230,7 @@ class StateReactiveObject : State, IUTSReactive<State> {
     override var __v_isReadonly: Boolean
     override var __v_isShallow: Boolean
     override var __v_skip: Boolean
-    constructor(__v_raw: State, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(statusBarHeight = __v_raw.statusBarHeight, navbarHeight = __v_raw.navbarHeight, safeAreaInsetsHeight = __v_raw.safeAreaInsetsHeight, uniPlatform = __v_raw.uniPlatform, devicePixelRatio = __v_raw.devicePixelRatio, active = __v_raw.active, leftWinActive = __v_raw.leftWinActive, agreeToPrivacy = __v_raw.agreeToPrivacy, isFollowSystem = __v_raw.isFollowSystem, appTheme = __v_raw.appTheme, osTheme = __v_raw.osTheme, unit = __v_raw.unit, netless = __v_raw.netless, userInfo = __v_raw.userInfo) {
+    constructor(__v_raw: State, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(statusBarHeight = __v_raw.statusBarHeight, navbarHeight = __v_raw.navbarHeight, safeAreaInsetsHeight = __v_raw.safeAreaInsetsHeight, keyboardHeight = __v_raw.keyboardHeight, uniPlatform = __v_raw.uniPlatform, devicePixelRatio = __v_raw.devicePixelRatio, active = __v_raw.active, leftWinActive = __v_raw.leftWinActive, agreeToPrivacy = __v_raw.agreeToPrivacy, isFollowSystem = __v_raw.isFollowSystem, appTheme = __v_raw.appTheme, osTheme = __v_raw.osTheme, unit = __v_raw.unit, netless = __v_raw.netless, userInfo = __v_raw.userInfo) {
         this.__v_raw = __v_raw
         this.__v_isReadonly = __v_isReadonly
         this.__v_isShallow = __v_isShallow
@@ -270,6 +274,18 @@ class StateReactiveObject : State, IUTSReactive<State> {
             val oldValue = __v_raw.safeAreaInsetsHeight
             __v_raw.safeAreaInsetsHeight = value
             _tRS(__v_raw, "safeAreaInsetsHeight", oldValue, value)
+        }
+    override var keyboardHeight: Number
+        get() {
+            return _tRG(__v_raw, "keyboardHeight", __v_raw.keyboardHeight, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("keyboardHeight")) {
+                return
+            }
+            val oldValue = __v_raw.keyboardHeight
+            __v_raw.keyboardHeight = value
+            _tRS(__v_raw, "keyboardHeight", oldValue, value)
         }
     override var uniPlatform: String
         get() {
@@ -404,7 +420,7 @@ class StateReactiveObject : State, IUTSReactive<State> {
             _tRS(__v_raw, "userInfo", oldValue, value)
         }
 }
-val state = reactive(State(statusBarHeight = 0, navbarHeight = 44, safeAreaInsetsHeight = 0, uniPlatform = "", devicePixelRatio = 1, active = "componentPage", leftWinActive = "/pages/bookcase/index", appTheme = "light", osTheme = "light", unit = "px", isFollowSystem = false, netless = false, userInfo = null, agreeToPrivacy = null))
+val state = reactive(State(statusBarHeight = 0, navbarHeight = 44, safeAreaInsetsHeight = 0, keyboardHeight = 0, uniPlatform = "", devicePixelRatio = 1, active = "componentPage", leftWinActive = "/pages/bookcase/index", appTheme = "light", osTheme = "light", unit = "px", isFollowSystem = false, netless = false, userInfo = null, agreeToPrivacy = null))
 val setAppTheme = fun(value: String){
     state.appTheme = value
     uni_setStorageSync("appTheme", value)
@@ -448,7 +464,7 @@ val checkSystemInfo = fun(){
             }
         }
          catch (e: Throwable) {
-            console.log("" + e + " 失败", " at store/index.uts:124")
+            console.log("" + e + " 失败", " at store/index.uts:127")
         }
     }
 }
@@ -3777,14 +3793,19 @@ open class GenApp : BaseApp {
             )
             onAppShow(fun(_options){
                 console.log("App Show", " at App.uvue:17")
+                uni_onKeyboardHeightChange(fun(res: OnKeyboardHeightChangeCallbackResult){
+                    state.keyboardHeight = res.height
+                }
+                )
             }
             )
             onAppHide(fun(){
-                console.log("App Hide", " at App.uvue:28")
+                console.log("App Hide", " at App.uvue:25")
+                uni_offKeyboardHeightChange(null)
             }
             )
             onLastPageBackPress(fun(){
-                console.log("App LastPageBackPress", " at App.uvue:33")
+                console.log("App LastPageBackPress", " at App.uvue:32")
                 if (firstBackTime == 0) {
                     uni_showToast(ShowToastOptions(title = "再按一次退出应用", position = "bottom"))
                     firstBackTime = Date.now()
@@ -3798,7 +3819,7 @@ open class GenApp : BaseApp {
             }
             )
             onExit(fun(){
-                console.log("App Exit", " at App.uvue:50")
+                console.log("App Exit", " at App.uvue:49")
             }
             )
             return fun(): Any? {
@@ -5134,6 +5155,28 @@ val GenComponnetsMyUploaderIndexClass = CreateVueComponent(GenComponnetsMyUpload
 }
 , fun(instance, renderer): GenComponnetsMyUploaderIndex {
     return GenComponnetsMyUploaderIndex(instance)
+}
+)
+open class ComItemType (
+    @JsonNotNull
+    open var id: Number,
+    @JsonNotNull
+    open var icon: String,
+    @JsonNotNull
+    open var text: String,
+) : UTSObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("ComItemType", "componnets/MyEditCom/type.uts", 1, 13)
+    }
+}
+val GenComponnetsMyEditComIndexClass = CreateVueComponent(GenComponnetsMyEditComIndex::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "component", name = "", inheritAttrs = GenComponnetsMyEditComIndex.inheritAttrs, inject = GenComponnetsMyEditComIndex.inject, props = GenComponnetsMyEditComIndex.props, propsNeedCastKeys = GenComponnetsMyEditComIndex.propsNeedCastKeys, emits = GenComponnetsMyEditComIndex.emits, components = GenComponnetsMyEditComIndex.components, styles = GenComponnetsMyEditComIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenComponnetsMyEditComIndex.setup(props as GenComponnetsMyEditComIndex)
+    }
+    )
+}
+, fun(instance, renderer): GenComponnetsMyEditComIndex {
+    return GenComponnetsMyEditComIndex(instance)
 }
 )
 val GenPagesDiscussIssueIndexClass = CreateVueComponent(GenPagesDiscussIssueIndex::class.java, fun(): VueComponentOptions {

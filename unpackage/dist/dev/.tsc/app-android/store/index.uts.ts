@@ -22,6 +22,8 @@ type State = {
 	navbarHeight : number;
 	// 全面屏操作条高度
 	safeAreaInsetsHeight : number;
+	// 键盘高度
+	keyboardHeight : number;
 	// 平台
 	uniPlatform : string;
 	// 设备像素比
@@ -49,6 +51,7 @@ export const state = reactive({
 	statusBarHeight: 0,
 	navbarHeight: 44,
 	safeAreaInsetsHeight: 0,
+	keyboardHeight: 0,
 	uniPlatform: '',
 	devicePixelRatio: 1,
 	active: 'componentPage',
@@ -121,7 +124,7 @@ export const checkSystemInfo = () => {
 				uni.setAppTheme({ theme: appTheme });
 			}
 		} catch (e) {
-			__f__('log','at store/index.uts:124',`${e} 失败`);
+			__f__('log','at store/index.uts:127',`${e} 失败`);
 		}
 	}
 };

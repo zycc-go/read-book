@@ -18,8 +18,12 @@
 
 		<view class="card">
 			<MyUploader action="https://api.riceui.cn/app/upload" :max-count="3" :success-code="200" uploadIcon="plus"
-				@complete="onComolete" />
+				ref="uploaderRef" @complete="onComolete" />
 			<!-- <editor class="preview-editor" placeholder="请输入" @ready="onEditorReady" @input="onEditorInput" /> -->
+		</view>
+
+		<view class="keyboard-com" :style="keyboardStyle">
+			<MyEditCom @tapItem="onTapEditCom" />
 		</view>
 	</view>
 </template>
@@ -30,7 +34,10 @@
 	import MyIcon from '@/componnets/MyIcon/index.uvue';
 	import MyButton from '@/componnets/MyButton/index.uvue';
 	import MyUploader from '@/componnets/MyUploader/index.uvue';
+	import MyEditCom from '@/componnets/MyEditCom/index.uvue';
+	import { ComItemType } from '@/componnets/MyEditCom/type.uts';
 	import { UploaderFileItem, UploaderComplete } from "@/componnets/MyUploader/type.uts"
+	import { addUnit, hasStrValue } from "../../utils"
 
 	const style = computed(() => {
 		return {
@@ -40,6 +47,10 @@
 	})
 
 	const content = ref<string>('')
+
+	const keyboardStyle = ref({ bottom: state.keyboardHeight == 0 ? state.safeAreaInsetsHeight : state.keyboardHeight })
+
+	const uploaderRef = ref<ComponentPublicInstance | null>(null)
 
 	const onEditorReady = () => {
 	}
@@ -55,6 +66,12 @@
 		// console.log('从filesList中拿上传成功合集：', filesList.filter(v => v.status == 'success'))
 		// console.log('从result中拿上传成功合集：', success.map(v => v.file))
 		// console.log('上传失败合集：', fail)
+	}
+
+	const onTapEditCom = (item : ComItemType) => {
+		console.log(item);
+		if (item.id == 0 && uploaderRef.value) {
+		}
 	}
 
 	const onSubmit = () => {
@@ -116,5 +133,14 @@
 		.preview-editor {
 			min-height: 200px;
 		}
+	}
+
+	.keyboard-com {
+		position: fixed;
+		left: 0;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 	}
 </style>

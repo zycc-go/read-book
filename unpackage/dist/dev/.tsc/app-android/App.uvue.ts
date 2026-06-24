@@ -22,22 +22,21 @@ const _cache = __ins.renderCache;
 
 	onAppShow(() => {
 		console.log('App Show', " at App.uvue:17")
-		// uni.onAppThemeChange((res : AppThemeChangeResult) => {
-		// state.appTheme = osTheme;
-		// setTheme(osTheme)
-		// uni.setAppTheme({ theme: osTheme })
-		// uni.setStorageSync('appTheme', osTheme)
-		// state.appTheme = res.appTheme.trim() ?? 'light';
-		// })
+		// 监听键盘高度
+		uni.onKeyboardHeightChange((res : OnKeyboardHeightChangeCallbackResult) => {
+			state.keyboardHeight = res.height
+		});
 	})
 
 	onAppHide(() => {
-		console.log('App Hide', " at App.uvue:28")
+		console.log('App Hide', " at App.uvue:25")
+		// 移除-监听键盘高度
+		uni.offKeyboardHeightChange();
 	})
 
 
 	onLastPageBackPress(() => {
-		console.log('App LastPageBackPress', " at App.uvue:33")
+		console.log('App LastPageBackPress', " at App.uvue:32")
 		if (firstBackTime == 0) {
 			uni.showToast({
 				title: '再按一次退出应用',
@@ -54,7 +53,7 @@ const _cache = __ins.renderCache;
 	})
 
 	onExit(() => {
-		console.log('App Exit', " at App.uvue:50")
+		console.log('App Exit', " at App.uvue:49")
 	})
 
 return (): any | null => { return null } }
