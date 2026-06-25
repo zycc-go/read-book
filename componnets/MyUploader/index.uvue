@@ -45,7 +45,7 @@
 	</view>
 </template>
 
-<script setup>
+<script setup lang="uts">
 	import MyIcon from '@/componnets/MyIcon/index.uvue';
 	import { UploaderProps, UploaderFileItem, UploaderSuccess, UploaderFail, UploaderComplete } from "./type.uts"
 	import { addUnit, hasStrValue } from "../../utils"

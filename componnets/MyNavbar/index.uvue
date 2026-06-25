@@ -50,6 +50,7 @@
 		position: fixed;
 		top: 0;
 		width: 100%;
+		background-color: var(--navbar-background);
 	}
 
 	.my-navbar {
@@ -59,7 +60,6 @@
 		justify-content: space-between;
 		position: relative;
 		z-index: 99;
-		background-color: var(--navbar-background);
 
 		.my-navbar-left {
 			min-width: $uni-font-size-40;

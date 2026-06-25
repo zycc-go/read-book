@@ -1,3 +1,7 @@
+export type PropsType = {
+	showSubmit ?: boolean
+}
+
 export type ComItemType = {
 	id : number
 	icon : string

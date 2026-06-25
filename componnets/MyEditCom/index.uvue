@@ -8,7 +8,7 @@
 		</view>
 
 		<view class="navbar-right">
-			<MyButton size="mini" text="发布" type="primary" @tap="onSubmit" />
+			<MyButton v-if="showSubmit" size="mini" text="发布" type="primary" @tap="onSubmit" />
 		</view>
 	</view>
 </template>
@@ -16,7 +16,11 @@
 <script setup lang="uts">
 	import MyIcon from '@/componnets/MyIcon/index.uvue';
 	import MyButton from '@/componnets/MyButton/index.uvue';
-	import { ComItemType } from './type.uts'
+	import { PropsType, ComItemType } from './type.uts'
+	
+	const props = withDefaults(defineProps<PropsType>(), {
+		showSubmit: false,
+	})
 
 	const emit = defineEmits(['tap', 'submit'])
 

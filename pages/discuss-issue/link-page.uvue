@@ -1,0 +1,108 @@
+<template>
+	<view :class="[`theme-${state.appTheme}`, 'page']" :style="style">
+		<my-navbar leftArrow title="链接" />
+
+		<view class="card">
+			<form @submit="onSubmit">
+				<view class="form-item">
+					<text class="item-title">文本</text>
+					<input class="item-input" name="title" :value="data.title" placeholder="请输入" :maxlength="-1" />
+				</view>
+				<view class="form-item">
+					<text class="item-title">链接</text>
+					<textarea class="item-textarea" placeholder="请输入" name="content" :auto-height="true"
+						:value="data.content" />
+				</view>
+				<view class="flex-row">
+					<button class="btn" type="primary" form-type="submit">确定</button>
+				</view>
+			</form>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { state } from '@/store/index.uts'
+	import MyNavbar from '@/componnets/MyNavbar/index.uvue';
+	import { FormDataType } from './type.uts'
+
+	const style = computed(() => {
+		return {
+			paddingTop: state.statusBarHeight + state.navbarHeight + 'px',
+			paddingBottom: state.safeAreaInsetsHeight + 'px',
+		};
+	})
+
+	const data = reactive<FormDataType>({
+		title: '',
+		content: '',
+		formData: {}
+	})
+
+	const onSubmit = (event : UniFormSubmitEvent) => {
+		const obj = event.detail.value as UTSJSONObject;
+		const title = obj.getString('title') ?? '';
+		const content = obj.getString('content') ?? '';
+		if (title.length == 0) {
+			uni.showToast({ title: '请输入文本', icon: 'error' })
+			return
+		}
+		if (content.length == 0) {
+			uni.showToast({ title: '请输入链接', icon: 'error' })
+			return
+		}
+		uni.showLoading()
+		uni.navigateBack({
+			success() {
+				uni.$emit('link-submit', obj)
+			},
+			complete() {
+				uni.hideLoading()
+			}
+		})
+	}
+</script>
+
+<style lang="scss" scoped>
+	.page {
+		background-color: var(--navbar-background);
+		height: 100%;
+		width: 100%;
+	}
+
+	.card {
+		padding: 0 $uni-spacing-row-16;
+
+		.form-item {
+
+			.item-title {
+				margin: $uni-spacing-col-12 0;
+			}
+
+			.item-input {
+				padding: $uni-spacing-col-8 $uni-spacing-row-12;
+				border-radius: $uni-border-radius-8;
+				font-size: $uni-font-size-14;
+				color: var(--text-color-1);
+				line-height: $uni-line-height-24;
+				background-color: var(--background-color-2);
+			}
+
+			.item-textarea {
+				min-height: 140px;
+				width: 100%;
+				padding: $uni-spacing-col-8 $uni-spacing-row-12;
+				border-radius: $uni-border-radius-8;
+				font-size: $uni-font-size-14;
+				color: var(--text-color-1);
+				line-height: $uni-line-height-24;
+				background-color: var(--background-color-2);
+			}
+		}
+
+
+		.btn {
+			margin-top: $uni-spacing-col-12;
+		}
+	}
+</style>

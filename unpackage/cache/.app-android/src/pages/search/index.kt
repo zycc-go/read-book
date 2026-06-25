@@ -30,9 +30,11 @@ open class GenPagesSearchIndex : BasePage {
                 return _uO("paddingTop" to (state.statusBarHeight + state.navbarHeight + "px"), "paddingBottom" to (state.safeAreaInsetsHeight + "px"))
             }
             )
+            val isFocus = ref<Boolean>(false)
             val keywords = ref<String>("")
             val searchRecord = ref(_uA<SearchRecordItem>())
             val searchType = ref<String>("record")
+            val fromType = ref<String>("book")
             val onBack = fun(){
                 uni_navigateBack(null)
             }
@@ -40,6 +42,9 @@ open class GenPagesSearchIndex : BasePage {
                 if (event.detail.value.length == 0) {
                     searchType.value = "record"
                 }
+            }
+            val onInputClear = fun(){
+                keywords.value = ""
             }
             val onClickAction = fun(){
                 if (keywords.value.length > 0) {
@@ -70,7 +75,7 @@ open class GenPagesSearchIndex : BasePage {
                 }
                 )
                 uni_setStorage(SetStorageOptions(key = "searchRecord", data = searchRecord.value, fail = fun(err: UniError){
-                    console.log(err, " at pages/search/index.uvue:108")
+                    console.log(err, " at pages/search/index.uvue:119")
                 }
                 ))
             }
@@ -78,7 +83,7 @@ open class GenPagesSearchIndex : BasePage {
                 if (searchRecord.value.length > 0) {
                     searchRecord.value = _uA()
                     uni_setStorage(SetStorageOptions(key = "searchRecord", data = searchRecord.value, fail = fun(err: UniError){
-                        console.log(err, " at pages/search/index.uvue:120")
+                        console.log(err, " at pages/search/index.uvue:131")
                     }
                     ))
                 }
@@ -86,7 +91,7 @@ open class GenPagesSearchIndex : BasePage {
             val initData = fun(){
                 uni_showLoading(ShowLoadingOptions(title = "加载中..."))
                 uni_getStorage(GetStorageOptions(key = "searchRecord", success = fun(res: GetStorageSuccess){
-                    val data = UTSAndroid.consoleDebugError(JSON.parse<UTSArray<SearchRecordItem>>(JSON.stringify(res.data)), " at pages/search/index.uvue:131")
+                    val data = UTSAndroid.consoleDebugError(JSON.parse<UTSArray<SearchRecordItem>>(JSON.stringify(res.data)), " at pages/search/index.uvue:142")
                     searchRecord.value = data ?: _uA()
                 }
                 , complete = fun(_){
@@ -94,8 +99,9 @@ open class GenPagesSearchIndex : BasePage {
                 }
                 ))
             }
-            onMounted(fun(){
+            onLoad(fun(options){
                 initData()
+                fromType.value = options["type"] ?: "book"
             }
             )
             return fun(): Any? {
@@ -108,12 +114,19 @@ open class GenPagesSearchIndex : BasePage {
                             _cV(unref(GenComponnetsMyIconIndexClass), _uM("name" to "left", "size" to "24px"))
                         )),
                         _cE("view", _uM("class" to "input-wrapper"), _uA(
-                            _cE("input", _uM("maxlength" to 20, "auto-focus" to true, "modelValue" to unref(keywords), "onInput" to _uA<Any?>(fun(`$event`: UniInputEvent){
+                            _cE("input", _uM("class" to "input", "maxlength" to 100, "modelValue" to unref(keywords), "onInput" to _uA<Any?>(fun(`$event`: UniInputEvent){
                                 trySetRefValue(keywords, `$event`.detail.value)
                             }
                             , onInput)), null, 40, _uA(
                                 "modelValue"
-                            ))
+                            )),
+                            if (unref(keywords).length > 0) {
+                                _cE("view", _uM("key" to 0, "class" to "input-close", "onClick" to onInputClear), _uA(
+                                    _cV(unref(GenComponnetsMyIconIndexClass), _uM("name" to "close", "color" to "var(--text-color-2)"))
+                                ))
+                            } else {
+                                _cC("v-if", true)
+                            }
                         )),
                         _cE("text", _uM("class" to "page-navbar-right", "onClick" to onClickAction), "搜索")
                     ), 4),
@@ -176,7 +189,7 @@ open class GenPagesSearchIndex : BasePage {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "width" to "100%", "height" to "100%")), "page-navbar" to _pS(_uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "position" to "fixed", "width" to "100%", "zIndex" to 99, "backgroundColor" to "var(--navbar-background)")), "page-navbar-left" to _uM(".page-navbar " to _uM("width" to "80rpx", "display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "center")), "icon" to _uM(".page-navbar " to _uM("fontSize" to 24)), "input-wrapper" to _uM(".page-navbar " to _uM("flexGrow" to 1, "flexShrink" to 1, "flexBasis" to "0%", "display" to "flex", "paddingTop" to "16rpx", "paddingRight" to "32rpx", "paddingBottom" to "16rpx", "paddingLeft" to "32rpx", "marginTop" to "4rpx", "marginRight" to 0, "marginBottom" to "4rpx", "marginLeft" to 0, "flexDirection" to "row", "backgroundColor" to "var(--background-color-2)", "borderTopLeftRadius" to 16, "borderTopRightRadius" to 16, "borderBottomRightRadius" to 16, "borderBottomLeftRadius" to 16)), "page-navbar-right" to _uM(".page-navbar " to _uM("width" to "120rpx", "textAlign" to "center", "color" to "var(--text-color-1)", "fontSize" to 16)), "card" to _pS(_uM("paddingTop" to 0, "paddingRight" to 16, "paddingBottom" to 0, "paddingLeft" to 16)), "card-title-box" to _uM(".card " to _uM("display" to "flex", "flexDirection" to "row", "justifyContent" to "space-between")), "card-title" to _uM(".card .card-title-box " to _uM("marginTop" to 12, "marginRight" to 0, "marginBottom" to 12, "marginLeft" to 0, "color" to "var(--text-color-2)")), "card-clear" to _uM(".card .card-title-box " to _uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center")), "card-clear-text" to _uM(".card .card-title-box .card-clear " to _uM("color" to "var(--text-color-2)", "fontSize" to 14, "marginRight" to "4rpx")), "tag-list" to _pS(_uM("display" to "flex", "flexDirection" to "row", "flexWrap" to "wrap", "paddingTop" to 0, "paddingRight" to 16, "paddingBottom" to 0, "paddingLeft" to 16)), "tag-box" to _uM(".tag-list " to _uM("paddingTop" to 4, "paddingRight" to 8, "paddingBottom" to 4, "paddingLeft" to 8, "borderTopLeftRadius" to 4, "borderTopRightRadius" to 4, "borderBottomRightRadius" to 4, "borderBottomLeftRadius" to 4, "backgroundColor" to "var(--background-color-2)", "display" to "flex", "flexDirection" to "row", "alignItems" to "center", "marginTop" to 0, "marginRight" to 12, "marginBottom" to 12, "marginLeft" to 0)), "tag" to _uM(".tag-list " to _uM("color" to "var(--text-color-2)", "fontSize" to 14, "marginRight" to 4)), "empty" to _pS(_uM("minHeight" to "200rpx", "display" to "flex", "alignItems" to "center", "justifyContent" to "center", "marginTop" to 12, "marginRight" to 16, "marginBottom" to 12, "marginLeft" to 16, "backgroundColor" to "var(--background-color-2)", "borderTopLeftRadius" to 8, "borderTopRightRadius" to 8, "borderBottomRightRadius" to 8, "borderBottomLeftRadius" to 8)), "text" to _uM(".empty " to _uM("color" to "var(--text-color-3)")))
+                return _uM("page" to _pS(_uM("backgroundColor" to "var(--navbar-background)", "width" to "100%", "height" to "100%")), "page-navbar" to _pS(_uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center", "position" to "fixed", "width" to "100%", "zIndex" to 99, "backgroundColor" to "var(--navbar-background)")), "page-navbar-left" to _uM(".page-navbar " to _uM("width" to 40, "display" to "flex", "flexDirection" to "row", "alignItems" to "center", "justifyContent" to "center")), "icon" to _uM(".page-navbar " to _uM("fontSize" to 24)), "input-wrapper" to _uM(".page-navbar " to _uM("flexGrow" to 1, "flexShrink" to 1, "flexBasis" to "0%", "display" to "flex", "flexDirection" to "row", "justifyContent" to "space-between", "alignItems" to "center", "paddingTop" to 8, "paddingRight" to 28, "paddingBottom" to 8, "paddingLeft" to 12, "backgroundColor" to "var(--background-color-2)", "borderTopLeftRadius" to 16, "borderTopRightRadius" to 16, "borderBottomRightRadius" to 16, "borderBottomLeftRadius" to 16)), "input" to _uM(".page-navbar .input-wrapper " to _uM("fontSize" to 14)), "input-close" to _uM(".page-navbar .input-wrapper " to _uM("marginLeft" to 4)), "page-navbar-right" to _uM(".page-navbar " to _uM("width" to "120rpx", "textAlign" to "center", "color" to "var(--text-color-1)", "fontSize" to 16)), "card" to _pS(_uM("paddingTop" to 0, "paddingRight" to 16, "paddingBottom" to 0, "paddingLeft" to 16)), "card-title-box" to _uM(".card " to _uM("display" to "flex", "flexDirection" to "row", "justifyContent" to "space-between")), "card-title" to _uM(".card .card-title-box " to _uM("marginTop" to 12, "marginRight" to 0, "marginBottom" to 12, "marginLeft" to 0, "color" to "var(--text-color-2)")), "card-clear" to _uM(".card .card-title-box " to _uM("display" to "flex", "flexDirection" to "row", "alignItems" to "center")), "card-clear-text" to _uM(".card .card-title-box .card-clear " to _uM("color" to "var(--text-color-2)", "fontSize" to 14, "marginRight" to "4rpx")), "tag-list" to _pS(_uM("display" to "flex", "flexDirection" to "row", "flexWrap" to "wrap", "paddingTop" to 0, "paddingRight" to 16, "paddingBottom" to 0, "paddingLeft" to 16)), "tag-box" to _uM(".tag-list " to _uM("paddingTop" to 4, "paddingRight" to 8, "paddingBottom" to 4, "paddingLeft" to 8, "borderTopLeftRadius" to 4, "borderTopRightRadius" to 4, "borderBottomRightRadius" to 4, "borderBottomLeftRadius" to 4, "backgroundColor" to "var(--background-color-2)", "display" to "flex", "flexDirection" to "row", "alignItems" to "center", "marginTop" to 0, "marginRight" to 12, "marginBottom" to 12, "marginLeft" to 0)), "tag" to _uM(".tag-list " to _uM("color" to "var(--text-color-2)", "fontSize" to 14, "marginRight" to 4)), "empty" to _pS(_uM("minHeight" to "200rpx", "display" to "flex", "alignItems" to "center", "justifyContent" to "center", "marginTop" to 12, "marginRight" to 16, "marginBottom" to 12, "marginLeft" to 16, "backgroundColor" to "var(--background-color-2)", "borderTopLeftRadius" to 8, "borderTopRightRadius" to 8, "borderBottomRightRadius" to 8, "borderBottomLeftRadius" to 8)), "text" to _uM(".empty " to _uM("color" to "var(--text-color-3)")))
             }
         var inheritAttrs = true
         var inject: Map<String, Map<String, Any?>> = _uM()

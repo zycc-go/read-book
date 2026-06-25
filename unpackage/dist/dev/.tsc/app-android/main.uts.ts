@@ -29,6 +29,7 @@ import GenPagesLibraryIndexClass from './pages/library/index.uvue'
 import GenPagesDiscussIndexClass from './pages/discuss/index.uvue'
 import GenPagesDiscussDetailIndexClass from './pages/discuss-detail/index.uvue'
 import GenPagesDiscussIssueIndexClass from './pages/discuss-issue/index.uvue'
+import GenPagesDiscussIssueLinkPageClass from './pages/discuss-issue/link-page.uvue'
 import GenPagesMineIndexClass from './pages/mine/index.uvue'
 import GenPagesSearchIndexClass from './pages/search/index.uvue'
 import GenPagesSettingIndexClass from './pages/setting/index.uvue'
@@ -42,6 +43,7 @@ __uniRoutes.push({ path: "pages/library/index", component: GenPagesLibraryIndexC
 __uniRoutes.push({ path: "pages/discuss/index", component: GenPagesDiscussIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/discuss-detail/index", component: GenPagesDiscussDetailIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/discuss-issue/index", component: GenPagesDiscussIssueIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
+__uniRoutes.push({ path: "pages/discuss-issue/link-page", component: GenPagesDiscussIssueLinkPageClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/mine/index", component: GenPagesMineIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/search/index", component: GenPagesSearchIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)
 __uniRoutes.push({ path: "pages/setting/index", component: GenPagesSettingIndexClass, meta: { isQuit: false } as UniPageMeta, style: _uM([["navigationBarTitleText",""]]) } as UniPageRoute)

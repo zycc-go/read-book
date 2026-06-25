@@ -5,7 +5,10 @@
 				<my-icon name="left" size="24px" />
 			</view>
 			<view class="input-wrapper">
-				<input :maxlength="20" :auto-focus='true' v-model="keywords" @input="onInput" />
+				<input class="input" :maxlength="100" v-model="keywords" @input="onInput" />
+				<view class="input-close" v-if="keywords.length > 0" @tap="onInputClear">
+					<my-icon name="close" color="var(--text-color-2)" />
+				</view>
 			</view>
 			<text class="page-navbar-right" @tap="onClickAction">搜索</text>
 		</view>
@@ -49,7 +52,7 @@
 
 	type SearchRecordItem = {
 		id : string,
-		text : string
+		text : string,
 	}
 
 	const style = computed(() => {
@@ -59,11 +62,15 @@
 		};
 	})
 
+	const isFocus = ref<boolean>(false)
+
 	const keywords = ref<string>('')
 
 	const searchRecord = ref<SearchRecordItem[]>([])
 
 	const searchType = ref<string>('record')
+	// 0搜索书籍 1好友
+	const fromType = ref<string>('book')
 
 	const onBack = () => {
 		uni.navigateBack()
@@ -73,6 +80,10 @@
 		if (event.detail.value.length == 0) {
 			searchType.value = 'record'
 		}
+	}
+
+	const onInputClear = () => {
+		keywords.value = ''
 	}
 
 	const onClickAction = () => {
@@ -135,8 +146,9 @@
 		})
 	}
 
-	onMounted(() => {
+	onLoad((options) => {
 		initData()
+		fromType.value = options.type ?? 'book'
 	})
 </script>
 
@@ -157,7 +169,7 @@
 		background-color: var(--navbar-background);
 
 		.page-navbar-left {
-			width: 80rpx;
+			width: $uni-font-size-40;
 			display: flex;
 			flex-direction: row;
 			align-items: center;
@@ -171,11 +183,20 @@
 		.input-wrapper {
 			flex: 1;
 			display: flex;
-			padding: 16rpx 32rpx;
-			margin: 4rpx 0;
 			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			padding: 8px 28px 8px 12px;
 			background-color: var(--background-color-2);
 			border-radius: $uni-border-radius-16;
+
+			.input {
+				font-size: $uni-font-size-14;
+			}
+
+			.input-close {
+				margin-left: $uni-spacing-row-4;
+			}
 		}
 
 		.page-navbar-right {

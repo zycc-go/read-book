@@ -16,13 +16,29 @@
 			</template>
 		</my-navbar>
 
-		<view class="card">
-			<MyUploader action="https://api.riceui.cn/app/upload" :max-count="3" :success-code="200" uploadIcon="plus"
-				ref="uploaderRef" @complete="onComolete" />
-			<!-- <editor class="preview-editor" placeholder="请输入" @ready="onEditorReady" @input="onEditorInput" /> -->
-		</view>
+		<scroll-view style="flex:1" ref="scrollRef" :scroll-top="scrollTopValue">
+			<view class="card"
+				:style="{ paddingBottom:addUnit(state.safeAreaInsetsHeight + 40 + state.keyboardHeight) }">
+				<view>
+					<view class="form-item">
+						<textarea class="item-title" placeholder="标题" :adjust-position="false" :auto-height="true"
+							:maxlength="100" :value="formData.title" @input="onInputTitle"
+							@keyboardheightchange="onKeyboardheightchange" />
+					</view>
+					<view class="form-item">
+						<textarea class="item-content" placeholder="内容" :adjust-position="false" :auto-height="true"
+							:maxlength="10000" :value="formData.content" @input="onInputContent"
+							@keyboardheightchange="onKeyboardheightchange" />
+					</view>
+				</view>
+				<MyUploader v-show="filesList.length > 0" action="https://api.riceui.cn/app/upload" :max-count="9"
+					:success-code="200" uploadIcon="plus" ref="uploaderRef" v-model="(filesList as UploaderFileItem[])"
+					@complete="onComolete" />
+			</view>
+		</scroll-view>
 
-		<view class="keyboard-com" :style="keyboardStyle">
+		<view class="keyboard-com"
+			:style="{ bottom: addUnit(state.keyboardHeight), paddingBottom:addUnit(state.safeAreaInsetsHeight) }">
 			<MyEditCom @tapItem="onTapEditCom" />
 		</view>
 	</view>
@@ -38,6 +54,7 @@
 	import { ComItemType } from '@/componnets/MyEditCom/type.uts';
 	import { UploaderFileItem, UploaderComplete } from "@/componnets/MyUploader/type.uts"
 	import { addUnit, hasStrValue } from "../../utils"
+	import { FormDataType } from './type.uts'
 
 	const style = computed(() => {
 		return {
@@ -45,18 +62,23 @@
 			paddingBottom: state.safeAreaInsetsHeight + 'px',
 		};
 	})
-
-	const content = ref<string>('')
-
-	const keyboardStyle = ref({ bottom: state.keyboardHeight == 0 ? state.safeAreaInsetsHeight : state.keyboardHeight })
-
+	const scrollRef = ref<ComponentPublicInstance | null>(null)
+	const scrollTopValue = ref<number>(0)
+	// 上传组件Ref
 	const uploaderRef = ref<ComponentPublicInstance | null>(null)
+	// 上传文件
+	const filesList = ref<UploaderFileItem[]>([])
+	// 数据
+	const formData = reactive<FormDataType>({
+		title: '',
+		content: ''
+	})
 
-	const onEditorReady = () => {
+	const onInputTitle = (event : UniInputEvent) => {
+		formData.title = event.detail.value
 	}
-
-	const onEditorInput = (event : UniInputEvent) => {
-		content.value = event.detail.value
+	const onInputContent = (event : UniInputEvent) => {
+		formData.content = event.detail.value
 	}
 
 	const onComolete = (filesList : UploaderFileItem[], result : UploaderComplete) => {
@@ -71,12 +93,30 @@
 	const onTapEditCom = (item : ComItemType) => {
 		console.log(item);
 		if (item.id == 0 && uploaderRef.value) {
+			uploaderRef.value?.$callMethod('startChooseFiles')
+		} else if (item.id == 1) {
+			uni.navigateTo({
+				url: `/pages/search/index?type=friend`
+			})
+		} else if (item.id == 2) {
+			uni.navigateTo({
+				url: `/pages/discuss-issue/link-page`,
+				success() {
+					uni.$on('link-submit', (obj : UTSJSONObject) => {
+						console.log('obj', obj.title);
+					})
+				},
+			})
 		}
 	}
 
 	const onSubmit = () => {
-		// console.log('value', content.value)
-		if (content.value.length <= 0) {
+		// console.log('value', editorContent.inputCount)
+		if (formData.title.length == 0) {
+			uni.showToast({ title: '请输入标题', icon: 'error' })
+			return
+		}
+		if (formData.content.length == 0) {
 			uni.showToast({ title: '请输入内容', icon: 'error' })
 			return
 		}
@@ -86,11 +126,18 @@
 			uni.hideLoading()
 		}, 1000)
 	}
+
+	const onKeyboardheightchange = (event : UniInputKeyboardHeightChangeEvent) => {
+		if (event.detail.height > 0) {
+			console.log(scrollRef.value, 'scrollRef');
+			scrollTopValue.value = 99999
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
 	.page {
-		background-color: var(--navbar-background);
+		background-color: var(--background-color-2);
 		height: 100%;
 		width: 100%;
 	}
@@ -112,26 +159,34 @@
 	}
 
 	.card {
-		margin: $uni-spacing-col-12 $uni-spacing-row-16;
 		min-height: 200px;
+		padding: $uni-spacing-col-12 $uni-spacing-row-12;
 
-		.textarea-instance {
-			min-height: 140px;
+		.form-item {
+			// border-bottom: 0.5px solid var(--text-color-3);
+		}
+
+		.item-title {
 			width: 100%;
-			padding: $uni-spacing-col-12 $uni-spacing-row-16;
-			border-radius: $uni-border-radius-8;
-			font-size: $uni-font-size-14;
+			padding: $uni-spacing-col-8 0;
+			font-size: $uni-font-size-20;
 			color: var(--text-color-1);
 			line-height: $uni-line-height-24;
-			background-color: var(--background-color-2);
+			border-bottom: 0.5px solid var(--border-color);
+			height: 48px;
+			white-space: pre-wrap;
+			overflow: hidden;
+			// background-color: yellow;
 		}
 
-		.btn {
-			margin-top: $uni-spacing-col-12;
-		}
-
-		.preview-editor {
-			min-height: 200px;
+		.item-content {
+			width: 100%;
+			height: 200px;
+			padding: $uni-spacing-col-8 0;
+			font-size: $uni-font-size-16;
+			color: var(--text-color-2);
+			line-height: $uni-line-height-24;
+			// background-color: blue;
 		}
 	}
 
@@ -142,5 +197,6 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		background-color: var(--navbar-background);
 	}
 </style>

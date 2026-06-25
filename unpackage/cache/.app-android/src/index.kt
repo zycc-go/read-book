@@ -115,7 +115,7 @@ fun tryConnectSocket(host: String, port: String, id: String): UTSPromise<SocketT
 fun initRuntimeSocketService(): UTSPromise<Boolean> {
     val hosts: String = "10.191.92.87,127.0.0.1"
     val port: String = "8090"
-    val id: String = "app-android_s8gx4Y"
+    val id: String = "app-android_msjGoF"
     if (hosts == "" || port == "" || id == "") {
         return UTSPromise.resolve(false)
     }
@@ -3833,7 +3833,7 @@ open class GenApp : BaseApp {
         }
         val styles0: Map<String, Map<String, Map<String, Any>>>
             get() {
-                return _uM("theme-light" to _pS(_uM("--navbar-background" to "#f5f5f5", "--search-background" to "transparent", "--search-input-background" to "rgba(0, 0, 0, 0.04)", "--primary-color" to "#1989fa", "--primary-color-1" to "#e6f7ff", "--primary-color-7" to "#0b68d4", "--success-color" to "#07c160", "--success-color-1" to "#e6ffee", "--success-color-7" to "#009c50", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--button-default-border" to "#eaecf1", "--button-default-background" to "#fff", "--button-default-hover-background" to "#f1f1f1", "--text-color-white" to "#f5f5f5", "--text-color-1" to "#02070F", "--text-color-2" to "#666", "--text-color-3" to "#999", "--text-color-4" to "#111", "--background-color-1" to "rgba(0, 0, 0, 0.50)", "--background-color-2" to "#FFF", "--cell-active-color" to "#f2f3f5", "--uploader-background" to "#f7f8fa")), "theme-dark" to _pS(_uM("--navbar-background" to "#181818", "--search-background" to "transparent", "--search-input-background" to "#333", "--primary-color" to "#1989fa", "--primary-color-1" to "#111c2b", "--primary-color-7" to "#3d98e8", "--success-color" to "#07c160", "--success-color-1" to "#11231b", "--success-color-7" to "#27bc6a", "--warning-color" to "#ff976a", "--warning-color-1" to "#281f15", "--warning-color-7" to "#dcae5e", "--button-default-border" to "#383838", "--button-default-background" to "#383838", "--button-default-hover-background" to "#4b4b4b", "--text-color-white" to "#f5f5f5", "--error-color" to "#ee0a24", "--error-color-1" to "#2a1a1b", "--error-color-7" to "#e88e8c", "--text-color-1" to "#F5F5F5", "--text-color-2" to "#CCC", "--text-color-3" to "#999", "--text-color-4" to "#F5F5F5", "--background-color-1" to "#111", "--background-color-2" to "rgba(255, 255, 255, 0.13)", "--cell-active-color" to "#3a3a3c", "--uploader-background" to "#262727")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "justify-between" to _pS(_uM("justifyContent" to "space-between")), "justify-around" to _pS(_uM("justifyContent" to "space-around")))
+                return _uM("theme-light" to _pS(_uM("--navbar-background" to "#f5f5f5", "--search-background" to "transparent", "--search-input-background" to "rgba(0, 0, 0, 0.04)", "--primary-color" to "#1989fa", "--primary-color-1" to "#e6f7ff", "--primary-color-7" to "#0b68d4", "--success-color" to "#07c160", "--success-color-1" to "#e6ffee", "--success-color-7" to "#009c50", "--warning-color" to "#e6a23c", "--warning-color-1" to "#fffbe8", "--warning-color-7" to "#bf7e28", "--error-color" to "#f56c6c", "--error-color-1" to "#fff2f0", "--error-color-7" to "#cf5155", "--button-default-border" to "#eaecf1", "--button-default-background" to "#fff", "--button-default-hover-background" to "#f1f1f1", "--text-color-white" to "#f5f5f5", "--border-color" to "#ebedf0", "--text-color-1" to "#02070F", "--text-color-2" to "#666", "--text-color-3" to "#999", "--text-color-4" to "#111", "--background-color-1" to "rgba(0, 0, 0, 0.50)", "--background-color-2" to "#FFF", "--cell-active-color" to "#f2f3f5", "--uploader-background" to "#f7f8fa")), "theme-dark" to _pS(_uM("--navbar-background" to "#181818", "--search-background" to "transparent", "--search-input-background" to "#333", "--primary-color" to "#1989fa", "--primary-color-1" to "#111c2b", "--primary-color-7" to "#3d98e8", "--success-color" to "#07c160", "--success-color-1" to "#11231b", "--success-color-7" to "#27bc6a", "--warning-color" to "#ff976a", "--warning-color-1" to "#281f15", "--warning-color-7" to "#dcae5e", "--button-default-border" to "#383838", "--button-default-background" to "#383838", "--button-default-hover-background" to "#4b4b4b", "--text-color-white" to "#f5f5f5", "--border-color" to "#ebedf0", "--error-color" to "#ee0a24", "--error-color-1" to "#2a1a1b", "--error-color-7" to "#e88e8c", "--text-color-1" to "#F5F5F5", "--text-color-2" to "#CCC", "--text-color-3" to "#999", "--text-color-4" to "#F5F5F5", "--background-color-1" to "#111", "--background-color-2" to "rgba(255, 255, 255, 0.13)", "--cell-active-color" to "#3a3a3c", "--uploader-background" to "#262727")), "flex" to _pS(_uM("display" to "flex", "flexDirection" to "row")), "items-center" to _pS(_uM("alignItems" to "center")), "justify-left" to _pS(_uM("justifyContent" to "flex-start")), "justify-center" to _pS(_uM("justifyContent" to "center")), "justify-right" to _pS(_uM("justifyContent" to "flex-end")), "justify-between" to _pS(_uM("justifyContent" to "space-between")), "justify-around" to _pS(_uM("justifyContent" to "space-around")))
             }
     }
 }
@@ -5166,7 +5166,7 @@ open class ComItemType (
     open var text: String,
 ) : UTSObject(), IUTSSourceMap {
     override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("ComItemType", "componnets/MyEditCom/type.uts", 1, 13)
+        return UTSSourceMapPosition("ComItemType", "componnets/MyEditCom/type.uts", 4, 13)
     }
 }
 val GenComponnetsMyEditComIndexClass = CreateVueComponent(GenComponnetsMyEditComIndex::class.java, fun(): VueComponentOptions {
@@ -5179,6 +5179,71 @@ val GenComponnetsMyEditComIndexClass = CreateVueComponent(GenComponnetsMyEditCom
     return GenComponnetsMyEditComIndex(instance)
 }
 )
+open class FormDataType (
+    @JsonNotNull
+    open var title: String,
+    @JsonNotNull
+    open var content: String,
+    open var formData: UTSJSONObject? = null,
+) : UTSReactiveObject(), IUTSSourceMap {
+    override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
+        return UTSSourceMapPosition("FormDataType", "pages/discuss-issue/type.uts", 1, 13)
+    }
+    override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
+        return FormDataTypeReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+}
+class FormDataTypeReactiveObject : FormDataType, IUTSReactive<FormDataType> {
+    override var __v_raw: FormDataType
+    override var __v_isReadonly: Boolean
+    override var __v_isShallow: Boolean
+    override var __v_skip: Boolean
+    constructor(__v_raw: FormDataType, __v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean) : super(title = __v_raw.title, content = __v_raw.content, formData = __v_raw.formData) {
+        this.__v_raw = __v_raw
+        this.__v_isReadonly = __v_isReadonly
+        this.__v_isShallow = __v_isShallow
+        this.__v_skip = __v_skip
+    }
+    override fun __v_clone(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): FormDataTypeReactiveObject {
+        return FormDataTypeReactiveObject(this.__v_raw, __v_isReadonly, __v_isShallow, __v_skip)
+    }
+    override var title: String
+        get() {
+            return _tRG(__v_raw, "title", __v_raw.title, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("title")) {
+                return
+            }
+            val oldValue = __v_raw.title
+            __v_raw.title = value
+            _tRS(__v_raw, "title", oldValue, value)
+        }
+    override var content: String
+        get() {
+            return _tRG(__v_raw, "content", __v_raw.content, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("content")) {
+                return
+            }
+            val oldValue = __v_raw.content
+            __v_raw.content = value
+            _tRS(__v_raw, "content", oldValue, value)
+        }
+    override var formData: UTSJSONObject?
+        get() {
+            return _tRG(__v_raw, "formData", __v_raw.formData, __v_isReadonly, __v_isShallow)
+        }
+        set(value) {
+            if (!__v_canSet("formData")) {
+                return
+            }
+            val oldValue = __v_raw.formData
+            __v_raw.formData = value
+            _tRS(__v_raw, "formData", oldValue, value)
+        }
+}
 val GenPagesDiscussIssueIndexClass = CreateVueComponent(GenPagesDiscussIssueIndex::class.java, fun(): VueComponentOptions {
     return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesDiscussIssueIndex.inheritAttrs, inject = GenPagesDiscussIssueIndex.inject, props = GenPagesDiscussIssueIndex.props, propsNeedCastKeys = GenPagesDiscussIssueIndex.propsNeedCastKeys, emits = GenPagesDiscussIssueIndex.emits, components = GenPagesDiscussIssueIndex.components, styles = GenPagesDiscussIssueIndex.styles, setup = fun(props: ComponentPublicInstance): Any? {
         return GenPagesDiscussIssueIndex.setup(props as GenPagesDiscussIssueIndex)
@@ -5187,6 +5252,16 @@ val GenPagesDiscussIssueIndexClass = CreateVueComponent(GenPagesDiscussIssueInde
 }
 , fun(instance, renderer): GenPagesDiscussIssueIndex {
     return GenPagesDiscussIssueIndex(instance, renderer)
+}
+)
+val GenPagesDiscussIssueLinkPageClass = CreateVueComponent(GenPagesDiscussIssueLinkPage::class.java, fun(): VueComponentOptions {
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesDiscussIssueLinkPage.inheritAttrs, inject = GenPagesDiscussIssueLinkPage.inject, props = GenPagesDiscussIssueLinkPage.props, propsNeedCastKeys = GenPagesDiscussIssueLinkPage.propsNeedCastKeys, emits = GenPagesDiscussIssueLinkPage.emits, components = GenPagesDiscussIssueLinkPage.components, styles = GenPagesDiscussIssueLinkPage.styles, setup = fun(props: ComponentPublicInstance): Any? {
+        return GenPagesDiscussIssueLinkPage.setup(props as GenPagesDiscussIssueLinkPage)
+    }
+    )
+}
+, fun(instance, renderer): GenPagesDiscussIssueLinkPage {
+    return GenPagesDiscussIssueLinkPage(instance, renderer)
 }
 )
 val GenUniModulesUniBadgeViewComponentsUniBadgeViewUniBadgeViewClass = CreateVueComponent(GenUniModulesUniBadgeViewComponentsUniBadgeViewUniBadgeView::class.java, fun(): VueComponentOptions {
@@ -5238,7 +5313,7 @@ open class SearchRecordItem (
     open var text: String,
 ) : UTSReactiveObject(), IUTSSourceMap {
     override fun `__$getOriginalPosition`(): UTSSourceMapPosition? {
-        return UTSSourceMapPosition("SearchRecordItem", "pages/search/index.uvue", 50, 7)
+        return UTSSourceMapPosition("SearchRecordItem", "pages/search/index.uvue", 53, 7)
     }
     override fun __v_create(__v_isReadonly: Boolean, __v_isShallow: Boolean, __v_skip: Boolean): UTSReactiveObject {
         return SearchRecordItemReactiveObject(this, __v_isReadonly, __v_isShallow, __v_skip)
@@ -5584,6 +5659,7 @@ fun definePageRoutes() {
     __uniRoutes.push(UniPageRoute(path = "pages/discuss/index", component = GenPagesDiscussIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/discuss-detail/index", component = GenPagesDiscussDetailIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/discuss-issue/index", component = GenPagesDiscussIssueIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
+    __uniRoutes.push(UniPageRoute(path = "pages/discuss-issue/link-page", component = GenPagesDiscussIssueLinkPageClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/mine/index", component = GenPagesMineIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/search/index", component = GenPagesSearchIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))
     __uniRoutes.push(UniPageRoute(path = "pages/setting/index", component = GenPagesSettingIndexClass, meta = UniPageMeta(isQuit = false), style = _uM("navigationBarTitleText" to "")))

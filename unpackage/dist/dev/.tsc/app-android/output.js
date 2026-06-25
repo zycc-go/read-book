@@ -28,6 +28,8 @@ const index_uvue_vue_type_style_index_0_lang$9 = {};
 
 const index_uvue_vue_type_style_index_0_lang$8 = {};
 
+const linkPage_uvue_vue_type_style_index_0_lang = {};
+
 const uniBadgeView_uvue_vue_type_style_index_0_lang = {};
 
 const index_uvue_vue_type_style_index_0_lang$7 = {};

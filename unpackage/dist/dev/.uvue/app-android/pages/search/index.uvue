@@ -2,7 +2,7 @@ import MyIcon from '@/componnets/MyIcon/index.uvue';
 import { state } from '@/store/index.uts';
 import { getRandomDigits } from '@/utils/index.uts';
 type SearchRecordItem = {
-    __$originalPosition?: UTSSourceMapPosition<"SearchRecordItem", "pages/search/index.uvue", 50, 7>;
+    __$originalPosition?: UTSSourceMapPosition<"SearchRecordItem", "pages/search/index.uvue", 53, 7>;
     id: string;
     text: string;
 };
@@ -18,9 +18,12 @@ const __sfc__ = defineComponent({
                 paddingBottom: state.safeAreaInsetsHeight + 'px',
             };
         });
+        const isFocus = ref<boolean>(false);
         const keywords = ref<string>('');
         const searchRecord = ref<SearchRecordItem[]>([]);
         const searchType = ref<string>('record');
+        // 0搜索书籍 1好友
+        const fromType = ref<string>('book');
         const onBack = () => {
             uni.navigateBack();
         };
@@ -28,6 +31,9 @@ const __sfc__ = defineComponent({
             if (event.detail.value.length == 0) {
                 searchType.value = 'record';
             }
+        };
+        const onInputClear = () => {
+            keywords.value = '';
         };
         const onClickAction = () => {
             if (keywords.value.length > 0) {
@@ -59,7 +65,7 @@ const __sfc__ = defineComponent({
                 key: 'searchRecord',
                 data: searchRecord.value,
                 fail: (err: UniError) => {
-                    console.log(err, " at pages/search/index.uvue:108");
+                    console.log(err, " at pages/search/index.uvue:119");
                 }
             });
         };
@@ -70,7 +76,7 @@ const __sfc__ = defineComponent({
                     key: 'searchRecord',
                     data: searchRecord.value,
                     fail: (err: UniError) => {
-                        console.log(err, " at pages/search/index.uvue:120");
+                        console.log(err, " at pages/search/index.uvue:131");
                     }
                 });
             }
@@ -80,14 +86,15 @@ const __sfc__ = defineComponent({
             uni.getStorage({
                 key: 'searchRecord',
                 success: (res: GetStorageSuccess) => {
-                    const data = UTSAndroid.consoleDebugError(JSON.parse<Array<SearchRecordItem>>(JSON.stringify(res.data)), " at pages/search/index.uvue:131");
+                    const data = UTSAndroid.consoleDebugError(JSON.parse<Array<SearchRecordItem>>(JSON.stringify(res.data)), " at pages/search/index.uvue:142");
                     searchRecord.value = data ?? [];
                 },
                 complete: () => uni.hideLoading()
             });
         };
-        onMounted(() => {
+        onLoad((options) => {
             initData();
+            fromType.value = options["type"] ?? 'book';
         });
         return (): any | null => {
             return _cE("view", _uM({
@@ -108,11 +115,23 @@ const __sfc__ = defineComponent({
                     ]),
                     _cE("view", _uM({ class: "input-wrapper" }), [
                         _cE("input", _uM({
-                            maxlength: 20,
-                            "auto-focus": true,
+                            class: "input",
+                            maxlength: 100,
                             modelValue: unref(keywords),
                             onInput: [($event: UniInputEvent) => { trySetRefValue(keywords, $event.detail.value); }, onInput] as Array<any | null>
-                        }), null, 40 /* PROPS, NEED_HYDRATION */, ["modelValue"])
+                        }), null, 40 /* PROPS, NEED_HYDRATION */, ["modelValue"]),
+                        unref(keywords).length > 0
+                            ? _cE("view", _uM({
+                                key: 0,
+                                class: "input-close",
+                                onClick: onInputClear
+                            }), [
+                                _cV(unref(MyIcon), _uM({
+                                    name: "close",
+                                    color: "var(--text-color-2)"
+                                }))
+                            ])
+                            : _cC("v-if", true)
                     ]),
                     _cE("text", _uM({
                         class: "page-navbar-right",
@@ -183,5 +202,5 @@ const __sfc__ = defineComponent({
     }
 });
 export default __sfc__;
-const GenPagesSearchIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--navbar-background)"], ["width", "100%"], ["height", "100%"]]))], ["page-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["position", "fixed"], ["width", "100%"], ["zIndex", 99], ["backgroundColor", "var(--navbar-background)"]]))], ["page-navbar-left", _uM([[".page-navbar ", _uM([["width", "80rpx"], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "center"]])]])], ["icon", _uM([[".page-navbar ", _uM([["fontSize", 24]])]])], ["input-wrapper", _uM([[".page-navbar ", _uM([["flexGrow", 1], ["flexShrink", 1], ["flexBasis", "0%"], ["display", "flex"], ["paddingTop", "16rpx"], ["paddingRight", "32rpx"], ["paddingBottom", "16rpx"], ["paddingLeft", "32rpx"], ["marginTop", "4rpx"], ["marginRight", 0], ["marginBottom", "4rpx"], ["marginLeft", 0], ["flexDirection", "row"], ["backgroundColor", "var(--background-color-2)"], ["borderTopLeftRadius", 16], ["borderTopRightRadius", 16], ["borderBottomRightRadius", 16], ["borderBottomLeftRadius", 16]])]])], ["page-navbar-right", _uM([[".page-navbar ", _uM([["width", "120rpx"], ["textAlign", "center"], ["color", "var(--text-color-1)"], ["fontSize", 16]])]])], ["card", _pS(_uM([["paddingTop", 0], ["paddingRight", 16], ["paddingBottom", 0], ["paddingLeft", 16]]))], ["card-title-box", _uM([[".card ", _uM([["display", "flex"], ["flexDirection", "row"], ["justifyContent", "space-between"]])]])], ["card-title", _uM([[".card .card-title-box ", _uM([["marginTop", 12], ["marginRight", 0], ["marginBottom", 12], ["marginLeft", 0], ["color", "var(--text-color-2)"]])]])], ["card-clear", _uM([[".card .card-title-box ", _uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"]])]])], ["card-clear-text", _uM([[".card .card-title-box .card-clear ", _uM([["color", "var(--text-color-2)"], ["fontSize", 14], ["marginRight", "4rpx"]])]])], ["tag-list", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["flexWrap", "wrap"], ["paddingTop", 0], ["paddingRight", 16], ["paddingBottom", 0], ["paddingLeft", 16]]))], ["tag-box", _uM([[".tag-list ", _uM([["paddingTop", 4], ["paddingRight", 8], ["paddingBottom", 4], ["paddingLeft", 8], ["borderTopLeftRadius", 4], ["borderTopRightRadius", 4], ["borderBottomRightRadius", 4], ["borderBottomLeftRadius", 4], ["backgroundColor", "var(--background-color-2)"], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["marginTop", 0], ["marginRight", 12], ["marginBottom", 12], ["marginLeft", 0]])]])], ["tag", _uM([[".tag-list ", _uM([["color", "var(--text-color-2)"], ["fontSize", 14], ["marginRight", 4]])]])], ["empty", _pS(_uM([["minHeight", "200rpx"], ["display", "flex"], ["alignItems", "center"], ["justifyContent", "center"], ["marginTop", 12], ["marginRight", 16], ["marginBottom", 12], ["marginLeft", 16], ["backgroundColor", "var(--background-color-2)"], ["borderTopLeftRadius", 8], ["borderTopRightRadius", 8], ["borderBottomRightRadius", 8], ["borderBottomLeftRadius", 8]]))], ["text", _uM([[".empty ", _uM([["color", "var(--text-color-3)"]])]])]])];
+const GenPagesSearchIndexStyles = [_uM([["page", _pS(_uM([["backgroundColor", "var(--navbar-background)"], ["width", "100%"], ["height", "100%"]]))], ["page-navbar", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["position", "fixed"], ["width", "100%"], ["zIndex", 99], ["backgroundColor", "var(--navbar-background)"]]))], ["page-navbar-left", _uM([[".page-navbar ", _uM([["width", 40], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["justifyContent", "center"]])]])], ["icon", _uM([[".page-navbar ", _uM([["fontSize", 24]])]])], ["input-wrapper", _uM([[".page-navbar ", _uM([["flexGrow", 1], ["flexShrink", 1], ["flexBasis", "0%"], ["display", "flex"], ["flexDirection", "row"], ["justifyContent", "space-between"], ["alignItems", "center"], ["paddingTop", 8], ["paddingRight", 28], ["paddingBottom", 8], ["paddingLeft", 12], ["backgroundColor", "var(--background-color-2)"], ["borderTopLeftRadius", 16], ["borderTopRightRadius", 16], ["borderBottomRightRadius", 16], ["borderBottomLeftRadius", 16]])]])], ["input", _uM([[".page-navbar .input-wrapper ", _uM([["fontSize", 14]])]])], ["input-close", _uM([[".page-navbar .input-wrapper ", _uM([["marginLeft", 4]])]])], ["page-navbar-right", _uM([[".page-navbar ", _uM([["width", "120rpx"], ["textAlign", "center"], ["color", "var(--text-color-1)"], ["fontSize", 16]])]])], ["card", _pS(_uM([["paddingTop", 0], ["paddingRight", 16], ["paddingBottom", 0], ["paddingLeft", 16]]))], ["card-title-box", _uM([[".card ", _uM([["display", "flex"], ["flexDirection", "row"], ["justifyContent", "space-between"]])]])], ["card-title", _uM([[".card .card-title-box ", _uM([["marginTop", 12], ["marginRight", 0], ["marginBottom", 12], ["marginLeft", 0], ["color", "var(--text-color-2)"]])]])], ["card-clear", _uM([[".card .card-title-box ", _uM([["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"]])]])], ["card-clear-text", _uM([[".card .card-title-box .card-clear ", _uM([["color", "var(--text-color-2)"], ["fontSize", 14], ["marginRight", "4rpx"]])]])], ["tag-list", _pS(_uM([["display", "flex"], ["flexDirection", "row"], ["flexWrap", "wrap"], ["paddingTop", 0], ["paddingRight", 16], ["paddingBottom", 0], ["paddingLeft", 16]]))], ["tag-box", _uM([[".tag-list ", _uM([["paddingTop", 4], ["paddingRight", 8], ["paddingBottom", 4], ["paddingLeft", 8], ["borderTopLeftRadius", 4], ["borderTopRightRadius", 4], ["borderBottomRightRadius", 4], ["borderBottomLeftRadius", 4], ["backgroundColor", "var(--background-color-2)"], ["display", "flex"], ["flexDirection", "row"], ["alignItems", "center"], ["marginTop", 0], ["marginRight", 12], ["marginBottom", 12], ["marginLeft", 0]])]])], ["tag", _uM([[".tag-list ", _uM([["color", "var(--text-color-2)"], ["fontSize", 14], ["marginRight", 4]])]])], ["empty", _pS(_uM([["minHeight", "200rpx"], ["display", "flex"], ["alignItems", "center"], ["justifyContent", "center"], ["marginTop", 12], ["marginRight", 16], ["marginBottom", 12], ["marginLeft", 16], ["backgroundColor", "var(--background-color-2)"], ["borderTopLeftRadius", 8], ["borderTopRightRadius", 8], ["borderBottomRightRadius", 8], ["borderBottomLeftRadius", 8]]))], ["text", _uM([[".empty ", _uM([["color", "var(--text-color-3)"]])]])]])];
 //# sourceMappingURL=index.uvue.map
