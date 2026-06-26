@@ -16,24 +16,24 @@
 			</template>
 		</my-navbar>
 
-		<scroll-view style="flex:1" ref="scrollRef" :scroll-top="scrollTopValue">
+		<scroll-view style="flex:1">
 			<view class="card"
-				:style="{ paddingBottom:addUnit(state.safeAreaInsetsHeight + 40 + state.keyboardHeight) }">
+				:style="{ paddingBottom:addUnit(state.safeAreaInsetsHeight + state.keyboardHeight + 40) }">
 				<view>
 					<view class="form-item">
 						<textarea class="item-title" placeholder="标题" :adjust-position="false" :auto-height="true"
-							:maxlength="100" :value="formData.title" @input="onInputTitle"
-							@keyboardheightchange="onKeyboardheightchange" />
+							:maxlength="100" :value="formData.title" @input="onInputTitle" />
 					</view>
 					<view class="form-item">
 						<textarea class="item-content" placeholder="内容" :adjust-position="false" :auto-height="true"
-							:maxlength="10000" :value="formData.content" @input="onInputContent"
-							@keyboardheightchange="onKeyboardheightchange" />
+							:maxlength="10000" :value="formData.content" @input="onInputContent" />
 					</view>
 				</view>
-				<MyUploader v-show="filesList.length > 0" action="https://api.riceui.cn/app/upload" :max-count="9"
-					:success-code="200" uploadIcon="plus" ref="uploaderRef" v-model="(filesList as UploaderFileItem[])"
-					@complete="onComolete" />
+				<view class="uploader-box">
+					<MyUploader v-show="filesList.length > 0" action="https://api.riceui.cn/app/upload" :max-count="9"
+						:success-code="200" uploadIcon="plus" :width="100" :height="100" ref="uploaderRef"
+						v-model="(filesList as UploaderFileItem[])" @complete="onComolete" />
+				</view>
 			</view>
 		</scroll-view>
 
@@ -62,8 +62,6 @@
 			paddingBottom: state.safeAreaInsetsHeight + 'px',
 		};
 	})
-	const scrollRef = ref<ComponentPublicInstance | null>(null)
-	const scrollTopValue = ref<number>(0)
 	// 上传组件Ref
 	const uploaderRef = ref<ComponentPublicInstance | null>(null)
 	// 上传文件
@@ -126,13 +124,6 @@
 			uni.hideLoading()
 		}, 1000)
 	}
-
-	const onKeyboardheightchange = (event : UniInputKeyboardHeightChangeEvent) => {
-		if (event.detail.height > 0) {
-			console.log(scrollRef.value, 'scrollRef');
-			scrollTopValue.value = 99999
-		}
-	}
 </script>
 
 <style lang="scss" scoped>
@@ -160,20 +151,21 @@
 
 	.card {
 		min-height: 200px;
-		padding: $uni-spacing-col-12 $uni-spacing-row-12;
+		padding: 0;
 
 		.form-item {
 			// border-bottom: 0.5px solid var(--text-color-3);
+			padding: 0 $uni-spacing-row-12;
 		}
 
 		.item-title {
 			width: 100%;
+			min-height: 44px;
 			padding: $uni-spacing-col-8 0;
 			font-size: $uni-font-size-20;
 			color: var(--text-color-1);
 			line-height: $uni-line-height-24;
 			border-bottom: 0.5px solid var(--border-color);
-			height: 48px;
 			white-space: pre-wrap;
 			overflow: hidden;
 			// background-color: yellow;
@@ -181,12 +173,16 @@
 
 		.item-content {
 			width: 100%;
-			height: 200px;
+			min-height: 200px;
 			padding: $uni-spacing-col-8 0;
 			font-size: $uni-font-size-16;
 			color: var(--text-color-2);
 			line-height: $uni-line-height-24;
 			// background-color: blue;
+		}
+
+		.uploader-box {
+			padding: $uni-spacing-col-16 0 $uni-spacing-col-16 $uni-spacing-row-12;
 		}
 	}
 
